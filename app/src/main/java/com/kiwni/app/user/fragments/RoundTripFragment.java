@@ -84,8 +84,8 @@ public class RoundTripFragment extends Fragment implements OnMapReadyCallback {
                 PreferencesUtils.putPreferences(getActivity(), SharedPref.DIRECTION,direction);
 
                 Intent intent = new Intent(getActivity(), FindCarActivity.class);
-                intent.putExtra("serviceType", "Outstation");
-                intent.putExtra("direction", direction);
+                //intent.putExtra("serviceType", "Outstation");
+                //intent.putExtra("direction", direction);
                 startActivity(intent);
 
             }
