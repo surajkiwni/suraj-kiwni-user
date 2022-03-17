@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Reason for Trip Cancellation"
+            android:textColor="@color/black"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Are you sure you want to cancel?"
+            android:textColor="#727272"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="225dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:text="Book another cab"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="35dp"
+            app:buttonTint="#FF1414"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text"
+             />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout1"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="225dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:text="Change in Plan"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="35dp"
+            app:buttonTint="#FF1414"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text1"
+            />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="225dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:text="Booking Errors"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/radioButton4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="35dp"
+            app:buttonTint="#FF1414"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text2"
+            />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:id="@+id/text3"
+            android:layout_width="225dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:text="My reason is not listed"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/radioButton5"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="35dp"
+            app:buttonTint="#FF1414"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text3"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+<androidx.appcompat.widget.AppCompatButton
+    android:id="@+id/dontCancelButton"
+    android:layout_width="150dp"
+    android:layout_height="30dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="15dp"
+    android:text="Don't Cancel"
+    android:background="@drawable/radius_less_rounded_button"
+    android:textColor="@color/white"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
+    app:layout_constraintBottom_toBottomOf="parent"
+    />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cancelRideButton"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/radius_less_rounded_button"
+        android:text="Cancel Ride"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dontCancelButton"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

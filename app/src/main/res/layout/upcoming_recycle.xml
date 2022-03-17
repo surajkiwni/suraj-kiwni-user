@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/less_paint_border"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="30dp"
+                android:src="@drawable/pickuppoint"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="  Lane No. 3, Link Road, Navi Mumbai, Maharasht.."
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="30dp"
+                android:src="@drawable/droppoint"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="  Spin plaza, Choudhari wasti, Pune, Maharashtra.."
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"/>
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/constraintLayout2"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout2"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                >
+
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/calender"
+                    app:layout_constraintEnd_toStartOf="@+id/textAC"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/textAC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="Fri, 24 Dec-Mon, 27 Dec"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageSeat"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="3dp"
+                    android:src="@drawable/clock"
+                    app:layout_constraintStart_toEndOf="@+id/textAC"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textSeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="07:00"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/imageSeat"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/pmText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="PM"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@id/imageBag"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/serviceTypeText"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:text="Service Type : "
+                android:textColor="#808080"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+
+            <TextView
+                android:id="@+id/outstationText"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:text="Outstation"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/serviceTypeText"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+                />
+
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#707070"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintTop_toBottomOf="@id/outstationText"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <LinearLayout
+            android:id="@+id/subLinearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+            <LinearLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                >
+
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="25dp"
+                    android:text="Mahindra Verito :"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:id="@+id/CarModel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Luxury"
+                    android:textColor="#979797"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                >
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/subLinearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/subLinearLayout1">
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                >
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/mobile_icon"
+                    />
+
+                <TextView
+                    android:layout_width="30dp"
+                    android:layout_height="25dp"
+                    android:text="9878896781"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:id="@+id/carNumberText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MH 12 JE2329"
+                    android:textColor="#979797"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                >
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="OTP 23456"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/subLinearLayout2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+        <ImageView
+            android:id="@+id/carImage"
+            android:layout_width="80dp"
+            android:layout_height="90dp"
+            android:src="@drawable/driver_image"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="50dp"
+
+            />
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:text="Kiran"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/carImage"
+            app:layout_constraintStart_toStartOf="@+id/carImage"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cancelRideButton"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/radius_less_rounded_button"
+        android:text="CANCLE RIDE"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/constraintLayout1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

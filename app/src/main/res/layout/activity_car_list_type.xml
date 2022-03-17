@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".user.activity.CarListTypeActivity"
+    android:launchMode = "singleTop"
+    >
+
+  <!--  android:background="@color/white"-->
+
+
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar2"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="20dp"
+             android:layout_marginEnd="20dp"
+             android:text=" Outstation (One way Trip)  "
+             android:textColor="@color/black"
+             app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintTop_toTopOf="@+id/toolbar2" />-->
+
+        <ImageView
+            android:id="@+id/imageBack"
+            android:layout_width="23dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            android:foregroundGravity="center"
+            android:src="@drawable/back_arrow"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
+            app:layout_constraintStart_toStartOf="@+id/toolbar2"
+            app:layout_constraintTop_toTopOf="@+id/toolbar2"
+            app:layout_constraintVertical_bias="0.533" />
+
+        <TextView
+            android:id="@+id/toolbarText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=" Outstation (One Way)  "
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/toolbar2"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.02" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.98"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:id="@+id/borderLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_grey2"
+        android:padding="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline3"
+        app:layout_constraintRight_toRightOf="@+id/guideline4"
+        >
+
+
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PUNE TO MUMBAI"
+            android:textAlignment="center"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.01" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.99"/>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            app:layout_constraintLeft_toLeftOf="@+id/guideline1"
+            app:layout_constraintRight_toRightOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/text1">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/dateLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/timeLayout"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/dateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingStart="3dp"
+                    android:text="Fri, 24 Dec-Mon, 27 Dec "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_11"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/calenderImage"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_editor_absoluteY="1dp" />
+
+                <ImageView
+                    android:id="@+id/calenderImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:src="@drawable/calender"
+                    app:layout_constraintBottom_toBottomOf="@+id/dateTextView"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/dateTextView" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/timeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/kmLayout"
+                app:layout_constraintStart_toEndOf="@+id/dateLayout"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/timeTextView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingStart="3dp"
+                    android:text="07:00 PM"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/callImage"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/callImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/clock"
+                    app:layout_constraintBottom_toBottomOf="@+id/timeTextView1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/timeTextView1" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/kmLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/timeLayout"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/kmTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingStart="3dp"
+                    android:text="Est km 211km"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/estImage"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/estImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/est_time"
+                    app:layout_constraintBottom_toBottomOf="@+id/kmTextView"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/kmTextView" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linearSortFilterSelected"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/borderLayout"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+    </LinearLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/sortFilterLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/borderLayout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/sortLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_10"
+            app:layout_constraintEnd_toStartOf="@+id/filterLayout"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/sortImage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:foregroundGravity="right"
+                android:paddingStart="20dp"
+                android:src="@drawable/sort"
+                app:layout_constraintBottom_toBottomOf="@+id/sortText"
+                app:layout_constraintEnd_toStartOf="@+id/sortText"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/sortText" />
+
+            <TextView
+                android:id="@+id/sortText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="sort"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/sortImage"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/filterLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:padding="@dimen/dp_10"
+            app:layout_constraintEnd_toStartOf="@+id/mapLayout"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/sortLayout">
+
+            <ImageView
+                android:id="@+id/filterImage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:foregroundGravity="right"
+                android:paddingStart="20dp"
+                android:src="@drawable/filter"
+                app:layout_constraintBottom_toBottomOf="@+id/filterText"
+                app:layout_constraintEnd_toStartOf="@+id/filterText"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/filterText" />
+
+            <TextView
+                android:id="@+id/filterText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Filter"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/filterImage"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mapLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/filterLayout">
+
+            <ImageView
+                android:id="@+id/mapImage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:foregroundGravity="right"
+                android:paddingStart="20dp"
+                android:src="@drawable/map"
+                app:layout_constraintBottom_toBottomOf="@+id/mapText"
+                app:layout_constraintEnd_toStartOf="@+id/mapText"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/mapText" />
+
+            <TextView
+                android:id="@+id/mapText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Map"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/mapImage"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/border_grey2"
+        android:visibility="gone"
+        android:layout_marginRight="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/sortFilterLayout"
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/findsCarsListsRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_3"
+           android:layout_marginHorizontal="@dimen/dp_5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/constraintLayout1"
+            app:layout_constraintRight_toRightOf="@+id/constraintLayout1"
+            />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/km"
+            app:layout_constraintLeft_toLeftOf="@+id/constraintLayout1"
+            app:layout_constraintTop_toTopOf="@+id/packageText"
+            app:layout_constraintBottom_toBottomOf="@+id/packageText"/>
+
+        <TextView
+            android:id="@+id/packageText"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="5dp"
+            android:text="4hrs 40 km package "
+            android:textColor="@color/black"
+            android:layout_marginStart="5dp"
+            android:textAlignment="textStart"
+            android:textSize="15sp"
+            android:foregroundGravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/findsCarsListsRecyclerView"
+            />
+        <TextView
+            android:id="@+id/rulesText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_12"
+            android:layout_marginStart="5dp"
+            android:padding="@dimen/dp_5"
+            android:text="@string/package_rules"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout1"
+            app:layout_constraintTop_toBottomOf="@+id/packageText" />
+        <TextView
+            android:id="@+id/viewDetailsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" View Details"
+            android:textSize="@dimen/sp_12"
+            android:textColor="#3968C6"
+            android:padding="@dimen/dp_5"
+            app:layout_constraintTop_toBottomOf="@+id/packageText"
+            app:layout_constraintStart_toEndOf="@+id/rulesText"
+            />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/curved_card"
+        android:elevation="2dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout1">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/sedanNameLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            app:layout_constraintEnd_toStartOf="@+id/sedanTitleLayout"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/carNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="5"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:text="SEDAN"
+                android:textColor="@color/black"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/sedanTitleLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginHorizontal="@dimen/dp_5"
+            android:foregroundGravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/sedanNameLayout"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/acLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/seatLayout"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ac_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/textAC"
+                    app:layout_constraintEnd_toStartOf="@+id/textAC"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/textAC" />
+
+                <TextView
+                    android:id="@+id/textAC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:text="Ac"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+
+                android:id="@+id/seatLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bagLayout"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/acLayout"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageSeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/seat"
+                    app:layout_constraintBottom_toBottomOf="@+id/textSeat"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/textSeat" />
+
+                <TextView
+                    android:id="@+id/textSeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4+1 Seater"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageSeat"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bagLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/seatLayout"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <ImageView
+                    android:id="@+id/imageBag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bag"
+                    app:layout_constraintBottom_toBottomOf="@+id/bagTextView"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/bagTextView" />
+
+                <TextView
+                    android:id="@+id/bagTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3 bags"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/imageBag"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/main_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/sedanTitleLayout" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

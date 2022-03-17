@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="RadioButtonPink">
+        <item name="colorAccent">#F80E0E</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/black</item>
+    </style>
+
+    <style name="BottomSheetDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/bottomSheetBackground</item>
+    </style>
+
+    <style name="bottomSheetBackground" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_top_corners</item>
+    </style>
+</resources>

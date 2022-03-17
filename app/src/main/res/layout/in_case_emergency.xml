@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/imageBack"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="16dp"
+        android:foregroundGravity="center"
+        android:src="@drawable/back_arrow"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.533" />
+
+
+    <TextView
+        android:id="@+id/toolbarText"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text=" In case of Emergency "
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
+
+
+    <EditText
+        android:id="@+id/PoliceText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/square_border"
+        android:padding="7dp"
+        android:paddingStart="10dp"
+        android:text="Police"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.100000024" />
+
+    <ImageView
+        android:id="@+id/callImage1"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/call_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/PoliceText"
+        app:layout_constraintEnd_toEndOf="@+id/PoliceText"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="@+id/PoliceText"
+        app:layout_constraintTop_toTopOf="@+id/PoliceText" />
+
+
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+
+
+    <EditText
+        android:id="@+id/HelplineText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/square_border"
+        android:padding="7dp"
+        android:paddingStart="10dp"
+        android:text="kiwni Helpline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/PoliceText"
+        app:layout_constraintVertical_bias="0.050000012" />
+
+    <ImageView
+        android:id="@+id/callImage2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/call_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/HelplineText"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="@+id/HelplineText"
+        app:layout_constraintTop_toTopOf="@+id/HelplineText" />
+
+    <EditText
+        android:id="@+id/nameText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/square_border"
+        android:padding="7dp"
+        android:paddingStart="10dp"
+        android:text="Shubham"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/HelplineText"
+        app:layout_constraintVertical_bias="0.050000012" />
+
+    <ImageView
+        android:id="@+id/callImage3"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/call_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/nameText"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="@+id/nameText"
+        app:layout_constraintTop_toTopOf="@+id/nameText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

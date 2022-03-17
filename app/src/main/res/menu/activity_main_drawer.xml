@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_myrides"
+            android:icon="@drawable/my_ride"
+            android:title="@string/menu_myrides"
+            />
+        <item
+            android:id="@+id/nav_payment"
+            android:icon="@drawable/payment"
+            android:title="@string/menu_payment" />
+        <item
+            android:id="@+id/nav_offers"
+            android:icon="@drawable/offers"
+            android:title="@string/menu_offers" />
+        <item
+            android:id="@+id/nav_safety"
+            android:icon="@drawable/safety"
+            android:title="@string/menu_safety" />
+        <item
+            android:id="@+id/nav_faq"
+            android:icon="@drawable/faq"
+            android:title="@string/menu_FAQs" />
+
+        <item
+            android:id="@+id/nav_feedback"
+            android:icon="@drawable/feedback"
+            android:title="@string/menu_feedback" />
+        <item
+            android:id="@+id/nav_shareapp"
+            android:icon="@drawable/share_app"
+            android:title="@string/menu_share_app" />
+        <item
+            android:id="@+id/nav_refer"
+            android:icon="@drawable/refer_earn"
+            android:title="@string/menu_refer_Earn" />
+        <item
+            android:id="@+id/nav_support"
+            android:icon="@drawable/support"
+            android:title="@string/menu_support" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/about"
+            android:title="@string/menu_about" />
+    </group>
+</menu>
