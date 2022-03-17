@@ -134,9 +134,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-
-
                         saveButton.setBackgroundColor(Color.TRANSPARENT);
                         saveButton.setTextColor(Color.BLACK);
                         cancelButton.setBackgroundColor(Color.BLACK);
