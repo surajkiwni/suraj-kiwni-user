@@ -1,0 +1,193 @@
+package com.kiwni.app.user.activity;
+
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+import com.kiwni.app.user.R;
+import com.kiwni.app.user.sharedpref.SharedPref;
+import com.yarolegovich.lovelydialog.LovelyProgressDialog;
+
+import java.util.concurrent.TimeUnit;
+
+public class LoginActivity extends AppCompatActivity
+{
+    Button btnConfirm;
+    EditText edtPhoneNumber;
+
+    String mobile = "";
+    Boolean isPhoneNoValid = false;
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
+    // variable for FirebaseAuth class
+    private FirebaseAuth mAuth;
+    private PhoneAuthProvider.ForceResendingToken mResendToken;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    String verificationId;
+
+    String TAG = this.getClass().getSimpleName();
+    Dialog lovelyProgressDialog;
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        // below line is for getting instance
+        // of our FirebaseAuth.
+        mAuth = FirebaseAuth.getInstance();
+
+        sharedPreferences = getSharedPreferences(SharedPref.SHARED_PREF_NAME,MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        edtPhoneNumber = findViewById(R.id.edtPhoneNumber);
+        btnConfirm = findViewById(R.id.btnConfirm);
+
+        edtPhoneNumber.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                btnConfirm.setBackgroundResource(R.drawable.black_rounded_button);
+                return false;
+            }
+        });
+
+        btnConfirm.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                /*mobile = edtPhoneNumber.getText().toString();
+                Log.d("TAG", "mobile = " + mobile);
+
+                setValidation();
+
+                if(isPhoneNoValid)
+                {
+                    if(!mobile.contains("+91"))
+                    {
+                        mobile = "+91" + mobile;
+                    }
+
+                    sendVerificationCode(mobile);
+                }*/
+            }
+        });
+    }
+
+    public void setValidation()
+    {
+        //Phone no validation
+        if (edtPhoneNumber.getText().toString().isEmpty()) {
+            edtPhoneNumber.setError(getResources().getString(R.string.phoneno_error));
+            //edtPhoneNo.requestFocus();
+            isPhoneNoValid = false;
+        } else if (edtPhoneNumber.getText().toString().length() > 10)
+        {
+            edtPhoneNumber.setError("Enter 10 digit mobile no");
+            //edtPhoneNo.requestFocus();
+            isPhoneNoValid = false;
+        } else {
+            edtPhoneNumber.setError(null);
+            //edtEmailId.setErrorEnabled(false);
+            isPhoneNoValid = true;
+        }
+    }
+
+    private void sendVerificationCode(String mobile)
+    {
+        // Set up progress before call
+        lovelyProgressDialog = new LovelyProgressDialog(LoginActivity.this)
+                .setIcon(R.drawable.ic_cast_connected_white_36dp)
+                .setTitle("Loading..")
+                .setMessage("Please wait...")
+                .setTopColorRes(R.color.teal_200)
+                .show();
+
+        // OnVerificationStateChangedCallbacks
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                mobile,            // Phone number to verify
+                60,         // Timeout duration
+                TimeUnit.SECONDS,  // Unit of timeout
+                this,        // Activity (for callback binding)
+                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                        lovelyProgressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e) {
+                        lovelyProgressDialog.dismiss();
+                        //Toast.makeText(LoginActivity.this,"verification fialed",Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                        super.onCodeSent(s, forceResendingToken);
+
+                        lovelyProgressDialog.dismiss();
+
+                        verificationId = s;
+                        Toast.makeText(LoginActivity.this,"Code sent",Toast.LENGTH_SHORT).show();
+
+                        if(!s.equals(null))
+                        {
+                            Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent.putExtra("verificationId",verificationId);
+                            intent.putExtra("mobile",mobile);
+                            startActivity(intent);
+                            //finish();
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if(keyCode==KeyEvent.KEYCODE_BACK)
+        {
+            // Toast.makeText(getApplicationContext(), "back button pressed", Toast.LENGTH_LONG).show(); //doesn't work here
+            finish();
+            return true;
+        }
+
+        if (keyCode==KeyEvent.KEYCODE_HOME)
+        {
+            //Toast.makeText(getApplicationContext(), "home button pressed", Toast.LENGTH_LONG).show(); //doesn't work here
+            finish();
+            return true;
+        }
+
+        if(keyCode==KeyEvent.KEYCODE_ESCAPE)
+        {
+            //Toast.makeText(getApplicationContext(), "Escape button pressed", Toast.LENGTH_LONG).show(); //doesn't work here
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+}

@@ -1,5 +1,10 @@
 package com.kiwni.app.user.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -7,13 +12,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.BookingAdapter;
+import com.kiwni.app.user.adapter.NestedAdapter;
+import com.kiwni.app.user.adapter.TitleItemAdapter;
 import com.kiwni.app.user.datamodels.BookingModel2;
 
 import java.util.ArrayList;
@@ -26,28 +28,26 @@ public class BookingDetailsActivity extends AppCompatActivity {
     List<BookingModel2> bookingModelList1;
     ConstraintLayout constraintLayout;
 
+    NestedAdapter nestedAdapter;
+    TitleItemAdapter titleItemAdapter;
 
     ImageView imageBack;
     AppCompatButton proceedButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_details);
 
-
         recyclerView1 =findViewById(R.id.recyclerView1);
         recyclerView2=findViewById(R.id.recyclerView2);
-        imageBack =findViewById(R.id.imageBack);
-        proceedButton =findViewById(R.id.proceedButton);
-
-
 
         bookingModelList = new ArrayList<>();
         bookingModelList1 = new ArrayList<>();
 
-        bookingModelList.add(new BookingModel2(R.drawable.gps_,"GPS Tracking"));
-        bookingModelList.add(new BookingModel2(R.drawable.otp_,"OTP Pickup & Drops"));
+        bookingModelList.add(new BookingModel2(R.drawable.gps,"GPS Tracking"));
+        bookingModelList.add(new BookingModel2(R.drawable.otp,"OTP Pickup & Drops"));
         bookingModelList.add(new BookingModel2(R.drawable.tube_less_tier,"Tube Less Tier"));
         bookingModelList.add(new BookingModel2(R.drawable.sos_button,"SOS Button"));
         bookingModelList.add(new BookingModel2(R.drawable.group_6313,"Vaccination Driver"));
@@ -59,11 +59,11 @@ public class BookingDetailsActivity extends AppCompatActivity {
         bookingModelList.add(new BookingModel2(R.drawable.gps_speed_limit,"GPS Speed Limit"));
 
 
-        bookingModelList1.add(new BookingModel2(R.drawable.umbrella_,"Umbrella"));
-        bookingModelList1.add(new BookingModel2(R.drawable.wifi_,"WIFI"));
+        bookingModelList1.add(new BookingModel2(R.drawable.umbrella,"Umbrella"));
+        bookingModelList1.add(new BookingModel2(R.drawable.wifi,"WIFI"));
         bookingModelList1.add(new BookingModel2(R.drawable.news_paper,"News Paper"));
         bookingModelList1.add(new BookingModel2(R.drawable.water_bottel,"Water Bottle"));
-        bookingModelList1.add(new BookingModel2(R.drawable.sanitizer_,"Sanitizer"));
+        bookingModelList1.add(new BookingModel2(R.drawable.sanitizer,"Sanitizer"));
         bookingModelList1.add(new BookingModel2(R.drawable.chocolate,"Chocolate"));
         bookingModelList1.add(new BookingModel2(R.drawable.shoes_cleaner,"Shoes Cleaner"));
         bookingModelList1.add(new BookingModel2(R.drawable.mask_group_26,"Eyes Mask"));
@@ -91,10 +91,7 @@ public class BookingDetailsActivity extends AppCompatActivity {
         BookingAdapter bookingAdapter1 = new BookingAdapter(getApplicationContext(),bookingModelList1);
         recyclerView2.setAdapter(bookingAdapter1);
 
-
-
-
-
+        imageBack =findViewById(R.id.imageBack);
 
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +101,7 @@ public class BookingDetailsActivity extends AppCompatActivity {
                 finish();
             }
         });
+        proceedButton =findViewById(R.id.proceedButton);
 
         proceedButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,9 +110,6 @@ public class BookingDetailsActivity extends AppCompatActivity {
                // navController.navigate(R.id.action_bookingDetailsFragment_to_bookingDetailsSecondFragment);
                 Intent intent = new Intent(BookingDetailsActivity.this, ConfirmBookingActivity.class);
                 startActivity(intent);
-
-
-
             }
         });
 

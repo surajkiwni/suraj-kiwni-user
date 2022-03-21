@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,13 +35,13 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
 
     @NonNull
     @Override
-    public TitleItemAdapter.TitleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TitleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.title_each_item,parent,false);
         return new TitleViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TitleItemAdapter.TitleViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TitleViewHolder holder, int position) {
 
         DataModels model = mList.get(position);
         holder.mTextView.setText(model.getItemText());
@@ -52,7 +54,7 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
         holder.nestedRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
         holder.nestedRecyclerView.setHasFixedSize(true);
         holder.nestedRecyclerView.setAdapter(adapter);
-        holder.constraintLayout1.setOnClickListener(new View.OnClickListener() {
+        holder.constraintLayoutTitleList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 model.setExpandable(!model.isExpandable());
@@ -69,7 +71,7 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
     }
 
     public class TitleViewHolder extends RecyclerView.ViewHolder {
-        private ConstraintLayout constraintLayout1,expandableLayout;
+        private ConstraintLayout constraintLayoutTitleList, expandableLayout;
         private TextView mTextView;
         private ImageView mArrowImage;
         private RecyclerView nestedRecyclerView;
@@ -77,7 +79,7 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
         public TitleViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            constraintLayout1 = itemView.findViewById(R.id.constraintLayout1);
+            constraintLayoutTitleList = itemView.findViewById(R.id.constraintLayoutTitleList);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
             mTextView = itemView.findViewById(R.id.carNameText);
             //mArrowImage = itemView.findViewById(R.id.arro_imageview);

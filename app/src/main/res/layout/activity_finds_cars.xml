@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".user.activity.FindCarActivity">
-
+    tools:context=".activity.FindCarActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
@@ -33,12 +32,13 @@
 
 
     <TextView
-        android:id="@+id/toolbarText"
+        android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="15sp"
+        android:text="title"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -56,7 +56,7 @@
         tools:context=".user.MainActivity" />
 
     <TextView
-        android:id="@+id/text1"
+        android:id="@+id/txtFromTo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="PUNE TO MUMBAI"
@@ -89,7 +89,7 @@
         android:layout_marginTop="7dp"
         app:layout_constraintLeft_toLeftOf="@+id/guideline1"
         app:layout_constraintRight_toRightOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/text1">
+        app:layout_constraintTop_toBottomOf="@+id/txtFromTo">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,7 +103,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/dateTextView"
+                android:id="@+id/txtStartEndDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -122,9 +122,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:src="@drawable/calender"
-                app:layout_constraintBottom_toBottomOf="@+id/dateTextView"
+                app:layout_constraintBottom_toBottomOf="@+id/txtStartEndDate"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/dateTextView" />
+                app:layout_constraintTop_toTopOf="@+id/txtStartEndDate" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -139,7 +139,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/timeTextView1"
+                android:id="@+id/txtStartTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -156,9 +156,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/clock"
-                app:layout_constraintBottom_toBottomOf="@+id/timeTextView1"
+                app:layout_constraintBottom_toBottomOf="@+id/txtStartTime"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/timeTextView1" />
+                app:layout_constraintTop_toTopOf="@+id/txtStartTime" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -174,7 +174,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/kmTextView"
+                android:id="@+id/txtEstimatedKm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -191,9 +191,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/est_time"
-                app:layout_constraintBottom_toBottomOf="@+id/kmTextView"
+                app:layout_constraintBottom_toBottomOf="@+id/txtEstimatedKm"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/kmTextView" />
+                app:layout_constraintTop_toTopOf="@+id/txtEstimatedKm" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

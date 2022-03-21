@@ -8,11 +8,32 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/launcher_icons"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/rounded_app_icons"
         android:supportsRtl="true"
         android:theme="@style/Theme.User">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <activity
+            android:name=".activity.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.User.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.OtpActivity"
+            android:exported="false"
+            android:theme="@style/Theme.User.NoActionBar" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.User.NoActionBar" />
         <activity
             android:name=".activity.ProfileActivity"
             android:exported="false"
@@ -38,28 +59,6 @@
             android:exported="false"
             android:theme="@style/Theme.User.NoActionBar"
             android:launchMode="singleTop" />
-        <activity
-            android:name="com.kiwni.app.user.SplashActivity"
-            android:exported="true"
-            android:theme="@style/Theme.User.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.kiwni.app.user.OtpActivity"
-            android:exported="false"
-            android:theme="@style/Theme.User.NoActionBar" />
-        <activity
-            android:name="com.kiwni.app.user.LoginActivity"
-            android:exported="false"
-            android:theme="@style/Theme.User.NoActionBar" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCC3Tk24iI-IU8SvXkzDUj2i2mBeFjw3-s" />
 
         <activity
             android:name="com.kiwni.app.user.MainActivity"

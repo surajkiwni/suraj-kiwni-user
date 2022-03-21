@@ -10,32 +10,32 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kiwni.app.user.R;
-import com.kiwni.app.user.datamodels.SupportModel;
+import com.kiwni.app.user.models.Support;
 
 import java.util.List;
 
 public class SupportAdapter extends RecyclerView.Adapter<SupportAdapter.SupportViewHolder> {
 
     private Context context;
-    private List<SupportModel> supportModels;
+    private List<Support> supportModels;
 
-    public SupportAdapter(Context context, List<SupportModel> supportModels) {
+    public SupportAdapter(Context context, List<Support> supportModels) {
         this.context = context;
         this.supportModels = supportModels;
     }
 
     @NonNull
     @Override
-    public SupportAdapter.SupportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SupportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(context).inflate(R.layout.support_recycler_item,parent,false);
-        return new SupportAdapter.SupportViewHolder(view);
+        return new SupportViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SupportAdapter.SupportViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SupportViewHolder holder, int position) {
 
-        SupportModel supportModel = supportModels.get(position);
+        Support supportModel = supportModels.get(position);
 
         holder.text1.setText(supportModel.getName());
 

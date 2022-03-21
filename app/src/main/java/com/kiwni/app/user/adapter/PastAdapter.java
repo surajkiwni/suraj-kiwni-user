@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kiwni.app.user.R;
 
 public class PastAdapter extends RecyclerView.Adapter<PastAdapter.PastViewHolder> {
-
     String data2[];
     Context context;
 
@@ -23,17 +22,17 @@ public class PastAdapter extends RecyclerView.Adapter<PastAdapter.PastViewHolder
 
     @NonNull
     @Override
-    public PastAdapter.PastViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PastViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.past_recycler,parent,false);
-        PastAdapter.PastViewHolder pastViewHolder = new PastAdapter.PastViewHolder(view);
+        PastViewHolder pastViewHolder = new PastViewHolder(view);
 
         return pastViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PastAdapter.PastViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PastViewHolder holder, int position) {
 
         holder.pickupAdd.setText(data2[position]);
     }

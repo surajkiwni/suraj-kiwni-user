@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.OffersAdapter;
 import com.kiwni.app.user.databinding.OffersFragmentBinding;
-import com.kiwni.app.user.datamodels.OffersModel;
 import com.kiwni.app.user.interfaces.BackKeyPressedListener;
+import com.kiwni.app.user.models.Offers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class OffersFragment extends Fragment implements BackKeyPressedListener {
     View view;
 
     RecyclerView offersRecyclerView;
-    List<OffersModel> offersModelList;
+    List<Offers> offersModelList;
     public static BackKeyPressedListener backKeyPressedListener;
 
     ImageView imageBack;
@@ -70,9 +70,9 @@ public class OffersFragment extends Fragment implements BackKeyPressedListener {
         offersModelList = new ArrayList<>();
         //bookingModelList = new ArrayList<>();
 
-        offersModelList.add(new OffersModel(R.drawable.offer1));
-        offersModelList.add(new OffersModel(R.drawable.offer2));
-        offersModelList.add(new OffersModel(R.drawable.offer3));
+        offersModelList.add(new Offers(R.drawable.offer1));
+        offersModelList.add(new Offers(R.drawable.offer2));
+        offersModelList.add(new Offers(R.drawable.offer3));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

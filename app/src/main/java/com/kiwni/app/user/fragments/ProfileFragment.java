@@ -1,31 +1,26 @@
 package com.kiwni.app.user.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 
 
 public class ProfileFragment extends Fragment {
-
-
     TextView txtLogout;
     ImageView imageBack;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,18 +43,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-             //  Navigation.findNavController(requireView()).navigate(R.id.action_profileFragment_to_mainActivity);
-                // Create new fragment and transaction
-
-
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                Fragment profileFragment = new ProfileFragment();
-                fragmentTransaction.add(R.id.profileFragment, profileFragment);
-                fragmentTransaction.commit();
-
-
+                Navigation.findNavController(requireView()).navigate(R.id.action_profileFragment_to_mainActivity);
 
             }
         });

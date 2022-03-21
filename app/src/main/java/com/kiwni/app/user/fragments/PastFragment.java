@@ -1,26 +1,22 @@
 package com.kiwni.app.user.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.PastAdapter;
 
-
-public class PastFragment extends Fragment {
-
-
+public class PastFragment extends Fragment
+{
     RecyclerView pastRecyclerView;
     View view;
     PastAdapter pastAdapter;
-
 
     String pickupAdd[] ={"Luxury"};
 
@@ -35,8 +31,6 @@ public class PastFragment extends Fragment {
     public PastFragment() {
         // Required empty public constructor
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -52,6 +52,8 @@
     <string name="schedule_date">SCHEDULE DATE &amp; TIME </string>
     <string name="package_rules">Rental Package rules &amp; Restriction</string>
 
+    <string name="phoneno_error">Please enter valid phone no</string>
+
 
     <string-array name="select_year">
         <item>Select Year</item>

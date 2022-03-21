@@ -1,13 +1,5 @@
 package com.kiwni.app.user.activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,49 +8,56 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.kiwni.app.user.MainActivity;
-import com.kiwni.app.user.R;
-import com.kiwni.app.user.adapter.FindsCarRecyclerAdapter;
-import com.kiwni.app.user.adapter.HourPackageAdapter;
-import com.kiwni.app.user.datamodels.FindCarModel;
-import com.kiwni.app.user.datamodels.HourPackageModel;
-import com.kiwni.app.user.interfaces.FindCarItemClickListener;
-import com.kiwni.app.user.pref.PreferencesUtils;
-import com.kiwni.app.user.pref.SharedPref;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.kiwni.app.user.MainActivity;
+import com.kiwni.app.user.R;
+import com.kiwni.app.user.adapter.FindsCarRecyclerAdapter;
+import com.kiwni.app.user.adapter.HourPackageAdapter;
+import com.kiwni.app.user.interfaces.FindCarItemClickListener;
+import com.kiwni.app.user.models.FindCar;
+import com.kiwni.app.user.models.HourPackage;
+import com.kiwni.app.user.sharedpref.SharedPref;
+import com.kiwni.app.user.utils.PreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FindCarActivity extends AppCompatActivity implements OnMapReadyCallback{
-
-
+public class FindCarActivity extends AppCompatActivity implements OnMapReadyCallback
+{
     GoogleMap mMap1;
     RecyclerView recyclerView,findsCarsRecyclerView;
-    List<HourPackageModel> hourPackageModelList;
+    List<HourPackage> hourPackageModelList;
     FindsCarRecyclerAdapter findsCarRecyclerAdapter;
     FindCarItemClickListener findCarItemClickListener;
 
     String names[]={"sedan"};
     ImageView imageBack;
-    TextView toolbarText,viewDetailsText;
+    TextView txtTitle,viewDetailsText, txtFromTo, txtStartEndDate, txtStartTime, txtEstimatedKm;
     BottomSheetDialog bottomSheetDialog;
-    List<FindCarModel> findCarModelList;
-
-   // boolean isLast = false;
+    List<FindCar> findCarModelList;
 
     ConstraintLayout constraintLayoutPack;
-    String direction = "",serviceType = "";
+    String direction = "",serviceType = "", fromLocation = "", endLocation = "",
+            startDate = "", endDate = "", startTime = "", distanceInKm = "";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finds_cars);
-
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getSupportFragmentManager()
                 .findFragmentById(R.id.map1);
@@ -66,23 +65,81 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         );
 
-        direction = PreferencesUtils.getPreferences(getApplicationContext(),SharedPref.DIRECTION,"");
+        txtTitle= findViewById(R.id.txtTitle);
+        txtFromTo = findViewById(R.id.txtFromTo);
+        txtStartEndDate = findViewById(R.id.txtStartEndDate);
+        txtStartTime = findViewById(R.id.txtStartTime);
+        txtEstimatedKm = findViewById(R.id.txtEstimatedKm);
+
+        direction = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DIRECTION,"");
         serviceType = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SERVICE_TYPE,"");
 
-        Log.d("find car Activity",serviceType);
+        fromLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_CITY, "");
+        endLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_CITY, "");
+
+        startDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_DATE_TO_DISPLAY, "");
+        endDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_DATE_TO_DISPLAY, "");
+        startTime = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_TIME_TO_DISPLAY, "");
+        distanceInKm = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DISTANCE_IN_KM, "");
+
+        Log.d("TAG","fromLocation = " + fromLocation
+                + " endLocation = " + endLocation);
+
+        txtFromTo.setText(fromLocation + " To " + endLocation);
+        txtStartTime.setText(startTime);
+        txtStartEndDate.setText(startDate);
+        txtEstimatedKm.setText("Est km " + distanceInKm);
+
+        Log.d("TAG","endDate = " + endDate
+                + " direction = " + direction);
+
+        switch (serviceType)
+        {
+            case "Outstation":
+                if (direction.equals("two-way"))
+                {
+                    txtTitle.setText(serviceType + "(Round Trip)");
+                    txtStartEndDate.setText(startDate + " - " + endDate);
+                }
+                else
+                {
+                    txtTitle.setText(serviceType + "(One Way)");
+                }
+                break;
+            case "Airport":
+                if (direction.equals("airport-pickup"))
+                {
+                    txtTitle.setText(serviceType + " Pickup");
+                }
+                else
+                {
+                    txtTitle.setText(serviceType + " Drop");
+                }
+                break;
+            case "Rental":
+                if (direction.equals("current-booking"))
+                {
+                    txtTitle.setText(serviceType + " ( Current Booking ) ");
+                    constraintLayoutPack.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    txtTitle.setText(serviceType + " ( Schedule Trip ) ");
+                    constraintLayoutPack.setVisibility(View.VISIBLE);
+                }
+                break;
+            default:
+                Toast.makeText(getApplicationContext(), "No Options", Toast.LENGTH_SHORT).show();
+                break;
+        }
 
         findCarItemClickListener = new FindCarItemClickListener() {
             @Override
-            public void onFindCarItemClick(View v, int position, List<FindCarModel> findCarModels) {
-
-               /* direction = toolbarText.getText().toString();
-                PreferencesUtils.putPreferences(getApplicationContext(),SharedPref.DIRECTION,direction);*/
-
+            public void onFindCarItemClick(View v, int position, List<FindCar> findCarModels) {
                 Intent intent = new Intent(FindCarActivity.this,CarListTypeActivity.class);
                 startActivity(intent);
             }
         };
-
 
         constraintLayoutPack = findViewById(R.id.constraintLayout1);
         recyclerView = findViewById(R.id.recyclerView);
@@ -90,29 +147,28 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         findCarModelList = new ArrayList<>();
 
-        findCarModelList.add(new FindCarModel(R.drawable.sedan,"Sedan"));
-        findCarModelList.add(new FindCarModel(R.drawable.suv,"SUV"));
-        findCarModelList.add(new FindCarModel(R.drawable.tempo_traveller,"Tempo Traveller"));
+        findCarModelList.add(new FindCar(R.drawable.sedan,"Sedan"));
+        findCarModelList.add(new FindCar(R.drawable.suv,"SUV"));
+        findCarModelList.add(new FindCar(R.drawable.tempo_traveller,"Tempo Traveller"));
 
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager1.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager1);
 
-       FindsCarRecyclerAdapter findsCarRecyclerAdapter = new FindsCarRecyclerAdapter(getApplicationContext(),findCarModelList,
+        FindsCarRecyclerAdapter findsCarRecyclerAdapter = new FindsCarRecyclerAdapter(getApplicationContext(),findCarModelList,
                findCarItemClickListener);
-       recyclerView.setAdapter(findsCarRecyclerAdapter);
-
+        recyclerView.setAdapter(findsCarRecyclerAdapter);
 
 
         findsCarsRecyclerView = findViewById(R.id.findsCarsRecyclerView);
         hourPackageModelList = new ArrayList<>();
 
-        hourPackageModelList.add(new HourPackageModel("2km","25 km"));
-        hourPackageModelList.add(new HourPackageModel("4km","40 km"));
-        hourPackageModelList.add(new HourPackageModel("6km","60 km"));
-        hourPackageModelList.add(new HourPackageModel("8km","80 km"));
-        hourPackageModelList.add(new HourPackageModel("10km","100 km"));
-        hourPackageModelList.add(new HourPackageModel("12km","120 km"));
+        hourPackageModelList.add(new HourPackage("2km","25 km"));
+        hourPackageModelList.add(new HourPackage("4km","40 km"));
+        hourPackageModelList.add(new HourPackage("6km","60 km"));
+        hourPackageModelList.add(new HourPackage("8km","80 km"));
+        hourPackageModelList.add(new HourPackage("10km","100 km"));
+        hourPackageModelList.add(new HourPackage("12km","120 km"));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -121,72 +177,16 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         HourPackageAdapter hourPackageAdapter = new HourPackageAdapter(this,hourPackageModelList);
         findsCarsRecyclerView.setAdapter(hourPackageAdapter);
 
-
-
-
-
         imageBack = findViewById(R.id.imageBack);
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
                 Intent intent = new Intent(FindCarActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
             }
         });
-
-        toolbarText= findViewById(R.id.toolbarText);
-
-
-        if(serviceType.equals("Outstation"))
-        {
-            if(direction.equals("two-way"))
-            {
-                toolbarText.setText(serviceType + "(Round Trip)");
-            }
-            else
-            {
-                toolbarText.setText(serviceType + "(One Way)");
-            }
-
-        }
-        else if(serviceType.equals("Airport"))
-        {
-            if(direction.equals("airport-pickup"))
-            {
-                toolbarText.setText(serviceType + " Pickup");
-            }
-            else
-            {
-                toolbarText.setText(serviceType + " Drop");
-            }
-        }
-        /*else
-        {
-            Toast.makeText(getApplicationContext(), "No Options", Toast.LENGTH_SHORT).show();
-        }*/
-        else if(serviceType.equals("Rental"))
-        {
-            if(direction.equals("current-booking"))
-            {
-                toolbarText.setText(serviceType + "(Current Booking)");
-                constraintLayoutPack.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                toolbarText.setText(serviceType + "(Schedule Trip)");
-                constraintLayoutPack.setVisibility(View.VISIBLE);
-            }
-
-        }
-
-
-
-
 
         viewDetailsText.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -195,7 +195,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
                 bottomSheetDialog = new BottomSheetDialog(FindCarActivity.this);
                 View view1 = getLayoutInflater().inflate(R.layout.view_details_bottom_sheet,null,false);
-
 
                // TextView textPara1,textPara2, textPara3, textPara4, textPara5;
 
@@ -277,6 +276,8 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     public void onBackPressed() {
         super.onBackPressed();
 
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(i);
         finish();
     }
 }
