@@ -85,7 +85,7 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener 
 
 
 
-        imageBack = view.findViewById(R.id.imageBack);
+       // imageBack = view.findViewById(R.id.imageBack);
 
 
         // initialize view Pager
@@ -136,7 +136,7 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener 
 
         ///
 
-        imageBack.setOnClickListener(new View.OnClickListener() {
+       /* imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -144,7 +144,7 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener 
                 Navigation.findNavController(requireView()).navigate(R.id.action_nav_myrides_to_mainActivity);
 
             }
-        });
+        });*/
 
     }
 

@@ -201,38 +201,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         int id = item.getItemId();
 
-        /*switch (id)
-        {
-
-            case R.id.nav_shareapp:
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-                sendIntent.setType("text/plain");
-
-                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                startActivity(shareIntent);
-                break;
-
-            *//*case R.id.nav_feedback:
-
-                Dialog dialog = new Dialog(MainActivity.this, android.R.style.Theme_Light);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.feedback_bottom_sheet);
-
-                final ImageView imageClose = dialog.findViewById(R.id.imageClose);
-
-                imageClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });*//*
-
-               // dialog.show();
-
-                break;*/
-
 
             switch (id)
             {
