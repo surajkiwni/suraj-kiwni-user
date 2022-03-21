@@ -24,7 +24,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
 
     @NonNull
     @Override
-    public UpcomingAdapter.UpcomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public UpcomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.upcoming_recycle,parent,false);
@@ -33,7 +33,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UpcomingAdapter.UpcomeViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull UpcomeViewHolder holder, int position) {
 
         holder.carModel.setText(data2[position]);
     }

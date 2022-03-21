@@ -1,19 +1,10 @@
 package com.kiwni.app.user.activity;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.Build;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -25,19 +16,25 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.FilterAdapter;
-import com.kiwni.app.user.adapter.HourPackageAdapter;
 import com.kiwni.app.user.adapter.TitleItemAdapter;
 import com.kiwni.app.user.datamodels.BookingModel;
 import com.kiwni.app.user.datamodels.DataModels;
-import com.kiwni.app.user.datamodels.FilterModel;
-import com.kiwni.app.user.datamodels.HourPackageModel;
 import com.kiwni.app.user.interfaces.BookingListItemClickListener;
 import com.kiwni.app.user.interfaces.FilterItemClickListener;
-import com.kiwni.app.user.pref.PreferencesUtils;
-import com.kiwni.app.user.pref.SharedPref;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.kiwni.app.user.models.Filter;
+import com.kiwni.app.user.sharedpref.SharedPref;
+import com.kiwni.app.user.utils.PreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,41 +42,40 @@ import java.util.Random;
 
 public class CarListTypeActivity extends AppCompatActivity implements BookingListItemClickListener {
 
-    private RecyclerView recyclerView,findsCarsListsRecyclerView;
+    private RecyclerView recyclerView;
     private List<DataModels> mList;
     private TitleItemAdapter adapter;
-    ConstraintLayout constraintLayoutPack ;
-    List<HourPackageModel> hourPackageModelList;
-    BottomSheetDialog bottomSheetDialog;
-    String direction = "",serviceType = "";
-
+    String direction = "", serviceType = "", fromLocation = "", endLocation = "",
+            startDate = "", endDate = "", startTime = "", distanceInKm = "";
 
     private BookingListItemClickListener bookingListItemClickListener;
     View view;
     ImageView imageBack;
-    TextView filterText, sortText, mapText,viewDetailsText,toolbarText2;
+    TextView txtTitle, txtFromTo, txtStartEndDate, txtEstimatedKm, txtStartTime;
 
-    ConstraintLayout constraintLayout;
+    ConstraintLayout sortLayout, mapLayout, filterLayout, constraintLayoutForRentalPackage;
     String strBrand = "",strSegment = "",strYear = "",strSpecialReq = "";
 
     boolean isSelected = false;
-
+    private static int NEXT_ACTIVITY_REQUEST = 1005;
+    ActivityResultLauncher<Intent> resultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_list_type);
 
-        viewDetailsText = findViewById(R.id.viewDetailsText);
-        constraintLayoutPack = findViewById(R.id.constraintLayout1);
+        constraintLayoutForRentalPackage = findViewById(R.id.constraintLayoutForRentalPackage);
+        txtTitle = findViewById(R.id.txtTitle);
+        txtFromTo = findViewById(R.id.txtFromTo);
         recyclerView = findViewById(R.id.main_recyclerview);
-        findsCarsListsRecyclerView = findViewById(R.id.findsCarsListsRecyclerView);
-        filterText = findViewById(R.id.filterText);
-        sortText = findViewById(R.id.sortText);
         imageBack = findViewById(R.id.imageBack);
-        mapText = findViewById(R.id.mapText);
-        toolbarText2 = findViewById(R.id.toolbarText2);
-
+        mapLayout = findViewById(R.id.mapLayout);
+        sortLayout = findViewById(R.id.sortLayout);
+        filterLayout = findViewById(R.id.filterLayout);
+        txtStartEndDate = findViewById(R.id.txtStartEndDate);
+        txtStartTime = findViewById(R.id.txtStartTime);
+        txtEstimatedKm = findViewById(R.id.txtEstimatedKm);
 
         bookingListItemClickListener = new BookingListItemClickListener() {
             @Override
@@ -88,6 +84,63 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
             }
         };
 
+        direction = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DIRECTION,"");
+        serviceType = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SERVICE_TYPE,"");
+        Log.d("TAG","data from previous screen - " + direction + " , " + serviceType);
+
+        fromLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_CITY, "");
+        endLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_CITY, "");
+
+        startDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_DATE_TO_DISPLAY, "");
+        endDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_DATE_TO_DISPLAY, "");
+        startTime = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_TIME_TO_DISPLAY, "");
+        distanceInKm = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DISTANCE_IN_KM, "");
+
+        txtTitle.setText(serviceType + " ( " + direction + " ) ");
+        txtFromTo.setText(fromLocation + " To " + endLocation);
+        txtStartTime.setText(startTime);
+        txtStartEndDate.setText(startDate);
+        txtEstimatedKm.setText("Est km " + distanceInKm);
+
+        switch (serviceType)
+        {
+            case "Outstation":
+                if (direction.equals("two-way"))
+                {
+                    txtTitle.setText(serviceType + "(Round Trip)");
+                    txtStartEndDate.setText(startDate + " - " + endDate);
+                }
+                else
+                {
+                    txtTitle.setText(serviceType + "(One Way)");
+                }
+                break;
+            case "Airport":
+                if (direction.equals("airport-pickup"))
+                {
+                    txtTitle.setText(serviceType + " Pickup");
+                }
+                else
+                {
+                    txtTitle.setText(serviceType + " Drop");
+                }
+                break;
+            case "Rental":
+                if (direction.equals("current-booking"))
+                {
+                    txtTitle.setText(serviceType + " ( Current Booking ) ");
+                    constraintLayoutForRentalPackage.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    txtTitle.setText(serviceType + " ( Schedule Trip ) ");
+                    constraintLayoutForRentalPackage.setVisibility(View.VISIBLE);
+                }
+                break;
+            default:
+                Toast.makeText(getApplicationContext(), "No Options", Toast.LENGTH_SHORT).show();
+                break;
+        }
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(CarListTypeActivity.this));
@@ -95,14 +148,11 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         mList = new ArrayList<>();
 
         //list1
-
         List<BookingModel> nestedList1 = new ArrayList<>();
-
         nestedList1.add(new BookingModel("2014"));
         nestedList1.add(new BookingModel("2015"));
         nestedList1.add(new BookingModel("2017"));
         nestedList1.add(new BookingModel("2018"));
-
 
         List<BookingModel> nestedList2 = new ArrayList<>();
         nestedList2.add(new BookingModel("2014"));
@@ -112,7 +162,6 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         nestedList2.add(new BookingModel("2019"));
         nestedList2.add(new BookingModel("2020"));
 
-
         List<BookingModel> nestedList3 = new ArrayList<>();
         nestedList3.add(new BookingModel("2014"));
         nestedList3.add(new BookingModel("2015"));
@@ -120,12 +169,10 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         nestedList3.add(new BookingModel("2019"));
         nestedList3.add(new BookingModel("2020"));
 
-
         List<BookingModel> nestedList4 = new ArrayList<>();
         nestedList4.add(new BookingModel("2015"));
         nestedList4.add(new BookingModel("2016"));
         nestedList4.add(new BookingModel("2018"));
-
 
         mList.add(new DataModels(nestedList1, "Sedan", bookingListItemClickListener));
         mList.add(new DataModels(nestedList2, "Mahindra Verito", bookingListItemClickListener));
@@ -135,104 +182,26 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         adapter = new TitleItemAdapter(mList, this);
         recyclerView.setAdapter(adapter);
 
-        hourPackageModelList = new ArrayList<>();
-
-        hourPackageModelList.add(new HourPackageModel("2km","25 km"));
-        hourPackageModelList.add(new HourPackageModel("4km","40 km"));
-        hourPackageModelList.add(new HourPackageModel("6km","60 km"));
-        hourPackageModelList.add(new HourPackageModel("8km","80 km"));
-        hourPackageModelList.add(new HourPackageModel("10km","100 km"));
-        hourPackageModelList.add(new HourPackageModel("12km","120 km"));
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        findsCarsListsRecyclerView.setLayoutManager(linearLayoutManager);
-
-        HourPackageAdapter hourPackageAdapter = new HourPackageAdapter(this,hourPackageModelList);
-        findsCarsListsRecyclerView.setAdapter(hourPackageAdapter);
-
-
-        direction = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DIRECTION,"");
-        serviceType = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SERVICE_TYPE,"");
-
-
-        if(serviceType.equals("Outstation"))
-        {
-            if(direction.equals("two-way"))
-            {
-                toolbarText2.setText(serviceType + " (Round Trip)");
-            }
-            else
-            {
-                toolbarText2.setText(serviceType + " (One Way)");
-            }
-
-        }
-        else if(serviceType.equals("Airport"))
-        {
-            if(direction.equals("airport-pickup"))
-            {
-                toolbarText2.setText(serviceType + " Pickup");
-            }
-            else
-            {
-                toolbarText2.setText(serviceType + " Drop");
-            }
-        }
-        /*else
-        {
-            Toast.makeText(getApplicationContext(), "No Options", Toast.LENGTH_SHORT).show();
-        }*/
-        else if(serviceType.equals("Rental"))
-        {
-            if(direction.equals("current-booking"))
-            {
-                toolbarText2.setText(serviceType + "(Current Booking)");
-                constraintLayoutPack.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                toolbarText2.setText(serviceType + "(Schedule Trip)");
-                constraintLayoutPack.setVisibility(View.VISIBLE);
-            }
-
-        }
-
-
-
-
-
-
-
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-                Intent intent = new Intent(CarListTypeActivity.this, FindCarActivity.class);
-                /*intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);*/
-                startActivity(intent);
-                /*intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                finish();*/
+                startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
+                finish();
 
             }
         });
 
-
-
-
-        mapText.setOnClickListener(new View.OnClickListener() {
+        mapLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(CarListTypeActivity.this, MapActivity.class);
                 startActivity(intent);
                 // finish();
             }
         });
 
-
-        sortText.setOnClickListener(new View.OnClickListener() {
+        sortLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -294,32 +263,25 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
             }
         });
 
-
-
-
-        filterText.setOnClickListener(new View.OnClickListener() {
+        filterLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 Dialog dialog = new Dialog(CarListTypeActivity.this, android.R.style.Theme_Light);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.filter_screen);
 
                 RecyclerView filterRecyclerView;
-                List<FilterModel> filterModelList;
+                List<Filter> filterModelList;
                 FilterItemClickListener filterItemClickListener;
                 TextView spinnerText,premiumText,luxuryText,ultraLuxuryText;
                 Spinner spinner1;
                 CheckBox checkBox1,checkBox2,checkBox3,checkBox4,checkBox5,checkBox6;
 
-
                 dialog.show();
                 int[] back_background;
 
-                back_background = new int[]{R.drawable.spinner_background,R.drawable.white_background};
-
-
+                back_background = new int[]{R.drawable.spinner_background, R.drawable.white_background};
 
                 premiumText = dialog.findViewById(R.id.premiumText);
                 luxuryText = dialog.findViewById(R.id.luxuryText);
@@ -377,6 +339,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
                         }
                     }
                 });
+
                 checkBox4.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -391,6 +354,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
                         }
                     }
                 });
+
                 checkBox5.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -405,6 +369,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
                         }
                     }
                 });
+
                 checkBox6.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -424,9 +389,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
                     @Override
                     public void onClick(View view) {
 
-                        premiumText.requestFocus();
-
-                      /* strSegment = " ";
+                       strSegment = " ";
                         if (strSegment.equals(" "))
                         {
 
@@ -449,7 +412,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
                            // premiumText.setBackgroundResource(R.drawable.spinner_background);
                             premiumText.setBackgroundColor(Color.WHITE);
 
-                        }*/
+                        }
 
                         // fetching length of array
                         int array_length =back_background.length;
@@ -464,10 +427,8 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
                         // using setBackground() method.
                         premiumText.setBackground(ContextCompat.getDrawable(getApplicationContext(), back_background[random_number]));
 
-
                         Toast.makeText(getApplicationContext(), "Clicked On " + strSegment, Toast.LENGTH_SHORT).show();
                     }
-
 
                 });
 
@@ -519,17 +480,13 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
                     }
                 });
 
-
-
-
-
                 filterRecyclerView = dialog.findViewById(R.id.filterRecyclerView);
 
                 filterItemClickListener = new FilterItemClickListener() {
                     @Override
-                    public void onFilterItemClick(View v, int position, List<FilterModel> filterModels) {
-                        Toast.makeText(getApplicationContext(), "Item Clicked", Toast.LENGTH_SHORT).show();
+                    public void onFilterItemClick(View v, int position, List<Filter> filterModels) {
                         strBrand = filterModels.get(position).getName();
+                        Toast.makeText(getApplicationContext(), "Item Clicked - " + strBrand, Toast.LENGTH_SHORT).show();
                     }
                 };
 
@@ -547,7 +504,10 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                         strYear = spinner.getSelectedItem().toString();
-                        Toast.makeText(getApplicationContext(), "Clicked On"+strYear, Toast.LENGTH_SHORT).show();
+                        if(!strYear.equals("Select Year"))
+                        {
+                            Toast.makeText(getApplicationContext(), "Clicked On " + strYear, Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -556,16 +516,14 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
                     }
                 });
 
-
                 filterModelList = new ArrayList<>();
 
-                filterModelList.add(new FilterModel(R.drawable.volkswagenlogo, "Volkswagen"));
-                filterModelList.add(new FilterModel(R.drawable.hondalogo, "Honda"));
-                filterModelList.add(new FilterModel(R.drawable.marutisuzukilogo, "Maruti Suzuki"));
-                filterModelList.add(new FilterModel(R.drawable.mercedesbenzlogo, "Mercedes Benz"));
-                filterModelList.add(new FilterModel(R.drawable.toyotalogo, "Toyota"));
-                filterModelList.add(new FilterModel(R.drawable.audilogo, "Audi"));
-
+                filterModelList.add(new Filter(R.drawable.volkswagenlogo, "Volkswagen"));
+                filterModelList.add(new Filter(R.drawable.hondalogo, "Honda"));
+                filterModelList.add(new Filter(R.drawable.marutisuzukilogo, "Maruti Suzuki"));
+                filterModelList.add(new Filter(R.drawable.mercedesbenzlogo, "Mercedes Benz"));
+                filterModelList.add(new Filter(R.drawable.toyotalogo, "Toyota"));
+                filterModelList.add(new Filter(R.drawable.audilogo, "Audi"));
 
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(dialog.getContext());
                 linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
@@ -578,7 +536,6 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
                 filterRecyclerView.setAdapter(filterAdapter);
 
                 ImageView imageBack = dialog.findViewById(R.id.imageBack);
-
                 imageBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -587,60 +544,17 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
                 });
             }
         });
-
-        viewDetailsText.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View view) {
-                bottomSheetDialog = new BottomSheetDialog(CarListTypeActivity.this);
-                View view1 = getLayoutInflater().inflate(R.layout.view_details_bottom_sheet,null,false);
-                TextView textPara1 = view1.findViewById(R.id.textPara1);
-                TextView textPara2 = view1.findViewById(R.id.textPara2);
-                TextView textPara3 = view1.findViewById(R.id.textPara3);
-                TextView textPara4 = view1.findViewById(R.id.textPara4);
-                TextView textPara5 = view1.findViewById(R.id.textPara5);
-
-                textPara1.setText(Html.fromHtml("<p>Rental can be used for local travels only.</p>"+
-                        "Package cannot be changed after booking is \n"
-                        +"confirmed </p>", Html.FROM_HTML_MODE_COMPACT));
-
-                textPara2.setText(Html.fromHtml("<p>For usage beyond selected package, additional</p>"+
-                        " fare will be applicable as per rates above.</p>", Html.FROM_HTML_MODE_COMPACT));
-
-                textPara3.setText(Html.fromHtml("<p>Additional GST applicable on fare. Toll will be added</p>"+
-                        "<p>in the final bill if applicable, please pay parking fee</p>"+
-                        "when required.</p>", Html.FROM_HTML_MODE_COMPACT));
-
-                textPara4.setText(Html.fromHtml("<p>For Ride Later booking , Advance Booking fee</p>"+
-                        "of Rs 100 will be added to Total Fare.</p>", Html.FROM_HTML_MODE_COMPACT));
-
-                textPara5.setText(Html.fromHtml("<p>Base fare amount is the minimum bill amount a</p>"+
-                        " Customer has to pay for the package.</p>", Html.FROM_HTML_MODE_COMPACT));
-
-
-                AppCompatButton doneButton = view1.findViewById(R.id.doneButton);
-
-
-
-                doneButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        bottomSheetDialog.dismiss();
-                    }
-                });
-
-                bottomSheetDialog.setContentView(view1);
-                bottomSheetDialog.show();
-                bottomSheetDialog.setCancelable(false);
-            }
-
-        });
-
-
     }
 
+    @Override
+    public void onItemClick(View v, int position, List<BookingModel> bookingModels) {
 
+        // Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
 
+        Intent intent = new Intent(CarListTypeActivity.this, BookingDetailsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 
     @Override
     public void onPause() {
@@ -656,21 +570,8 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
+        startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
         finish();
     }
-
-    @Override
-    public void onItemClick(View v, int position, List<BookingModel> bookingModels) {
-
-        // Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
-
-        Intent intent = new Intent(CarListTypeActivity.this, BookingDetailsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-    }
-
-
 }
 

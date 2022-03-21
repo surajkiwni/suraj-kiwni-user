@@ -12,18 +12,18 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kiwni.app.user.R;
-import com.kiwni.app.user.datamodels.FilterModel;
 import com.kiwni.app.user.interfaces.FilterItemClickListener;
+import com.kiwni.app.user.models.Filter;
 
 import java.util.List;
 
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterViewHolder> {
 
     Context context;
-    List<FilterModel> filterModelList;
+    List<Filter> filterModelList;
     FilterItemClickListener filterItemClickListener;
 
-    public FilterAdapter(Context context, List<FilterModel> filterModelList, FilterItemClickListener filterItemClickListener) {
+    public FilterAdapter(Context context, List<Filter> filterModelList, FilterItemClickListener filterItemClickListener) {
         this.context = context;
         this.filterModelList = filterModelList;
         this.filterItemClickListener = filterItemClickListener;
@@ -31,15 +31,15 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
 
     @NonNull
     @Override
-    public FilterAdapter.FilterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FilterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
        View view = LayoutInflater.from(context).inflate(R.layout.recycler_filter_item,parent,false);
-        return new FilterAdapter.FilterViewHolder(view);
+        return new FilterViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FilterAdapter.FilterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FilterViewHolder holder, int position) {
 
-        FilterModel filterModel = filterModelList.get(position);
+        Filter filterModel = filterModelList.get(position);
 
         holder.filterImage.setImageResource(filterModel.getImage());
         holder.name.setText(filterModel.getName());

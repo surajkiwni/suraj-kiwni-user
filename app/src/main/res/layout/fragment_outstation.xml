@@ -9,7 +9,7 @@
     android:layout_marginRight="7dp"
     app:defaultNavHost="true"
     app:navGraph="@navigation/mobile_navigation"
-    tools:context=".user.fragments.OutstationFragment">
+    tools:context=".fragments.OutstationFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"

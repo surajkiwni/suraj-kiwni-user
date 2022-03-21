@@ -12,9 +12,6 @@ public class BookingModel {
         this.name = name;
     }
 
-
-
-
     public int getImage() {
         return image;
     }

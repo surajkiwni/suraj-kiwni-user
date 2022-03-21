@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".user.activity.BookingDetailsActivity">
+    tools:context=".activity.BookingDetailsActivity">
 
 
     <androidx.appcompat.widget.Toolbar
@@ -67,8 +67,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
-                app:layout_constraintTop_toTopOf="@+id/mainConstraintLayout"
-                >
+                app:layout_constraintTop_toTopOf="@+id/mainConstraintLayout">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -88,22 +87,20 @@
                         android:layout_marginLeft="10dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/addressTextView"
-                        app:layout_constraintBottom_toBottomOf="@+id/addressTextView"
-                        />
+                        app:layout_constraintBottom_toBottomOf="@+id/addressTextView" />
 
                     <TextView
                         android:id="@+id/addressTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Lane No. 3, Link Road, Navi Mumbai, Maharasht.."
+                        android:text="Lane No. 3, Link Road, Navi Mumbai, Maharashtra.."
                         android:textColor="@color/black"
                         android:gravity="center"
-                        android:textSize="@dimen/sp_14"
+                        android:textSize="@dimen/sp_12"
                         android:paddingStart="5dp"
                         android:layout_gravity="center"
                         app:layout_constraintStart_toEndOf="@+id/redSpotImage"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -123,8 +120,7 @@
                         android:layout_gravity="center"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/dropTextView"
-                        app:layout_constraintBottom_toBottomOf="@+id/dropTextView"
-                        />
+                        app:layout_constraintBottom_toBottomOf="@+id/dropTextView" />
 
                     <TextView
                         android:id="@+id/dropTextView"
@@ -133,13 +129,12 @@
                         android:text="Spin plaza, Choudhari wasti, Pune, Maharashtra.."
                         android:textColor="@color/black"
                         android:gravity="center"
-                        android:textSize="@dimen/sp_14"
+                        android:textSize="@dimen/sp_12"
                         android:paddingStart="5dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="5dp"
                         app:layout_constraintStart_toEndOf="@+id/greenSpotImage"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

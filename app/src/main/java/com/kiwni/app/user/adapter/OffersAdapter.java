@@ -11,35 +11,34 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.kiwni.app.user.R;
-import com.kiwni.app.user.datamodels.OffersModel;
+import com.kiwni.app.user.models.Offers;
 
 import java.util.List;
 
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersViewHolder> {
 
     private Context context;
-    private List<OffersModel> offersModels;
+    private List<Offers> offersModels;
 
-    public OffersAdapter(Context context, List<OffersModel> offersModels) {
+    public OffersAdapter(Context context, List<Offers> offersModels) {
         this.context = context;
         this.offersModels = offersModels;
     }
 
     @NonNull
     @Override
-    public OffersAdapter.OffersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public OffersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(context).inflate(R.layout.offers_recycler_item,parent,false);
-        return new OffersAdapter.OffersViewHolder(view);
+        return new OffersViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OffersAdapter.OffersViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OffersViewHolder holder, int position) {
 
 
-        OffersModel offersModel =offersModels.get(position);
+        Offers offersModel =offersModels.get(position);
 
         holder.offersImage.setImageResource(offersModel.getImage());
         Log.d("TAG",offersModel.toString());

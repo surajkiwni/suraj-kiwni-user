@@ -1,16 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".user.fragments.AirportDropFragment">
+    android:orientation="vertical">
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,96 +20,75 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/linearMap"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.95">
-
-
-
+            app:layout_constraintVertical_bias="0.0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/subConstraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.13999999">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.03" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.97" />
-
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/autoCompleteConstraintLayout"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline9"
-                    app:layout_constraintStart_toStartOf="@+id/guideline8"
                     app:layout_constraintTop_toTopOf="parent">
-                    -
 
                     <LinearLayout
                         android:id="@+id/linear_auto_pickup"
                         android:layout_width="match_parent"
-                        android:layout_height="35dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/dp_15"
+                        android:layout_marginBottom="10dp"
+                        android:padding="@dimen/dp_2"
+                        android:gravity="center"
                         android:background="@drawable/button_rounded"
                         android:orientation="horizontal"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
-
 
                         <AutoCompleteTextView
                             android:id="@+id/auto_pickup"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginRight="8dp"
+                            android:layout_marginHorizontal="@dimen/dp_8"
                             android:layout_weight="0.5"
                             android:background="@null"
                             android:completionThreshold="1"
                             android:focusableInTouchMode="true"
                             android:gravity="start"
-                            android:hint=" Enter Pickup Location"
+                            android:hint=" Enter Your Pickup Point"
                             android:imeOptions="actionDone"
                             android:inputType="text"
                             android:selectAllOnFocus="true"
                             android:textColorHint="#000000"
-                            android:textSize="15sp"
-                            app:layout_editor_absoluteY="10dp" />
+                            android:textSize="@dimen/sp_12"
+                            />
 
                         <ImageView
                             android:id="@+id/imgGreenMarker"
-                            android:layout_width="@dimen/dp_35"
-                            android:layout_height="@dimen/dp_35"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center|end"
                             android:layout_marginStart="10dp"
                             android:layout_marginEnd="10dp"
-                            android:src="@drawable/pick_up_point" />
+                            android:src="@drawable/pick_point" />
 
                     </LinearLayout>
-
-
-                    -
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginVertical="@dimen/dp_10"
+                        android:layout_marginHorizontal="@dimen/dp_15"
+                        android:padding="@dimen/dp_2"
                         android:background="@drawable/button_rounded"
                         android:orientation="horizontal"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -118,15 +96,11 @@
                         app:layout_constraintTop_toBottomOf="@+id/linear_auto_pickup">
 
                         <AutoCompleteTextView
-                            android:id="@+id/auto_drop"
+                            android:id="@+id/auto_destination"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginRight="8dp"
+                            android:layout_marginHorizontal="@dimen/dp_8"
                             android:layout_weight="0.5"
                             android:background="@null"
                             android:completionThreshold="1"
@@ -137,13 +111,13 @@
                             android:inputType="text"
                             android:selectAllOnFocus="true"
                             android:textColorHint="#000000"
-                            android:textSize="15sp"
+                            android:textSize="@dimen/sp_12"
                             app:layout_editor_absoluteY="10dp" />
 
                         <ImageView
                             android:id="@+id/imgRedMarker"
-                            android:layout_width="@dimen/dp_35"
-                            android:layout_height="@dimen/dp_35"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center|end"
                             android:layout_marginStart="10dp"
                             android:layout_marginEnd="10dp"
@@ -153,24 +127,22 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                -
-
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardView"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="9dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
                     app:cardCornerRadius="9dp"
                     app:cardElevation="5dp"
-
-                    app:layout_constraintEnd_toStartOf="@+id/guideline9"
-                    app:layout_constraintStart_toStartOf="@+id/guideline8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/autoCompleteConstraintLayout"
                     app:strokeColor="#5D8AA8"
                     app:strokeWidth="2dp">
-
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/mainConstraintLayout1"
@@ -179,55 +151,47 @@
 
                         <TextView
                             android:id="@+id/pickup"
-                            android:layout_width="100dp"
+                            android:layout_width="@dimen/dp_100"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
                             android:layout_weight="2"
                             android:text="PICKUP ON"
                             android:textSize="11sp"
-                            app:layout_constraintBottom_toTopOf="@+id/constraintLayout1"
-                            app:layout_constraintStart_toStartOf="@+id/constraintLayout1"
+                            app:layout_constraintBottom_toTopOf="@+id/layoutPickupDatePicker"
+                            app:layout_constraintStart_toStartOf="@+id/layoutPickupDatePicker"
                             app:layout_constraintTop_toTopOf="parent" />
 
-
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayout1"
+                            android:id="@+id/layoutPickupDatePicker"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
                             android:layout_marginTop="30dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.02"
+                            app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintHorizontal_chainStyle="spread_inside"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
                                 android:id="@+id/calenderImage"
-                                android:layout_width="@dimen/dp_30"
-                                android:layout_height="@dimen/dp_30"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:src="@drawable/calender"
                                 app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="@+id/txtPickupDatePicker"
+                                app:layout_constraintBottom_toBottomOf="@+id/txtPickupDatePicker"
+                                />
 
                             <TextView
-                                android:id="@+id/calender"
+                                android:id="@+id/txtPickupDatePicker"
                                 android:layout_width="wrap_content"
-                                android:layout_height="30dp"
+                                android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
                                 android:gravity="center"
                                 android:text="Fri,24 Dec"
+                                android:textSize="@dimen/sp_12"
                                 android:textColor="@color/black"
                                 app:layout_constraintStart_toEndOf="@+id/calenderImage"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_marginStart="5dp"
-                                android:layout_weight="1"
-                                android:src="@drawable/down_arrow"
-                                app:layout_constraintStart_toEndOf="@+id/calender"
                                 app:layout_constraintTop_toTopOf="parent" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -240,55 +204,42 @@
                             android:layout_marginBottom="10dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/constraintLayout1">
+                            app:layout_constraintTop_toBottomOf="@+id/layoutPickupDatePicker">
 
                             <ImageView
                                 android:id="@+id/clockImage"
-                                android:layout_width="@dimen/dp_30"
-                                android:layout_height="@dimen/dp_30"
-                                android:src="@drawable/clock"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <ImageView
-                                android:id="@+id/downArrowImage1"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_marginStart="5dp"
-                                android:src="@drawable/down_arrow"
-                                app:layout_constraintStart_toEndOf="@+id/timeText"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_marginStart="5dp"
-                                android:src="@drawable/down_arrow"
-                                app:layout_constraintStart_toEndOf="@+id/pmAmText"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/timeText"
                                 android:layout_width="wrap_content"
-                                android:layout_height="30dp"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/clock"
+                                android:layout_marginStart="10dp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/pickup_spinner_time"
+                                app:layout_constraintBottom_toBottomOf="@+id/pickup_spinner_time"
+                                />
+
+                            <Spinner
+                                android:id="@+id/pickup_spinner_time"
+                                android:layout_width="@dimen/dp_120"
+                                android:layout_height="@dimen/dp_25"
                                 android:layout_marginStart="5dp"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/spinner_background"
                                 android:gravity="center"
                                 android:text="07:00"
                                 android:textColor="@color/black"
+                                android:spinnerMode="dropdown"
                                 app:layout_constraintStart_toEndOf="@+id/clockImage"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"/>
 
-                            <TextView
-                                android:id="@+id/pmAmText"
+                            <ImageView
+                                android:id="@+id/dropArrow"
                                 android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:layout_marginStart="3dp"
-                                android:gravity="center"
-                                android:text="PM"
-                                android:textAlignment="center"
-                                android:textColor="@color/black"
-                                app:layout_constraintStart_toEndOf="@+id/downArrowImage1"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/down_arrow"
+                                android:layout_marginStart="@dimen/dp_80"
+                                app:layout_constraintStart_toEndOf="@+id/clockImage"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"/>
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -296,16 +247,13 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!--</LinearLayout>-->
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/airportDropViewCabbtn"
-                android:layout_width="@dimen/dp_200"
+                android:id="@+id/btnViewCabAirportDrop"
+                android:layout_width="200dp"
                 android:layout_height="@dimen/dp_25"
-               android:layout_marginVertical="@dimen/dp_10"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/viewcabs_roundedbutton"
                 android:text="View Cabs "
                 android:textColor="@color/white"
@@ -313,7 +261,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/subConstraintLayout"
-                />
+                app:layout_constraintVertical_bias="0.060000002" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -323,7 +271,7 @@
         android:id="@+id/linearMap"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -338,12 +286,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:context=".user.MainActivity" />
-        -
-        <!--<LinearLayoutandroid:id="@+id/locationMarker"android:layout_width="wrap_content"android:layout_height="wrap_content"android:layout_centerInParent="true"android:gravity="center"android:orientation="vertical"android:visibility="visible">-->
+            tools:context=".MainActivity" />
 
-
-        <TextView
+        <!--<TextView
             android:id="@+id/txtMarkerText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -356,78 +301,41 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <!--<ImageView
+        <ImageView
             android:id="@+id/imageMarker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/add_marker"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />-->
-
-        <!-- </LinearLayout>-->
-
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    -
-
-    -
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent">
-        -
-
-        -
 
         <LinearLayout
-            android:id="@+id/linearFindCar"
+            android:id="@+id/linearBtnConfirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="50dp"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent">
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnFindCar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
-                android:background="@color/purple_500"
-                android:text="Find Car"
-                android:textColor="@color/white" />
-
-        </LinearLayout>
-        -
-
-        -
-
-        <LinearLayout
-            android:id="@+id/linearBtnDone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnDone2"
+                android:id="@+id/btnConfirm"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -439,73 +347,8 @@
 
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:layout_constraintBottom_toBottomOf="parent">
-
         <LinearLayout
-            android:id="@+id/linearFindCar1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="50dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnFindCar1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
-                android:background="@color/purple_500"
-                android:text="Find Car"
-                android:textColor="@color/white" />
-
-        </LinearLayout>
-        -
-
-        -
-
-        <LinearLayout
-            android:id="@+id/linearBtnDone1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnDone3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
-                android:background="@color/purple_500"
-                android:text="Confirm Location"
-                android:textColor="@color/white" />
-
-        </LinearLayout>
-        -
-
-        -
-
-        <LinearLayout
-            android:id="@+id/footer"
+            android:id="@+id/linearFooterButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
@@ -513,10 +356,12 @@
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnCurrentLocation1"
+                android:id="@+id/btnCurrentLocation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -528,7 +373,7 @@
                 android:textSize="15sp" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnLocationOnMap1"
+                android:id="@+id/btnLocationOnMap"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -544,3 +389,5 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+

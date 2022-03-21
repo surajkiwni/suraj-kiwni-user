@@ -11,7 +11,7 @@ public class DataModels {
     private boolean isExpandable;
     BookingListItemClickListener listener;
 
-    public DataModels(List<BookingModel> itemList, String itemText,BookingListItemClickListener listener) {
+    public DataModels(List<BookingModel> itemList, String itemText, BookingListItemClickListener listener) {
         this.nestedList = itemList;
         this.itemText = itemText;
         this.listener = listener;

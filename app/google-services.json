@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "512721841920",
+    "project_id": "kiwni-platform",
+    "storage_bucket": "kiwni-platform.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:512721841920:android:5f55b2108686876fd60de5",
+        "android_client_info": {
+          "package_name": "com.kiwni.app.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "512721841920-ab1olh1g8a1fmd77l86in8n271ndov02.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kiwni.app.driver",
+            "certificate_hash": "f353d84c3f7d9220844d5cb6264bf0ff64788e29"
+          }
+        },
+        {
+          "client_id": "512721841920-igdvq5jhtcc9u91or09qd7srien8r404.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPVjcxB3zcRWeT35k3876rhTL0lyUWFS0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "512721841920-igdvq5jhtcc9u91or09qd7srien8r404.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "512721841920-2qdhdn407jv3hokgk9qdvlr17c1i0o5h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kiwni.user"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:512721841920:android:307a71b56be18c88d60de5",
+        "android_client_info": {
+          "package_name": "com.kiwni.app.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "512721841920-uh5hc5ucrfdbij7r47r6kifp1bcnt6id.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kiwni.app.user",
+            "certificate_hash": "f353d84c3f7d9220844d5cb6264bf0ff64788e29"
+          }
+        },
+        {
+          "client_id": "512721841920-igdvq5jhtcc9u91or09qd7srien8r404.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPVjcxB3zcRWeT35k3876rhTL0lyUWFS0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "512721841920-igdvq5jhtcc9u91or09qd7srien8r404.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "512721841920-2qdhdn407jv3hokgk9qdvlr17c1i0o5h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kiwni.user"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

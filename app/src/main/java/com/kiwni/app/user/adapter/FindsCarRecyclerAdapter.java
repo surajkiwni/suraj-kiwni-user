@@ -12,8 +12,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kiwni.app.user.R;
-import com.kiwni.app.user.datamodels.FindCarModel;
 import com.kiwni.app.user.interfaces.FindCarItemClickListener;
+import com.kiwni.app.user.models.FindCar;
 
 import java.util.List;
 
@@ -22,11 +22,11 @@ public class FindsCarRecyclerAdapter extends RecyclerView.Adapter<FindsCarRecycl
 
     //String data[];
     Context context;
-    List<FindCarModel> findCarModelList;
+    List<FindCar> findCarModelList;
     FindCarItemClickListener findCarItemClickListener;
     View view;
 
-    public FindsCarRecyclerAdapter(Context context, List<FindCarModel> findCarModelList, FindCarItemClickListener findCarItemClickListener) {
+    public FindsCarRecyclerAdapter(Context context, List<FindCar> findCarModelList, FindCarItemClickListener findCarItemClickListener) {
         this.context = context;
         this.findCarModelList = findCarModelList;
         this.findCarItemClickListener = findCarItemClickListener;
@@ -34,7 +34,7 @@ public class FindsCarRecyclerAdapter extends RecyclerView.Adapter<FindsCarRecycl
 
     @NonNull
     @Override
-    public FindsCarRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         view = layoutInflater.inflate(R.layout.one_way_custom_recycler_view,parent,false);
@@ -45,7 +45,7 @@ public class FindsCarRecyclerAdapter extends RecyclerView.Adapter<FindsCarRecycl
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-       FindCarModel findCarModel = findCarModelList.get(position);
+       FindCar findCarModel = findCarModelList.get(position);
 
        holder.carName.setText(findCarModel.getCarName());
        holder.carImage.setImageResource(findCarModel.getImage());

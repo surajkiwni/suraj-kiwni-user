@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.SupportAdapter;
 import com.kiwni.app.user.databinding.FragmentSupportBinding;
-import com.kiwni.app.user.datamodels.SupportModel;
 import com.kiwni.app.user.interfaces.BackKeyPressedListener;
+import com.kiwni.app.user.models.Support;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class SupportFragment extends Fragment implements BackKeyPressedListener 
     private FragmentSupportBinding binding;
 
     RecyclerView supportRecyclerView;
-    List<SupportModel> supportModelList;
+    List<Support> supportModelList;
 
     public  static BackKeyPressedListener backKeyPressedListener;
     View view;
@@ -62,12 +62,12 @@ public class SupportFragment extends Fragment implements BackKeyPressedListener 
 
         supportModelList= new ArrayList<>();
 
-        supportModelList.add(new SupportModel("Trips Issues and Refunds"));
-        supportModelList.add(new SupportModel("A guide to Kiwni"));
-        supportModelList.add(new SupportModel("Accessibility"));
-        supportModelList.add(new SupportModel("All about kiwni Service"));
-        supportModelList.add(new SupportModel("New Booking Error"));
-        supportModelList.add(new SupportModel("Kiwni emergency Number"));
+        supportModelList.add(new Support("Trips Issues and Refunds"));
+        supportModelList.add(new Support("A guide to Kiwni"));
+        supportModelList.add(new Support("Accessibility"));
+        supportModelList.add(new Support("All about kiwni Service"));
+        supportModelList.add(new Support("New Booking Error"));
+        supportModelList.add(new Support("Kiwni emergency Number"));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);

@@ -3,6 +3,7 @@ package com.kiwni.app.user.adapter;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
 import com.kiwni.app.user.fragments.OneWayFragment;
 import com.kiwni.app.user.fragments.RoundTripFragment;
 

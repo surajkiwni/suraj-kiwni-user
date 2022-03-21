@@ -17,7 +17,6 @@ import com.kiwni.app.user.interfaces.BookingListItemClickListener;
 import java.util.List;
 
 
-
 public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutViewHolder> {
 
     List<BookingModel> mList;
@@ -26,7 +25,6 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutView
 
     private BookingListItemClickListener listener;
 
-
     public NestedAdapter(List<BookingModel> mList, BookingListItemClickListener listener) {
         this.mList = mList;
         this.listener = listener;
@@ -34,19 +32,15 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutView
 
     @NonNull
     @Override
-    public NestedAdapter.LayoutViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public LayoutViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.nested_item,parent,false);
         return new LayoutViewHolder(view);
-
-
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NestedAdapter.LayoutViewHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull LayoutViewHolder holder, int position) {
         bookingModel = mList.get(position);
         holder.yearText.setText(bookingModel.getName());
-
     }
 
     @Override

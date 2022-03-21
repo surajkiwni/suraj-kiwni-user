@@ -1,7 +1,6 @@
 package com.kiwni.app.user.fragments;
 
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,22 +10,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.tabs.TabLayout;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.OutstationViewPagerAdapter;
-import com.google.android.material.tabs.TabLayout;
-
 
 public class OutstationFragment extends Fragment {
-
     private OutstationViewPagerAdapter outstationViewPagerAdapter;
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
-    String serviceType = "",direction = "";
+    String serviceType = "";
 
     View view;
 
     static OutstationFragment myInstance;
-
     public synchronized static OutstationFragment getInstance() {
         if (myInstance == null) {
             myInstance = new OutstationFragment();
@@ -37,7 +33,6 @@ public class OutstationFragment extends Fragment {
     public OutstationFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -52,30 +47,24 @@ public class OutstationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         // initialize view Pager
         viewPager = view.findViewById(R.id.viewPager);
 
         //setting up adaptor with fragment
         outstationViewPagerAdapter = new OutstationViewPagerAdapter(this);
 
-
         //adaptor set to the view Pager
         viewPager.setAdapter(outstationViewPagerAdapter);
         tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         viewPager.setCurrentItem(0, true);
 
-
         tabLayout.addTab(tabLayout.newTab().setText("Round Trip"));
         tabLayout.addTab(tabLayout.newTab().setText("One Way"));
-
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-
-
             }
 
             @Override
@@ -96,19 +85,10 @@ public class OutstationFragment extends Fragment {
             }
         });
 
-
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-
     }
 }

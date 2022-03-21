@@ -10,10 +10,8 @@ import com.kiwni.app.user.fragments.AirportPickupFragment;
 
 public class AirportViewPagerAdapter extends FragmentStateAdapter {
 
-
     public AirportViewPagerAdapter(@NonNull AirportFragment fragmentActivity) {
         super(fragmentActivity);
-
     }
 
     @NonNull

@@ -1,7 +1,6 @@
 package com.kiwni.app.user.fragments;
 
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.tabs.TabLayout;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.RentalViewPagerAdapter;
-import com.kiwni.app.user.pref.PreferencesUtils;
-import com.kiwni.app.user.pref.SharedPref;
-import com.google.android.material.tabs.TabLayout;
 
 
 public class RentalFragment extends Fragment {
@@ -23,7 +20,7 @@ public class RentalFragment extends Fragment {
     RentalViewPagerAdapter rentalViewPagerAdapter;
     TabLayout rentalTabLayout;
     ViewPager2 rentalViewPager2;
-    String serviceType = "",direction = "";
+    String serviceType = "";
 
     static RentalFragment myInstance;
     public synchronized static RentalFragment getInstance() {
@@ -57,13 +54,9 @@ public class RentalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
         // initialize view Pager
         rentalViewPager2 = view.findViewById(R.id.rentalViewPager2);
 
-        serviceType = "Rental";
-        PreferencesUtils.putPreferences(getActivity(), SharedPref.SERVICE_TYPE,serviceType);
         //setting up adaptor with fragment
         rentalViewPagerAdapter = new RentalViewPagerAdapter(this);
 
@@ -73,6 +66,8 @@ public class RentalFragment extends Fragment {
         rentalTabLayout = (TabLayout) view.findViewById(R.id.rentalTabLayout);
         rentalViewPager2.setCurrentItem(0, true);
 
+        rentalViewPager2.setSaveEnabled(false);
+        rentalViewPager2.setSaveFromParentEnabled(false);
 
         rentalTabLayout.addTab(rentalTabLayout.newTab().setText("CURRENT BOOKING"));
         rentalTabLayout.addTab(rentalTabLayout.newTab().setText("SCHEDULE BOOKING"));
@@ -82,7 +77,6 @@ public class RentalFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 rentalViewPager2.setCurrentItem(tab.getPosition());
-
             }
 
             @Override
@@ -103,12 +97,6 @@ public class RentalFragment extends Fragment {
             }
         });
 
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
 
     }
 }

@@ -4,14 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".user.activity.CarListTypeActivity"
-    android:launchMode = "singleTop"
-    >
-
-  <!--  android:background="@color/white"-->
-
-
-
+    tools:context=".activity.CarListTypeActivity"
+    android:launchMode = "singleTop">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar2"
@@ -47,7 +41,7 @@
             app:layout_constraintVertical_bias="0.533" />
 
         <TextView
-            android:id="@+id/toolbarText2"
+            android:id="@+id/txtTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -89,7 +83,7 @@
 
 
         <TextView
-            android:id="@+id/text1"
+            android:id="@+id/txtFromTo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="PUNE TO MUMBAI"
@@ -123,7 +117,7 @@
             android:layout_marginTop="7dp"
             app:layout_constraintLeft_toLeftOf="@+id/guideline1"
             app:layout_constraintRight_toRightOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/text1">
+            app:layout_constraintTop_toBottomOf="@+id/txtFromTo">
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -137,7 +131,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/dateTextView"
+                    android:id="@+id/txtStartEndDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -156,9 +150,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:src="@drawable/calender"
-                    app:layout_constraintBottom_toBottomOf="@+id/dateTextView"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtStartEndDate"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/dateTextView" />
+                    app:layout_constraintTop_toTopOf="@+id/txtStartEndDate" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -173,14 +167,14 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/timeTextView1"
+                    android:id="@+id/txtStartTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingStart="3dp"
                     android:text="07:00 PM"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12"
+                    android:textSize="@dimen/sp_11"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/callImage"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -190,9 +184,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/clock"
-                    app:layout_constraintBottom_toBottomOf="@+id/timeTextView1"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtStartTime"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/timeTextView1" />
+                    app:layout_constraintTop_toTopOf="@+id/txtStartTime" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -208,14 +202,14 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/kmTextView"
+                    android:id="@+id/txtEstimatedKm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingStart="3dp"
                     android:text="Est km 211km"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12"
+                    android:textSize="@dimen/sp_11"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/estImage"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -225,9 +219,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/est_time"
-                    app:layout_constraintBottom_toBottomOf="@+id/kmTextView"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtEstimatedKm"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/kmTextView" />
+                    app:layout_constraintTop_toTopOf="@+id/txtEstimatedKm" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -385,7 +379,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout1"
+        android:id="@+id/constraintLayoutForRentalPackage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
@@ -402,8 +396,8 @@
             android:layout_marginTop="@dimen/dp_3"
            android:layout_marginHorizontal="@dimen/dp_5"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="@+id/constraintLayout1"
-            app:layout_constraintRight_toRightOf="@+id/constraintLayout1"
+            app:layout_constraintLeft_toLeftOf="@+id/constraintLayoutForRentalPackage"
+            app:layout_constraintRight_toRightOf="@+id/constraintLayoutForRentalPackage"
             />
 
         <ImageView
@@ -412,7 +406,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:src="@drawable/km"
-            app:layout_constraintLeft_toLeftOf="@+id/constraintLayout1"
+            app:layout_constraintLeft_toLeftOf="@+id/constraintLayoutForRentalPackage"
             app:layout_constraintTop_toTopOf="@+id/packageText"
             app:layout_constraintBottom_toBottomOf="@+id/packageText"/>
 
@@ -439,7 +433,7 @@
             android:layout_marginStart="5dp"
             android:padding="@dimen/dp_5"
             android:text="@string/package_rules"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout1"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayoutForRentalPackage"
             app:layout_constraintTop_toBottomOf="@+id/packageText" />
         <TextView
             android:id="@+id/viewDetailsText"
@@ -467,7 +461,7 @@
         android:elevation="2dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout1">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutForRentalPackage">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/sedanNameLayout"

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.datamodels.BookingModel2;
 
