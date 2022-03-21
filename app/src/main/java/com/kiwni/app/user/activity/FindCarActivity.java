@@ -70,6 +70,10 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         txtStartEndDate = findViewById(R.id.txtStartEndDate);
         txtStartTime = findViewById(R.id.txtStartTime);
         txtEstimatedKm = findViewById(R.id.txtEstimatedKm);
+        constraintLayoutPack = findViewById(R.id.constraintLayout1);
+        recyclerView = findViewById(R.id.recyclerView);
+        viewDetailsText = findViewById(R.id.viewDetailsText);
+        findsCarsRecyclerView = findViewById(R.id.findsCarsRecyclerView);
 
         direction = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DIRECTION,"");
         serviceType = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SERVICE_TYPE,"");
@@ -141,9 +145,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
             }
         };
 
-        constraintLayoutPack = findViewById(R.id.constraintLayout1);
-        recyclerView = findViewById(R.id.recyclerView);
-        viewDetailsText = findViewById(R.id.viewDetailsText);
 
         findCarModelList = new ArrayList<>();
 
@@ -160,7 +161,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         recyclerView.setAdapter(findsCarRecyclerAdapter);
 
 
-        findsCarsRecyclerView = findViewById(R.id.findsCarsRecyclerView);
+
         hourPackageModelList = new ArrayList<>();
 
         hourPackageModelList.add(new HourPackage("2km","25 km"));
