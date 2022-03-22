@@ -10,62 +10,75 @@
         android:layout_height="wrap_content"
         android:background="@drawable/less_paint_border"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginHorizontal="@dimen/dp_8"
         app:layout_constraintTop_toTopOf="parent"
         >
 
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ConstraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="30dp"
+                android:id="@+id/pickupImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/pickuppoint"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
+                app:layout_constraintTop_toTopOf="@+id/pickupAddressTV"
+                app:layout_constraintBottom_toBottomOf="@+id/pickupAddressTV"
+                app:layout_constraintLeft_toLeftOf="parent"
                 />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:id="@+id/pickupAddressTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:text="  Lane No. 3, Link Road, Navi Mumbai, Maharasht.."
                 android:textColor="@color/black"
                 android:layout_gravity="center"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/pickupImage"/>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            app:layout_constraintTop_toBottomOf="@+id/ConstraintLayout">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="30dp"
+                android:id="@+id/dropPointImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/droppoint"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/dropAddressTV"
+                app:layout_constraintBottom_toBottomOf="@+id/dropAddressTV"
                 />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:id="@+id/dropAddressTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:text="  Spin plaza, Choudhari wasti, Pune, Maharashtra.."
                 android:textColor="@color/black"
                 android:layout_gravity="center"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/dropPointImage"
+                />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -89,7 +102,7 @@
                 <ImageView
                     android:id="@+id/imageView2"
                     android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:src="@drawable/calender"
                     app:layout_constraintEnd_toStartOf="@+id/textAC"
@@ -100,7 +113,7 @@
                 <TextView
                     android:id="@+id/textAC"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:text="Fri, 24 Dec-Mon, 27 Dec"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toEndOf="@+id/imageView2"
@@ -109,7 +122,7 @@
                 <ImageView
                     android:id="@+id/imageSeat"
                     android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
                     android:src="@drawable/clock"
                     app:layout_constraintStart_toEndOf="@+id/textAC"
@@ -118,7 +131,7 @@
                 <TextView
                     android:id="@+id/textSeat"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:text="07:00"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toEndOf="@+id/imageSeat"
@@ -127,7 +140,7 @@
                 <TextView
                     android:id="@+id/pmText"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:text="PM"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toEndOf="@id/imageBag"
@@ -140,18 +153,18 @@
             <TextView
                 android:id="@+id/serviceTypeText"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:text="Service Type : "
                 android:textColor="#808080"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
                 app:layout_constraintLeft_toLeftOf="parent"/>
 
             <TextView
                 android:id="@+id/outstationText"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:text="Outstation"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/black"
@@ -172,8 +185,58 @@
                 app:layout_constraintTop_toBottomOf="@id/outstationText"
                 />
 
+           <LinearLayout
+               android:id="@+id/bookingLinearLayout"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               app:layout_constraintTop_toBottomOf="@+id/view"
+               app:layout_constraintLeft_toLeftOf="parent"
+               android:orientation="horizontal"
+               >
+
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="Booking No. K012"
+                   android:textSize="@dimen/sp_14"
+                   android:textColor="@color/black"
+                   android:layout_weight="1"
+                   android:textAlignment="center"
+                   />
+
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="KRN. No. KIWNI243"
+                   android:textSize="@dimen/sp_14"
+                   android:textAlignment="center"
+                   android:layout_weight="1"
+                   android:textColor="@color/black"
+                   />
+
+           </LinearLayout>
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#707070"
+                android:layout_marginTop="7dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintTop_toBottomOf="@id/bookingLinearLayout"
+                />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/driverConstraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+            >
 
         <LinearLayout
             android:id="@+id/subLinearLayout1"
@@ -181,23 +244,28 @@
             android:layout_height="match_parent"
             android:layout_marginTop="15dp"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+            app:layout_constraintTop_toTopOf="parent"
 
-            <LinearLayout
+            >
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_weight="1"
+                android:layout_marginTop="5dp"
                 >
 
                 <TextView
-                    android:layout_width="40dp"
-                    android:layout_height="25dp"
+                    android:id="@+id/carNameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Mahindra Verito :"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/black"
-                    android:layout_weight="1"
+                    android:paddingEnd="@dimen/dp_5"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     />
 
                 <TextView
@@ -206,19 +274,13 @@
                     android:layout_height="wrap_content"
                     android:text="Luxury"
                     android:textColor="#979797"
-                    android:layout_weight="1"
+                    app:layout_constraintLeft_toRightOf="@+id/carNameText"
+                    app:layout_constraintTop_toTopOf="parent"
                     />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="1"
-                >
 
-            </LinearLayout>
 
         </LinearLayout>
 
@@ -226,31 +288,36 @@
             android:id="@+id/subLinearLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@+id/subLinearLayout1">
 
-            <LinearLayout
-                android:id="@+id/linearLayout5"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ConstraintLayout5"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:orientation="horizontal"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 >
 
                 <ImageView
+                    android:id="@+id/callImage"
                     android:layout_width="40dp"
-                    android:layout_height="25dp"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/mobile_icon"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/mobileNumberTV"
+                    app:layout_constraintBottom_toBottomOf="@+id/mobileNumberTV"
                     />
 
                 <TextView
-                    android:layout_width="30dp"
-                    android:layout_height="25dp"
+                    android:id="@+id/mobileNumberTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="9878896781"
                     android:gravity="center"
                     android:textColor="@color/black"
-                    android:layout_weight="1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/callImage"
                     />
 
                 <TextView
@@ -258,11 +325,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="MH 12 JE2329"
+                    android:paddingStart="5dp"
                     android:textColor="#979797"
-                    android:layout_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/mobileNumberTV"
+                    app:layout_constraintTop_toTopOf="parent"
                     />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -277,52 +346,81 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/otpTextView"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
             android:text="OTP 23456"
             android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/subLinearLayout2"
+            app:layout_constraintTop_toBottomOf="@id/driverImage"
             app:layout_constraintLeft_toLeftOf="parent"
-            />
-        <ImageView
-            android:id="@+id/carImage"
-            android:layout_width="80dp"
-            android:layout_height="90dp"
-            android:src="@drawable/driver_image"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginRight="50dp"
 
             />
+
+        <ImageView
+            android:id="@+id/driverImage"
+            android:layout_width="80dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dp_5"
+            android:src="@drawable/driver_image"
+            app:layout_constraintDimensionRatio="5:5"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/driverConstraintLayout" />
 
         <TextView
-            android:layout_width="80dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="5dp"
+            android:id="@+id/driverNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:text="Kiran"
             android:textColor="#000000"
             android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@id/carImage"
-            app:layout_constraintStart_toStartOf="@+id/carImage"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/driverImage"
+            app:layout_constraintStart_toStartOf="@+id/driverImage"
+            app:layout_constraintEnd_toEndOf="@+id/driverImage"
             />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/driverConstraintLayout">
+
+
+                <TextView
+                    android:id="@+id/txtMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/we_will_notify_cab"
+                    android:gravity="center"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/cancelRideButton"
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:background="@drawable/radius_less_rounded_button"
+                android:text="CANCLE RIDE"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtMessage"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/cancelRideButton"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/radius_less_rounded_button"
-        android:text="CANCLE RIDE"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/constraintLayout1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

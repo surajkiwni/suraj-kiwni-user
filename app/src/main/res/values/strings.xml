@@ -53,6 +53,8 @@
     <string name="package_rules">Rental Package rules &amp; Restriction</string>
 
     <string name="phoneno_error">Please enter valid phone no</string>
+    <string name="we_will_notify_cab">We will notify cab &amp; Driver details 1 hr prior to your <br/>
+                  scheduled trip</string>
 
 
     <string-array name="select_year">

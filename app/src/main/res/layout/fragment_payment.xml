@@ -95,7 +95,7 @@
             <ImageView
                 android:id="@+id/imageView6"
                 android:layout_width="40dp"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:src="@drawable/cash_icon"
@@ -152,7 +152,7 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="40dp"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="7dp"
                 android:src="@drawable/add_new_contact"
@@ -185,7 +185,7 @@
             <ImageView
                 android:id="@+id/imageView1"
                 android:layout_width="40dp"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="7dp"
                 android:src="@drawable/credit_card_icon"
@@ -233,7 +233,7 @@
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="40dp"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="7dp"
                 android:src="@drawable/add_new_contact"
@@ -266,7 +266,7 @@
             <ImageView
                 android:id="@+id/imageView4"
                 android:layout_width="40dp"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="7dp"
                 android:src="@drawable/wallet_icon"

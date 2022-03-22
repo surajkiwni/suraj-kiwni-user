@@ -8,9 +8,10 @@
     <TextView
         android:id="@+id/text1"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         android:layout_marginLeft="16dp"
+        android:padding="5dp"
         android:text="Trips Issues and Refunds"
         android:textColor="@color/black"
         android:textSize="15sp"
@@ -21,7 +22,7 @@
 
     <ImageView
         android:layout_width="40dp"
-        android:layout_height="20dp"
+        android:layout_height="0dp"
         android:src="@drawable/right_arrow"
         app:layout_constraintBottom_toBottomOf="@+id/text1"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
