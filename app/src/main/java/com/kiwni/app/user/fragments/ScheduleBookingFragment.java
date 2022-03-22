@@ -37,14 +37,6 @@ public class ScheduleBookingFragment extends Fragment  implements OnMapReadyCall
     AppCompatButton rentalScheduleViewCabbtn;
     String direction = "";
 
-    static ScheduleBookingFragment myInstance;
-    public synchronized static ScheduleBookingFragment getInstance() {
-        if (myInstance == null) {
-            myInstance = new ScheduleBookingFragment();
-        }
-        return myInstance;
-    }
-
     public ScheduleBookingFragment() {
         // Required empty public constructor
     }

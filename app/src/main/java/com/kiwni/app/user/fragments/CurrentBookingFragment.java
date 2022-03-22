@@ -35,14 +35,6 @@ public class CurrentBookingFragment extends Fragment implements OnMapReadyCallba
     AppCompatButton rentalCurrentViewCabbtn;
     String direction = "";
 
-    static CurrentBookingFragment myInstance;
-    public synchronized static CurrentBookingFragment getInstance() {
-        if (myInstance == null) {
-            myInstance = new CurrentBookingFragment();
-        }
-        return myInstance;
-    }
-
     public CurrentBookingFragment() {
         // Required empty public constructor
     }

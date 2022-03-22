@@ -11,6 +11,7 @@ import android.widget.RadioButton;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.kiwni.app.user.MainActivity;
@@ -18,12 +19,10 @@ import com.kiwni.app.user.R;
 
 public class ConfirmBookingActivity extends AppCompatActivity {
 
-    RadioButton bookingButton;
-    AppCompatButton confirmButton,doneButton;
+    AppCompatRadioButton radioBusiness, radioPersonal;
+    AppCompatButton confirmButton, doneButton;
 
-
-    View view1;
-    ConstraintLayout constraintLayout5;
+    ConstraintLayout constraintBusinessInput;
     ImageView imageBack;
 
     @Override
@@ -31,17 +30,28 @@ public class ConfirmBookingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_booking);
 
-        bookingButton =findViewById(R.id.radioButton2);
+        radioBusiness = findViewById(R.id.radioBusiness);
+        radioPersonal = findViewById(R.id.radioPersonal);
         confirmButton = findViewById(R.id.confirmButton);
-        constraintLayout5 =findViewById(R.id.constraintLayout5);
+        constraintBusinessInput = findViewById(R.id.constraintBusinessInput);
         imageBack = findViewById(R.id.imageBack);
 
-       // final NavController navController = Navigation.findNavController(view1);
+        radioPersonal.setChecked(true);
 
-
-        bookingButton.setOnClickListener(new View.OnClickListener() {
+        radioPersonal.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
+                radioBusiness.setChecked(false);
+                constraintBusinessInput.setVisibility(View.GONE);
+            }
+        });
+
+        radioBusiness.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                radioPersonal.setChecked(false);
 
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ConfirmBookingActivity.this);
                 LayoutInflater inflater = getLayoutInflater();
@@ -51,28 +61,24 @@ public class ConfirmBookingActivity extends AppCompatActivity {
                 dialogBuilder.setCancelable(false);
                 AlertDialog b = dialogBuilder.create();
 
-                b.show();
                 doneButton = (AppCompatButton) dialogView.findViewById(R.id.doneButton);
 
                 doneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         b.dismiss();
-
-                        constraintLayout5.setVisibility(view.VISIBLE);
-
+                        constraintBusinessInput.setVisibility(view.VISIBLE);
                     }
                 });
+
+                b.show();
             }
-
         });
-
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
+            public void onClick(View view)
+            {
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ConfirmBookingActivity.this);
                 LayoutInflater inflater = getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.payment_screen, null);
@@ -80,14 +86,11 @@ public class ConfirmBookingActivity extends AppCompatActivity {
                 dialogBuilder.setCancelable(false);
                 AlertDialog b = dialogBuilder.create();
 
-                b.show();
+                AppCompatButton btnPay = dialogView.findViewById(R.id.btnPay);
 
-                AppCompatButton bookingSuccessfulButton = dialogView.findViewById(R.id.bookingSuccessfulButton);
-
-                bookingSuccessfulButton.setOnClickListener(new View.OnClickListener() {
+                btnPay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ConfirmBookingActivity.this);
 
                         LayoutInflater inflater = LayoutInflater.from(ConfirmBookingActivity.this);
@@ -96,8 +99,6 @@ public class ConfirmBookingActivity extends AppCompatActivity {
                         dialogBuilder.setCancelable(false);
                         AlertDialog b1 = dialogBuilder.create();
 
-                        b1.show();
-
                         Button okButton = dialogView.findViewById(R.id.okButton);
 
                         okButton.setOnClickListener(new View.OnClickListener() {
@@ -105,18 +106,18 @@ public class ConfirmBookingActivity extends AppCompatActivity {
                             public void onClick(View view) {
 
                                 Intent intent = new Intent(ConfirmBookingActivity.this, MainActivity.class);
-                               // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //this will always start your activity as a new task
-                                /*ConfirmBookingActivity.this.startActivity(intent);
-                                ConfirmBookingActivity.this.finishAffinity();*/
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             }
                         });
+
+                        b1.show();
                     }
                 });
+
+                b.show();
             }
         });
-
 
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override

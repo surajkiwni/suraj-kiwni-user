@@ -126,7 +126,7 @@ public class OneWayFragment extends Fragment implements
     AutocompletePrediction item;
     String direction = "", distanceTextFromApi = "", distanceValueFromApi = "",
             durationTextFromApi = "", durationInTrafficFromApi = "",
-            curr_converted_date = "";
+            curr_converted_date = "", convertedDateFormat = "", convertedPickupDateFormat = "";
 
     Spinner pickup_spinner_time;
     ArrayList<KeyValue> time = new ArrayList<>();
@@ -138,15 +138,6 @@ public class OneWayFragment extends Fragment implements
     String concatDateTime = "", sendToApiPickupTime = "",
             sendToApiDropTime = "", changeStartDateFormat ="";
     int mYear, mMonth, mDay, mHour, mMinute;
-
-    static OneWayFragment myInstance;
-
-    public synchronized static OneWayFragment getInstance() {
-        if (myInstance == null) {
-            myInstance = new OneWayFragment();
-        }
-        return myInstance;
-    }
 
     public OneWayFragment() {
         // Required empty public constructor
@@ -323,17 +314,20 @@ public class OneWayFragment extends Fragment implements
                                 Date date = null;
                                 try {
                                     date = (Date) simpleDateFormat.parse(strDate);
-                                    SimpleDateFormat sdf2 = new SimpleDateFormat("EEE, dd MMM");
-                                    txtPickupDatePicker.setText(sdf2.format(date));
+                                    SimpleDateFormat sdfOutputDateFormat = new SimpleDateFormat("EEE, dd MMM");
+                                    convertedPickupDateFormat = sdfOutputDateFormat.format(date);
+                                    Log.d(TAG, "convertedPickupDateFormat - " + convertedPickupDateFormat);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
+
+                                txtPickupDatePicker.setText(convertedPickupDateFormat);
 
                                 //compare two dates are same or not
                                 SimpleDateFormat inputFormat = new SimpleDateFormat("EEE, dd MMM");
                                 try {
                                     Date currentDate = inputFormat.parse(curr_converted_date);
-                                    Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
+                                    Date pickerDate = inputFormat.parse(convertedPickupDateFormat);
 
                                     if(currentDate.compareTo(pickerDate) == 0)
                                     {
@@ -726,7 +720,6 @@ public class OneWayFragment extends Fragment implements
                             }
                             else
                             {
-                                //concatDateTime = txtPickupDatePicker.getText().toString() + " " + pickup_spinner_time.getSelectedItem().toString();
                                 concatDateTime = strDate + " " + pickup_spinner_time.getSelectedItem().toString();
                                 Log.d(TAG,"concatDateTime = " + concatDateTime);
 
@@ -770,7 +763,7 @@ public class OneWayFragment extends Fragment implements
                                 PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE_IN_KM, distanceTextFromApi);
 
                                 startActivity(i);
-                                getActivity().finish();
+                                //getActivity().finish();
                             }
                         }
                         catch (Exception e)
@@ -876,6 +869,7 @@ public class OneWayFragment extends Fragment implements
         Log.d(TAG, "OnMapReady");
         if (mMap != null) {
             mMap.clear();
+            autoCompleteTextViewDrop.setText("");
         }
         mMap = googleMap;
 
@@ -1498,9 +1492,21 @@ public class OneWayFragment extends Fragment implements
     public void GetCurrentDate()
     {
         Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, dd MMM");
-        curr_converted_date = simpleDateFormat.format(c);
-        Log.d("TAG", curr_converted_date);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        strDate = simpleDateFormat.format(c.getTime());
+        Log.d(TAG, "strDate = " + strDate);
+
+        //converted format
+        Date date = null;
+        try {
+            date = (Date) simpleDateFormat.parse(strDate);
+            SimpleDateFormat sdfOutputDateFormat = new SimpleDateFormat("EEE, dd MMM");
+            curr_converted_date = sdfOutputDateFormat.format(date);
+            Log.d(TAG, "curr_converted_date - " + curr_converted_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         txtPickupDatePicker.setText(curr_converted_date);
     }
@@ -1838,7 +1844,7 @@ public class OneWayFragment extends Fragment implements
     public void onResume() {
         super.onResume();
 
-        if(isCurrent)
+        /*if(isCurrent)
         {
             autoCompleteTextViewDrop.setText("");
             getAddressFromCurrentLocation(currentLatitude,currentLongitude);
@@ -1846,6 +1852,6 @@ public class OneWayFragment extends Fragment implements
         else
         {
             autoCompleteTextViewDrop.setText("");
-        }
+        }*/
     }
 }

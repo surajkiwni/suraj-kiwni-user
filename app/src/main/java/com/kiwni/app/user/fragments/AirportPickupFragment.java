@@ -125,7 +125,7 @@ public class AirportPickupFragment extends Fragment implements
     AutocompletePrediction item;
     String distanceTextFromApi = "", distanceValueFromApi = "",
             durationTextFromApi = "", durationInTrafficFromApi = "",
-            curr_converted_date = "";
+            curr_converted_date = "", convertedPickupDateFormat = "";
 
     Spinner pickup_spinner_time;
     ArrayList<KeyValue> time = new ArrayList<>();
@@ -139,15 +139,6 @@ public class AirportPickupFragment extends Fragment implements
     int mYear, mMonth, mDay, mHour, mMinute;
 
     public double currentLatitude = 0.0, currentLongitude = 0.0;
-
-    static AirportPickupFragment myInstance;
-
-    public static synchronized AirportPickupFragment getInstance() {
-        if (myInstance == null) {
-            myInstance = new AirportPickupFragment();
-        }
-        return myInstance;
-    }
 
     public AirportPickupFragment() {
         // Required empty public constructor
@@ -317,17 +308,20 @@ public class AirportPickupFragment extends Fragment implements
                                 Date date = null;
                                 try {
                                     date = (Date) simpleDateFormat.parse(strDate);
-                                    SimpleDateFormat sdf2 = new SimpleDateFormat("EEE, dd MMM");
-                                    txtPickupDatePicker.setText(sdf2.format(date));
+                                    SimpleDateFormat sdfOutputDateFormat = new SimpleDateFormat("EEE, dd MMM");
+                                    convertedPickupDateFormat = sdfOutputDateFormat.format(date);
+                                    Log.d(TAG, "convertedPickupDateFormat - " + convertedPickupDateFormat);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
+
+                                txtPickupDatePicker.setText(convertedPickupDateFormat);
 
                                 //compare two dates are same or not
                                 SimpleDateFormat inputFormat = new SimpleDateFormat("EEE, dd MMM");
                                 try {
                                     Date currentDate = inputFormat.parse(curr_converted_date);
-                                    Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
+                                    Date pickerDate = inputFormat.parse(convertedPickupDateFormat);
 
                                     if(currentDate.compareTo(pickerDate) == 0)
                                     {
@@ -591,7 +585,6 @@ public class AirportPickupFragment extends Fragment implements
                         errorDialog.show();
 
                         linearBtnConfirm.setVisibility(View.GONE);
-                        //mMap.clear();
 
                         //txtMarkerText.setVisibility(View.GONE);
                         imageMarker.setVisibility(View.GONE);
@@ -762,7 +755,7 @@ public class AirportPickupFragment extends Fragment implements
                                 PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE_IN_KM, distanceTextFromApi);
 
                                 startActivity(i);
-                                getActivity().finish();
+                                //getActivity().finish();
                             }
                         }
                         catch (Exception e)
@@ -868,7 +861,9 @@ public class AirportPickupFragment extends Fragment implements
         Log.d(TAG, "OnMapReady");
         if (mMap != null) {
             mMap.clear();
+            autoCompleteTextViewDrop.setText("");
         }
+
         mMap = googleMap;
 
         pickupMarker = mMap.addMarker(new MarkerOptions()
@@ -1428,7 +1423,7 @@ public class AirportPickupFragment extends Fragment implements
                         errorDialog.show();
 
                         linearBtnConfirm.setVisibility(View.GONE);
-                        //mMap.clear();
+
                         if(dropMarker != null)
                         {
                             dropMarker.remove();
@@ -1498,9 +1493,21 @@ public class AirportPickupFragment extends Fragment implements
     public void GetCurrentDate()
     {
         Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, dd MMM");
-        curr_converted_date = simpleDateFormat.format(c);
-        Log.d("TAG", curr_converted_date);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        strDate = simpleDateFormat.format(c.getTime());
+        Log.d(TAG, "strDate = " + strDate);
+
+        //converted format
+        Date date = null;
+        try {
+            date = (Date) simpleDateFormat.parse(strDate);
+            SimpleDateFormat sdfOutputDateFormat = new SimpleDateFormat("EEE, dd MMM");
+            curr_converted_date = sdfOutputDateFormat.format(date);
+            Log.d(TAG, "curr_converted_date - " + curr_converted_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         txtPickupDatePicker.setText(curr_converted_date);
     }
@@ -1838,7 +1845,7 @@ public class AirportPickupFragment extends Fragment implements
     public void onResume() {
         super.onResume();
 
-        if(isCurrent)
+        /*if(isCurrent)
         {
             autoCompleteTextViewDrop.setText("");
             getAddressFromCurrentLocation(currentLatitude,currentLongitude);
@@ -1846,6 +1853,6 @@ public class AirportPickupFragment extends Fragment implements
         else
         {
             autoCompleteTextViewDrop.setText("");
-        }
+        }*/
     }
 }

@@ -192,8 +192,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                findCarItemClickListener);
         recyclerView.setAdapter(findsCarRecyclerAdapter);
 
-
-
         hourPackageModelList = new ArrayList<>();
 
         hourPackageModelList.add(new HourPackage("2km","25 km"));
@@ -214,15 +212,12 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(FindCarActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
                 finish();
             }
         });
 
         viewDetailsText.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
+            @SuppressLint("NewApi")
             @Override
             public void onClick(View view) {
 
@@ -508,8 +503,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(i);
         finish();
     }
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
-    android:background="@drawable/constraint_layout_border"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@drawable/constraint_layout_border">
 
 
     <ScrollView
@@ -14,185 +14,185 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        android:gravity="center"
-        android:background="@drawable/linear_corner_radius_background"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Select Payment Type"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginTop="10dp"/>
-
-        <RadioGroup
-            android:id="@+id/radioGroupPayment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioGooglePay"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/google_pay"
-                android:drawableLeft="@drawable/google_pay_icon"
-                android:layout_gravity="start"
-                android:paddingStart="10dp"
-                android:checked="true"
-                android:layout_marginStart="30dp"
-                android:drawablePadding="10dp"/>
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:background="@drawable/linear_corner_radius_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioExistingUpiId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/add_existing_upi_id"
-                android:drawableLeft="@drawable/add_existing_upi_id"
-                android:layout_gravity="start"
-                android:paddingStart="10dp"
-                android:layout_marginStart="30dp"
-                android:drawablePadding="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="Select Payment Type"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioPayPal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/paypal"
-                android:drawableLeft="@drawable/pay_pal_icon"
-                android:layout_gravity="start"
-                android:paddingStart="10dp"
-                android:layout_marginStart="30dp"
-                android:drawablePadding="10dp"/>
+                <RadioGroup
+                    android:id="@+id/radioGroupPayment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioCreditCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/credit_card"
-                android:drawableLeft="@drawable/credit_card_icon"
-                android:layout_gravity="start"
-                android:paddingStart="10dp"
-                android:layout_marginStart="30dp"
-                android:drawablePadding="10dp"/>
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioGooglePay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="30dp"
+                        android:checked="true"
+                        android:drawableLeft="@drawable/google_pay_icon"
+                        android:drawablePadding="10dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/google_pay" />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioDebitCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/debit_card"
-                android:drawableLeft="@drawable/debit_card_icon"
-                android:layout_gravity="start"
-                android:paddingStart="10dp"
-                android:layout_marginStart="30dp"
-                android:drawablePadding="10dp"/>
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioExistingUpiId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="30dp"
+                        android:drawableLeft="@drawable/add_existing_upi_id"
+                        android:drawablePadding="10dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/add_existing_upi_id" />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioNetBanking"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/netbanking_card"
-                android:drawableLeft="@drawable/net_banking_card"
-                android:layout_gravity="start"
-                android:paddingStart="10dp"
-                android:layout_marginStart="30dp"
-                android:drawablePadding="10dp"/>
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioPayPal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="30dp"
+                        android:drawableLeft="@drawable/pay_pal_icon"
+                        android:drawablePadding="10dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/paypal" />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioNoCostEmi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_cost_emi_no_selected_banks"
-                android:drawableLeft="@drawable/no_cost_emi_icon"
-                android:layout_gravity="start"
-                android:paddingStart="10dp"
-                android:layout_marginStart="30dp"
-                android:drawablePadding="10dp"/>
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioCreditCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="30dp"
+                        android:drawableLeft="@drawable/credit_card_icon"
+                        android:drawablePadding="10dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/credit_card" />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioWallets"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/wallets"
-                android:drawableLeft="@drawable/wallet_icon"
-                android:layout_gravity="start"
-                android:paddingStart="10dp"
-                android:layout_marginStart="30dp"
-                android:drawablePadding="10dp"/>
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioDebitCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="30dp"
+                        android:drawableLeft="@drawable/debit_card_icon"
+                        android:drawablePadding="10dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/debit_card" />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioZestMoneyEmi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/zestmoney_emi"
-                android:drawableLeft="@drawable/zestmoney_emi_icon"
-                android:layout_gravity="start"
-                android:paddingStart="10dp"
-                android:layout_marginStart="30dp"
-                android:drawablePadding="10dp"/>
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioNetBanking"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="30dp"
+                        android:drawableLeft="@drawable/net_banking_card"
+                        android:drawablePadding="10dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/netbanking_card" />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioGiftVoucher"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/gift_voucher"
-                android:drawableLeft="@drawable/gift_voucher_icon"
-                android:layout_gravity="start"
-                android:paddingStart="10dp"
-                android:layout_marginStart="30dp"
-                android:drawablePadding="10dp"/>
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioNoCostEmi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="30dp"
+                        android:drawableLeft="@drawable/no_cost_emi_icon"
+                        android:drawablePadding="10dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/no_cost_emi_no_selected_banks" />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioAmazonPay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/amazon_pay"
-                android:drawableLeft="@drawable/amazon_pay_icon"
-                android:layout_gravity="start"
-                android:paddingStart="10dp"
-                android:layout_marginStart="30dp"
-                android:drawablePadding="10dp"/>
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioWallets"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="30dp"
+                        android:drawableLeft="@drawable/wallet_icon"
+                        android:drawablePadding="10dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/wallets" />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioCash"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/cash"
-                android:drawableLeft="@drawable/cash"
-                android:layout_gravity="start"
-                android:paddingStart="10dp"
-                android:layout_marginStart="30dp"
-                android:drawablePadding="10dp"/>
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioZestMoneyEmi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="30dp"
+                        android:drawableLeft="@drawable/zestmoney_emi_icon"
+                        android:drawablePadding="10dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/zestmoney_emi" />
 
-        </RadioGroup>
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioGiftVoucher"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="30dp"
+                        android:drawableLeft="@drawable/gift_voucher_icon"
+                        android:drawablePadding="10dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/gift_voucher" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/bookingSuccessfulButton"
-            android:layout_width="220dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rounded_button"
-            android:text="PAY"
-            android:textColor="@color/white"
-            android:layout_marginBottom="30dp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout1" />
-    </LinearLayout>
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioAmazonPay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="30dp"
+                        android:drawableLeft="@drawable/amazon_pay_icon"
+                        android:drawablePadding="10dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/amazon_pay" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioCash"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="30dp"
+                        android:drawableLeft="@drawable/cash"
+                        android:drawablePadding="10dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/cash" />
+
+                </RadioGroup>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnPay"
+                    android:layout_width="220dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/rounded_button"
+                    android:text="PAY"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/linearLayout1" />
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

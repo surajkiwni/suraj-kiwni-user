@@ -41,6 +41,15 @@
         <action
             android:id="@+id/action_nav_home_to_nav_payment"
             app:destination="@id/nav_payment" />
+        <action
+            android:id="@+id/action_nav_home_to_outstationFragment2"
+            app:destination="@id/outstationFragment2" />
+        <action
+            android:id="@+id/action_nav_home_to_airportFragment"
+            app:destination="@id/airportFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_rentalFragment"
+            app:destination="@id/rentalFragment" />
 
     </fragment>
 
@@ -131,4 +140,19 @@
             android:id="@+id/action_profileFragment_to_mainActivity"
             app:destination="@id/mainActivity" />
     </fragment>
+    <fragment
+        android:id="@+id/outstationFragment2"
+        android:name="com.kiwni.app.user.fragments.OutstationFragment"
+        android:label="fragment_outstation"
+        tools:layout="@layout/fragment_outstation" />
+    <fragment
+        android:id="@+id/airportFragment"
+        android:name="com.kiwni.app.user.fragments.AirportFragment"
+        android:label="fragment_airport"
+        tools:layout="@layout/fragment_airport" />
+    <fragment
+        android:id="@+id/rentalFragment"
+        android:name="com.kiwni.app.user.fragments.RentalFragment"
+        android:label="fragment_rental"
+        tools:layout="@layout/fragment_rental" />
 </navigation>

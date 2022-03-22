@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView2"
         android:layout_width="match_parent"
@@ -40,21 +38,8 @@
             android:layout_height="match_parent"
             android:layout_marginTop="40dp">
 
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:saveEnabled="false"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-
-
         </FrameLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

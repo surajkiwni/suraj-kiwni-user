@@ -8,29 +8,23 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.tabs.TabLayout;
 import com.kiwni.app.user.R;
-import com.kiwni.app.user.adapter.AirportViewPagerAdapter;
+import com.kiwni.app.user.ui.home.HomeFragment;
 
 
 public class AirportFragment extends Fragment
 {
-    AirportViewPagerAdapter airportViewPagerAdapter;
     TabLayout tabLayout;
-    ViewPager2 airportViewPager;
+    //ViewPager2 airportViewPager;
     String serviceType = "", direction = "";
 
     View view;
-
-    static AirportFragment myInstance;
-    public synchronized static AirportFragment getInstance() {
-        if (myInstance == null) {
-            myInstance = new AirportFragment();
-        }
-        return myInstance;
-    }
+    static AirportFragment instance;
+    Fragment airportPickupFragment, airportDropFragment;
 
     public AirportFragment() {
         // Required empty public constructor
@@ -56,26 +50,21 @@ public class AirportFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // initialize view Pager
-        airportViewPager = view.findViewById(R.id.airportViewPager);
-
-        //setting up adaptor with fragment
-        airportViewPagerAdapter = new AirportViewPagerAdapter(this);
-
-        //adaptor set to the view Pager
-        airportViewPager.setAdapter(airportViewPagerAdapter);
-
+        instance = this;
         tabLayout = (TabLayout) view.findViewById(R.id.airportTabLayout);
-
-        airportViewPager.setCurrentItem(0, true);
-
-        tabLayout.addTab(tabLayout.newTab().setText("AIRPORT PICKUP"));
-        tabLayout.addTab(tabLayout.newTab().setText("AIRPORT DROP"));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                airportViewPager.setCurrentItem(tab.getPosition());
+                switch (tab.getPosition())
+                {
+                    case 0 :
+                        replaceFragment(airportPickupFragment);
+                        break;
+                    case 1 :
+                        replaceFragment(airportDropFragment);
+                        break;
+                }
             }
 
             @Override
@@ -88,12 +77,23 @@ public class AirportFragment extends Fragment
             }
         });
 
-        airportViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                tabLayout.selectTab(tabLayout.getTabAt(position));
-            }
-        });
+        airportPickupFragment = new AirportPickupFragment();
+        airportDropFragment = new AirportDropFragment();
+
+        tabLayout.addTab(tabLayout.newTab().setText("AIRPORT PICKUP"), true);
+        tabLayout.addTab(tabLayout.newTab().setText("AIRPORT DROP"));
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.airportFrameLayout, fragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.commit();
+    }
+
+    public static AirportFragment getInstance() {
+        return instance;
     }
 
     @Override

@@ -185,8 +185,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
+                //startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
                 finish();
 
             }

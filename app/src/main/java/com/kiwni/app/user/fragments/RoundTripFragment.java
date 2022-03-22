@@ -123,7 +123,8 @@ public class RoundTripFragment extends Fragment implements
     AutocompletePrediction item;
     String direction = "", distanceTextFromApi = "", distanceValueFromApi = "",
             durationTextFromApi = "", durationInTrafficFromApi = "",
-            curr_converted_date = "", strDropDate = "", strPickupDate = "";
+            curr_converted_date = "", strDropDate = "", strPickupDate = "", convertedDateFormat = "",
+            convertedDropDateFormat = "";
 
     Spinner pickup_spinner_time;
     ArrayList<KeyValue> time = new ArrayList<>();
@@ -135,15 +136,6 @@ public class RoundTripFragment extends Fragment implements
     String concatDateTime = "", sendToApiPickupTime = "",
             sendToApiDropTime = "", changeStartDateFormat ="";
     int mYear, mMonth, mDay, mHour, mMinute;
-
-    static RoundTripFragment myInstance;
-
-    public synchronized static RoundTripFragment getInstance() {
-        if (myInstance == null) {
-            myInstance = new RoundTripFragment();
-        }
-        return myInstance;
-    }
 
     public RoundTripFragment() {
         // Required empty public constructor
@@ -233,7 +225,8 @@ public class RoundTripFragment extends Fragment implements
         }
 
         //get current date in format and set to UI
-        GetCurrentDate();
+        GetCurrentPickupDate();
+        GetCurrentDropDate();
 
         //compare two dates are same or not
         SimpleDateFormat inputFormat = new SimpleDateFormat("EEE, dd MMM");
@@ -290,7 +283,8 @@ public class RoundTripFragment extends Fragment implements
         //Date picker
         layoutPickupDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 final Calendar c = Calendar.getInstance();
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
@@ -316,17 +310,20 @@ public class RoundTripFragment extends Fragment implements
                                 Date date = null;
                                 try {
                                     date = (Date) simpleDateFormat.parse(strPickupDate);
-                                    SimpleDateFormat sdf2 = new SimpleDateFormat("EEE, dd MMM");
-                                    txtPickupDatePicker.setText(sdf2.format(date));
+                                    SimpleDateFormat sdfOutputDateFormat = new SimpleDateFormat("EEE, dd MMM");
+                                    convertedDateFormat = sdfOutputDateFormat.format(date);
+                                    Log.d(TAG, "convertedDateFormat - " + convertedDateFormat);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
+
+                                txtPickupDatePicker.setText(convertedDateFormat);
 
                                 //compare two dates are same or not
                                 SimpleDateFormat inputFormat = new SimpleDateFormat("EEE, dd MMM");
                                 try {
                                     Date currentDate = inputFormat.parse(curr_converted_date);
-                                    Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
+                                    Date pickerDate = inputFormat.parse(convertedDateFormat);
 
                                     if(currentDate.compareTo(pickerDate) == 0)
                                     {
@@ -382,17 +379,20 @@ public class RoundTripFragment extends Fragment implements
                                 Date date = null;
                                 try {
                                     date = (Date) simpleDateFormat.parse(strDropDate);
-                                    SimpleDateFormat sdf2 = new SimpleDateFormat("EEE, dd MMM");
-                                    txtDropDatePicker.setText(sdf2.format(date));
+                                    SimpleDateFormat sdfOutputDateFormat = new SimpleDateFormat("EEE, dd MMM");
+                                    convertedDropDateFormat = sdfOutputDateFormat.format(date);
+                                    Log.d(TAG, "convertedDropDateFormat - " + convertedDropDateFormat);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
+
+                                txtDropDatePicker.setText(convertedDropDateFormat);
 
                                 //compare two dates are same or not
                                 SimpleDateFormat inputFormat = new SimpleDateFormat("EEE, dd MMM");
                                 try {
                                     Date currentDate = inputFormat.parse(curr_converted_date);
-                                    Date pickerDate = inputFormat.parse(txtDropDatePicker.getText().toString());
+                                    Date pickerDate = inputFormat.parse(convertedDropDateFormat);
 
                                     if(currentDate.compareTo(pickerDate) == 0)
                                     {
@@ -779,7 +779,7 @@ public class RoundTripFragment extends Fragment implements
                             else
                             {
                                 concatDateTime = strPickupDate + " " + pickup_spinner_time.getSelectedItem().toString();
-                                Log.d(TAG,"pickup date time = " + concatDateTime);
+                                Log.d(TAG,"concat pickup date time = " + concatDateTime);
 
                                 getCurrentDateToSendApiInFormat(concatDateTime);
 
@@ -826,7 +826,7 @@ public class RoundTripFragment extends Fragment implements
                                 PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE_IN_KM, distanceTextFromApi);
 
                                 startActivity(i);
-                                getActivity().finish();
+                                //getActivity().finish();
                             }
                         }
                         catch (Exception e)
@@ -932,6 +932,7 @@ public class RoundTripFragment extends Fragment implements
         Log.d(TAG, "OnMapReady");
         if (mMap != null) {
             mMap.clear();
+            autoCompleteTextViewDrop.setText("");
         }
         mMap = googleMap;
 
@@ -1553,14 +1554,47 @@ public class RoundTripFragment extends Fragment implements
     }
 
     //set current date in format
-    public void GetCurrentDate()
+    public void GetCurrentPickupDate()
     {
         Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, dd MMM");
-        curr_converted_date = simpleDateFormat.format(c);
-        Log.d("TAG", curr_converted_date);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        strPickupDate = simpleDateFormat.format(c.getTime());
+        Log.d(TAG, "strPickupDate = " + strPickupDate);
+
+        //converted format
+        Date date = null;
+        try {
+            date = (Date) simpleDateFormat.parse(strPickupDate);
+            SimpleDateFormat sdfOutputDateFormat = new SimpleDateFormat("EEE, dd MMM");
+            curr_converted_date = sdfOutputDateFormat.format(date);
+            Log.d(TAG, "curr_converted_date - " + curr_converted_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         txtPickupDatePicker.setText(curr_converted_date);
+    }
+
+    public void GetCurrentDropDate()
+    {
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        strDropDate = simpleDateFormat.format(c.getTime());
+        Log.d(TAG, "strDropDate = " + strDropDate);
+
+        //converted format
+        Date date = null;
+        try {
+            date = (Date) simpleDateFormat.parse(strDropDate);
+            SimpleDateFormat sdfOutputDateFormat = new SimpleDateFormat("EEE, dd MMM");
+            curr_converted_date = sdfOutputDateFormat.format(date);
+            Log.d(TAG, "curr_converted_date - " + curr_converted_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         txtDropDatePicker.setText(curr_converted_date);
     }
 
@@ -1836,8 +1870,8 @@ public class RoundTripFragment extends Fragment implements
         super.onPause();
         Log.d("TAG","onPause");
 
-        autoCompleteTextViewPickup.setText("");
-        autoCompleteTextViewDrop.setText("");
+        /*autoCompleteTextViewPickup.setText("");
+        autoCompleteTextViewDrop.setText("");*/
 
         isCurrent = true;
     }
@@ -1862,14 +1896,14 @@ public class RoundTripFragment extends Fragment implements
 
         Log.d("TAG","onResume");
 
-        if(isCurrent)
+        /*if(isCurrent)
         {
-            autoCompleteTextViewDrop.setText("");
+            //autoCompleteTextViewDrop.setText("");
             getAddressFromCurrentLocation(currentLatitude,currentLongitude);
         }
         else
         {
-            autoCompleteTextViewDrop.setText("");
-        }
+            //autoCompleteTextViewDrop.setText("");
+        }*/
     }
 }

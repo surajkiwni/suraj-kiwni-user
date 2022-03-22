@@ -22,6 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -32,16 +33,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
-    /*public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {*/
-
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+{
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
     public DrawerLayout drawerLayout;
     NavController navController;
-    public TextView headerNameText  ;
+    ConstraintLayout constraintProfile;
 
     BottomSheetDialog bottomSheetDialog;
     MenuItem action_like;
@@ -79,26 +78,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
-       navigationView.setNavigationItemSelectedListener(this);
-
+        navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
-        headerNameText =headerView.findViewById(R.id.headerNameText);
-        headerNameText.setOnClickListener(new View.OnClickListener() {
+        constraintProfile =headerView.findViewById(R.id.constraintProfile);
+        constraintProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 navController.navigate(R.id.action_nav_home_to_profileFragment);
-                /*Intent intent = new Intent(MainActivity.this, ProfileFragment.class);
-                startActivity(intent);*/
-
                 drawerLayout.close();
             }
         });
-
-
-
-
     }
 
     @Override
@@ -110,7 +100,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_like:
@@ -159,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-                @Override
+    @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
        /* return NavigationUI.navigateUp(navController, mAppBarConfiguration)
@@ -194,17 +185,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         item.setChecked(true);
 
         drawerLayout.closeDrawers();
 
         int id = item.getItemId();
 
-
             switch (id)
             {
-
                 case R.id.nav_shareapp:
                     Intent sendIntent = new Intent();
                     sendIntent.setAction(Intent.ACTION_SEND);
@@ -275,12 +263,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     navController.navigate(R.id.action_nav_home_to_nav_about);
                     break;
-
             }
 
-
             return true;
-
     }
 
     @Override
@@ -302,8 +287,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onRestart() {
         super.onRestart();
     }
-
-
-
-
 }

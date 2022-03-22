@@ -58,7 +58,6 @@ public class BookingDetailsActivity extends AppCompatActivity {
         bookingModelList.add(new BookingModel2(R.drawable.sharing_location,"Sharing Location"));
         bookingModelList.add(new BookingModel2(R.drawable.gps_speed_limit,"GPS Speed Limit"));
 
-
         bookingModelList1.add(new BookingModel2(R.drawable.umbrella,"Umbrella"));
         bookingModelList1.add(new BookingModel2(R.drawable.wifi,"WIFI"));
         bookingModelList1.add(new BookingModel2(R.drawable.news_paper,"News Paper"));
@@ -112,16 +111,13 @@ public class BookingDetailsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
 
-        startActivity(new Intent(BookingDetailsActivity.this, CarListTypeActivity.class));
+        //startActivity(new Intent(BookingDetailsActivity.this, CarListTypeActivity.class));
         finish();
 
     }
