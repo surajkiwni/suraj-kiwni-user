@@ -546,10 +546,8 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
     }
 
     @Override
-    public void onItemClick(View v, int position, List<BookingModel> bookingModels) {
-
-        // Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
-
+    public void onItemClick(View v, int position, List<BookingModel> bookingModels)
+    {
         Intent intent = new Intent(CarListTypeActivity.this, BookingDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

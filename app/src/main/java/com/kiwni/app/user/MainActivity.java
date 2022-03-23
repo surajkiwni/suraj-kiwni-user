@@ -4,6 +4,9 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,14 +16,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.databinding.ActivityMainBinding;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
+import com.kiwni.app.user.models.socket.SocketReservationResp;
+import com.kiwni.app.user.socket.SocketSingletonClass;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.NavController;
@@ -37,11 +44,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
-
+    String TAG = this.getClass().getSimpleName();
     public DrawerLayout drawerLayout;
     NavController navController;
     ConstraintLayout constraintProfile;
-
     BottomSheetDialog bottomSheetDialog;
     MenuItem action_like;
 
@@ -55,9 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(binding.appBarMain.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-
         getSupportActionBar().setTitle("title");
-
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -135,8 +139,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 saveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-
                         bottomSheetDialog.dismiss();
                     }
                 });

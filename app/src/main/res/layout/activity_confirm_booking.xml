@@ -30,7 +30,7 @@
         app:layout_constraintVertical_bias="0.533" />
 
     <TextView
-        android:id="@+id/toolbarText2"
+        android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -149,11 +149,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
 
                     <TextView
-                        android:id="@+id/outstationText"
+                        android:id="@+id/txtTitleType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="10dp"
-                        android:text="Outstation"
+                        android:text="Outstation (Round Trip)"
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp_12"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -161,7 +161,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.14999998" />
 
-                    <TextView
+                    <!--<TextView
                         android:id="@+id/outstationText1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -170,7 +170,7 @@
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="@+id/outstationText"
                         app:layout_constraintStart_toEndOf="@+id/outstationText"
-                        app:layout_constraintTop_toTopOf="@+id/outstationText" />
+                        app:layout_constraintTop_toTopOf="@+id/outstationText" />-->
 
                     <ImageView
                         android:id="@+id/imageView2"
@@ -178,20 +178,20 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_10"
                         android:src="@drawable/calender"
-                        app:layout_constraintBottom_toBottomOf="@id/textAC"
-                        app:layout_constraintEnd_toStartOf="@+id/textAC"
+                        app:layout_constraintBottom_toBottomOf="@id/txtStartEndDate"
+                        app:layout_constraintEnd_toStartOf="@+id/txtStartEndDate"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textAC" />
+                        app:layout_constraintTop_toTopOf="@+id/txtStartEndDate" />
 
                     <TextView
-                        android:id="@+id/textAC"
+                        android:id="@+id/txtStartEndDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Fri, 24 Dec-Mon, 27 Dec"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imageView2"
-                        app:layout_constraintTop_toBottomOf="@+id/outstationText"
+                        app:layout_constraintTop_toBottomOf="@+id/txtTitleType"
                         app:layout_constraintVertical_bias="0.16000003" />
 
 
@@ -201,22 +201,22 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_10"
                         android:src="@drawable/clock"
-                        app:layout_constraintBottom_toBottomOf="@+id/textClock"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtStartTime"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textClock" />
+                        app:layout_constraintTop_toTopOf="@+id/txtStartTime" />
 
                     <TextView
-                        android:id="@+id/textClock"
+                        android:id="@+id/txtStartTime"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-                        android:text="07:00"
+                        android:text="07:00 PM"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imageClock"
                         app:layout_constraintTop_toBottomOf="@+id/imageView2"
                         app:layout_constraintVertical_bias="0.100000024" />
 
-                    <TextView
+                    <!--<TextView
                         android:id="@+id/pmText"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
@@ -225,7 +225,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/textClock"
                         app:layout_constraintTop_toBottomOf="@+id/imageView2"
-                        app:layout_constraintVertical_bias="0.100000024" />
+                        app:layout_constraintVertical_bias="0.100000024" />-->
 
                     <ImageView
                         android:id="@+id/estImage"
@@ -234,12 +234,12 @@
                         android:layout_marginStart="@dimen/dp_10"
                         android:padding="2dp"
                         android:src="@drawable/est_time"
-                        app:layout_constraintBottom_toBottomOf="@id/textKM"
+                        app:layout_constraintBottom_toBottomOf="@id/txtEstimatedKm"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textKM" />
+                        app:layout_constraintTop_toTopOf="@+id/txtEstimatedKm" />
 
                     <TextView
-                        android:id="@+id/textKM"
+                        android:id="@+id/txtEstimatedKm"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
                         android:paddingStart="3dp"
@@ -257,9 +257,9 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/mask_group"
                         app:layout_constraintHorizontal_bias="0.75"
-                        app:layout_constraintLeft_toRightOf="@+id/outstationText1"
+                        app:layout_constraintLeft_toRightOf="@+id/txtTitleType"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/outstationText1" />
+                        app:layout_constraintTop_toTopOf="@+id/txtTitleType" />
 
                     <TextView
                         android:id="@+id/carNameText"

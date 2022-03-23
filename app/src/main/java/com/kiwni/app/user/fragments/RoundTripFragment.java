@@ -214,7 +214,7 @@ public class RoundTripFragment extends Fragment implements
         if(currentLatitude != 0.0 && currentLongitude != 0.0)
         {
             getAddressFromCurrentLocation(currentLatitude, currentLongitude);
-            DrawMarker(currentLatitude, currentLongitude, pickup_city);
+            //DrawMarker(currentLatitude, currentLongitude, pickup_city);
             pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
             AddMarker(pickup_city);
             Log.d(TAG, "size 0 for current loc = " + pickupLocationList.size());
@@ -1127,11 +1127,6 @@ public class RoundTripFragment extends Fragment implements
             Log.d(TAG, "size of add marker 1 = " + pickupLocationList.size());
             Log.d(TAG, "size of add marker 2 = " + dropLocationList.size());
         }
-
-        /*if(pickupLocationList.size() == 1 && dropLocationList.size() == 1)
-        {
-            drawRoute(title);
-        }*/
     }
 
     public void drawRoute()

@@ -2,8 +2,10 @@ package com.kiwni.app.user.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -17,6 +19,8 @@ import com.kiwni.app.user.adapter.BookingAdapter;
 import com.kiwni.app.user.adapter.NestedAdapter;
 import com.kiwni.app.user.adapter.TitleItemAdapter;
 import com.kiwni.app.user.datamodels.BookingModel2;
+import com.kiwni.app.user.sharedpref.SharedPref;
+import com.kiwni.app.user.utils.PreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +37,9 @@ public class BookingDetailsActivity extends AppCompatActivity {
 
     ImageView imageBack;
     AppCompatButton proceedButton;
+    TextView txtTitle, txtStartTime, txtStartEndDate, txtEstimatedKm, txtTitleType;
+
+    String direction = "", startDate = "", endDate = "", startTime = "", serviceType = "", distanceInKm = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,8 +47,29 @@ public class BookingDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_details);
 
-        recyclerView1 =findViewById(R.id.recyclerView1);
-        recyclerView2=findViewById(R.id.recyclerView2);
+        recyclerView1 = findViewById(R.id.recyclerView1);
+        recyclerView2 = findViewById(R.id.recyclerView2);
+        txtTitle = findViewById(R.id.txtTitle);
+        txtStartEndDate = findViewById(R.id.txtStartEndDate);
+        txtStartTime = findViewById(R.id.txtStartTime);
+        txtEstimatedKm = findViewById(R.id.txtEstimatedKm);
+        txtTitleType = findViewById(R.id.txtTitleType);
+
+        //pref data
+        direction = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DIRECTION,"");
+        serviceType = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SERVICE_TYPE,"");
+        Log.d("TAG","data from previous screen - " + direction + " , " + serviceType);
+
+        startDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_DATE_TO_DISPLAY, "");
+        endDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_DATE_TO_DISPLAY, "");
+        startTime = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_TIME_TO_DISPLAY, "");
+        distanceInKm = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DISTANCE_IN_KM, "");
+
+        txtTitle.setText("Booking Details");
+        txtStartTime.setText(startTime);
+        txtStartEndDate.setText(startDate);
+        txtEstimatedKm.setText("Est km " + distanceInKm);
+        txtTitleType.setText(serviceType + " ( " + direction + " ) ");
 
         bookingModelList = new ArrayList<>();
         bookingModelList1 = new ArrayList<>();
