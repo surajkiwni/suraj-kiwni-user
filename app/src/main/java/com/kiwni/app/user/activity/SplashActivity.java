@@ -20,13 +20,16 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
+import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
 
-public class SplashActivity extends AppCompatActivity {
-    private static int SPLASH_SCREEN_TIME_OUT = 2000;
-    private static int GPS_ON_CODE = 1001;
+public class SplashActivity extends AppCompatActivity
+{
+    /*private static int SPLASH_SCREEN_TIME_OUT = 2000;
+    private static int GPS_ON_CODE = 1001;*/
     boolean hasLoggedIn = false;
 
     FusedLocationProviderClient mFusedLocationClient;
@@ -34,6 +37,7 @@ public class SplashActivity extends AppCompatActivity {
     LocationRequest locationRequest;
     LocationCallback locationCallback;
     String TAG = this.getClass().getSimpleName();
+    String mobile = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -84,6 +88,27 @@ public class SplashActivity extends AppCompatActivity {
 
                             startActivity(i);
                             finish();
+                            /*if(hasLoggedIn)
+                            {
+                                mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
+
+                                Intent i = new Intent(SplashActivity.this, MainActivity.class);
+
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, mobile);
+                                startActivity(i);
+                                finish();
+                            }
+                            else
+                            {
+                                Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+
+                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
+                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+
+                                startActivity(i);
+                                finish();
+                            }*/
                         }
 
                         if (mFusedLocationClient != null) {
@@ -115,11 +140,11 @@ public class SplashActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), GPS_ON_CODE);
+                    startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), AppConstants.GPS_REQUEST);
                     GetCurrentLocation();
                 }
             }
-        }, SPLASH_SCREEN_TIME_OUT);
+        }, AppConstants.SPLASH_SCREEN_TIME_OUT);
     }
 
     @Override
@@ -135,7 +160,7 @@ public class SplashActivity extends AppCompatActivity {
                 {
                     Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
 
-                    startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), GPS_ON_CODE);
+                    startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), AppConstants.GPS_REQUEST);
                 }
             }
             else
@@ -150,7 +175,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == GPS_ON_CODE)
+        if (requestCode == AppConstants.GPS_REQUEST)
         {
             //startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), GPS_ON_CODE);
             GetCurrentLocation();
@@ -190,6 +215,27 @@ public class SplashActivity extends AppCompatActivity {
 
                     startActivity(i);
                     finish();
+                    /*if(hasLoggedIn)
+                    {
+                        mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
+
+                        Intent i = new Intent(SplashActivity.this, MainActivity.class);
+
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, mobile);
+                        startActivity(i);
+                        finish();
+                    }
+                    else
+                    {
+                        Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+
+                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
+                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+
+                        startActivity(i);
+                        finish();
+                    }*/
                 }
                 else {
                     mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);

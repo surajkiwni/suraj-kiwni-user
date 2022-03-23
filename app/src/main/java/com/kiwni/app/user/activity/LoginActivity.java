@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.kiwni.app.user.R;
+import com.kiwni.app.user.datamodels.ErrorDialog;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
@@ -99,14 +101,19 @@ public class LoginActivity extends AppCompatActivity
     public void setValidation()
     {
         //Phone no validation
-        if (edtPhoneNumber.getText().toString().isEmpty()) {
-            edtPhoneNumber.setError(getResources().getString(R.string.phoneno_error));
+        if (edtPhoneNumber.getText().toString().isEmpty())
+        {
+            //edtPhoneNumber.setError(getResources().getString(R.string.phoneno_error));
             //edtPhoneNo.requestFocus();
+            ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), getResources().getString(R.string.phoneno_error));
+            errorDialog.show();
             isPhoneNoValid = false;
         } else if (edtPhoneNumber.getText().toString().length() > 10)
         {
-            edtPhoneNumber.setError("Enter 10 digit mobile no");
+            //edtPhoneNumber.setError("Enter 10 digit mobile no");
             //edtPhoneNo.requestFocus();
+            ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "Enter 10 digit mobile no");
+            errorDialog.show();
             isPhoneNoValid = false;
         } else {
             edtPhoneNumber.setError(null);

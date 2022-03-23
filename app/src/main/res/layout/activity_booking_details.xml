@@ -31,14 +31,14 @@
 
 
     <TextView
-        android:id="@+id/toolbarText2"
+        android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text=" Booking Details "
         android:textColor="@color/black"
-        android:visibility="visible"
         android:textSize="@dimen/sp_14"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -61,10 +61,10 @@
                 android:id="@+id/constraintLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_grey2"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
+                android:background="@drawable/border_grey2"
                 app:layout_constraintTop_toTopOf="@+id/mainConstraintLayout">
 
 
@@ -80,23 +80,23 @@
                         android:id="@+id/redSpotImage"
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/pickuppoint"
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
+                        android:src="@drawable/pickuppoint"
+                        app:layout_constraintBottom_toBottomOf="@+id/addressTextView"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/addressTextView"
-                        app:layout_constraintBottom_toBottomOf="@+id/addressTextView" />
+                        app:layout_constraintTop_toTopOf="@+id/addressTextView" />
 
                     <TextView
                         android:id="@+id/addressTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:paddingStart="5dp"
                         android:text="Lane No. 3, Link Road, Navi Mumbai, Maharashtra.."
                         android:textColor="@color/black"
-                        android:gravity="center"
                         android:textSize="@dimen/sp_12"
-                        android:paddingStart="5dp"
-                        android:layout_gravity="center"
                         app:layout_constraintStart_toEndOf="@+id/redSpotImage"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -113,68 +113,53 @@
                         android:id="@+id/greenSpotImage"
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/droppoint"
-                        android:layout_marginLeft="10dp"
                         android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/droppoint"
+                        app:layout_constraintBottom_toBottomOf="@+id/dropTextView"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/dropTextView"
-                        app:layout_constraintBottom_toBottomOf="@+id/dropTextView" />
+                        app:layout_constraintTop_toTopOf="@+id/dropTextView" />
 
                     <TextView
                         android:id="@+id/dropTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Spin plaza, Choudhari wasti, Pune, Maharashtra.."
-                        android:textColor="@color/black"
-                        android:gravity="center"
-                        android:textSize="@dimen/sp_12"
-                        android:paddingStart="5dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:paddingStart="5dp"
+                        android:text="Spin plaza, Choudhari wasti, Pune, Maharashtra.."
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_12"
                         app:layout_constraintStart_toEndOf="@+id/greenSpotImage"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/constraintLayout2"
                     android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
                     android:background="#F3F3F3F7"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
-                    app:layout_constraintLeft_toLeftOf="parent">
-
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
 
 
                     <TextView
-                        android:id="@+id/outstationText"
+                        android:id="@+id/txtTitleType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="10dp"
-                        android:text="Outstation"
-                        android:textSize="13sp"
+                        android:text="Outstation (Round Trip)"
                         android:textColor="@color/black"
+                        android:textSize="13sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.14999998" />
-
-                    <TextView
-                        android:id="@+id/outstationText1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="(Round Trip)"
-                        android:paddingStart="2dp"
-                        android:textSize="13sp"
-                        android:textColor="@color/black"
-                        app:layout_constraintStart_toEndOf="@+id/outstationText"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintVertical_bias="0.14999998"
-                        />
 
                     <ImageView
                         android:id="@+id/imageView2"
@@ -182,21 +167,20 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_10"
                         android:src="@drawable/calender"
-                        app:layout_constraintBottom_toBottomOf="@id/textAC"
-                        app:layout_constraintEnd_toStartOf="@+id/textAC"
+                        app:layout_constraintBottom_toBottomOf="@id/txtStartEndDate"
+                        app:layout_constraintEnd_toStartOf="@+id/txtStartEndDate"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textAC"
-                        />
+                        app:layout_constraintTop_toTopOf="@+id/txtStartEndDate" />
 
                     <TextView
-                        android:id="@+id/textAC"
+                        android:id="@+id/txtStartEndDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Fri, 24 Dec-Mon, 27 Dec"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imageView2"
-                        app:layout_constraintTop_toBottomOf="@+id/outstationText"
+                        app:layout_constraintTop_toBottomOf="@+id/txtTitleType"
                         app:layout_constraintVertical_bias="0.16000003" />
 
 
@@ -204,25 +188,24 @@
                         android:id="@+id/imageClock"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/clock"
                         android:layout_marginStart="@dimen/dp_10"
-                        app:layout_constraintBottom_toBottomOf="@+id/textClock"
+                        android:src="@drawable/clock"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtStartTime"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textClock"
-                        />
+                        app:layout_constraintTop_toTopOf="@+id/txtStartTime" />
 
                     <TextView
-                        android:id="@+id/textClock"
+                        android:id="@+id/txtStartTime"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-                        android:text="07:00"
+                        android:text="07:00 PM"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imageClock"
                         app:layout_constraintTop_toBottomOf="@+id/imageView2"
-                        app:layout_constraintVertical_bias="0.100000024"/>
+                        app:layout_constraintVertical_bias="0.100000024" />
 
-                    <TextView
+                    <!--<TextView
                         android:id="@+id/pmText"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
@@ -231,31 +214,30 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/textClock"
                         app:layout_constraintTop_toBottomOf="@+id/imageView2"
-                        app:layout_constraintVertical_bias="0.100000024"/>
+                        app:layout_constraintVertical_bias="0.100000024" />-->
 
                     <ImageView
                         android:id="@+id/estImage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/est_time"
-                        android:padding="@dimen/dp_2"
                         android:layout_marginStart="@dimen/dp_10"
-                        app:layout_constraintBottom_toBottomOf="@id/textKM"
+                        android:padding="@dimen/dp_2"
+                        android:src="@drawable/est_time"
+                        app:layout_constraintBottom_toBottomOf="@id/txtEstimatedKm"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textKM"
-                        />
+                        app:layout_constraintTop_toTopOf="@+id/txtEstimatedKm" />
 
                     <TextView
-                        android:id="@+id/textKM"
+                        android:id="@+id/txtEstimatedKm"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
                         android:paddingStart="3dp"
                         android:text="Est km 211km"
                         android:textColor="@color/black"
-                        app:layout_constraintVertical_bias="0.100000024"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/estImage"
-                        app:layout_constraintTop_toBottomOf="@+id/imageClock" />
+                        app:layout_constraintTop_toBottomOf="@+id/imageClock"
+                        app:layout_constraintVertical_bias="0.100000024" />
 
 
                     <ImageView
@@ -264,9 +246,9 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/mask_group"
                         app:layout_constraintHorizontal_bias="0.75"
-                        app:layout_constraintLeft_toRightOf="@+id/outstationText1"
+                        app:layout_constraintLeft_toRightOf="@+id/txtTitleType"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/outstationText1" />
+                        app:layout_constraintTop_toTopOf="@+id/txtTitleType" />
 
                     <TextView
                         android:id="@+id/carNameText"
@@ -276,18 +258,17 @@
                         android:textColor="@color/black"
                         app:layout_constraintEnd_toEndOf="@+id/carImage"
                         app:layout_constraintStart_toStartOf="@+id/carImage"
-                        app:layout_constraintTop_toBottomOf="@id/carImage"/>
+                        app:layout_constraintTop_toBottomOf="@id/carImage" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
                         android:text="Luxury"
                         android:textColor="#808080"
                         app:layout_constraintEnd_toEndOf="@+id/carNameText"
                         app:layout_constraintStart_toStartOf="@+id/carNameText"
-                        android:paddingBottom="5dp"
-                        app:layout_constraintTop_toBottomOf="@id/carNameText"
-                        />
+                        app:layout_constraintTop_toBottomOf="@id/carNameText" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -295,7 +276,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"/>
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -303,45 +284,43 @@
                 android:id="@+id/constraintLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_grey2"
-                android:layout_marginTop="15dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="5dp"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout1"
+                android:background="@drawable/border_grey2"
                 app:layout_constraintLeft_toLeftOf="parent"
-                >
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout1">
 
                 <TextView
                     android:id="@+id/titleText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
                     android:text="Safety Compliances Kiwni Cars Follows"
                     android:textColor="@color/black"
-                    android:padding="5dp"
-                    android:textSize="@dimen/sp_16"
-                    android:gravity="center"
+                    android:textSize="@dimen/sp_14"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <View
                     android:id="@+id/view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#707070"
+                    android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:layout_gravity="center"
-                    app:layout_constraintTop_toBottomOf="@id/titleText"
-                    />
+                    android:background="#707070"
+                    app:layout_constraintTop_toBottomOf="@id/titleText" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    app:layout_constraintTop_toBottomOf="@id/view"/>
+                    app:layout_constraintTop_toBottomOf="@id/view" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -350,45 +329,43 @@
                 android:id="@+id/constraintLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="280dp"
-                android:background="@drawable/border_grey2"
-                android:layout_marginTop="15dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="5dp"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+                android:background="@drawable/border_grey2"
                 app:layout_constraintLeft_toLeftOf="parent"
-                >
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
                 <TextView
                     android:id="@+id/titleText1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Kiwni Comfort"
+                    android:gravity="center"
                     android:padding="5dp"
+                    android:text="Kiwni Comfort"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_16"
-                    android:gravity="center"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <View
                     android:id="@+id/view1"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#707070"
+                    android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:layout_gravity="center"
-                    app:layout_constraintTop_toBottomOf="@id/titleText1"
-                    />
+                    android:background="#707070"
+                    app:layout_constraintTop_toBottomOf="@id/titleText1" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    app:layout_constraintTop_toBottomOf="@id/view1"/>
+                    app:layout_constraintTop_toBottomOf="@id/view1" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -400,23 +377,21 @@
         android:id="@+id/buttonConstraint"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintRight_toRightOf="parent">
 
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/proceedButton"
-                android:layout_width="@dimen/dp_300"
-                android:layout_height="@dimen/dp_30"
-                android:background="@drawable/rounded_button"
-                android:text="PROCEED TO PAY"
-                android:textColor="@color/white"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                />
-
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/proceedButton"
+            android:layout_width="@dimen/dp_300"
+            android:layout_height="@dimen/dp_30"
+            android:background="@drawable/rounded_button"
+            android:text="PROCEED TO PAY"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
