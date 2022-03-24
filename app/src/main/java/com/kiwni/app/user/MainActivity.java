@@ -71,8 +71,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home)
 
-                //R.id.nav_refer,R.id.nav_myrides,R.id.nav_about,
-                //R.id.nav_payment,R.id.nav_offers,R.id.nav_safety,R.id.nav_faq,R.id.nav_feedback,R.id.nav_shareapp,R.id.nav_support
                 .setOpenableLayout(drawer)
                 .build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -117,8 +115,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 bottomSheetDialog.show();
                 bottomSheetDialog.setCancelable(false);
 
-                //setStyle(STYLE_NORMAL, R.style.BottomSheetDialogStyle);
-                //bottomSheetDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
                 AppCompatButton cancelButton = view.findViewById(R.id.cancelButton);
                 AppCompatButton saveButton = view.findViewById(R.id.saveButton);
