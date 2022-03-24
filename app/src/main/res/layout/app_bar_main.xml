@@ -4,37 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    >
+    tools:context=".MainActivity">
     <!--tools:showIn="@layout/fragment_home"-->
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.User.AppBarOverlay">
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:theme="@style/Theme.User.AppBarOverlay"
+        >
 
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
-            app:titleTextColor="@color/black"
+            android:background="@drawable/top_left_right_shadow"
             app:popupTheme="@style/Theme.User.PopupOverlay"
-             >
+            app:titleTextColor="@color/black">
 
-           <!-- <TextView
-                android:id="@+id/mainToolbarText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Outstation"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
+            <!-- <TextView
+                 android:id="@+id/mainToolbarText"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:text="Outstation"
+                 android:textSize="18dp"
+                 android:textStyle="bold"
+                 android:textColor="@color/black"
 
-                />-->
-
+                 />-->
 
 
         </androidx.appcompat.widget.Toolbar>
