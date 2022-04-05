@@ -15,7 +15,9 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
+import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.databinding.FragmentAboutBinding;
 import com.kiwni.app.user.interfaces.BackKeyPressedListener;
@@ -50,9 +52,7 @@ public class AboutFragment extends Fragment implements BackKeyPressedListener {
             }
         });
 
-/*
         ((MainActivity) requireActivity()).getSupportActionBar().hide();
-*/
 
         text1= view.findViewById(R.id.text1);
         text2 = view.findViewById(R.id.text2);
@@ -73,14 +73,14 @@ public class AboutFragment extends Fragment implements BackKeyPressedListener {
                 "cars with a choice to choose as per your \n" +
                 "convenient.</p>", Html.FROM_HTML_MODE_COMPACT));
 
-        /*imageBack = view.findViewById(R.id.imageBack);
+        imageBack = view.findViewById(R.id.imageBack);
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Navigation.findNavController(view).navigate(R.id.action_nav_about_to_mainActivity);
             }
-        });*/
+        });
 
         /*final NavController navController = Navigation.findNavController(root);
 

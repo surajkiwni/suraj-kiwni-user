@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
     <item
         android:id="@+id/action_like"
-        android:orderInCategory="100"
         android:title=""
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/favourite"/>
+   <item
+       android:id="@+id/action_call"
+       android:title=""
+       android:orderInCategory="1"
+       app:showAsAction="always"
+       android:icon="@drawable/call_icon"/>
+
+
 
 
 </menu>

@@ -20,7 +20,7 @@
         android:id="@+id/imageBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/dp_12"
         android:foregroundGravity="center"
         android:src="@drawable/back_arrow"
         android:textAlignment="center"
@@ -28,6 +28,18 @@
         app:layout_constraintStart_toStartOf="@+id/toolbar2"
         app:layout_constraintTop_toTopOf="@+id/toolbar2"
         app:layout_constraintVertical_bias="0.533" />
+
+    <ImageView
+        android:id="@+id/imgCallBookingAct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_12"
+        android:src="@drawable/call_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
+        app:layout_constraintTop_toTopOf="@+id/toolbar2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        />
 
 
     <TextView

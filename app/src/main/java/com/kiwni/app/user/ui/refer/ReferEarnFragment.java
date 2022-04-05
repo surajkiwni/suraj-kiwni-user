@@ -11,7 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
+import com.kiwni.app.user.MainActivity;
+import com.kiwni.app.user.R;
 import com.kiwni.app.user.databinding.FragmentReferEarnBinding;
 import com.kiwni.app.user.interfaces.BackKeyPressedListener;
 
@@ -40,16 +43,16 @@ public class ReferEarnFragment extends Fragment implements BackKeyPressedListene
             }
         });
 
-        /*((MainActivity) requireActivity()).getSupportActionBar().hide();*/
+        ((MainActivity) requireActivity()).getSupportActionBar().hide();
 
-        /*imageBack = root.findViewById(R.id.imageBack);
+        imageBack = root.findViewById(R.id.imageBack);
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Navigation.findNavController(view).navigate(R.id.action_nav_refer_to_mainActivity);
             }
-        });*/
+        });
         return root;
     }
 

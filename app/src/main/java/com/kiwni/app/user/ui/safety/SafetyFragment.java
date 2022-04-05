@@ -21,7 +21,9 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
+import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.databinding.SafetyFragmentBinding;
 import com.kiwni.app.user.interfaces.BackKeyPressedListener;
@@ -80,16 +82,16 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
         textPara5.setText(Html.fromHtml("They will receive an alert buzzed and <br/>\n" +
                 "        sms informing them about your location", Html.FROM_HTML_MODE_COMPACT));
 
-        /*((MainActivity) requireActivity()).getSupportActionBar().hide();*/
+        ((MainActivity) requireActivity()).getSupportActionBar().hide();
 
-        /*imageBack = view.findViewById(R.id.imageBack);
+        imageBack = view.findViewById(R.id.imageBack);
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Navigation.findNavController(view).navigate(R.id.action_nav_safety_to_mainActivity);
             }
-        });*/
+        });
 
         tryLaterBtn.setOnClickListener(new View.OnClickListener() {
             @Override

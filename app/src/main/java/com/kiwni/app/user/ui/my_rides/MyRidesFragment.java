@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.MyRidesViewPagerAdapter;
 import com.kiwni.app.user.databinding.FragmentMyRidesBinding;
@@ -62,7 +63,8 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener 
 
         //set title to the support action bar
 
-        //((MainActivity) getActivity()).getSupportActionBar().setTitle("Your Title");
+        /*((MainActivity) getActivity()).getSupportActionBar().setTitle("Your Title");*/
+        ((MainActivity) requireActivity()).getSupportActionBar().hide();
 
 
 
@@ -135,8 +137,9 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener 
 
 
         ///
+        imageBack = view.findViewById(R.id.imageBack);
 
-       /* imageBack.setOnClickListener(new View.OnClickListener() {
+        imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -144,7 +147,7 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener 
                 Navigation.findNavController(requireView()).navigate(R.id.action_nav_myrides_to_mainActivity);
 
             }
-        });*/
+        });
 
     }
 

@@ -1,8 +1,11 @@
 package com.kiwni.app.user.activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +23,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,11 +50,12 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
     private List<DataModels> mList;
     private TitleItemAdapter adapter;
     String direction = "", serviceType = "", fromLocation = "", endLocation = "",
-            startDate = "", endDate = "", startTime = "", distanceInKm = "";
+            startDate = "", endDate = "", startTime = "", distanceInKm = "",mobile = "";
 
+    public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
     private BookingListItemClickListener bookingListItemClickListener;
     View view;
-    ImageView imageBack;
+    ImageView imageBack,imgCallCarLTAct;
     TextView txtTitle, txtFromTo, txtStartEndDate, txtEstimatedKm, txtStartTime;
 
     ConstraintLayout sortLayout, mapLayout, filterLayout, constraintLayoutForRentalPackage;
@@ -70,6 +75,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         txtFromTo = findViewById(R.id.txtFromTo);
         recyclerView = findViewById(R.id.main_recyclerview);
         imageBack = findViewById(R.id.imageBack);
+        imgCallCarLTAct = findViewById(R.id.imgCallCarLTAct);
         mapLayout = findViewById(R.id.mapLayout);
         sortLayout = findViewById(R.id.sortLayout);
         filterLayout = findViewById(R.id.filterLayout);
@@ -187,6 +193,36 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
             public void onClick(View view) {
                 //startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
                 finish();
+
+            }
+        });
+        imgCallCarLTAct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mobile = "7057052508";
+                Uri call = Uri.parse("tel:" + mobile);
+                Intent intent = new Intent(Intent.ACTION_CALL, call);
+
+                // Here, thisActivity is the current activity
+                if (ContextCompat.checkSelfPermission(CarListTypeActivity.this,
+                        Manifest.permission.CALL_PHONE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(CarListTypeActivity.this,
+                            new String[]{Manifest.permission.CALL_PHONE},
+                            MY_PERMISSIONS_REQUEST_CALL_PHONE);
+
+                    // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
+                    // app-defined int constant. The callback method gets the
+                    // result of the request.
+                } else {
+                    //You already have permission
+                    try {
+                        startActivity(intent);
+                    } catch(SecurityException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
         });
@@ -543,6 +579,31 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
                 });
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the phone call
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     @Override

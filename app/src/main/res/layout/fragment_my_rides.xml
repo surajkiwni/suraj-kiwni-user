@@ -7,7 +7,7 @@
     tools:context=".ui.my_rides.MyRidesFragment">
 
 
-   <!-- <androidx.appcompat.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -45,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar" />-->
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
 
     <com.google.android.material.tabs.TabLayout
@@ -60,7 +60,7 @@
         app:tabSelectedTextColor="@color/black"
         app:tabTextColor="#0C0101"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
 
     <FrameLayout

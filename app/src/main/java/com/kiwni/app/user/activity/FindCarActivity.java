@@ -1,8 +1,11 @@
 package com.kiwni.app.user.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +21,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -64,7 +69,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     String TAG = this.getClass().getSimpleName();
 
     String names[]={"sedan"};
-    ImageView imageBack;
+    ImageView imageBack,imgCallFindCarAct;
     TextView txtTitle,viewDetailsText, txtFromTo, txtStartEndDate, txtStartTime, txtEstimatedKm;
     BottomSheetDialog bottomSheetDialog;
     List<FindCar> findCarModelList;
@@ -72,10 +77,11 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     ConstraintLayout constraintLayoutPack;
     String direction = "",serviceType = "", fromLocation = "", endLocation = "",
             startDate = "", endDate = "", startTime = "", distanceInKm = "";
-    String pickupLocation = "", dropLocation = "", pickup_city = "", drop_city = "";
+    String pickupLocation = "", dropLocation = "", pickup_city = "", drop_city = "",mobile = "";
     String[] latlong;
     double pickup_latitude = 0.0, pickup_longitude = 0.0, drop_latitude = 0.0, drop_longitude = 0.0;
     Polyline mPolyline;
+    public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -89,6 +95,8 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         );
 
+        imageBack = findViewById(R.id.imageBack);
+        imgCallFindCarAct = findViewById(R.id.imgCallFindAct);
         txtTitle= findViewById(R.id.txtTitle);
         txtFromTo = findViewById(R.id.txtFromTo);
         txtStartEndDate = findViewById(R.id.txtStartEndDate);
@@ -208,13 +216,49 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         HourPackageAdapter hourPackageAdapter = new HourPackageAdapter(this,hourPackageModelList);
         findsCarsRecyclerView.setAdapter(hourPackageAdapter);
 
-        imageBack = findViewById(R.id.imageBack);
+
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+        imgCallFindCarAct.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+
+                mobile = "7057052508";
+                Uri call = Uri.parse("tel:" + mobile);
+                Intent intent = new Intent(Intent.ACTION_CALL, call);
+
+                // Here, thisActivity is the current activity
+                if (ContextCompat.checkSelfPermission(FindCarActivity.this,
+                        Manifest.permission.CALL_PHONE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(FindCarActivity.this,
+                            new String[]{Manifest.permission.CALL_PHONE},
+                            MY_PERMISSIONS_REQUEST_CALL_PHONE);
+
+                    // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
+                    // app-defined int constant. The callback method gets the
+                    // result of the request.
+                } else {
+                    //You already have permission
+                    try {
+                        startActivity(intent);
+                    } catch(SecurityException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+
+
+
+
 
         viewDetailsText.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NewApi")
@@ -265,6 +309,31 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                 bottomSheetDialog.setCancelable(false);
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the phone call
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     @Override

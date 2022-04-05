@@ -1,6 +1,9 @@
 package com.kiwni.app.user.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +13,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,11 +40,13 @@ public class BookingDetailsActivity extends AppCompatActivity {
     NestedAdapter nestedAdapter;
     TitleItemAdapter titleItemAdapter;
 
-    ImageView imageBack;
+    ImageView imageBack,imgCallBookingAct;
     AppCompatButton proceedButton;
     TextView txtTitle, txtStartTime, txtStartEndDate, txtEstimatedKm, txtTitleType;
 
-    String direction = "", startDate = "", endDate = "", startTime = "", serviceType = "", distanceInKm = "";
+    String direction = "", startDate = "", endDate = "", startTime = "", serviceType = "", distanceInKm = "", mobile = "";
+
+    public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,6 +54,8 @@ public class BookingDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_details);
 
+        imageBack =findViewById(R.id.imageBack);
+        imgCallBookingAct = findViewById(R.id.imgCallBookingAct);
         recyclerView1 = findViewById(R.id.recyclerView1);
         recyclerView2 = findViewById(R.id.recyclerView2);
         txtTitle = findViewById(R.id.txtTitle);
@@ -118,7 +127,7 @@ public class BookingDetailsActivity extends AppCompatActivity {
         BookingAdapter bookingAdapter1 = new BookingAdapter(getApplicationContext(),bookingModelList1);
         recyclerView2.setAdapter(bookingAdapter1);
 
-        imageBack =findViewById(R.id.imageBack);
+
 
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +135,37 @@ public class BookingDetailsActivity extends AppCompatActivity {
 
                 startActivity(new Intent(BookingDetailsActivity.this, CarListTypeActivity.class));
                 finish();
+            }
+        });
+
+        imgCallBookingAct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    mobile = "7057052508";
+                    Uri call = Uri.parse("tel:" + mobile);
+                    Intent intent = new Intent(Intent.ACTION_CALL, call);
+
+                    // Here, thisActivity is the current activity
+                    if (ContextCompat.checkSelfPermission(BookingDetailsActivity.this,
+                            Manifest.permission.CALL_PHONE)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(BookingDetailsActivity.this,
+                                new String[]{Manifest.permission.CALL_PHONE},
+                                MY_PERMISSIONS_REQUEST_CALL_PHONE);
+
+                        // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
+                        // app-defined int constant. The callback method gets the
+                        // result of the request.
+                    } else {
+                        //You already have permission
+                        try {
+                            startActivity(intent);
+                        } catch(SecurityException e) {
+                            e.printStackTrace();
+                        }
+                    }
             }
         });
         proceedButton =findViewById(R.id.proceedButton);
@@ -139,6 +179,31 @@ public class BookingDetailsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the phone call
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     @Override
