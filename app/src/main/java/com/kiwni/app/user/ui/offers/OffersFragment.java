@@ -11,10 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.OffersAdapter;
 import com.kiwni.app.user.databinding.OffersFragmentBinding;
@@ -86,16 +88,16 @@ public class OffersFragment extends Fragment implements BackKeyPressedListener {
         offersAdapter.notifyDataSetChanged();
 
 
-        /*((MainActivity) requireActivity()).getSupportActionBar().hide();*/
+        ((MainActivity) requireActivity()).getSupportActionBar().hide();
 
-       /* imageBack = view.findViewById(R.id.imageBack);
+        imageBack = view.findViewById(R.id.imageBack);
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Navigation.findNavController(view).navigate(R.id.action_nav_offers_to_mainActivity);
             }
-        });*/
+        });
     }
 
     @Override

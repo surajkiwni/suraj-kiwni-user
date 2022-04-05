@@ -52,12 +52,12 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         imageBack = view.findViewById(R.id.imageBack);
-        txtLogout = view.findViewById(R.id.txtLogout);
-        txtEmailAddress = view.findViewById(R.id.txtEmailAddress);
-        txtMobileNo = view.findViewById(R.id.txtMobileNo);
-        txtUserName = view.findViewById(R.id.txtUserName);
+        txtLogout = view.findViewById(R.id.txtLogOut);
+        txtEmailAddress = view.findViewById(R.id.txtEmail);
+        txtMobileNo = view.findViewById(R.id.txtMobNumber);
+        txtUserName = view.findViewById(R.id.txtName);
 
-        //pref values
+        /*//pref values
         userName = PreferencesUtils.getPreferences(getActivity(), SharedPref.FIREBASE_USERNAME, "");
         mobileNumber = PreferencesUtils.getPreferences(getActivity(), SharedPref.FIREBASE_MOBILE_NO, "");
         emailAddress = PreferencesUtils.getPreferences(getActivity(), SharedPref.FIREBASE_EMAIL, "");
@@ -76,7 +76,7 @@ public class ProfileFragment extends Fragment {
         {
             txtMobileNo.setText("");
             Toast.makeText(getActivity(), "not getting mobile no", Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override

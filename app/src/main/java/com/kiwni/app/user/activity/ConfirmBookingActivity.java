@@ -1,6 +1,9 @@
 package com.kiwni.app.user.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
@@ -27,10 +32,12 @@ public class ConfirmBookingActivity extends AppCompatActivity {
     AppCompatButton confirmButton, doneButton;
     String TAG = this.getClass().getSimpleName();
     ConstraintLayout constraintBusinessInput;
-    ImageView imageBack;
+    ImageView imageBack,imgCallConfirmAct;
     TextView txtTitle, txtStartTime, txtStartEndDate, txtEstimatedKm, txtTitleType;
 
-    String direction = "", startDate = "", endDate = "", startTime = "", serviceType = "", distanceInKm = "";
+    String direction = "", startDate = "", endDate = "", startTime = "", serviceType = "", distanceInKm = "", mobile = "";
+
+    public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +49,7 @@ public class ConfirmBookingActivity extends AppCompatActivity {
         confirmButton = findViewById(R.id.confirmButton);
         constraintBusinessInput = findViewById(R.id.constraintBusinessInput);
         imageBack = findViewById(R.id.imageBack);
+        imgCallConfirmAct = findViewById(R.id.imgCallConfirmAct);
 
         txtTitle = findViewById(R.id.txtTitle);
         txtStartEndDate = findViewById(R.id.txtStartEndDate);
@@ -156,6 +164,61 @@ public class ConfirmBookingActivity extends AppCompatActivity {
             }
         });
 
+        imgCallConfirmAct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mobile = "7057052508";
+                Uri call = Uri.parse("tel:" + mobile);
+                Intent intent = new Intent(Intent.ACTION_CALL, call);
+
+                // Here, thisActivity is the current activity
+                if (ContextCompat.checkSelfPermission(ConfirmBookingActivity.this,
+                        Manifest.permission.CALL_PHONE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(ConfirmBookingActivity.this,
+                            new String[]{Manifest.permission.CALL_PHONE},
+                            MY_PERMISSIONS_REQUEST_CALL_PHONE);
+
+                    // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
+                    // app-defined int constant. The callback method gets the
+                    // result of the request.
+                } else {
+                    //You already have permission
+                    try {
+                        startActivity(intent);
+                    } catch(SecurityException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the phone call
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     @Override

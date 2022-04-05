@@ -1,8 +1,11 @@
 package com.kiwni.app.user;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -30,6 +33,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -49,7 +54,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavController navController;
     ConstraintLayout constraintProfile;
     BottomSheetDialog bottomSheetDialog;
+    String mobile = "";
     MenuItem action_like;
+    public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +112,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-        switch (id) {
+        switch (id)
+        {
+
+            case R.id.action_call:
+
+                mobile = "7057052508";
+                Uri call = Uri.parse("tel:" + mobile);
+                Intent intent = new Intent(Intent.ACTION_CALL, call);
+
+                // Here, thisActivity is the current activity
+                if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.CALL_PHONE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{Manifest.permission.CALL_PHONE},
+                            MY_PERMISSIONS_REQUEST_CALL_PHONE);
+
+                    // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
+                    // app-defined int constant. The callback method gets the
+                    // result of the request.
+                } else {
+                    //You already have permission
+                    try {
+                        startActivity(intent);
+                    } catch(SecurityException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return true;
+
             case R.id.action_like:
 
-                Toast.makeText(getApplicationContext(),"Item 1 Selected",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Item 2 Selected",Toast.LENGTH_LONG).show();
                 bottomSheetDialog = new BottomSheetDialog(this);
                 View view = getLayoutInflater().inflate(R.layout.favorite_bottom_sheet,null,false);
 
@@ -142,55 +179,76 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 bottomSheetDialog.setContentView(view);
 
                 return true;
-
-
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the phone call
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+        @Override
+        public boolean onSupportNavigateUp () {
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
        /* return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();*/
 
-      return  NavigationUI.navigateUp(navController, drawerLayout);
-    }
+            return NavigationUI.navigateUp(navController, drawerLayout);
+        }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+        @Override
+        public void onBackPressed () {
+            super.onBackPressed();
 
-        new SweetAlertDialog(MainActivity.this, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("Are you sure?")
-                .setContentText("You want to exit from app..")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog)
-                    {
-                        finish();
-                        sDialog.dismissWithAnimation();
-                    }
-                })
-                .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
-                    }
-                })
-                .show();
-    }
+            new SweetAlertDialog(MainActivity.this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("Are you sure?")
+                    .setContentText("You want to exit from app..")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            finish();
+                            sDialog.dismissWithAnimation();
+                        }
+                    })
+                    .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+                        }
+                    })
+                    .show();
+        }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        item.setChecked(true);
+        @Override
+        public boolean onNavigationItemSelected (@NonNull MenuItem item){
+            item.setChecked(true);
 
-        drawerLayout.closeDrawers();
+            drawerLayout.closeDrawers();
 
-        int id = item.getItemId();
+            int id = item.getItemId();
 
-            switch (id)
-            {
+            switch (id) {
                 case R.id.nav_shareapp:
                     Intent sendIntent = new Intent();
                     sendIntent.setAction(Intent.ACTION_SEND);
@@ -264,25 +322,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
             return true;
-    }
+        }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
+        @Override
+        protected void onStart () {
+            super.onStart();
+        }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+        @Override
+        protected void onResume () {
+            super.onResume();
+        }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
+        @Override
+        protected void onPause () {
+            super.onPause();
+        }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
+        @Override
+        protected void onRestart () {
+            super.onRestart();
+        }
     }
-}

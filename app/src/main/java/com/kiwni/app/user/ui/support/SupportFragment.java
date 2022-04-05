@@ -11,9 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.SupportAdapter;
 import com.kiwni.app.user.databinding.FragmentSupportBinding;
@@ -77,16 +79,16 @@ public class SupportFragment extends Fragment implements BackKeyPressedListener 
         supportRecyclerView.setAdapter(supportAdapter);
 
 
-       /* ((MainActivity) requireActivity()).getSupportActionBar().hide();*/
+        ((MainActivity) requireActivity()).getSupportActionBar().hide();
 
-        /*imageBack = view.findViewById(R.id.imageBack);
+        imageBack = view.findViewById(R.id.imageBack);
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Navigation.findNavController(view).navigate(R.id.action_nav_support_to_mainActivity);
             }
-        });*/
+        });
 
     }
 

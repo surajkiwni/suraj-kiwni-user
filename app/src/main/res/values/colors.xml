@@ -12,5 +12,6 @@
     <color name="background">#E0E7EF</color>
     <color name="text_edit">#2176E3</color>
     <color name="grey_color">#E7E7E7</color>
+    <color name="yelow_color">#FFB500</color>
 
 </resources>

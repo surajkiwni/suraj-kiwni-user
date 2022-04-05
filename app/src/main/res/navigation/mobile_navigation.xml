@@ -57,7 +57,11 @@
         android:id="@+id/nav_faq"
         android:name="com.kiwni.app.user.ui.FAQs.FaqFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_faq"/>
+        tools:layout="@layout/fragment_faq">
+        <action
+            android:id="@+id/action_nav_faq_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_myrides"
@@ -77,44 +81,75 @@
         android:id="@+id/nav_support"
         android:name="com.kiwni.app.user.ui.support.SupportFragment"
         android:label="@string/menu_support"
-        tools:layout="@layout/fragment_support" />
+        tools:layout="@layout/fragment_support" >
+        <action
+            android:id="@+id/action_nav_support_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
     <fragment
         android:id="@+id/nav_shareapp"
         android:name="com.kiwni.app.user.ui.share_app.ShareAppFragment"
         android:label="@string/menu_share_app"
         tools:layout="@layout/fragment_share_app" >
 
+        <action
+            android:id="@+id/action_nav_shareapp_to_mainActivity"
+            app:destination="@id/mainActivity" />
     </fragment>
     <fragment
         android:id="@+id/nav_safety"
         android:name="com.kiwni.app.user.ui.safety.SafetyFragment"
         android:label="@string/menu_safety"
-        tools:layout="@layout/safety_fragment" />
+        tools:layout="@layout/safety_fragment" >
+        <action
+            android:id="@+id/action_nav_safety_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
     <fragment
         android:id="@+id/nav_refer"
         android:name="com.kiwni.app.user.ui.refer.ReferEarnFragment"
         android:label="@string/menu_refer_Earn"
-        tools:layout="@layout/fragment_refer_earn" />
+        tools:layout="@layout/fragment_refer_earn" >
+        <action
+            android:id="@+id/action_nav_refer_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
     <fragment
         android:id="@+id/nav_payment"
         android:name="com.kiwni.app.user.ui.payment.PaymentFragment"
         android:label="@string/menu_payment"
-        tools:layout="@layout/fragment_payment" />
+        tools:layout="@layout/fragment_payment" >
+        <action
+            android:id="@+id/action_nav_payment_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
     <fragment
         android:id="@+id/nav_offers"
         android:name="com.kiwni.app.user.ui.offers.OffersFragment"
         android:label="@string/menu_offers"
-        tools:layout="@layout/offers_fragment" />
+        tools:layout="@layout/offers_fragment" >
+        <action
+            android:id="@+id/action_nav_offers_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
     <fragment
         android:id="@+id/nav_about"
         android:name="com.kiwni.app.user.ui.about.AboutFragment"
         android:label="@string/menu_about"
-        tools:layout="@layout/fragment_about" />
+        tools:layout="@layout/fragment_about" >
+        <action
+            android:id="@+id/action_nav_about_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
     <fragment
         android:id="@+id/nav_feedback"
         android:name="com.kiwni.app.user.ui.feedback.FeedbackFragment"
         android:label="@string/menu_feedback"
-        tools:layout="@layout/fragment_feedback" />
+        tools:layout="@layout/fragment_feedback" >
+        <action
+            android:id="@+id/action_nav_feedback_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
 
 
     <activity

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <ImageView
+        android:id="@+id/imgPerson"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_person"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Kavya Gupta"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dp_16"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imgPerson"
+        app:layout_constraintLeft_toRightOf="@+id/imgPerson"
+        app:layout_constraintTop_toTopOf="@+id/imgPerson" />
+
+    <RatingBar
+        android:id="@+id/barRating"
+        android:theme="@style/RatingBar"
+        style="?android:attr/ratingBarStyleIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:rating="3.2"
+        android:stepSize="0.5"
+        app:layout_constraintLeft_toRightOf="@+id/imgPerson"
+        app:layout_constraintTop_toBottomOf="@+id/imgPerson" />
+
+    <TextView
+        android:id="@+id/txtParagraph"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/review_paragraph"
+        android:layout_marginTop="@dimen/dp_10"
+        android:paddingStart="@dimen/dp_5"
+        app:layout_constraintTop_toBottomOf="@+id/barRating"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline1"
+        app:layout_constraintRight_toRightOf="@+id/guideline2"
+        />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#707070"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtParagraph"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
