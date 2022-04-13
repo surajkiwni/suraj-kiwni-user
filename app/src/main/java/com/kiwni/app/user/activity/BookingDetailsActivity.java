@@ -42,10 +42,12 @@ public class BookingDetailsActivity extends AppCompatActivity
     List<ScheduleMapResp> scheduleMapRespList = new ArrayList<>();
 
     ImageView imageBack,imgCallBookingAct;
+    String TAG = this.getClass().getSimpleName();
     AppCompatButton proceedButton;
     TextView txtTitle, txtStartTime, txtStartEndDate, txtEstimatedKm, txtTitleType;
 
-    String direction = "", startDate = "", endDate = "", startTime = "", serviceType = "", distanceInKm = "", mobile = "";
+    String direction = "", startDate = "", endDate = "", startTime = "", serviceType = "",
+            distanceInKm = "", mobile = "", pickupAddress = "", dropAddress = "";
 
     public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
 
@@ -67,7 +69,10 @@ public class BookingDetailsActivity extends AppCompatActivity
         proceedButton =findViewById(R.id.proceedButton);
 
         Gson gson = new Gson();
+        //String stringData = "";
+        //stringData = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, "");
         String stringData = getIntent().getStringExtra(SharedPref.SELECTED_VEHICLE_OBJECT);
+        Log.d(TAG, "string data = " + stringData);
 
         if(stringData != null)
         {
@@ -84,6 +89,8 @@ public class BookingDetailsActivity extends AppCompatActivity
         endDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_DATE_TO_DISPLAY, "");
         startTime = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_TIME_TO_DISPLAY, "");
         distanceInKm = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DISTANCE_IN_KM, "");
+        pickupAddress = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_ADDRESS, "");
+        dropAddress = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_ADDRESS, "");
 
         Log.d("TAG","data from previous screen - " + direction + " , " + serviceType);
 

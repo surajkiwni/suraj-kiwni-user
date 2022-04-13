@@ -52,6 +52,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
 
     RecyclerView recyclerView;
     TitleItemAdapter adapter;
+    String TAG = this.getClass().getSimpleName();
     String direction = "", serviceType = "", fromLocation = "", endLocation = "",
             startDate = "", endDate = "", startTime = "", distanceInKm = "", mobile = "",
             vehicleTypeForDisplay = "", vehicleSeatCapacityForDisplay = "";
@@ -180,7 +181,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
+                startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
                 finish();
             }
         });
@@ -627,15 +628,21 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
     public void onItemClick(View v, int position, List<ScheduleMapResp> scheduleMapRespList)
     {
         //Toast.makeText(getApplicationContext(), "Clicked on = " + position, Toast.LENGTH_SHORT).show();
-        Log.d("TAG", "data get on click = " + scheduleMapRespList.get(position).toString());
+        Log.d(TAG, "data get on click = " + scheduleMapRespList.get(position));
+
+        List<ScheduleMapResp> selectedVehicleData = new ArrayList<>();
+        selectedVehicleData.add(scheduleMapRespList.get(position));
+
+        Log.d(TAG, "selectedVehicleData = " + selectedVehicleData);
 
         Gson gson = new Gson();
         Type type = new TypeToken<List<ScheduleMapResp>>() {}.getType();
-        String jsonForData = gson.toJson(scheduleMapRespList.get(position).toString(), type);
+        String jsonForData = gson.toJson(selectedVehicleData, type);
 
         Intent intent = new Intent(CarListTypeActivity.this, BookingDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, jsonForData);
+        intent.putExtra(SharedPref.SELECTED_VEHICLE_OBJECT, jsonForData);
+        //PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, jsonForData);
         startActivity(intent);
     }
 }

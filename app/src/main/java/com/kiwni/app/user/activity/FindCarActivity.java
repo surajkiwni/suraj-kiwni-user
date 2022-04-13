@@ -91,7 +91,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     List<FindCar> findCarModelList;
 
     ConstraintLayout constraintLayoutPack;
-    String direction = "",serviceType = "", fromLocation = "", endLocation = "",
+    String direction = "",serviceType = "",
             startDate = "", endDate = "", startTime = "", distanceInKm = "", pickupLocation = "",
             dropLocation = "", pickup_city = "", drop_city = "", mobile = "", pickup_time = "",
             drop_time = "", durationInTraffic = "", idToken = "";
@@ -147,8 +147,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         /* shared pref values */
         direction = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DIRECTION,"");
         serviceType = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SERVICE_TYPE,"");
-        fromLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_CITY, "");
-        endLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_CITY, "");
         pickupLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_LOCATION, "");
         dropLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_LOCATION, "");
         pickup_city = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_CITY, "");
@@ -165,13 +163,13 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         Log.d(TAG,"pickupLocation = " + pickupLocation
                 + " dropLocation = " + dropLocation);
-        Log.d(TAG,"fromLocation = " + fromLocation
-                + " endLocation = " + endLocation);
+        Log.d(TAG,"fromLocation = " + pickup_city
+                + " endLocation = " + drop_city);
         Log.d(TAG,"endDate = " + endDate
                 + " direction = " + direction);
 
         /* set data to ui */
-        txtFromTo.setText(fromLocation + " To " + endLocation);
+        txtFromTo.setText(pickup_city + " To " + drop_city);
         txtStartTime.setText(startTime);
         txtStartEndDate.setText(startDate);
         txtEstimatedKm.setText("Est km " + distanceInKm);
