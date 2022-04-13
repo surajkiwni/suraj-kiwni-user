@@ -50,16 +50,17 @@ import java.util.Random;
 
 public class CarListTypeActivity extends AppCompatActivity implements BookingListItemClickListener {
 
-    private RecyclerView recyclerView;
-    private TitleItemAdapter adapter;
+    RecyclerView recyclerView;
+    TitleItemAdapter adapter;
     String direction = "", serviceType = "", fromLocation = "", endLocation = "",
-            startDate = "", endDate = "", startTime = "", distanceInKm = "",mobile = "";
+            startDate = "", endDate = "", startTime = "", distanceInKm = "", mobile = "",
+            vehicleTypeForDisplay = "", vehicleSeatCapacityForDisplay = "";
 
     public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
-    private BookingListItemClickListener bookingListItemClickListener;
-    View view;
+    BookingListItemClickListener bookingListItemClickListener;
     ImageView imageBack,imgCallCarLTAct;
-    TextView txtTitle, txtFromTo, txtStartEndDate, txtEstimatedKm, txtStartTime;
+    TextView txtTitle, txtFromTo, txtStartEndDate, txtEstimatedKm, txtStartTime, txtVehicleType,
+            txtSeatCapacity;
 
     ConstraintLayout sortLayout, mapLayout, filterLayout, constraintLayoutForRentalPackage;
     String strBrand = "",strSegment = "",strYear = "",strSpecialReq = "";
@@ -72,7 +73,8 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
     List<ScheduleMapResp> remainingList = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_list_type);
 
@@ -88,26 +90,29 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         txtStartEndDate = findViewById(R.id.txtStartEndDate);
         txtStartTime = findViewById(R.id.txtStartTime);
         txtEstimatedKm = findViewById(R.id.txtEstimatedKm);
-
-
+        txtVehicleType = findViewById(R.id.txtVehicleType);
+        txtSeatCapacity = findViewById(R.id.txtSeatCapacity);
 
         direction = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DIRECTION,"");
         serviceType = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SERVICE_TYPE,"");
-        Log.d("TAG","data from previous screen - " + direction + " , " + serviceType);
-
         fromLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_CITY, "");
         endLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_CITY, "");
-
         startDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_DATE_TO_DISPLAY, "");
         endDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_DATE_TO_DISPLAY, "");
         startTime = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_TIME_TO_DISPLAY, "");
         distanceInKm = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DISTANCE_IN_KM, "");
+        vehicleTypeForDisplay = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.VEHICLE_TYPE_FOR_DISPLAY, "");
+        vehicleSeatCapacityForDisplay = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.VEHICLE_SEAT_CAPACITY_FOR_DISPLAY, "");
+
+        Log.d("TAG","data from previous screen - " + direction + " , " + serviceType);
 
         txtTitle.setText(serviceType + " ( " + direction + " ) ");
         txtFromTo.setText(fromLocation + " To " + endLocation);
         txtStartTime.setText(startTime);
         txtStartEndDate.setText(startDate);
         txtEstimatedKm.setText("Est km " + distanceInKm);
+        txtVehicleType.setText(vehicleTypeForDisplay);
+        txtSeatCapacity.setText(vehicleSeatCapacityForDisplay);
 
         switch (serviceType)
         {
@@ -150,7 +155,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         }
 
         Gson gson = new Gson();
-        String stringData = getIntent().getStringExtra(SharedPref.SELECTED_VEHICLE_OBJECT);
+        String stringData = getIntent().getStringExtra(SharedPref.SELECTED_VEHICLE_TYPE_OBJECT);
         String stringDuplicateData = getIntent().getStringExtra(SharedPref.DUPLICATE_VEHICLE_OBJECT);
 
         if(stringData != null)
@@ -159,26 +164,27 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
             }.getType();
             mList = gson.fromJson(stringData, type);
             remainingList = gson.fromJson(stringDuplicateData, type);
-            //Log.d("data Count = ", String.valueOf(mList.size()));
+            Log.d("data Count = ", String.valueOf(mList.size()));
             //Log.d("value Data = ", mList.toString());
 
-            //Log.d("duplicate Data size = ", String.valueOf(remainingList.size()));
+            Log.d("duplicate Data size = ", String.valueOf(remainingList.size()));
             //Log.d("duplicate Data = ", remainingList.toString());
+
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new GridLayoutWrapper(getApplicationContext(), 1));
 
             /* set data to recyclerview */
             setParentLayoutData(mList, remainingList);
         }
-
-
 
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
                 finish();
-
             }
         });
+
         imgCallCarLTAct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -219,7 +225,8 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
             }
         });
 
-        sortLayout.setOnClickListener(new View.OnClickListener() {
+        sortLayout.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
 
@@ -568,11 +575,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
     public void setParentLayoutData(List<ScheduleMapResp> numberList, List<ScheduleMapResp> remainingList) {
         // pass all data to the title adapter
         //creating new array
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutWrapper(getApplicationContext(), 1));
-
         adapter = new TitleItemAdapter(getApplicationContext(), numberList, remainingList, this);
-        adapter.setHasStableIds(true);
         recyclerView.setAdapter(adapter);
         //adapter.notifyDataSetChanged();
     }
@@ -602,7 +605,6 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         }
     }
 
-
     @Override
     public void onPause() {
         super.onPause();
@@ -622,11 +624,18 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
     }
 
     @Override
-    public void onItemClick(View v, int position, List<ScheduleMapResp> bookingModels) {
-        Toast.makeText(getApplicationContext(), "Clicked on = " + position, Toast.LENGTH_SHORT).show();
-        Log.d("TAG", "data get on click = " + bookingModels.get(position).toString());
+    public void onItemClick(View v, int position, List<ScheduleMapResp> scheduleMapRespList)
+    {
+        //Toast.makeText(getApplicationContext(), "Clicked on = " + position, Toast.LENGTH_SHORT).show();
+        Log.d("TAG", "data get on click = " + scheduleMapRespList.get(position).toString());
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<ScheduleMapResp>>() {}.getType();
+        String jsonForData = gson.toJson(scheduleMapRespList.get(position).toString(), type);
+
         Intent intent = new Intent(CarListTypeActivity.this, BookingDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, jsonForData);
         startActivity(intent);
     }
 }

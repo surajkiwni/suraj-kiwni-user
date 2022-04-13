@@ -42,8 +42,9 @@ public class SharedPref
     public static final String DROP_DATE_TO_DISPLAY = "dropDateToDisplay";
     public static final String PICKUP_TIME_TO_DISPLAY = "pickupTimeToDisplay";
 
-    public static final String SELECTED_VEHICLE_OBJECT = "selectedVehicleObject";
+    public static final String SELECTED_VEHICLE_TYPE_OBJECT = "selectedVehicleTypeObject";
     public static final String DUPLICATE_VEHICLE_OBJECT = "duplicateVehicleObject";
+    public static final String SELECTED_VEHICLE_OBJECT = "selectedVehicleObject";
 
     //Find car screen
     public static final String VEHICLE_ID = "vehicleId";
@@ -54,6 +55,8 @@ public class SharedPref
     public static final String VEHICLE_CAPACITY = "vehicleCapacity";
     public static final String VEHICLE_START_TIME = "vehicleStartTime";
     public static final String VEHICLE_NO = "vehicleNo";
+    public static final String VEHICLE_TYPE_FOR_DISPLAY = "vehicleTypeForDisplay";
+    public static final String VEHICLE_SEAT_CAPACITY_FOR_DISPLAY = "vehicleSeatCapacityForDisplay";
     /*public static final String VEHICLE_AGE = "vehicleAge";
     public static final String VEHICLE_LUGGAGE = "vehicleLuggage";
     public static final String VEHICLE_AC = "vehicleAC";

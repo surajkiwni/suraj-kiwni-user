@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
         drawerLayout = findViewById(R.id.drawer_layout);
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -114,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id)
         {
-
             case R.id.action_call:
 
                 mobile = "7057052508";

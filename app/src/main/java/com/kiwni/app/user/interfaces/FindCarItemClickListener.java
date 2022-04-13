@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface FindCarItemClickListener {
 
-    void onFindCarItemClick(View v, int position, List<String> scheduleMapRespList, String labelName);
+    void onFindCarItemClick(View v, int position, List<String> scheduleMapRespList, String labelName, String SeatCapacity);
 }
