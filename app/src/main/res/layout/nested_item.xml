@@ -46,7 +46,7 @@
                 android:textSize="@dimen/sp_12" />
 
             <TextView
-                android:id="@+id/yearText"
+                android:id="@+id/txtProvideNo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -71,6 +71,7 @@
 
 
             <TextView
+                android:id="@+id/txtModelReg"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -81,6 +82,7 @@
                 android:textSize="@dimen/sp_12" />
 
             <TextView
+                android:id="@+id/txtRegYear"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -121,6 +123,7 @@
                 android:src="@drawable/rating1" />
 
             <TextView
+                android:id="@+id/txtReview"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
@@ -142,6 +145,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/txtPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -151,7 +155,7 @@
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/buttonBook"
+                android:id="@+id/btnBook"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:layout_marginTop="5dp"
@@ -162,6 +166,7 @@
                 android:textColor="@color/white" />
 
             <TextView
+                android:id="@+id/txtAvailableHour"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
