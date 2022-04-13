@@ -19,26 +19,27 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.BookingAdapter;
 import com.kiwni.app.user.adapter.NestedAdapter;
 import com.kiwni.app.user.adapter.TitleItemAdapter;
 import com.kiwni.app.user.datamodels.BookingModel2;
+import com.kiwni.app.user.models.ScheduleMapResp;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookingDetailsActivity extends AppCompatActivity {
-
+public class BookingDetailsActivity extends AppCompatActivity
+{
     RecyclerView recyclerView1 ,recyclerView2;
     List<BookingModel2> bookingModelList;
     List<BookingModel2> bookingModelList1;
-    ConstraintLayout constraintLayout;
-
-    NestedAdapter nestedAdapter;
-    TitleItemAdapter titleItemAdapter;
+    List<ScheduleMapResp> scheduleMapRespList = new ArrayList<>();
 
     ImageView imageBack,imgCallBookingAct;
     AppCompatButton proceedButton;
@@ -63,17 +64,30 @@ public class BookingDetailsActivity extends AppCompatActivity {
         txtStartTime = findViewById(R.id.txtStartTime);
         txtEstimatedKm = findViewById(R.id.txtEstimatedKm);
         txtTitleType = findViewById(R.id.txtTitleType);
+        proceedButton =findViewById(R.id.proceedButton);
 
-        //pref data
+        Gson gson = new Gson();
+        String stringData = getIntent().getStringExtra(SharedPref.SELECTED_VEHICLE_OBJECT);
+
+        if(stringData != null)
+        {
+            Type type = new TypeToken<List<ScheduleMapResp>>() {
+            }.getType();
+            scheduleMapRespList = gson.fromJson(stringData, type);
+            Log.d("TAG", "scheduleMapRespList size = " + scheduleMapRespList.size());
+        }
+
+        /* get pref data and stored to variables*/
         direction = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DIRECTION,"");
         serviceType = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SERVICE_TYPE,"");
-        Log.d("TAG","data from previous screen - " + direction + " , " + serviceType);
-
         startDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_DATE_TO_DISPLAY, "");
         endDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_DATE_TO_DISPLAY, "");
         startTime = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_TIME_TO_DISPLAY, "");
         distanceInKm = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DISTANCE_IN_KM, "");
 
+        Log.d("TAG","data from previous screen - " + direction + " , " + serviceType);
+
+        /* set data to ui */
         txtTitle.setText("Booking Details");
         txtStartTime.setText(startTime);
         txtStartEndDate.setText(startDate);
@@ -127,12 +141,10 @@ public class BookingDetailsActivity extends AppCompatActivity {
         BookingAdapter bookingAdapter1 = new BookingAdapter(getApplicationContext(),bookingModelList1);
         recyclerView2.setAdapter(bookingAdapter1);
 
-
-
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
+            public void onClick(View view)
+            {
                 startActivity(new Intent(BookingDetailsActivity.this, CarListTypeActivity.class));
                 finish();
             }
@@ -141,7 +153,6 @@ public class BookingDetailsActivity extends AppCompatActivity {
         imgCallBookingAct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                     mobile = "7057052508";
                     Uri call = Uri.parse("tel:" + mobile);
                     Intent intent = new Intent(Intent.ACTION_CALL, call);
@@ -168,7 +179,6 @@ public class BookingDetailsActivity extends AppCompatActivity {
                     }
             }
         });
-        proceedButton =findViewById(R.id.proceedButton);
 
         proceedButton.setOnClickListener(new View.OnClickListener() {
             @Override

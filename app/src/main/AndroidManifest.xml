@@ -55,8 +55,7 @@
         <activity
             android:name=".activity.FindCarActivity"
             android:exported="false"
-            android:theme="@style/Theme.User.NoActionBar"
-            android:launchMode="singleTop" />
+            android:theme="@style/Theme.User.NoActionBar" />
 
         <activity
             android:name="com.kiwni.app.user.MainActivity"

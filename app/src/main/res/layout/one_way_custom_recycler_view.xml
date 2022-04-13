@@ -134,12 +134,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/seat"
-                    app:layout_constraintBottom_toBottomOf="@+id/textSeat"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtSeatCapacity"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/textSeat" />
+                    app:layout_constraintTop_toTopOf="@id/txtSeatCapacity" />
 
                 <TextView
-                    android:id="@+id/textSeat"
+                    android:id="@+id/txtSeatCapacity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4+1 Seater"

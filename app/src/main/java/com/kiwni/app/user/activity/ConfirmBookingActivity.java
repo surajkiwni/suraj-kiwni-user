@@ -26,8 +26,8 @@ import com.kiwni.app.user.R;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
 
-public class ConfirmBookingActivity extends AppCompatActivity {
-
+public class ConfirmBookingActivity extends AppCompatActivity
+{
     AppCompatRadioButton radioBusiness, radioPersonal;
     AppCompatButton confirmButton, doneButton;
     String TAG = this.getClass().getSimpleName();

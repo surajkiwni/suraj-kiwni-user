@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,9 +14,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.interfaces.BookingListItemClickListener;
 import com.kiwni.app.user.models.ScheduleMapResp;
+import com.kiwni.app.user.network.AppConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +53,10 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
         holder.txtCarModel.setText(scheduleDatesRespModel.getModel());
         holder.txtClassType.setText(scheduleDatesRespModel.getClassType());
 
+        Glide.with(context)
+                .load(AppConstants.IMAGE_PATH + scheduleDatesRespModel.getVehicle().getImagePath())
+                .into(holder.imgVehicle);
+
         boolean isExpandable = scheduleDatesRespModel.isExpandable();
         holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
 
@@ -61,16 +68,15 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
             {
                 Log.d("TAG", "print list of model = " + mList.get(i).getModel());
                 //appendList.add(mList.get(i));
-                if (mList.get(i).getClassType().equals(holder.txtClassType.getText().toString()))
+                if (mList.get(i).getVehicle().getClassType().equals(holder.txtClassType.getText().toString()))
                 {
                     Log.d("TAG", "print list of class type = " + mList.get(i).getClassType());
 
                     mList.removeAll(appendList);
                     appendList.add(mList.get(i));
 
+                    System.out.println("appendList = " + appendList.size());
                     holder.txtAvailableCount.setText("Available  " + appendList.size());
-
-                    //System.out.println("price = " + );
                 }
             }
             else
@@ -83,13 +89,14 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
         {
             if (remainingList.get(i).getVehicle().getModel().equals(holder.txtCarModel.getText().toString()))
             {
-                Log.d("TAG", "print list of model = " + remainingList.get(i).getModel());
+                //Log.d("TAG", "print list of model = " + remainingList.get(i).getModel());
                 //appendList.add(mList.get(i));
                 if (remainingList.get(i).getVehicle().getClassType().equals(holder.txtClassType.getText().toString()))
                 {
-                    Log.d("TAG", "print list of class type = " + remainingList.get(i).getClassType());
-
+                    remainingList.removeAll(appendList);
                     appendList.add(remainingList.get(i));
+
+                    System.out.println("appendList size in remaining list = " + appendList.size());
                     holder.txtAvailableCount.setText("Available  " + appendList.size());
                 }
             } else {
@@ -137,6 +144,7 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
         ConstraintLayout constraintLayoutTitleList, expandableLayout;
         TextView txtCarModel,txtClassType,txtAvailableCount,txtPriceRange;
         RecyclerView nestedRecyclerView;
+        ImageView imgVehicle;
 
         public TitleViewHolder(@NonNull View itemView)
         {
@@ -149,6 +157,7 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
             txtPriceRange = itemView.findViewById(R.id.txtPriceRange);
             txtClassType = itemView.findViewById(R.id.txtClassType);
             nestedRecyclerView = itemView.findViewById(R.id.child_rv);
+            imgVehicle = itemView.findViewById(R.id.imgVehicle);
         }
     }
 }

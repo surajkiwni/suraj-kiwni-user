@@ -90,7 +90,7 @@ public class FindsCarRecyclerAdapter extends RecyclerView.Adapter<FindsCarRecycl
                     .load(R.drawable.sedan)
                     .into(holder.carImage);
 
-            holder.textSeat.setText("4 + " + "1 Seater");
+            holder.txtSeatCapacity.setText("4 + " + "1 Seater");
         }
         else if(str.equals("SUV"))
         {
@@ -98,7 +98,7 @@ public class FindsCarRecyclerAdapter extends RecyclerView.Adapter<FindsCarRecycl
                     .load(R.drawable.suv)
                     .into(holder.carImage);
 
-            holder.textSeat.setText("5 + " + "1 Seater");
+            holder.txtSeatCapacity.setText("5 + " + "1 Seater");
         }
         else
         {
@@ -116,7 +116,7 @@ public class FindsCarRecyclerAdapter extends RecyclerView.Adapter<FindsCarRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView carName, txtAvailableCount, textSeat, txtPriceRange;
+        TextView carName, txtAvailableCount, txtSeatCapacity, txtPriceRange;
         ConstraintLayout findCarLayout;
         ImageView carImage;
 
@@ -125,7 +125,7 @@ public class FindsCarRecyclerAdapter extends RecyclerView.Adapter<FindsCarRecycl
 
             carName = itemView.findViewById(R.id.carNames);
             txtAvailableCount = itemView.findViewById(R.id.txtAvailableCount);
-            textSeat = itemView.findViewById(R.id.textSeat);
+            txtSeatCapacity = itemView.findViewById(R.id.txtSeatCapacity);
             txtPriceRange = itemView.findViewById(R.id.txtPriceRange);
             carImage = itemView.findViewById(R.id.carImageView);
             findCarLayout= itemView.findViewById(R.id.findCarLayout);
@@ -134,7 +134,8 @@ public class FindsCarRecyclerAdapter extends RecyclerView.Adapter<FindsCarRecycl
                 @Override
                 public void onClick(View view)
                 {
-                    listener.onFindCarItemClick(view, getAdapterPosition(), listOfVehicleType, carName.getText().toString());
+                    listener.onFindCarItemClick(view, getAdapterPosition(), listOfVehicleType,
+                            carName.getText().toString(), txtSeatCapacity.getText().toString());
                 }
             });
 

@@ -493,7 +493,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/carNameText"
+                android:id="@+id/txtVehicleType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="5"
@@ -571,12 +571,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/seat"
-                    app:layout_constraintBottom_toBottomOf="@+id/textSeat"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtSeatCapacity"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/textSeat" />
+                    app:layout_constraintTop_toTopOf="@id/txtSeatCapacity" />
 
                 <TextView
-                    android:id="@+id/textSeat"
+                    android:id="@+id/txtSeatCapacity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4+1 Seater"
@@ -619,9 +619,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/main_recyclerview"
@@ -631,9 +629,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/guideline5"
             app:layout_constraintRight_toRightOf="@+id/guideline6"
             app:layout_constraintTop_toBottomOf="@+id/sedanTitleLayout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

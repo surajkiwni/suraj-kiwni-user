@@ -85,7 +85,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     FindCarItemClickListener findCarItemClickListener;
     String TAG = this.getClass().getSimpleName();
 
-    String names[]={"sedan"};
     ImageView imageBack,imgCallFindCarAct;
     TextView txtTitle,viewDetailsText, txtFromTo, txtStartEndDate, txtStartTime, txtEstimatedKm;
     BottomSheetDialog bottomSheetDialog;
@@ -93,29 +92,31 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
     ConstraintLayout constraintLayoutPack;
     String direction = "",serviceType = "", fromLocation = "", endLocation = "",
-            startDate = "", endDate = "", startTime = "", distanceInKm = "";
-    String pickupLocation = "", dropLocation = "", pickup_city = "", drop_city = "",mobile = "";
+            startDate = "", endDate = "", startTime = "", distanceInKm = "", pickupLocation = "",
+            dropLocation = "", pickup_city = "", drop_city = "", mobile = "", pickup_time = "",
+            drop_time = "", durationInTraffic = "", idToken = "";
     String[] latlong;
-    double pickup_latitude = 0.0, pickup_longitude = 0.0, drop_latitude = 0.0, drop_longitude = 0.0;
+    double pickup_latitude = 0.0, pickup_longitude = 0.0, drop_latitude = 0.0, drop_longitude = 0.0,
+            convertedDistance = 0.0;
+
     Polyline mPolyline;
     public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
 
-
+    FindCarItemClickListener listener;
     ApiInterface apiInterface;
+    ScheduleMapResp scheduleMapResp;
+
     List<ScheduleMapResp> finalScheduleList = new ArrayList<>();
     Map<String, Map<String, Map<String, List<ScheduleMapResp>>>> listMap = new HashMap<String, Map<String, Map<String, List<ScheduleMapResp>>>>();
     FindsCarRecyclerAdapter findsCarRecyclerAdapter;
-    ScheduleMapResp scheduleMapResp;
-
     List<String> listOfVehicleType = new ArrayList<String>();
-    FindCarItemClickListener listener;
     Map<String, Map<String, List<ScheduleMapResp>>> outerMap;
     Map<String, List<ScheduleMapResp>> innerMap;
 
-    public List<ScheduleMapResp> selectedByVehicleTypeList = new ArrayList<>();
-    public List<ScheduleMapResp> tempList = new ArrayList<>();
-    public List<ScheduleMapResp> tempList1 = new ArrayList<>();
-    public List<ScheduleMapResp> remainingList = new ArrayList<>();
+    List<ScheduleMapResp> selectedByVehicleTypeList = new ArrayList<>();
+    List<ScheduleMapResp> tempList = new ArrayList<>();
+    List<ScheduleMapResp> tempList1 = new ArrayList<>();
+    List<ScheduleMapResp> remainingList = new ArrayList<>();
 
     boolean isEqual = false;
 
@@ -143,35 +144,37 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         viewDetailsText = findViewById(R.id.viewDetailsText);
         findsCarsRecyclerView = findViewById(R.id.findsCarsRecyclerView);
 
+        /* shared pref values */
         direction = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DIRECTION,"");
         serviceType = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SERVICE_TYPE,"");
-
         fromLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_CITY, "");
         endLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_CITY, "");
-
         pickupLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_LOCATION, "");
         dropLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_LOCATION, "");
         pickup_city = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_CITY, "");
         drop_city = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_CITY, "");
-
-        Log.d(TAG,"pickupLocation = " + pickupLocation
-                + " dropLocation = " + dropLocation);
-
         startDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_DATE_TO_DISPLAY, "");
         endDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_DATE_TO_DISPLAY, "");
         startTime = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_TIME_TO_DISPLAY, "");
         distanceInKm = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DISTANCE_IN_KM, "");
+        pickup_time = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_TIME_FOR_API, "");
+        drop_time = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_TIME_FOR_API, "");
+        idToken = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_TOKEN, "");
+        convertedDistance = Double.parseDouble(PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DISTANCE, ""));
+        durationInTraffic = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DURATION_IN_TRAFFIC, "");
 
+        Log.d(TAG,"pickupLocation = " + pickupLocation
+                + " dropLocation = " + dropLocation);
         Log.d(TAG,"fromLocation = " + fromLocation
                 + " endLocation = " + endLocation);
+        Log.d(TAG,"endDate = " + endDate
+                + " direction = " + direction);
 
+        /* set data to ui */
         txtFromTo.setText(fromLocation + " To " + endLocation);
         txtStartTime.setText(startTime);
         txtStartEndDate.setText(startDate);
         txtEstimatedKm.setText("Est km " + distanceInKm);
-
-        Log.d(TAG,"endDate = " + endDate
-                + " direction = " + direction);
 
         switch (serviceType)
         {
@@ -213,11 +216,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                 break;
         }
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutWrapper(getApplicationContext(), 1));
-
-        listener = this::onFindCarItemClick;
-
+        /* rental static data */
         hourPackageModelList = new ArrayList<>();
 
         hourPackageModelList.add(new HourPackage("2km","25 km"));
@@ -234,13 +233,13 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         HourPackageAdapter hourPackageAdapter = new HourPackageAdapter(this,hourPackageModelList);
         findsCarsRecyclerView.setAdapter(hourPackageAdapter);
 
-
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+
         imgCallFindCarAct.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -324,11 +323,15 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
 
-        getProjectionScheduleMap("2022-03-30T14:28:00.000Z","2022-03-30T17:54:00.000Z",
-                "Pune","one-way","outstation",
-                "","",166.0,AppConstants.idToken,true);
+        /* vehicle type recyclerview */
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutWrapper(getApplicationContext(), 1));
 
-       // getProjectionScheduleMap();
+        listener = this::onFindCarItemClick;
+
+        getProjectionScheduleMap(pickup_time,drop_time,
+                pickup_city, direction,serviceType,
+                "","",convertedDistance , AppConstants.idToken,true);
     }
 
     public void getProjectionScheduleMap(String startTime, String endTime, String startLocation,
@@ -432,11 +435,13 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
             case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
 
                     // permission was granted, yay! Do the phone call
-
-                } else {
+                }
+                else
+                {
 
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
@@ -566,101 +571,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         return data;
     }
 
-    @Override
-    public void onFindCarItemClick(View v, int position, List<String> scheduleMapRespList, String labelName) {
-        /* on click on recyclerview item */
-        Log.d("TAG","label Value = " + labelName);
-
-        /* get selected vehicle_type and add into another list */
-        for (int i = 0; i < finalScheduleList.size();i++)
-        {
-            // Log.d("TAG","finalschedulelist i "+i);
-            if (finalScheduleList.get(i).getVehicleType().equals(labelName))
-            {
-                selectedByVehicleTypeList.add(finalScheduleList.get(i));
-                Log.d("TAG", "selectedByVehicleTypeList " + selectedByVehicleTypeList.toString());
-            }
-        }
-
-        /* sort by model */
-        Collections.sort(selectedByVehicleTypeList, orderModel);
-        Log.d("sorted list = ", selectedByVehicleTypeList.toString());
-
-        /* sorting by model and classType same and different */
-        sortByModelAndClassType();
-
-        Log.d("TAG","selected by vehicle type " + tempList.toString());
-
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<ScheduleMapResp>>() {}.getType();
-        String jsonForData = gson.toJson(tempList, type);
-        String jsonForDuplicateData = gson.toJson(remainingList, type);
-
-        Intent intent = new Intent(FindCarActivity.this, CarListTypeActivity.class);
-        intent.putExtra(SharedPref.SELECTED_VEHICLE_OBJECT, jsonForData);
-        intent.putExtra(SharedPref.DUPLICATE_VEHICLE_OBJECT, jsonForDuplicateData);
-        startActivity(intent);
-        finish();
-
-        Log.d("TAG","scheduleDatesResp Data to send next Activity = " + tempList.toString());
-        Log.d("TAG","scheduleDatesResp Data to send next Activity = " + remainingList.toString());
-    }
-
-    public void sortByModelAndClassType()
-    {
-        int i =0;
-        while (i<=selectedByVehicleTypeList.size())
-        {
-            for(int j = i+1; j < selectedByVehicleTypeList.size(); j++)
-            {
-                if(selectedByVehicleTypeList.get(i).getClassType().equals(selectedByVehicleTypeList.get(j).getClassType()))
-                {
-                    if (selectedByVehicleTypeList.get(i).getModel().equals(selectedByVehicleTypeList.get(j).getModel()))
-                    {
-                        //System.out.println("model compare i = " + mList.get(i).getModel());
-                        tempList.add(selectedByVehicleTypeList.get(i));
-                        Log.d("TAG", "templist size" +tempList.size());
-
-                        remainingList.add(selectedByVehicleTypeList.get(j));
-                        Log.d("TAG","remainingList = " +remainingList);
-
-                        isEqual = true;
-                    }
-                }
-                else
-                {
-                    if (selectedByVehicleTypeList.get(i).getModel().equals(selectedByVehicleTypeList.get(j).getModel()))
-                    {
-                        //System.out.println("class type not same i " + selectedByVehicleTypeList.get(i).getModel());
-                        //System.out.println("class type not same  j " + selectedByVehicleTypeList.get(j).getModel());
-
-                        tempList.add(selectedByVehicleTypeList.get(i));
-                        tempList1.add(selectedByVehicleTypeList.get(j));
-
-                        tempList1.removeAll(tempList);
-                        tempList.addAll(tempList1);
-                    }
-                }
-            }
-
-            if (isEqual)
-            {
-                i= i+2;
-                isEqual = false;
-            }else{
-                i++;
-            }
-        }
-    }
-
-    public static Comparator<ScheduleMapResp> orderModel = new Comparator<ScheduleMapResp>() {
-        @Override
-        public int compare(ScheduleMapResp o1, ScheduleMapResp o2)
-        {
-            return o1.getVehicle().getModel().compareTo(o2.getVehicle().getModel());
-        }
-    };
-
     /** A class to download data from Google Directions URL */
     @SuppressLint("StaticFieldLeak")
     private class DownloadDirectionTask extends AsyncTask<String, Void, String>
@@ -760,6 +670,104 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                 Toast.makeText(getApplicationContext(), "No route is found", Toast.LENGTH_LONG).show();
         }
     }
+
+    @Override
+    public void onFindCarItemClick(View v, int position, List<String> scheduleMapRespList, String labelName, String seatCapacity)
+    {
+        /* on click on recyclerview item */
+        Log.d("TAG","label Value = " + labelName);
+        Log.d("TAG","label Value = " + seatCapacity);
+
+        /* get selected vehicle_type and add into another list */
+        for (int i = 0; i < finalScheduleList.size();i++)
+        {
+            // Log.d("TAG","finalschedulelist i "+i);
+            if (finalScheduleList.get(i).getVehicleType().equals(labelName))
+            {
+                selectedByVehicleTypeList.add(finalScheduleList.get(i));
+                //Log.d("TAG", "selectedByVehicleTypeList " + selectedByVehicleTypeList.toString());
+            }
+        }
+
+        /* sort by model */
+        Collections.sort(selectedByVehicleTypeList, orderModel);
+        //Log.d("sorted list = ", selectedByVehicleTypeList.toString());
+
+        /*sorting by model and classType same and different */
+        sortByModelAndClassType();
+        //Log.d("TAG","selected by vehicle type = " + tempList.toString());
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<ScheduleMapResp>>() {}.getType();
+        String jsonForData = gson.toJson(tempList, type);
+        String jsonForDuplicateData = gson.toJson(remainingList, type);
+
+        Intent intent = new Intent(FindCarActivity.this, CarListTypeActivity.class);
+        intent.putExtra(SharedPref.SELECTED_VEHICLE_TYPE_OBJECT, jsonForData);
+        intent.putExtra(SharedPref.DUPLICATE_VEHICLE_OBJECT, jsonForDuplicateData);
+        PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.VEHICLE_TYPE_FOR_DISPLAY, labelName);
+        PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.VEHICLE_SEAT_CAPACITY_FOR_DISPLAY, seatCapacity);
+        startActivity(intent);
+        //finish();
+
+        //Log.d("TAG","scheduleDatesResp Data to send next Activity tempList = " + tempList.toString());
+        //Log.d("TAG","scheduleDatesResp Data to send next Activity remainingList = " + remainingList.toString());
+    }
+
+    public void sortByModelAndClassType()
+    {
+        int i =0;
+        while (i<=selectedByVehicleTypeList.size())
+        {
+            for(int j = i+1; j < selectedByVehicleTypeList.size(); j++)
+            {
+                if(selectedByVehicleTypeList.get(i).getClassType().equals(selectedByVehicleTypeList.get(j).getClassType()))
+                {
+                    if (selectedByVehicleTypeList.get(i).getModel().equals(selectedByVehicleTypeList.get(j).getModel()))
+                    {
+                        //System.out.println("model compare i = " + mList.get(i).getModel());
+                        tempList.add(selectedByVehicleTypeList.get(i));
+                        Log.d("TAG", "templist size" +tempList.size());
+
+                        remainingList.add(selectedByVehicleTypeList.get(j));
+                        Log.d("TAG","remainingList = " +remainingList);
+
+                        isEqual = true;
+                    }
+                }
+                else
+                {
+                    if (selectedByVehicleTypeList.get(i).getModel().equals(selectedByVehicleTypeList.get(j).getModel()))
+                    {
+                        //System.out.println("class type not same i " + selectedByVehicleTypeList.get(i).getModel());
+                        //System.out.println("class type not same  j " + selectedByVehicleTypeList.get(j).getModel());
+
+                        tempList.add(selectedByVehicleTypeList.get(i));
+                        tempList1.add(selectedByVehicleTypeList.get(j));
+
+                        tempList1.removeAll(tempList);
+                        tempList.addAll(tempList1);
+                    }
+                }
+            }
+
+            if (isEqual)
+            {
+                i= i+2;
+                isEqual = false;
+            }else{
+                i++;
+            }
+        }
+    }
+
+    public static Comparator<ScheduleMapResp> orderModel = new Comparator<ScheduleMapResp>() {
+        @Override
+        public int compare(ScheduleMapResp o1, ScheduleMapResp o2)
+        {
+            return o1.getVehicle().getModel().compareTo(o2.getVehicle().getModel());
+        }
+    };
 
     @Override
     protected void onResume() {
