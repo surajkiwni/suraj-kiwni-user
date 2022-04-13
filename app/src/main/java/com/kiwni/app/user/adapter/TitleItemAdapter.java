@@ -50,12 +50,12 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
     public void onBindViewHolder(@NonNull TitleViewHolder holder, int position)
     {
         ScheduleMapResp scheduleDatesRespModel = mList.get(position);
-        holder.txtCarModel.setText(scheduleDatesRespModel.getModel());
-        holder.txtClassType.setText(scheduleDatesRespModel.getClassType());
+        holder.txtCarModelTitleAdt.setText(scheduleDatesRespModel.getModel());
+        holder.txtClassTypeTitleAdt.setText(scheduleDatesRespModel.getClassType());
 
         Glide.with(context)
                 .load(AppConstants.IMAGE_PATH + scheduleDatesRespModel.getVehicle().getImagePath())
-                .into(holder.imgVehicle);
+                .into(holder.imgVehicleTitleAdt);
 
         boolean isExpandable = scheduleDatesRespModel.isExpandable();
         holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
@@ -64,11 +64,11 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
         appendList.clear();
         for (int i = 0; i < mList.size(); i++)
         {
-            if (mList.get(i).getVehicle().getModel().equals(holder.txtCarModel.getText().toString()))
+            if (mList.get(i).getVehicle().getModel().equals(holder.txtCarModelTitleAdt.getText().toString()))
             {
                 Log.d("TAG", "print list of model = " + mList.get(i).getModel());
                 //appendList.add(mList.get(i));
-                if (mList.get(i).getVehicle().getClassType().equals(holder.txtClassType.getText().toString()))
+                if (mList.get(i).getVehicle().getClassType().equals(holder.txtClassTypeTitleAdt.getText().toString()))
                 {
                     Log.d("TAG", "print list of class type = " + mList.get(i).getClassType());
 
@@ -76,7 +76,7 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
                     appendList.add(mList.get(i));
 
                     System.out.println("appendList = " + appendList.size());
-                    holder.txtAvailableCount.setText("Available  " + appendList.size());
+                    holder.txtAvailableCountTitleAdt.setText("Available  " + appendList.size());
                 }
             }
             else
@@ -87,17 +87,17 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
 
         for (int i = 0; i < remainingList.size(); i++)
         {
-            if (remainingList.get(i).getVehicle().getModel().equals(holder.txtCarModel.getText().toString()))
+            if (remainingList.get(i).getVehicle().getModel().equals(holder.txtCarModelTitleAdt.getText().toString()))
             {
                 //Log.d("TAG", "print list of model = " + remainingList.get(i).getModel());
                 //appendList.add(mList.get(i));
-                if (remainingList.get(i).getVehicle().getClassType().equals(holder.txtClassType.getText().toString()))
+                if (remainingList.get(i).getVehicle().getClassType().equals(holder.txtClassTypeTitleAdt.getText().toString()))
                 {
                     remainingList.removeAll(appendList);
                     appendList.add(remainingList.get(i));
 
                     System.out.println("appendList size in remaining list = " + appendList.size());
-                    holder.txtAvailableCount.setText("Available  " + appendList.size());
+                    holder.txtAvailableCountTitleAdt.setText("Available  " + appendList.size());
                 }
             } else {
                 Log.d("TAG", "Not Match Condition: ");
@@ -142,9 +142,9 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
     public class TitleViewHolder extends RecyclerView.ViewHolder
     {
         ConstraintLayout constraintLayoutTitleList, expandableLayout;
-        TextView txtCarModel,txtClassType,txtAvailableCount,txtPriceRange;
+        TextView txtCarModelTitleAdt,txtClassTypeTitleAdt,txtAvailableCountTitleAdt,txtPriceRangeTitleAdt;
         RecyclerView nestedRecyclerView;
-        ImageView imgVehicle;
+        ImageView imgVehicleTitleAdt;
 
         public TitleViewHolder(@NonNull View itemView)
         {
@@ -152,12 +152,12 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
 
             constraintLayoutTitleList = itemView.findViewById(R.id.constraintLayoutTitleList);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
-            txtCarModel = itemView.findViewById(R.id.txtCarModel);
-            txtAvailableCount = itemView.findViewById(R.id.txtAvailableCount);
-            txtPriceRange = itemView.findViewById(R.id.txtPriceRange);
-            txtClassType = itemView.findViewById(R.id.txtClassType);
+            txtCarModelTitleAdt = itemView.findViewById(R.id.txtCarModelTitleAdt);
+            txtAvailableCountTitleAdt = itemView.findViewById(R.id.txtAvailableCountTitleAdt);
+            txtPriceRangeTitleAdt = itemView.findViewById(R.id.txtPriceRangeTitleAdt);
+            txtClassTypeTitleAdt = itemView.findViewById(R.id.txtClassTypeTitleAdt);
             nestedRecyclerView = itemView.findViewById(R.id.child_rv);
-            imgVehicle = itemView.findViewById(R.id.imgVehicle);
+            imgVehicleTitleAdt = itemView.findViewById(R.id.imgVehicleTitleAdt);
         }
     }
 }

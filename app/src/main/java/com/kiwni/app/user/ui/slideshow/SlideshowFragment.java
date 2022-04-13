@@ -19,6 +19,8 @@ public class SlideshowFragment extends Fragment {
     private SlideshowViewModel slideshowViewModel;
     private FragmentSlideshowBinding binding;
 
+    String TAG = this.getClass().getSimpleName();
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         slideshowViewModel =

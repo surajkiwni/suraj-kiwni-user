@@ -40,7 +40,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.textView.setText(data[position]);
+        holder.txtVehicleTypeFindsCarAdt.setText(data[position]);
 
     }
 
@@ -51,13 +51,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textView,toolbarText;
+        TextView txtVehicleTypeFindsCarAdt,toolbarText;
         ConstraintLayout constraintLayout,constraintLayout1,constraintLayout2;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            textView = itemView.findViewById(R.id.carNames);
+            txtVehicleTypeFindsCarAdt = itemView.findViewById(R.id.txtVehicleTypeFindsCarAdt);
             toolbarText = itemView.findViewById(R.id.toolbarText);
             constraintLayout= itemView.findViewById(R.id.constraintLayout);
             constraintLayout1= itemView.findViewById(R.id.constraintLayout1);

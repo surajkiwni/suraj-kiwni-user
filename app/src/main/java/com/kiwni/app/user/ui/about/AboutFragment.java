@@ -32,6 +32,7 @@ public class AboutFragment extends Fragment implements BackKeyPressedListener {
     ImageView imageBack;
     TextView text1,text2;
     View view;
+    String TAG = this.getClass().getSimpleName();
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(@NonNull LayoutInflater inflater,

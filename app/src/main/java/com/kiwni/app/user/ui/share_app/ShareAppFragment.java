@@ -19,6 +19,7 @@ public class ShareAppFragment extends Fragment {
 
     private ShareAppViewModel shareAppViewModel;
     private FragmentShareAppBinding binding;
+    String TAG = this.getClass().getSimpleName();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

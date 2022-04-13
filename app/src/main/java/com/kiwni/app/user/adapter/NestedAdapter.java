@@ -49,10 +49,10 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutView
         ScheduleMapResp scheduleDatesResp = mList.get(position);
 
         getTimeFromDate(scheduleDatesResp.getVehicle().getRegYear());
-        holder.txtRegYear.setText(convertedTime);
+        holder.txtRegYearNestedAdt.setText(convertedTime);
 
-        holder.txtPrice.setText(Math.round(scheduleDatesResp.getPrice()) + " /-");
-        holder.txtProvideNo.setText(scheduleDatesResp.getVehicle().getProvider().getName());
+        holder.txtPriceNestedAdt.setText(Math.round(scheduleDatesResp.getPrice()) + " /-");
+        holder.txtProvideNoNestedAdt.setText(scheduleDatesResp.getVehicle().getProvider().getName());
 
         Log.d("TAG","mList SizeNested = " +mList.size());
         Log.d("TAG","reg year = " + scheduleDatesResp.getVehicle().getRegYear());
@@ -65,24 +65,24 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutView
 
     public class LayoutViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
 
-        AppCompatButton btnBook;
-        TextView txtRegYear,txtProvideNo, txtPrice;
+        AppCompatButton btnBookNestedAdt;
+        TextView txtRegYearNestedAdt,txtProvideNoNestedAdt, txtPriceNestedAdt;
 
         public LayoutViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            btnBook = itemView.findViewById(R.id.btnBook);
-            txtRegYear = itemView.findViewById(R.id.txtRegYear);
-            txtProvideNo = itemView.findViewById(R.id.txtProvideNo);
-            txtPrice = itemView.findViewById(R.id.txtPrice);
+            btnBookNestedAdt = itemView.findViewById(R.id.btnBookNestedAdt);
+            txtRegYearNestedAdt = itemView.findViewById(R.id.txtRegYearNestedAdt);
+            txtProvideNoNestedAdt = itemView.findViewById(R.id.txtProvideNoNestedAdt);
+            txtPriceNestedAdt = itemView.findViewById(R.id.txtPriceNestedAdt);
 
-            btnBook.setOnClickListener(this);
+            btnBookNestedAdt.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view)
         {
-            if (view.getId() == R.id.btnBook)
+            if (view.getId() == R.id.btnBookNestedAdt)
             {
                 listener.onItemClick(view, getAdapterPosition(), mList);
             }

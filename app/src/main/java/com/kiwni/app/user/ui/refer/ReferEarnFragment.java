@@ -23,6 +23,7 @@ public class ReferEarnFragment extends Fragment implements BackKeyPressedListene
 
     private ReferEarnViewModel referEarnViewModel;
     private FragmentReferEarnBinding binding;
+    String TAG = this.getClass().getSimpleName();
 
     public  static BackKeyPressedListener backKeyPressedListener;
     ImageView imageBack;

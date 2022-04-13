@@ -43,24 +43,25 @@
 
 
                     <ImageView
-                        android:id="@+id/imgVehicle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/imgVehicleTitleAdt"
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="@dimen/dp_80"
+                        app:layout_constraintDimensionRatio="2:2"
                         android:src="@drawable/mercedes"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/txtClassType"
+                        android:id="@+id/txtClassTypeTitleAdt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="premium"
                         android:textSize="@dimen/sp_12"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        app:layout_constraintLeft_toLeftOf="@+id/imgVehicle"
-                        app:layout_constraintRight_toRightOf="@+id/imgVehicle"
-                        app:layout_constraintTop_toBottomOf="@+id/imgVehicle" />
+                        app:layout_constraintLeft_toLeftOf="@+id/imgVehicleTitleAdt"
+                        app:layout_constraintRight_toRightOf="@+id/imgVehicleTitleAdt"
+                        app:layout_constraintTop_toBottomOf="@+id/imgVehicleTitleAdt" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -78,7 +79,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
-                        android:id="@+id/txtCarModel"
+                        android:id="@+id/txtCarModelTitleAdt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
@@ -97,7 +98,7 @@
                         android:background="#707070" />
 
                     <TextView
-                        android:id="@+id/txtAvailableCount"
+                        android:id="@+id/txtAvailableCountTitleAdt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -129,11 +130,11 @@
                         android:textColor="@color/black"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/amount"
+                        app:layout_constraintEnd_toStartOf="@+id/txtPriceRangeTitleAdt"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/amount"
+                        android:id="@+id/txtPriceRangeTitleAdt"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:paddingLeft="@dimen/dp_3"

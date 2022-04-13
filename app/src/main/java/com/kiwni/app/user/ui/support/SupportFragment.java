@@ -30,6 +30,8 @@ public class SupportFragment extends Fragment implements BackKeyPressedListener 
     private SupportViewModel supportViewModel;
     private FragmentSupportBinding binding;
 
+    String TAG = this.getClass().getSimpleName();
+
     RecyclerView supportRecyclerView;
     List<Support> supportModelList;
 

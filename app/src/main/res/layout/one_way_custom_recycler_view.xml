@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/findCarLayout"
+        android:id="@+id/constraintFindCarLayout"
         android:layout_marginTop="5dp"
         android:background="@drawable/grey_border"
         android:layout_marginLeft="5dp"
@@ -31,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/carNames"
+                android:id="@+id/txtVehicleTypeFindsCarAdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_12"
@@ -40,7 +40,7 @@
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/txtAvailableCount"
+                android:id="@+id/txtAvailableCountFindCarAdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -50,7 +50,7 @@
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/txtPriceRange"
+                android:id="@+id/txtPriceRangeFindsCarAdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -63,7 +63,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/carImageView"
+            android:id="@+id/imgVehicleFindsCarAdt"
             android:layout_width="@dimen/dp_120"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
@@ -79,8 +79,8 @@
             android:foregroundGravity="center"
             android:padding="@dimen/dp_5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/carImageView"
-            app:layout_constraintTop_toBottomOf="@+id/carImageView">
+            app:layout_constraintStart_toEndOf="@id/imgVehicleFindsCarAdt"
+            app:layout_constraintTop_toBottomOf="@+id/imgVehicleFindsCarAdt">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/acLayout"
@@ -94,24 +94,25 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/imgACFindCarAdt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ac_icon"
-                    app:layout_constraintBottom_toBottomOf="@id/textAC"
-                    app:layout_constraintEnd_toStartOf="@+id/textAC"
+                    app:layout_constraintBottom_toBottomOf="@id/txtACFindCarAdt"
+                    app:layout_constraintEnd_toStartOf="@+id/txtACFindCarAdt"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/textAC" />
+                    app:layout_constraintTop_toTopOf="@id/txtACFindCarAdt" />
 
                 <TextView
-                    android:id="@+id/textAC"
+                    android:id="@+id/txtACFindCarAdt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="2dp"
                     android:paddingEnd="2dp"
                     android:text="Ac"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imgACFindCarAdt"
                     app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -130,21 +131,21 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/imageSeat"
+                    android:id="@+id/imgSeatCapacity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/seat"
-                    app:layout_constraintBottom_toBottomOf="@+id/txtSeatCapacity"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtSeatCapacityFindCarAdt"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/txtSeatCapacity" />
+                    app:layout_constraintTop_toTopOf="@id/txtSeatCapacityFindCarAdt" />
 
                 <TextView
-                    android:id="@+id/txtSeatCapacity"
+                    android:id="@+id/txtSeatCapacityFindCarAdt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4+1 Seater"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageSeat"
+                    app:layout_constraintStart_toEndOf="@+id/imgSeatCapacity"
                     app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -163,21 +164,21 @@
 
 
                 <ImageView
-                    android:id="@+id/imageBag"
+                    android:id="@+id/imgBagFindCarAdt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/bag"
-                    app:layout_constraintBottom_toBottomOf="@+id/bagTextView"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtBagFindsCarAdt"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/bagTextView" />
+                    app:layout_constraintTop_toTopOf="@+id/txtBagFindsCarAdt" />
 
                 <TextView
-                    android:id="@+id/bagTextView"
+                    android:id="@+id/txtBagFindsCarAdt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3 bags"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/imageBag"
+                    app:layout_constraintStart_toEndOf="@id/imgBagFindCarAdt"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

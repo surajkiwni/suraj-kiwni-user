@@ -24,6 +24,7 @@ public class FeedbackFragment extends Fragment  {
     private FeedbackViewModel feedbackViewModel;
     private FragmentFeedbackBinding binding;
     View view;
+    String TAG = this.getClass().getSimpleName();
 
 
     BottomSheetDialog bottomSheetDialog;

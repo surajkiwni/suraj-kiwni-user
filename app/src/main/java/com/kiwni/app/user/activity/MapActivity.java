@@ -17,6 +17,7 @@ import com.kiwni.app.user.R;
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     GoogleMap mMap;
+    String TAG = this.getClass().getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
