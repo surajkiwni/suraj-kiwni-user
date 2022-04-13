@@ -1,6 +1,7 @@
 package com.kiwni.app.user.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,17 +30,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.FilterAdapter;
+import com.kiwni.app.user.adapter.GridLayoutWrapper;
 import com.kiwni.app.user.adapter.TitleItemAdapter;
-import com.kiwni.app.user.datamodels.BookingModel;
-import com.kiwni.app.user.datamodels.DataModels;
 import com.kiwni.app.user.interfaces.BookingListItemClickListener;
 import com.kiwni.app.user.interfaces.FilterItemClickListener;
 import com.kiwni.app.user.models.Filter;
+import com.kiwni.app.user.models.ScheduleMapResp;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -47,7 +51,6 @@ import java.util.Random;
 public class CarListTypeActivity extends AppCompatActivity implements BookingListItemClickListener {
 
     private RecyclerView recyclerView;
-    private List<DataModels> mList;
     private TitleItemAdapter adapter;
     String direction = "", serviceType = "", fromLocation = "", endLocation = "",
             startDate = "", endDate = "", startTime = "", distanceInKm = "",mobile = "";
@@ -64,6 +67,9 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
     boolean isSelected = false;
     private static int NEXT_ACTIVITY_REQUEST = 1005;
     ActivityResultLauncher<Intent> resultLauncher;
+
+    List<ScheduleMapResp> mList = new ArrayList<>();
+    List<ScheduleMapResp> remainingList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,12 +89,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         txtStartTime = findViewById(R.id.txtStartTime);
         txtEstimatedKm = findViewById(R.id.txtEstimatedKm);
 
-        bookingListItemClickListener = new BookingListItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position, List<BookingModel> bookingModels) {
-                /*Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();*/
-            }
-        };
+
 
         direction = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DIRECTION,"");
         serviceType = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SERVICE_TYPE,"");
@@ -148,45 +149,27 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
                 break;
         }
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(CarListTypeActivity.this));
+        Gson gson = new Gson();
+        String stringData = getIntent().getStringExtra(SharedPref.SELECTED_VEHICLE_OBJECT);
+        String stringDuplicateData = getIntent().getStringExtra(SharedPref.DUPLICATE_VEHICLE_OBJECT);
 
-        mList = new ArrayList<>();
+        if(stringData != null)
+        {
+            Type type = new TypeToken<List<ScheduleMapResp>>() {
+            }.getType();
+            mList = gson.fromJson(stringData, type);
+            remainingList = gson.fromJson(stringDuplicateData, type);
+            //Log.d("data Count = ", String.valueOf(mList.size()));
+            //Log.d("value Data = ", mList.toString());
 
-        //list1
-        List<BookingModel> nestedList1 = new ArrayList<>();
-        nestedList1.add(new BookingModel("2014"));
-        nestedList1.add(new BookingModel("2015"));
-        nestedList1.add(new BookingModel("2017"));
-        nestedList1.add(new BookingModel("2018"));
+            //Log.d("duplicate Data size = ", String.valueOf(remainingList.size()));
+            //Log.d("duplicate Data = ", remainingList.toString());
 
-        List<BookingModel> nestedList2 = new ArrayList<>();
-        nestedList2.add(new BookingModel("2014"));
-        nestedList2.add(new BookingModel("2015"));
-        nestedList2.add(new BookingModel("2017"));
-        nestedList2.add(new BookingModel("2018"));
-        nestedList2.add(new BookingModel("2019"));
-        nestedList2.add(new BookingModel("2020"));
+            /* set data to recyclerview */
+            setParentLayoutData(mList, remainingList);
+        }
 
-        List<BookingModel> nestedList3 = new ArrayList<>();
-        nestedList3.add(new BookingModel("2014"));
-        nestedList3.add(new BookingModel("2015"));
-        nestedList3.add(new BookingModel("2017"));
-        nestedList3.add(new BookingModel("2019"));
-        nestedList3.add(new BookingModel("2020"));
 
-        List<BookingModel> nestedList4 = new ArrayList<>();
-        nestedList4.add(new BookingModel("2015"));
-        nestedList4.add(new BookingModel("2016"));
-        nestedList4.add(new BookingModel("2018"));
-
-        mList.add(new DataModels(nestedList1, "Sedan", bookingListItemClickListener));
-        mList.add(new DataModels(nestedList2, "Mahindra Verito", bookingListItemClickListener));
-        mList.add(new DataModels(nestedList3, "Swift Dezire", bookingListItemClickListener));
-        mList.add(new DataModels(nestedList4, "Maruti Suzuki Ciaz", bookingListItemClickListener));
-
-        adapter = new TitleItemAdapter(mList, this);
-        recyclerView.setAdapter(adapter);
 
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -581,6 +564,19 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void setParentLayoutData(List<ScheduleMapResp> numberList, List<ScheduleMapResp> remainingList) {
+        // pass all data to the title adapter
+        //creating new array
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutWrapper(getApplicationContext(), 1));
+
+        adapter = new TitleItemAdapter(getApplicationContext(), numberList, remainingList, this);
+        adapter.setHasStableIds(true);
+        recyclerView.setAdapter(adapter);
+        //adapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -606,13 +602,6 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         }
     }
 
-    @Override
-    public void onItemClick(View v, int position, List<BookingModel> bookingModels)
-    {
-        Intent intent = new Intent(CarListTypeActivity.this, BookingDetailsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-    }
 
     @Override
     public void onPause() {
@@ -630,6 +619,15 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         super.onBackPressed();
         startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
         finish();
+    }
+
+    @Override
+    public void onItemClick(View v, int position, List<ScheduleMapResp> bookingModels) {
+        Toast.makeText(getApplicationContext(), "Clicked on = " + position, Toast.LENGTH_SHORT).show();
+        Log.d("TAG", "data get on click = " + bookingModels.get(position).toString());
+        Intent intent = new Intent(CarListTypeActivity.this, BookingDetailsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }
 

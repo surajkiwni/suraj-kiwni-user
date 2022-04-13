@@ -42,6 +42,9 @@ public class SharedPref
     public static final String DROP_DATE_TO_DISPLAY = "dropDateToDisplay";
     public static final String PICKUP_TIME_TO_DISPLAY = "pickupTimeToDisplay";
 
+    public static final String SELECTED_VEHICLE_OBJECT = "selectedVehicleObject";
+    public static final String DUPLICATE_VEHICLE_OBJECT = "duplicateVehicleObject";
+
     //Find car screen
     public static final String VEHICLE_ID = "vehicleId";
     public static final String VEHICLE_BRAND = "vehicleBrand";

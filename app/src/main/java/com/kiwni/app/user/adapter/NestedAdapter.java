@@ -1,31 +1,37 @@
 package com.kiwni.app.user.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kiwni.app.user.R;
-import com.kiwni.app.user.datamodels.BookingModel;
 import com.kiwni.app.user.interfaces.BookingListItemClickListener;
+import com.kiwni.app.user.models.ScheduleMapResp;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutViewHolder> {
 
-    List<BookingModel> mList;
+    List<ScheduleMapResp> mList = new ArrayList<>();
     Context context;
-    BookingModel bookingModel;
+    BookingListItemClickListener listener;
+    String convertedTime = "";
 
-    private BookingListItemClickListener listener;
-
-    public NestedAdapter(List<BookingModel> mList, BookingListItemClickListener listener) {
+    public NestedAdapter(Context context, List<ScheduleMapResp> mList, BookingListItemClickListener listener) {
+        this.context = context;
         this.mList = mList;
         this.listener = listener;
     }
@@ -37,10 +43,19 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutView
         return new LayoutViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull LayoutViewHolder holder, int position) {
-        bookingModel = mList.get(position);
-        holder.yearText.setText(bookingModel.getName());
+        ScheduleMapResp scheduleDatesResp = mList.get(position);
+
+        getTimeFromDate(scheduleDatesResp.getVehicle().getRegYear());
+        holder.txtRegYear.setText(convertedTime);
+
+        holder.txtPrice.setText(Math.round(scheduleDatesResp.getPrice()) + " /-");
+        holder.txtProvideNo.setText(scheduleDatesResp.getVehicle().getProvider().getName());
+
+        Log.d("TAG","mList SizeNested = " +mList.size());
+        Log.d("TAG","reg year = " + scheduleDatesResp.getVehicle().getRegYear());
     }
 
     @Override
@@ -50,22 +65,69 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutView
 
     public class LayoutViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
 
-        AppCompatButton buttonBook;
-        TextView yearText;
+        AppCompatButton btnBook;
+        TextView txtRegYear,txtProvideNo, txtPrice;
+
         public LayoutViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            buttonBook = itemView.findViewById(R.id.buttonBook);
-            yearText = itemView.findViewById(R.id.yearText);
+            btnBook = itemView.findViewById(R.id.btnBook);
+            txtRegYear = itemView.findViewById(R.id.txtRegYear);
+            txtProvideNo = itemView.findViewById(R.id.txtProvideNo);
+            txtPrice = itemView.findViewById(R.id.txtPrice);
 
-            buttonBook.setOnClickListener(this);
+            btnBook.setOnClickListener(this);
         }
 
         @Override
-        public void onClick(View view) {
-            if (view.getId() == R.id.buttonBook){
+        public void onClick(View view)
+        {
+            if (view.getId() == R.id.btnBook)
+            {
                 listener.onItemClick(view, getAdapterPosition(), mList);
             }
         }
+    }
+
+    public void getTimeFromDate(String actual_date)
+    {
+        Log.d("TAG", "str length = " + actual_date.length());
+
+        Date startDate = null;
+        if (actual_date.length() == 28)
+        {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss.sss'Z'");
+                startDate = sdf.parse(actual_date);
+
+                //startTime = sdf.parse(time);
+                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy");
+                convertedTime = sdf2.format(startDate);
+                Log.d("TAG", "convertedTime  = " + convertedTime);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                Log.d("TAG", "message = " + e.getMessage());
+            }
+        }
+        else if (actual_date.length() == 27)
+        {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.ss.sss'Z'");
+                startDate = sdf.parse(actual_date);
+
+                //startTime = sdf.parse(time);
+                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy");
+                convertedTime = sdf2.format(startDate);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("TAG", "message = " + e.getMessage());
+            }
+        }
+        else {
+            Toast.makeText(context, "Given date is not in correct format.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

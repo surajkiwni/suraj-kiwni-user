@@ -53,6 +53,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/txtClassType"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="premium"
@@ -79,7 +80,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
-                        android:id="@+id/carNameText"
+                        android:id="@+id/txtCarModel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
