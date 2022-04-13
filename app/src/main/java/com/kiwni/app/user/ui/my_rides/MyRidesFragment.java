@@ -28,6 +28,7 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener 
 
     private MyRidesViewModel myRidesViewModel;
     private FragmentMyRidesBinding binding;
+    String TAG = this.getClass().getSimpleName();
 
     public static BackKeyPressedListener backKeyPressedListener;
     private TabLayout tabLayout;

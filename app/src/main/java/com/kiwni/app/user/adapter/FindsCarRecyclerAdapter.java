@@ -59,28 +59,28 @@ public class FindsCarRecyclerAdapter extends RecyclerView.Adapter<FindsCarRecycl
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         String str = listOfVehicleType.get(position);
-        holder.carName.setText(str);
+        holder.txtVehicleTypeFindsCarAdt.setText(str);
 
-        Log.d("TAG", " car name = " + holder.carName.getText().toString());
+        Log.d("TAG", " car name = " + holder.txtVehicleTypeFindsCarAdt.getText().toString());
 
         selectedByVehicleTypeList.clear();
         Log.d("TAG", "finalScheduleList size = " + finalScheduleList.size());
         for(int i = 0; i < finalScheduleList.size(); i++)
         {
-            if(finalScheduleList.get(i).getVehicleType().equals(holder.carName.getText().toString()))
+            if(finalScheduleList.get(i).getVehicleType().equals(holder.txtVehicleTypeFindsCarAdt.getText().toString()))
             {
                 selectedByVehicleTypeList.add(finalScheduleList.get(i));
             }
         }
 
         holder.sortByModelAndClassType(selectedByVehicleTypeList);
-        holder.txtAvailableCount.setText("Available " + tempList.size());
+        holder.txtAvailableCountFindCarAdt.setText("Available " + tempList.size());
 
         int largeSize = selectedByVehicleTypeList.size() - 1;
         //Log.d("TAG", " list size for set = " + selectedByVehicleTypeList.size());
         Collections.sort(selectedByVehicleTypeList, orderModelPrice);
         String priceRange = "₹ " + Math.round(selectedByVehicleTypeList.get(0).getPrice()) + " - " + Math.round(selectedByVehicleTypeList.get(largeSize).getPrice());
-        holder.txtPriceRange.setText(priceRange);
+        holder.txtPriceRangeFindsCarAdt.setText(priceRange);
 
         //Log.d("TAG", "selected by vehicle type list size in adapter = " + selectedByVehicleTypeList.size());
 
@@ -88,23 +88,23 @@ public class FindsCarRecyclerAdapter extends RecyclerView.Adapter<FindsCarRecycl
         {
             Glide.with(context)
                     .load(R.drawable.sedan)
-                    .into(holder.carImage);
+                    .into(holder.imgVehicleFindsCarAdt);
 
-            holder.txtSeatCapacity.setText("4 + " + "1 Seater");
+            holder.txtSeatCapacityFindCarAdt.setText("4 + " + "1 Seater");
         }
         else if(str.equals("SUV"))
         {
             Glide.with(context)
                     .load(R.drawable.suv)
-                    .into(holder.carImage);
+                    .into(holder.imgVehicleFindsCarAdt);
 
-            holder.txtSeatCapacity.setText("5 + " + "1 Seater");
+            holder.txtSeatCapacityFindCarAdt.setText("5 + " + "1 Seater");
         }
         else
         {
             Glide.with(context)
                     .load(R.drawable.tempo_traveller)
-                    .into(holder.carImage);
+                    .into(holder.imgVehicleFindsCarAdt);
         }
 
     }
@@ -116,26 +116,26 @@ public class FindsCarRecyclerAdapter extends RecyclerView.Adapter<FindsCarRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView carName, txtAvailableCount, txtSeatCapacity, txtPriceRange;
-        ConstraintLayout findCarLayout;
-        ImageView carImage;
+        TextView txtVehicleTypeFindsCarAdt, txtAvailableCountFindCarAdt, txtSeatCapacityFindCarAdt, txtPriceRangeFindsCarAdt;
+        ConstraintLayout constraintFindCarLayout;
+        ImageView imgVehicleFindsCarAdt;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            carName = itemView.findViewById(R.id.carNames);
-            txtAvailableCount = itemView.findViewById(R.id.txtAvailableCount);
-            txtSeatCapacity = itemView.findViewById(R.id.txtSeatCapacity);
-            txtPriceRange = itemView.findViewById(R.id.txtPriceRange);
-            carImage = itemView.findViewById(R.id.carImageView);
-            findCarLayout= itemView.findViewById(R.id.findCarLayout);
+            txtVehicleTypeFindsCarAdt = itemView.findViewById(R.id.txtVehicleTypeFindsCarAdt);
+            txtAvailableCountFindCarAdt = itemView.findViewById(R.id.txtAvailableCountFindCarAdt);
+            txtSeatCapacityFindCarAdt = itemView.findViewById(R.id.txtSeatCapacityFindCarAdt);
+            txtPriceRangeFindsCarAdt = itemView.findViewById(R.id.txtPriceRangeFindsCarAdt);
+            imgVehicleFindsCarAdt = itemView.findViewById(R.id.imgVehicleFindsCarAdt);
+            constraintFindCarLayout= itemView.findViewById(R.id.constraintFindCarLayout);
 
-            findCarLayout.setOnClickListener(new View.OnClickListener() {
+            constraintFindCarLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view)
                 {
                     listener.onFindCarItemClick(view, getAdapterPosition(), listOfVehicleType,
-                            carName.getText().toString(), txtSeatCapacity.getText().toString());
+                            txtVehicleTypeFindsCarAdt.getText().toString(), txtSeatCapacityFindCarAdt.getText().toString());
                 }
             });
 

@@ -20,6 +20,7 @@ public class FaqFragment extends Fragment implements BackKeyPressedListener {
 
     private FaqViewModel faqViewModel;
     private FragmentFaqBinding binding;
+    String TAG = this.getClass().getSimpleName();
 
     public static BackKeyPressedListener backKeyPressedListener;
 

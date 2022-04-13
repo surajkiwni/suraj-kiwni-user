@@ -20,6 +20,7 @@ public class OutstationFragment extends Fragment {
     String serviceType = "";
     Fragment roundTripFragment, oneWayFragment;
     public static OutstationFragment instance;
+    String TAG = this.getClass().getSimpleName();
 
     View view;
 

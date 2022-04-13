@@ -29,6 +29,7 @@ public class HomeFragment extends Fragment
     private TabLayout tabLayout;
     private FragmentHomeBinding binding;
     String serviceType = "";
+    String TAG = this.getClass().getSimpleName();
     View root;
     Fragment outstationFragment, airportFragment, rentalFragment;
     public static HomeFragment instance;

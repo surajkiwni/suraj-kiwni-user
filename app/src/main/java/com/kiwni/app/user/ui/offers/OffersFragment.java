@@ -31,6 +31,7 @@ public class OffersFragment extends Fragment implements BackKeyPressedListener {
     private OffersViewModel offersViewModel;
     private OffersFragmentBinding binding;
     View view;
+    String TAG = this.getClass().getSimpleName();
 
     RecyclerView offersRecyclerView;
     List<Offers> offersModelList;

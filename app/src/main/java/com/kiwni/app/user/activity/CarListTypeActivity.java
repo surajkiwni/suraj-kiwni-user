@@ -631,7 +631,9 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
 
         Gson gson = new Gson();
         Type type = new TypeToken<List<ScheduleMapResp>>() {}.getType();
-        String jsonForData = gson.toJson(scheduleMapRespList.get(position).toString(), type);
+        String jsonForData = gson.toJson(scheduleMapRespList, type);
+
+
 
         Intent intent = new Intent(CarListTypeActivity.this, BookingDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);

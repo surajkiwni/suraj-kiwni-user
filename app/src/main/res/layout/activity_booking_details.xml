@@ -173,6 +173,20 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.14999998" />
 
+                    <TextView
+                        android:id="@+id/txtProvider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:layout_marginTop="@dimen/dp_2"
+                        android:text="Trimurti Trivial"
+                        android:textColor="@color/black"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txtTitleType"
+
+                        />
+
+
                     <ImageView
                         android:id="@+id/imageView2"
                         android:layout_width="wrap_content"
@@ -192,7 +206,7 @@
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imageView2"
-                        app:layout_constraintTop_toBottomOf="@+id/txtTitleType"
+                        app:layout_constraintTop_toBottomOf="@+id/txtProvider"
                         app:layout_constraintVertical_bias="0.16000003" />
 
 
@@ -254,8 +268,8 @@
 
                     <ImageView
                         android:id="@+id/carImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="@dimen/dp_80"
                         android:src="@drawable/mask_group"
                         app:layout_constraintHorizontal_bias="0.75"
                         app:layout_constraintLeft_toRightOf="@+id/txtTitleType"

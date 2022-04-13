@@ -85,6 +85,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     FindCarItemClickListener findCarItemClickListener;
     String TAG = this.getClass().getSimpleName();
 
+
     ImageView imageBack,imgCallFindCarAct;
     TextView txtTitle,viewDetailsText, txtFromTo, txtStartEndDate, txtStartTime, txtEstimatedKm;
     BottomSheetDialog bottomSheetDialog;

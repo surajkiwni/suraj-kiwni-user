@@ -24,6 +24,7 @@ public class PaymentFragment extends Fragment implements BackKeyPressedListener 
 
     private PaymentViewModel paymentViewModel;
     private FragmentPaymentBinding binding;
+    String TAG = this.getClass().getSimpleName();
 
     View view;
 

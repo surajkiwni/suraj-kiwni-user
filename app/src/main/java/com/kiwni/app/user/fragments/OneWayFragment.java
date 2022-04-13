@@ -103,6 +103,7 @@ public class OneWayFragment extends Fragment implements
     //TextView txtMarkerText;
     ImageView imageMarker;
     String TAG = this.getClass().getSimpleName();
+
     ConstraintLayout layoutPickupDatePicker, layoutDropDatePicker;
 
     public double currentLatitude = 0.0, currentLongitude = 0.0;

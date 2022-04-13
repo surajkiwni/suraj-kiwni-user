@@ -98,11 +98,13 @@ public class RoundTripFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         com.google.android.gms.location.LocationListener
+
 {
     AppCompatButton btnViewCabRoundTrip, btnCurrentLocation, btnLocationOnMap, btnConfirm;
     ImageView imageMarker;
     String TAG = this.getClass().getSimpleName();
     ConstraintLayout layoutPickupDatePicker, layoutDropDatePicker;
+
 
     public double currentLatitude = 0.0, currentLongitude = 0.0;
     GoogleMap mMap;

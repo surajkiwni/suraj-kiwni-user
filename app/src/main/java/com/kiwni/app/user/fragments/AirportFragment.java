@@ -25,6 +25,7 @@ public class AirportFragment extends Fragment
     View view;
     static AirportFragment instance;
     Fragment airportPickupFragment, airportDropFragment;
+    String TAG = this.getClass().getSimpleName();
 
     public AirportFragment() {
         // Required empty public constructor

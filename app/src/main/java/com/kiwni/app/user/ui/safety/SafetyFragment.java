@@ -33,6 +33,7 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
 
     private SafetyViewModel safetyViewModel;
     private SafetyFragmentBinding binding;
+    String TAG = this.getClass().getSimpleName();
 
     public static BackKeyPressedListener backKeyPressedListener;
     ImageView imageBack;

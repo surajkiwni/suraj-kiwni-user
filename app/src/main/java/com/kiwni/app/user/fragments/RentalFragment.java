@@ -20,6 +20,7 @@ public class RentalFragment extends Fragment {
     String serviceType = "";
     static RentalFragment instance;
     Fragment currentBookingFragment, scheduleBookingFragment;
+    String TAG = this.getClass().getSimpleName();
 
     public RentalFragment() {
         // Required empty public constructor
