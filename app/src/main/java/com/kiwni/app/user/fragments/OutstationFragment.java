@@ -21,7 +21,6 @@ public class OutstationFragment extends Fragment {
     Fragment roundTripFragment, oneWayFragment;
     public static OutstationFragment instance;
     String TAG = this.getClass().getSimpleName();
-
     View view;
 
     public OutstationFragment() {
@@ -30,9 +29,7 @@ public class OutstationFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.fragment_outstation, container, false);
-
         return view ;
     }
 

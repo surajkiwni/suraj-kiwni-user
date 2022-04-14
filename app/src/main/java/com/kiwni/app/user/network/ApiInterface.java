@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.kiwni.app.user.models.bookride.RideReservationReq;
 import com.kiwni.app.user.models.bookride.RideReservationResp;
+import com.kiwni.app.user.models.triphistory.TripsHistoryResp;
 import com.kiwni.app.user.models.vehicle_details.ScheduleDates;
 import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 
@@ -12,8 +13,10 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface ApiInterface
 {
@@ -29,6 +32,9 @@ public interface ApiInterface
     Call<RideReservationResp>
     createRide(@Body RideReservationReq reservationReq,
                @Header("Authorization") String header);
+
+    @GET("/trip/api/trips/user/{id}/")
+    Call<List<TripsHistoryResp>> getTripHistory(@Path("id") int id);
 
     /*@POST("/core/api/persons/")
     Call<UserRegisterResponse>

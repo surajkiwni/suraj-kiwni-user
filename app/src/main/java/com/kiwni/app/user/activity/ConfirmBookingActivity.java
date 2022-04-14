@@ -1,6 +1,7 @@
 package com.kiwni.app.user.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -116,6 +117,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
     ServiceTypeReq serviceTypeReq;
     StatusReq statusReq;
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -230,7 +232,17 @@ public class ConfirmBookingActivity extends AppCompatActivity
         txtVehicleName.setText(selectedVehicleDataList.get(0).getVehicle().getModel());
         txtProviderName.setText(selectedVehicleDataList.get(0).getVehicle().getProvider().getName());
         txtVehicleClassType.setText(selectedVehicleDataList.get(0).getVehicle().getClassType());
-        txtRideFare.setText(selectedVehicleDataList.get(0).getPrice() + " /-");
+
+        /* calculate gst (5%) fro ride fare and set to total fare */
+        double rideFare = Double.parseDouble(String.valueOf(selectedVehicleDataList.get(0).getPrice()));
+        //Log.d(TAG, "rideFare = " + rideFare);
+        double calculatedGst = (rideFare / 100.0f) * 5;
+        //Log.d(TAG, "calculatedGst = " + calculatedGst);
+        txtGst.setText("" + Math.round(calculatedGst));
+        txtApplyCoupon.setText("" + 0);
+        txtRideFare.setText(Math.round(selectedVehicleDataList.get(0).getPrice()) + "/-");
+        double totalFare = calculatedGst + rideFare;
+        txtTotalFare.setText(Math.round(totalFare) + "/-");
 
         if(!selectedVehicleDataList.get(0).getVehicle().getImagePath().equals(""))
         {
@@ -387,7 +399,8 @@ public class ConfirmBookingActivity extends AppCompatActivity
         rideReq.setCreatedTime("");
         rideReq.setCreatedUser(customerName);
 
-        rateReq.add(new RateReq(1));
+        //rateReq.add(new RateReq(1));
+        rateReq.add(new RateReq(service_type_id));
         rideReq.setRates(rateReq);
 
         rideReq.setStatus(new RideStatusReq(2));

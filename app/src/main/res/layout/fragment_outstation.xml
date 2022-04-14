@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/outstationFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,11 +13,10 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/left_right_shadow"
         android:layout_marginHorizontal="8dp"
+        android:background="@drawable/left_right_shadow"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline8"
@@ -37,9 +36,13 @@
             android:id="@+id/tabLayout"
             android:layout_width="0dp"
             android:layout_height="30dp"
-            android:background="@drawable/border_black_for_tab"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:background="@drawable/border_black_for_tab"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintStart_toStartOf="@+id/guideline8"
+            app:layout_constraintTop_toTopOf="parent"
             app:tabBackground="@drawable/tab_selector_background_outstation"
             app:tabGravity="fill"
             app:tabIndicatorAnimationMode="elastic"
@@ -47,15 +50,8 @@
             app:tabIndicatorHeight="0dp"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="@color/black"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline9"
-            app:layout_constraintStart_toStartOf="@+id/guideline8"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:tabTextColor="@color/black" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
     <FrameLayout
@@ -67,12 +63,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-       <!-- <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:saveEnabled="false"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+        <!-- <androidx.viewpager2.widget.ViewPager2
+             android:id="@+id/viewPager"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:saveEnabled="false"
+             app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
     </FrameLayout>
 
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -10,64 +10,75 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
-
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/txtStartDateTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
             android:text="5-07-2021 on 6 : 00 am"
             android:textColor="@color/black"
-            android:layout_marginLeft="15dp"
-            android:textSize="@dimen/sp_14"
-            android:layout_weight="1"/>
+            android:textSize="@dimen/sp_14" />
+
         <TextView
-            android:id="@+id/coastText"
+            android:id="@+id/txtPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_weight="1"
             android:text="RS 4000"
             android:textAlignment="textEnd"
-            android:textSize="@dimen/sp_14"
             android:textColor="@color/black"
-            android:layout_marginRight="30dp"
-            android:layout_weight="1"/>
+            android:textSize="@dimen/sp_14" />
     </LinearLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
-        app:layout_constraintLeft_toLeftOf="parent">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
 
         <ImageView
             android:id="@+id/pickupImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/pickuppoint"
             android:layout_marginLeft="10dp"
+            android:src="@drawable/pickuppoint"
+            app:layout_constraintBottom_toBottomOf="@+id/txtPickupAddress"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/pickupAdd"
-            app:layout_constraintBottom_toBottomOf="@+id/pickupAdd"
-            />
+            app:layout_constraintTop_toTopOf="@+id/txtPickupAddress" />
 
         <TextView
-            android:id="@+id/pickupAdd"
+            android:id="@+id/txtPickupAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Lane no 2, Link Road, Mumbai 420110"
-            android:textColor="#000000"
-            android:textSize="12dp"
             android:layout_marginLeft="3dp"
-            android:textAlignment="textStart"
             android:layout_marginTop="5dp"
+            android:text="Lane no 2, Link Road, Mumbai 420110"
+            android:textAlignment="textStart"
+            android:textColor="#000000"
+            android:textSize="13sp"
             app:layout_constraintLeft_toRightOf="@+id/pickupImage"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/txtEndDateTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_weight="1"
+        android:text="5-07-2021 on 6 : 00 am"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout3"
@@ -75,67 +86,64 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintLeft_toLeftOf="parent">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEndDateTime">
 
         <ImageView
             android:id="@+id/dropPointImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/droppoint"
             android:layout_marginLeft="10dp"
+            android:src="@drawable/droppoint"
+            app:layout_constraintBottom_toBottomOf="@+id/txtDropAddress"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/dropAddressTV"
-            app:layout_constraintBottom_toBottomOf="@+id/dropAddressTV"
-            />
+            app:layout_constraintTop_toTopOf="@+id/txtDropAddress" />
 
         <TextView
-            android:id="@+id/dropAddressTV"
+            android:id="@+id/txtDropAddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/dp_3"
             android:layout_marginTop="5dp"
+            android:paddingStart="@dimen/dp_3"
             android:text="Sr.No.12, House 15, Crysta Plaza, Pune 411501"
             android:textAlignment="textStart"
             android:textColor="#000000"
-            android:textSize="12dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="13sp"
             app:layout_constraintLeft_toRightOf="@+id/dropPointImage"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
         android:src="@drawable/driver_image"
+        app:layout_constraintBottom_toBottomOf="@+id/txtServiceType"
         app:layout_constraintDimensionRatio="1"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout1"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/oneWayText"
-        />
+        app:layout_constraintTop_toBottomOf="@id/linearLayout1" />
+
     <TextView
-        android:id="@+id/oneWayText"
+        android:id="@+id/txtServiceType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="One Way Trip"
-        android:layout_marginTop="@dimen/dp_10"
         android:layout_marginLeft="15dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="One Way Trip"
         android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout3"
-        />
+        app:layout_constraintTop_toBottomOf="@id/linearLayout3" />
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#707070"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
         android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        app:layout_constraintTop_toBottomOf="@id/oneWayText"
-        />
+        android:layout_weight="1"
+        android:background="#707070"
+        app:layout_constraintTop_toBottomOf="@id/txtServiceType" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,117 +5,63 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
-import com.kiwni.app.user.adapter.MyRidesViewPagerAdapter;
 import com.kiwni.app.user.databinding.FragmentMyRidesBinding;
+import com.kiwni.app.user.fragments.PastFragment;
+import com.kiwni.app.user.fragments.UpcomingFragment;
 import com.kiwni.app.user.interfaces.BackKeyPressedListener;
-import com.kiwni.app.user.ui.home.HomeFragment;
 import com.google.android.material.tabs.TabLayout;
 
 
-public class MyRidesFragment extends Fragment implements BackKeyPressedListener {
-
-    private MyRidesViewModel myRidesViewModel;
-    private FragmentMyRidesBinding binding;
+public class MyRidesFragment extends Fragment implements BackKeyPressedListener
+{
     String TAG = this.getClass().getSimpleName();
-
+    public static MyRidesFragment instance;
     public static BackKeyPressedListener backKeyPressedListener;
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager;
-    private MyRidesViewPagerAdapter myRidesViewPagerAdapter;
-
-    HomeFragment homeFragment;
-
-
-
+    TabLayout tabLayout;
     View view;
     ImageView imageBack;
-    TextView toolbarText;
+    Fragment upcomingFragment, pastFragment;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        myRidesViewModel =
-                new ViewModelProvider(this).get(MyRidesViewModel .class);
-
-        binding = FragmentMyRidesBinding.inflate(inflater, container, false);
-        view = binding.getRoot();
-
-        //final TextView textView = binding.textMyRides;
-        myRidesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                //textView.setText(s);
-            }
-        });
-
-
-
-
-        //set title to the support action bar
-
-        /*((MainActivity) getActivity()).getSupportActionBar().setTitle("Your Title");*/
-        ((MainActivity) requireActivity()).getSupportActionBar().hide();
-
-
-
-
-        return view;
+    public MyRidesFragment() {
     }
 
-    @Override
-    public void onBackPressed() {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        view = inflater.inflate(R.layout.fragment_my_rides, container, false);
 
-        //Toast.makeText(getContext(), "Back Pressed", Toast.LENGTH_SHORT).show();
+        ((MainActivity) requireActivity()).getSupportActionBar().hide();
 
-       // Navigation.findNavController(requireView()).navigate(R.id.action_nav_myrides_to_mainActivity);
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        return view ;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
-       // imageBack = view.findViewById(R.id.imageBack);
-
-
-        // initialize view Pager
-        ViewPager2 viewPager = (ViewPager2) view.findViewById(R.id.myRidesViewPager);
-
-        //private ViewPagerAdapter viewPagerAdapter;
-        myRidesViewPagerAdapter = new MyRidesViewPagerAdapter(this);
-
-
-
-
-        viewPager.setAdapter(myRidesViewPagerAdapter);
+        instance = this;
         tabLayout = (TabLayout) view.findViewById(R.id.myRidesTabLayout);
-        viewPager.setCurrentItem(0, true);
-
-
-        //Add Fragment
-
-
-        tabLayout.addTab(tabLayout.newTab().setText("Upcoming"));
-        tabLayout.addTab(tabLayout.newTab().setText("Past"));
-
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                switch (tab.getPosition())
+                {
+                    case 0 :
+                        replaceFragment(upcomingFragment);
+                        break;
+                    case 1 :
+                        replaceFragment(pastFragment);
+                        break;
+                }
             }
 
             @Override
@@ -129,29 +75,40 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener 
             }
         });
 
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                tabLayout.selectTab(tabLayout.getTabAt(position));
-            }
-        });
+        upcomingFragment = new UpcomingFragment();
+        pastFragment = new PastFragment();
 
+        tabLayout.addTab(tabLayout.newTab().setText("Upcoming"), true);
+        tabLayout.addTab(tabLayout.newTab().setText("Past"));
 
-        ///
         imageBack = view.findViewById(R.id.imageBack);
 
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 //Navigation.findNavController(view).navigate(R.id.action_nav_myrides_to_mainActivity);
                 Navigation.findNavController(requireView()).navigate(R.id.action_nav_myrides_to_mainActivity);
-
             }
         });
 
     }
 
+    @Override
+    public void onBackPressed() {
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.homeFrameLayout, fragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.commit();
+    }
+
+    public static MyRidesFragment getInstance() {
+        return instance;
+    }
 
     @Override
     public void onPause() {

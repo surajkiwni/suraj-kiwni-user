@@ -63,6 +63,8 @@
                   scheduled trip</string>
     <string name="review_paragraph">I have booked cab one way from Mumbai to Pune It was great and very much comfortable journey Driver also very helpful.Cab proper clean and they are using all COVID protocols.</string>
 
+    <!--Error strings-->
+    <string name="trips_not_available_error">Trips are not available.</string>
 
     <string-array name="select_year">
         <item>Select Year</item>
