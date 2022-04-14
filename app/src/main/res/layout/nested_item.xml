@@ -16,11 +16,11 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!--<androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent">-->
 
             <LinearLayout
                 android:id="@+id/linear1"
@@ -29,14 +29,14 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toStartOf="@+id/linear2"
-                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
 
                 <TextView
                     android:id="@+id/txtProviderNameNestedAdt"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:padding="@dimen/dp_2"
@@ -46,7 +46,7 @@
 
                 <TextView
                     android:id="@+id/txtProviderNoNestedAdt"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
@@ -71,7 +71,7 @@
 
                 <TextView
                     android:id="@+id/txtModelRegNestedAdt"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:padding="2dp"
@@ -82,9 +82,10 @@
 
                 <TextView
                     android:id="@+id/txtRegYearNestedAdt"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:src="@drawable/rating1"
                     android:text="2017"
                     android:textSize="@dimen/dp_12" />
@@ -97,7 +98,6 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toStartOf="@+id/linear4"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/linear2"
                 app:layout_constraintTop_toTopOf="parent"
 
@@ -105,7 +105,7 @@
 
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:padding="2dp"
@@ -115,7 +115,7 @@
                     android:textSize="@dimen/sp_12" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
@@ -123,10 +123,11 @@
 
                 <TextView
                     android:id="@+id/txtReviewNestedAdt"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:text="Review"
                     android:textSize="@dimen/dp_12" />
             </LinearLayout>
@@ -135,7 +136,6 @@
                 android:id="@+id/linear4"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="3dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -156,7 +156,7 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnBookNestedAdt"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:layout_height="@dimen/dp_25"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_button"
@@ -177,7 +177,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+   <!-- </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     <View
         android:id="@+id/view"
