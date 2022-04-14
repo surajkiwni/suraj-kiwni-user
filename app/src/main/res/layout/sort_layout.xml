@@ -8,7 +8,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -18,8 +18,8 @@
 
     <ImageView
         android:id="@+id/imageBack"
-        android:layout_width="30dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:foregroundGravity="center"
         android:src="@drawable/back_arrow"
@@ -33,11 +33,11 @@
     <TextView
         android:id="@+id/toolbarText"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Sort"
+        android:text=" Sort  "
         android:textColor="@color/black"
-        android:textSize="18dp"
+        android:textSize="@dimen/sp_18"
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
@@ -46,70 +46,73 @@
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
 
-
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLatest"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="204dp"
+        android:layout_height="@dimen/dp_35"
         android:background="@drawable/chip_selector"
         android:gravity="center"
         android:paddingStart="15dp"
+        android:textSize="@dimen/sp_12"
         android:paddingEnd="15dp"
         android:stateListAnimator="@null"
         android:text="Latest"
         android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnPopularity"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="268dp"
+        android:layout_height="@dimen/dp_35"
+        android:layout_marginTop="20dp"
         android:background="@drawable/chip_selector"
         android:gravity="center"
+        android:textSize="@dimen/sp_12"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         android:stateListAnimator="@null"
         android:text="Popularity"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLatest" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLowToHigh"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="332dp"
+        android:layout_height="@dimen/dp_35"
+        android:layout_marginTop="20dp"
         android:background="@drawable/chip_selector"
         android:gravity="center"
         android:paddingStart="15dp"
+        android:textSize="@dimen/sp_12"
         android:paddingEnd="15dp"
         android:stateListAnimator="@null"
         android:text="Price - Low To High"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPopularity" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnHighToLow"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="396dp"
+        android:layout_height="@dimen/dp_35"
+        android:layout_marginTop="20dp"
         android:background="@drawable/chip_selector"
         android:gravity="center"
+        android:textSize="@dimen/sp_12"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         android:stateListAnimator="@null"
         android:text="Price - High To Low"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLowToHigh" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
