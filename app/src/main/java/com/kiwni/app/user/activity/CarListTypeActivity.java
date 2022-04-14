@@ -156,8 +156,10 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         }
 
         Gson gson = new Gson();
-        String stringData = getIntent().getStringExtra(SharedPref.SELECTED_VEHICLE_TYPE_OBJECT);
-        String stringDuplicateData = getIntent().getStringExtra(SharedPref.DUPLICATE_VEHICLE_OBJECT);
+        String stringData = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_TYPE_OBJECT, "");
+        String stringDuplicateData = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DUPLICATE_VEHICLE_OBJECT, "");
+        //String stringData = getIntent().getStringExtra(SharedPref.SELECTED_VEHICLE_TYPE_OBJECT);
+        //String stringDuplicateData = getIntent().getStringExtra(SharedPref.DUPLICATE_VEHICLE_OBJECT);
 
         if(stringData != null)
         {
@@ -181,7 +183,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
+                //startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
                 finish();
             }
         });
@@ -641,8 +643,8 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
 
         Intent intent = new Intent(CarListTypeActivity.this, BookingDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra(SharedPref.SELECTED_VEHICLE_OBJECT, jsonForData);
-        //PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, jsonForData);
+        //intent.putExtra(SharedPref.SELECTED_VEHICLE_OBJECT, jsonForData);
+        PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, jsonForData);
         startActivity(intent);
     }
 }

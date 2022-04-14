@@ -36,10 +36,9 @@
         android:layout_marginEnd="@dimen/dp_12"
         android:src="@drawable/call_icon"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
-        app:layout_constraintTop_toTopOf="@+id/toolbar2"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.533"
-        />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar2" />
 
 
     <TextView
@@ -95,12 +94,12 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
                         android:src="@drawable/pickuppoint"
-                        app:layout_constraintBottom_toBottomOf="@+id/addressTextView"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtPickupAddress"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/addressTextView" />
+                        app:layout_constraintTop_toTopOf="@+id/txtPickupAddress" />
 
                     <TextView
-                        android:id="@+id/addressTextView"
+                        android:id="@+id/txtPickupAddress"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -128,12 +127,12 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
                         android:src="@drawable/droppoint"
-                        app:layout_constraintBottom_toBottomOf="@+id/dropTextView"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtDropAddress"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/dropTextView" />
+                        app:layout_constraintTop_toTopOf="@+id/txtDropAddress" />
 
                     <TextView
-                        android:id="@+id/dropTextView"
+                        android:id="@+id/txtDropAddress"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -174,17 +173,15 @@
                         app:layout_constraintVertical_bias="0.14999998" />
 
                     <TextView
-                        android:id="@+id/txtProvider"
+                        android:id="@+id/txtProviderName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingStart="10dp"
                         android:layout_marginTop="@dimen/dp_2"
-                        android:text="Trimurti Trivial"
+                        android:paddingStart="10dp"
+                        android:text="Trimurti Travel"
                         android:textColor="@color/black"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtTitleType"
-
-                        />
+                        app:layout_constraintTop_toBottomOf="@+id/txtTitleType" />
 
 
                     <ImageView
@@ -206,7 +203,7 @@
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imageView2"
-                        app:layout_constraintTop_toBottomOf="@+id/txtProvider"
+                        app:layout_constraintTop_toBottomOf="@+id/txtProviderName"
                         app:layout_constraintVertical_bias="0.16000003" />
 
 
@@ -267,7 +264,7 @@
 
 
                     <ImageView
-                        android:id="@+id/carImage"
+                        android:id="@+id/imgVehicleImg"
                         android:layout_width="@dimen/dp_80"
                         android:layout_height="@dimen/dp_80"
                         android:src="@drawable/mask_group"
@@ -277,24 +274,25 @@
                         app:layout_constraintTop_toTopOf="@+id/txtTitleType" />
 
                     <TextView
-                        android:id="@+id/carNameText"
+                        android:id="@+id/txtVehicleName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tata Harrier"
                         android:textColor="@color/black"
-                        app:layout_constraintEnd_toEndOf="@+id/carImage"
-                        app:layout_constraintStart_toStartOf="@+id/carImage"
-                        app:layout_constraintTop_toBottomOf="@id/carImage" />
+                        app:layout_constraintEnd_toEndOf="@+id/imgVehicleImg"
+                        app:layout_constraintStart_toStartOf="@+id/imgVehicleImg"
+                        app:layout_constraintTop_toBottomOf="@id/imgVehicleImg" />
 
                     <TextView
+                        android:id="@+id/txtVehicleClassType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingBottom="5dp"
                         android:text="Luxury"
                         android:textColor="#808080"
-                        app:layout_constraintEnd_toEndOf="@+id/carNameText"
-                        app:layout_constraintStart_toStartOf="@+id/carNameText"
-                        app:layout_constraintTop_toBottomOf="@id/carNameText" />
+                        app:layout_constraintEnd_toEndOf="@+id/txtVehicleName"
+                        app:layout_constraintStart_toStartOf="@+id/txtVehicleName"
+                        app:layout_constraintTop_toBottomOf="@id/txtVehicleName" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

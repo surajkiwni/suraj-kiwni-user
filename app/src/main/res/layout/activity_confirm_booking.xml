@@ -93,12 +93,12 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp_15"
                         android:src="@drawable/pickuppoint"
-                        app:layout_constraintBottom_toBottomOf="@+id/addressTextView"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtPickupAddress"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/addressTextView" />
+                        app:layout_constraintTop_toTopOf="@+id/txtPickupAddress" />
 
                     <TextView
-                        android:id="@+id/addressTextView"
+                        android:id="@+id/txtPickupAddress"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -128,12 +128,12 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp_15"
                         android:src="@drawable/droppoint"
-                        app:layout_constraintBottom_toBottomOf="@+id/dropTextView"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtDropAddress"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/dropTextView" />
+                        app:layout_constraintTop_toTopOf="@+id/txtDropAddress" />
 
                     <TextView
-                        android:id="@+id/dropTextView"
+                        android:id="@+id/txtDropAddress"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -173,16 +173,16 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.14999998" />
 
-                    <!--<TextView
-                        android:id="@+id/outstationText1"
+                    <TextView
+                        android:id="@+id/txtProviderName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" (Round Trip)"
+                        android:layout_marginTop="@dimen/dp_2"
+                        android:paddingStart="10dp"
+                        android:text="Trimurti Travel"
                         android:textColor="@color/black"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/outstationText"
-                        app:layout_constraintStart_toEndOf="@+id/outstationText"
-                        app:layout_constraintTop_toTopOf="@+id/outstationText" />-->
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txtTitleType" />
 
                     <ImageView
                         android:id="@+id/imageView2"
@@ -203,7 +203,7 @@
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imageView2"
-                        app:layout_constraintTop_toBottomOf="@+id/txtTitleType"
+                        app:layout_constraintTop_toBottomOf="@+id/txtProviderName"
                         app:layout_constraintVertical_bias="0.16000003" />
 
 
@@ -264,9 +264,9 @@
 
 
                     <ImageView
-                        android:id="@+id/carImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/imgVehicleImg"
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="@dimen/dp_80"
                         android:src="@drawable/mask_group"
                         app:layout_constraintHorizontal_bias="0.75"
                         app:layout_constraintLeft_toRightOf="@+id/txtTitleType"
@@ -274,24 +274,25 @@
                         app:layout_constraintTop_toTopOf="@+id/txtTitleType" />
 
                     <TextView
-                        android:id="@+id/carNameText"
+                        android:id="@+id/txtVehicleName"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
                         android:text="Tata Harrier"
                         android:textColor="@color/black"
-                        app:layout_constraintEnd_toEndOf="@+id/carImage"
-                        app:layout_constraintStart_toStartOf="@+id/carImage"
-                        app:layout_constraintTop_toBottomOf="@id/carImage" />
+                        app:layout_constraintEnd_toEndOf="@+id/imgVehicleImg"
+                        app:layout_constraintStart_toStartOf="@+id/imgVehicleImg"
+                        app:layout_constraintTop_toBottomOf="@id/imgVehicleImg" />
 
                     <TextView
+                        android:id="@+id/txtVehicleClassType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingBottom="5dp"
                         android:text="Luxury"
                         android:textColor="#808080"
-                        app:layout_constraintEnd_toEndOf="@+id/carNameText"
-                        app:layout_constraintStart_toStartOf="@+id/carNameText"
-                        app:layout_constraintTop_toBottomOf="@id/carNameText"
+                        app:layout_constraintEnd_toEndOf="@+id/txtVehicleName"
+                        app:layout_constraintStart_toStartOf="@+id/txtVehicleName"
+                        app:layout_constraintTop_toBottomOf="@id/txtVehicleName"
                         tools:layout_editor_absoluteY="140dp" />
 
 
@@ -390,7 +391,6 @@
                     app:layout_constraintStart_toEndOf="@+id/checkBox2"
                     app:layout_constraintTop_toBottomOf="@id/view" />
 
-
                 <TextView
                     android:id="@+id/whatsAppText"
                     android:layout_width="wrap_content"
@@ -458,7 +458,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="3dp"
                     android:background="@drawable/grey_background_rounded_layout"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="@id/personalBusinessText"
                     app:layout_constraintRight_toRightOf="parent"
@@ -477,15 +477,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="40dp"
-                            android:text="Company Name :"
+                            android:text="Company Name : "
                             android:textAlignment="textEnd"
                             android:textColor="#5D5B5B" />
 
                         <TextView
+                            android:id="@+id/txtCompanyName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text=" Komfrey Technology Pvt Ltd"
-                            android:textColor="#5D5B5B" />
+                            android:textColor="#5D5B5B"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -501,15 +504,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="40dp"
-                            android:text="Company Email  :"
+                            android:text="Company Email  : "
                             android:textAlignment="textEnd"
                             android:textColor="#5D5B5B" />
 
                         <TextView
+                            android:id="@+id/txtCompanyEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text=" Komfrey123@gmail.com"
-                            android:textColor="#5D5B5B" />
+                            android:textColor="#5D5B5B"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -525,14 +531,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="40dp"
-                            android:text="Phone Number    :"
+                            android:text="Phone Number   : "
                             android:textAlignment="textEnd"
                             android:textColor="#5D5B5B" />
 
                         <TextView
+                            android:id="@+id/txtCompanyPhone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text=" 9856784578"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
                             android:textColor="#5D5B5B" />
                     </LinearLayout>
 
@@ -636,6 +645,7 @@
                                 android:text="@string/Rs" />
 
                             <TextView
+                                android:id="@+id/txtRideFare"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
@@ -663,6 +673,7 @@
                             android:text="Extra Fare km" />
 
                         <TextView
+                            android:id="@+id/txtExtraFareKm"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
@@ -688,6 +699,7 @@
                             android:text="Extra Fare per km" />
 
                         <TextView
+                            android:id="@+id/txtExtraFarePerKm"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
@@ -714,6 +726,7 @@
                             android:text="Total Base Fare" />
 
                         <TextView
+                            android:id="@+id/txtTotalFareBase"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
@@ -751,6 +764,7 @@
 
 
                             <TextView
+                                android:id="@+id/txtApplyCoupon"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
@@ -788,6 +802,7 @@
                                 android:text="@string/Rs" />
 
                             <TextView
+                                android:id="@+id/txtGst"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
@@ -839,6 +854,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/txtTotalFare"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
@@ -915,6 +931,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/txtThirtyPercDiscount"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
@@ -969,6 +986,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/txtFiftyPercDiscount"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"

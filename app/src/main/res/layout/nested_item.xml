@@ -45,7 +45,7 @@
                     android:textSize="@dimen/sp_12" />
 
                 <TextView
-                    android:id="@+id/txtProvideNoNestedAdt"
+                    android:id="@+id/txtProviderNoNestedAdt"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"

@@ -52,7 +52,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutView
         holder.txtRegYearNestedAdt.setText(convertedTime);
 
         holder.txtPriceNestedAdt.setText(Math.round(scheduleDatesResp.getPrice()) + " /-");
-        holder.txtProvideNoNestedAdt.setText(scheduleDatesResp.getVehicle().getProvider().getName());
+        holder.txtProviderNoNestedAdt.setText(scheduleDatesResp.getVehicle().getProvider().getName());
 
         Log.d("TAG","mList SizeNested = " +mList.size());
         Log.d("TAG","reg year = " + scheduleDatesResp.getVehicle().getRegYear());
@@ -66,14 +66,14 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutView
     public class LayoutViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
 
         AppCompatButton btnBookNestedAdt;
-        TextView txtRegYearNestedAdt,txtProvideNoNestedAdt, txtPriceNestedAdt;
+        TextView txtRegYearNestedAdt,txtProviderNoNestedAdt, txtPriceNestedAdt;
 
         public LayoutViewHolder(@NonNull View itemView) {
             super(itemView);
 
             btnBookNestedAdt = itemView.findViewById(R.id.btnBookNestedAdt);
             txtRegYearNestedAdt = itemView.findViewById(R.id.txtRegYearNestedAdt);
-            txtProvideNoNestedAdt = itemView.findViewById(R.id.txtProvideNoNestedAdt);
+            txtProviderNoNestedAdt = itemView.findViewById(R.id.txtProviderNoNestedAdt);
             txtPriceNestedAdt = itemView.findViewById(R.id.txtPriceNestedAdt);
 
             btnBookNestedAdt.setOnClickListener(this);

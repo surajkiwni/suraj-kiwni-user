@@ -702,8 +702,10 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         String jsonForDuplicateData = gson.toJson(remainingList, type);
 
         Intent intent = new Intent(FindCarActivity.this, CarListTypeActivity.class);
-        intent.putExtra(SharedPref.SELECTED_VEHICLE_TYPE_OBJECT, jsonForData);
-        intent.putExtra(SharedPref.DUPLICATE_VEHICLE_OBJECT, jsonForDuplicateData);
+        //intent.putExtra(SharedPref.SELECTED_VEHICLE_TYPE_OBJECT, jsonForData);
+        //intent.putExtra(SharedPref.DUPLICATE_VEHICLE_OBJECT, jsonForDuplicateData);
+        PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_TYPE_OBJECT, jsonForData);
+        PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.DUPLICATE_VEHICLE_OBJECT, jsonForDuplicateData);
         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.VEHICLE_TYPE_FOR_DISPLAY, labelName);
         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.VEHICLE_SEAT_CAPACITY_FOR_DISPLAY, seatCapacity);
         startActivity(intent);

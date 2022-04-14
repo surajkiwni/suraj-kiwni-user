@@ -53,6 +53,9 @@
     <string name="package_rules">Rental Package rules &amp; Restriction</string>
 
     <string name="phoneno_error">Please enter valid phone no</string>
+    <string name="email_error">Please enter valid email address</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="first_name_error">Please enter valid Name</string>
     <string name="we_will_notify_cab">We will notify cab &amp; Driver details 1 hr prior to your <br/>
                   scheduled trip</string>
     <string name="review_paragraph">I have booked cab one way from Mumbai to Pune It was great and very much comfortable journey Driver also very helpful.Cab proper clean and they are using all COVID protocols.</string>

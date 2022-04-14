@@ -73,20 +73,13 @@ public class SharedPref
     public static final String PROVIDER_ID = "providerId";
     public static final String PROVIDER_NAME = "providerName";
     public static final String SCHEDULED_ID = "scheduleId";
-
     public static final String PAID_METHOD = "paid_method";
-
     public static final String RESERVATION_SUCCESS = "reservation_success";
 
-    /*public SharedPref(Context context)
-    {
-        this.context = context;
-        sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, 0);
-        editor = sharedPreferences.edit();
-    }
+    //business details
+    public static final String BUSINESS_COMPANY_NAME = "businessCompanyName";
+    public static final String BUSINESS_COMPANY_EMAIL = "businessCompanyEmail";
+    public static final String BUSINESS_COMPANY_PHONE = "businessCompanyPhone";
 
-    public void setUserData(String data)
-    {
 
-    }*/
 }

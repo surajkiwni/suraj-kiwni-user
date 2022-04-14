@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kiwni.app.user.R;
@@ -27,6 +28,7 @@ import com.kiwni.app.user.adapter.NestedAdapter;
 import com.kiwni.app.user.adapter.TitleItemAdapter;
 import com.kiwni.app.user.datamodels.BookingModel2;
 import com.kiwni.app.user.models.ScheduleMapResp;
+import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
 
@@ -39,12 +41,13 @@ public class BookingDetailsActivity extends AppCompatActivity
     RecyclerView recyclerView1 ,recyclerView2;
     List<BookingModel2> bookingModelList;
     List<BookingModel2> bookingModelList1;
-    List<ScheduleMapResp> scheduleMapRespList = new ArrayList<>();
+    List<ScheduleMapResp> selectedVehicleDataList = new ArrayList<>();
 
-    ImageView imageBack,imgCallBookingAct;
+    ImageView imageBack,imgCallBookingAct, imgVehicleImg;
     String TAG = this.getClass().getSimpleName();
     AppCompatButton proceedButton;
-    TextView txtTitle, txtStartTime, txtStartEndDate, txtEstimatedKm, txtTitleType;
+    TextView txtTitle, txtStartTime, txtStartEndDate, txtEstimatedKm, txtTitleType, txtDropAddress,
+            txtPickupAddress, txtProviderName, txtVehicleName, txtVehicleClassType;
 
     String direction = "", startDate = "", endDate = "", startTime = "", serviceType = "",
             distanceInKm = "", mobile = "", pickupAddress = "", dropAddress = "";
@@ -58,6 +61,7 @@ public class BookingDetailsActivity extends AppCompatActivity
         setContentView(R.layout.activity_booking_details);
 
         imageBack =findViewById(R.id.imageBack);
+        imgVehicleImg =findViewById(R.id.imgVehicleImg);
         imgCallBookingAct = findViewById(R.id.imgCallBookingAct);
         recyclerView1 = findViewById(R.id.recyclerView1);
         recyclerView2 = findViewById(R.id.recyclerView2);
@@ -67,19 +71,23 @@ public class BookingDetailsActivity extends AppCompatActivity
         txtEstimatedKm = findViewById(R.id.txtEstimatedKm);
         txtTitleType = findViewById(R.id.txtTitleType);
         proceedButton =findViewById(R.id.proceedButton);
+        txtPickupAddress =findViewById(R.id.txtPickupAddress);
+        txtDropAddress =findViewById(R.id.txtDropAddress);
+        txtVehicleName =findViewById(R.id.txtVehicleName);
+        txtProviderName =findViewById(R.id.txtProviderName);
+        txtVehicleClassType =findViewById(R.id.txtVehicleClassType);
 
         Gson gson = new Gson();
-        //String stringData = "";
-        //stringData = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, "");
-        String stringData = getIntent().getStringExtra(SharedPref.SELECTED_VEHICLE_OBJECT);
+        String stringData = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, "");
+        //String stringData = getIntent().getStringExtra(SharedPref.SELECTED_VEHICLE_OBJECT);
         Log.d(TAG, "string data = " + stringData);
 
         if(stringData != null)
         {
             Type type = new TypeToken<List<ScheduleMapResp>>() {
             }.getType();
-            scheduleMapRespList = gson.fromJson(stringData, type);
-            Log.d("TAG", "scheduleMapRespList size = " + scheduleMapRespList.size());
+            selectedVehicleDataList = gson.fromJson(stringData, type);
+            Log.d("TAG", "scheduleMapRespList size = " + selectedVehicleDataList.size());
         }
 
         /* get pref data and stored to variables*/
@@ -100,6 +108,19 @@ public class BookingDetailsActivity extends AppCompatActivity
         txtStartEndDate.setText(startDate);
         txtEstimatedKm.setText("Est km " + distanceInKm);
         txtTitleType.setText(serviceType + " ( " + direction + " ) ");
+        txtPickupAddress.setText(pickupAddress);
+        txtDropAddress.setText(dropAddress);
+
+        txtVehicleName.setText(selectedVehicleDataList.get(0).getVehicle().getModel());
+        txtProviderName.setText(selectedVehicleDataList.get(0).getVehicle().getProvider().getName());
+        txtVehicleClassType.setText(selectedVehicleDataList.get(0).getVehicle().getClassType());
+
+        if(!selectedVehicleDataList.get(0).getVehicle().getImagePath().equals(""))
+        {
+            Glide.with(getApplicationContext())
+                    .load(AppConstants.IMAGE_PATH + selectedVehicleDataList.get(0).getVehicle().getImagePath())
+                    .into(imgVehicleImg);
+        }
 
         bookingModelList = new ArrayList<>();
         bookingModelList1 = new ArrayList<>();
@@ -152,7 +173,7 @@ public class BookingDetailsActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(BookingDetailsActivity.this, CarListTypeActivity.class));
+                //startActivity(new Intent(BookingDetailsActivity.this, CarListTypeActivity.class));
                 finish();
             }
         });
