@@ -52,6 +52,9 @@
     <string name="schedule_date">SCHEDULE DATE &amp; TIME </string>
     <string name="package_rules">Rental Package rules &amp; Restriction</string>
 
+    <string name="connecting_to_server">Please wait..</string>
+    <string name="your_request_is_processing">Your request is processing</string>
+
     <string name="phoneno_error">Please enter valid phone no</string>
     <string name="email_error">Please enter valid email address</string>
     <string name="error_invalid_email">This email address is invalid</string>

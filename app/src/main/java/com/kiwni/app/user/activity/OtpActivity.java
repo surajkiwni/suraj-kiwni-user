@@ -34,7 +34,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-public class OtpActivity extends AppCompatActivity {
+public class OtpActivity extends AppCompatActivity
+{
     Button btnLogin;
     TextView txtPhoneNo;
     PinView pinView;
@@ -82,13 +83,14 @@ public class OtpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                /*Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
-                finish();
-                /*otp_code = pinView.getText().toString();
+                finish();*/
+                otp_code = pinView.getText().toString();
                 Log.d(TAG, "otp_code = " + otp_code);
 
-                if (otp_code.isEmpty()) {
+                if (otp_code.isEmpty())
+                {
                     Toast.makeText(getApplicationContext(), "Please Enter valid code", Toast.LENGTH_SHORT).show();
                 } else {
                     if (verificationId != null) {
@@ -101,7 +103,7 @@ public class OtpActivity extends AppCompatActivity {
 
                         verifyCode(otp_code);
                     }
-                }*/
+                }
             }
         });
 
@@ -166,7 +168,8 @@ public class OtpActivity extends AppCompatActivity {
                                                     Log.d(TAG, "partyId = " + partyId);
                                                 }
 
-                                                if (task.getResult().getClaims().get("Roles") != null) {
+                                                if (task.getResult().getClaims().get("Roles") != null)
+                                                {
                                                     Log.d(TAG, "roles = " + task.getResult().getClaims().get("Roles").toString());
 
                                                     roles = task.getResult().getClaims().get("Roles").toString();

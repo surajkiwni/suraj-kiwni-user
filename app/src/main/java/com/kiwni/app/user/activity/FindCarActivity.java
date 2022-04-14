@@ -2,12 +2,14 @@ package com.kiwni.app.user.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -17,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -39,23 +40,24 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.FindsCarRecyclerAdapter;
 import com.kiwni.app.user.adapter.GridLayoutWrapper;
 import com.kiwni.app.user.adapter.HourPackageAdapter;
+import com.kiwni.app.user.global.PermissionRequestConstant;
 import com.kiwni.app.user.interfaces.FindCarItemClickListener;
 import com.kiwni.app.user.models.DirectionsJSONParser;
 import com.kiwni.app.user.models.FindCar;
 import com.kiwni.app.user.models.HourPackage;
-import com.kiwni.app.user.models.ProjectionScheduleErrorResp;
-import com.kiwni.app.user.models.ScheduleDates;
-import com.kiwni.app.user.models.ScheduleMapResp;
+import com.kiwni.app.user.models.vehicle_details.ProjectionScheduleErrorResp;
+import com.kiwni.app.user.models.vehicle_details.ScheduleDates;
+import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 import com.kiwni.app.user.network.ApiClient;
 import com.kiwni.app.user.network.ApiInterface;
 import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
+import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
 import org.json.JSONObject;
 
@@ -101,7 +103,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
             convertedDistance = 0.0;
 
     Polyline mPolyline;
-    public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
 
     FindCarItemClickListener listener;
     ApiInterface apiInterface;
@@ -161,6 +162,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         idToken = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_TOKEN, "");
         convertedDistance = Double.parseDouble(PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DISTANCE, ""));
         durationInTraffic = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DURATION_IN_TRAFFIC, "");
+        idToken = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_TOKEN, "");
 
         Log.d(TAG,"pickupLocation = " + pickupLocation
                 + " dropLocation = " + dropLocation);
@@ -255,7 +257,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
                     ActivityCompat.requestPermissions(FindCarActivity.this,
                             new String[]{Manifest.permission.CALL_PHONE},
-                            MY_PERMISSIONS_REQUEST_CALL_PHONE);
+                            PermissionRequestConstant.MY_PERMISSIONS_REQUEST_CALL_PHONE);
 
                     // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
                     // app-defined int constant. The callback method gets the
@@ -328,9 +330,16 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         listener = this::onFindCarItemClick;
 
-        getProjectionScheduleMap(pickup_time,drop_time,
-                pickup_city, direction,serviceType,
-                "","",convertedDistance , AppConstants.idToken,true);
+        if(!isNetworkConnected())
+        {
+            Toast.makeText(getApplicationContext(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            getProjectionScheduleMap(pickup_time,drop_time,
+                    pickup_city, direction,serviceType,
+                    "","",convertedDistance , idToken,true);
+        }
     }
 
     public void getProjectionScheduleMap(String startTime, String endTime, String startLocation,
@@ -343,10 +352,19 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         apiInterface = ApiClient.getClient(AppConstants.BASE_URL).create(ApiInterface.class);
         Call<Map<String, Map<String, Map<String, List<ScheduleMapResp>>>>> listCall = apiInterface.getProjectionScheduleDates(scheduleDates,idToken);
 
+        // Set up progress before call
+        Dialog lovelyProgressDialog = new LovelyProgressDialog(FindCarActivity.this)
+                .setIcon(R.drawable.ic_cast_connected_white_36dp)
+                .setTitle(R.string.connecting_to_server)
+                .setMessage(R.string.your_request_is_processing)
+                .setTopColorRes(R.color.teal_200)
+                .show();
+
         listCall.enqueue(new Callback<Map<String, Map<String, Map<String, List<ScheduleMapResp>>>>>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(Call<Map<String, Map<String, Map<String, List<ScheduleMapResp>>>>> call, Response<Map<String, Map<String, Map<String, List<ScheduleMapResp>>>>> response) {
+                lovelyProgressDialog.dismiss();
                 int statusCode = response.code();
                 if(statusCode == 200)
                 {
@@ -421,9 +439,17 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
             @Override
             public void onFailure(Call<Map<String, Map<String, Map<String, List<ScheduleMapResp>>>>> call, Throwable t) {
-
+                lovelyProgressDialog.dismiss();
+                Log.d(TAG, "error: " + t.toString());
             }
         });
+    }
+
+    private boolean isNetworkConnected()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
     @Override
@@ -431,7 +457,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                                            String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+            case PermissionRequestConstant.MY_PERMISSIONS_REQUEST_CALL_PHONE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED)
@@ -475,7 +501,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                     .position(new LatLng(pickup_latitude, pickup_longitude))
                     .title(pickup_city)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pickup_latitude, pickup_longitude), 7.0f));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pickup_latitude, pickup_longitude), 5.0f));
 
             latlong =  dropLocation.split(" ");
             drop_latitude = Double.parseDouble(latlong[0]);
@@ -485,7 +511,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                     .position(new LatLng(drop_latitude, drop_longitude))
                     .title(drop_city)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(drop_latitude, drop_longitude), 7.0f));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(drop_latitude, drop_longitude), 5.0f));
 
             DrawRoute(new LatLng(pickup_latitude, pickup_longitude), new LatLng(drop_latitude, drop_longitude));
         }

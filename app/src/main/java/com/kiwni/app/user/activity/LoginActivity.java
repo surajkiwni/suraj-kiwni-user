@@ -77,10 +77,10 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
+                /*Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                /*mobile = edtPhoneNumber.getText().toString();
+                startActivity(intent);*/
+                mobile = edtPhoneNumber.getText().toString();
                 Log.d("TAG", "mobile = " + mobile);
 
                 setValidation();
@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity
                     }
 
                     sendVerificationCode(mobile);
-                }*/
+                }
             }
         });
     }

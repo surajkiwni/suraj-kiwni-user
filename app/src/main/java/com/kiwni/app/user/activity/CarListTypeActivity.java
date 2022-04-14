@@ -36,10 +36,11 @@ import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.FilterAdapter;
 import com.kiwni.app.user.adapter.GridLayoutWrapper;
 import com.kiwni.app.user.adapter.TitleItemAdapter;
+import com.kiwni.app.user.global.PermissionRequestConstant;
 import com.kiwni.app.user.interfaces.BookingListItemClickListener;
 import com.kiwni.app.user.interfaces.FilterItemClickListener;
 import com.kiwni.app.user.models.Filter;
-import com.kiwni.app.user.models.ScheduleMapResp;
+import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
 
@@ -57,7 +58,6 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
             startDate = "", endDate = "", startTime = "", distanceInKm = "", mobile = "",
             vehicleTypeForDisplay = "", vehicleSeatCapacityForDisplay = "";
 
-    public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
     BookingListItemClickListener bookingListItemClickListener;
     ImageView imageBack,imgCallCarLTAct;
     TextView txtTitle, txtFromTo, txtStartEndDate, txtEstimatedKm, txtStartTime, txtVehicleType,
@@ -202,7 +202,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
 
                     ActivityCompat.requestPermissions(CarListTypeActivity.this,
                             new String[]{Manifest.permission.CALL_PHONE},
-                            MY_PERMISSIONS_REQUEST_CALL_PHONE);
+                            PermissionRequestConstant.MY_PERMISSIONS_REQUEST_CALL_PHONE);
 
                     // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
                     // app-defined int constant. The callback method gets the
@@ -588,7 +588,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
                                            String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+            case PermissionRequestConstant.MY_PERMISSIONS_REQUEST_CALL_PHONE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

@@ -15,8 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.interfaces.FindCarItemClickListener;
-import com.kiwni.app.user.models.FindCar;
-import com.kiwni.app.user.models.ScheduleMapResp;
+import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 
 import java.util.ArrayList;
 import java.util.Collections;

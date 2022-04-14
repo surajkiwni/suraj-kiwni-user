@@ -23,13 +23,14 @@ import com.kiwni.app.user.utils.PreferencesUtils;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
-public class ProfileFragment extends Fragment {
-    TextView txtLogout, txtEmailAddress, txtMobileNo, txtUserName;
+public class ProfileFragment extends Fragment
+{
+    TextView txtLogout, txtEmailAddress, txtMobileNo, txtName, txtEmgContact;
     ImageView imageBack;
 
     String TAG = this.getClass().getSimpleName();
 
-    String userName = "", mobileNumber = "", emailAddress = "";
+    String userName = "", mobileNumber = "", emailAddress = "", emergencyContact = "";
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -53,19 +54,19 @@ public class ProfileFragment extends Fragment {
 
         imageBack = view.findViewById(R.id.imageBack);
         txtLogout = view.findViewById(R.id.txtLogOut);
-        txtEmailAddress = view.findViewById(R.id.txtEmail);
-        txtMobileNo = view.findViewById(R.id.txtMobNumber);
-        txtUserName = view.findViewById(R.id.txtName);
+        txtEmailAddress = view.findViewById(R.id.txtEmailAddress);
+        txtMobileNo = view.findViewById(R.id.txtMobileNo);
+        txtName = view.findViewById(R.id.txtName);
+        txtEmgContact = view.findViewById(R.id.txtEmgContact);
 
-        /*//pref values
+        //pref values
         userName = PreferencesUtils.getPreferences(getActivity(), SharedPref.FIREBASE_USERNAME, "");
         mobileNumber = PreferencesUtils.getPreferences(getActivity(), SharedPref.FIREBASE_MOBILE_NO, "");
         emailAddress = PreferencesUtils.getPreferences(getActivity(), SharedPref.FIREBASE_EMAIL, "");
 
-        Log.d(TAG, "pref data = " + mobileNumber +": " + userName + ": " +
-                emailAddress);
+        Log.d(TAG, "pref data = " + mobileNumber +": " + userName + ": " + emailAddress);
 
-        txtUserName.setText(userName);
+        txtName.setText(userName);
         txtEmailAddress.setText(emailAddress);
 
         if(!mobileNumber.equals(""))
@@ -76,14 +77,15 @@ public class ProfileFragment extends Fragment {
         {
             txtMobileNo.setText("");
             Toast.makeText(getActivity(), "not getting mobile no", Toast.LENGTH_SHORT).show();
-        }*/
+        }
+
+        txtEmgContact.setText(mobileNumber);
 
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
+            public void onClick(View view)
+            {
                 Navigation.findNavController(requireView()).navigate(R.id.action_profileFragment_to_mainActivity);
-
             }
         });
 

@@ -1,8 +1,11 @@
 package com.kiwni.app.user.activity;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,9 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -21,26 +25,65 @@ import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
-import com.kiwni.app.user.models.ScheduleMapResp;
+import com.kiwni.app.user.global.PermissionRequestConstant;
+import com.kiwni.app.user.helpers.ApiHelper;
+import com.kiwni.app.user.helpers.IServiceError;
+import com.kiwni.app.user.helpers.IServiceReceiver;
+import com.kiwni.app.user.helpers.ServiceConnector;
+import com.kiwni.app.user.models.bookride.BookRideErrorResp;
+import com.kiwni.app.user.models.bookride.ChannelReq;
+import com.kiwni.app.user.models.bookride.RateReq;
+import com.kiwni.app.user.models.bookride.RideReq;
+import com.kiwni.app.user.models.bookride.RideReservationReq;
+import com.kiwni.app.user.models.bookride.RideReservationResp;
+import com.kiwni.app.user.models.bookride.RideStatusReq;
+import com.kiwni.app.user.models.bookride.ServiceTypeReq;
+import com.kiwni.app.user.models.bookride.StatusReq;
+import com.kiwni.app.user.models.vehicle_details.ScheduleDatesRates;
+import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
+import com.kiwni.app.user.network.ApiClient;
+import com.kiwni.app.user.network.ApiInterface;
 import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
+import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ConfirmBookingActivity extends AppCompatActivity
 {
     AppCompatRadioButton radioBusiness, radioPersonal;
-    AppCompatButton confirmButton;
+    AppCompatButton btnConfirmBooking;
     String TAG = this.getClass().getSimpleName();
+    ApiInterface apiInterface;
 
     List<ScheduleMapResp> selectedVehicleDataList = new ArrayList<>();
 
@@ -58,9 +101,20 @@ public class ConfirmBookingActivity extends AppCompatActivity
 
     String direction = "", startDate = "", endDate = "", startTime = "", serviceType = "",
             distanceInKm = "", mobile = "", pickupAddress = "", dropAddress = "",
-            bCompanyName = "", bCompanyEmail = "", bComapnyPhone = "";
+            bCompanyName = "", bCompanyEmail = "", bComapnyPhone = "", pickup_city = "",
+            drop_city = "", journeyEndTime = "", journeyTime = "", customerName = "",
+            customerPhone = "", customerEmail = "", idToken = "", driverName = "",
+            driverLicense = "", driverPhone = "", firstName = "", lastName = "", providerId = "",
+            providerName = "", createdDateForApi = "", vehicle_no = "", vehicle_price = "",
+            refreshToken = "";
+    int partyId = 0, service_type_id = 0, vehicleId = 0, driverId = 0;
+    Long scheduleId;
 
-    public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
+    ChannelReq channelReq;
+    RideReq rideReq;
+    List<RateReq> rateReq = new ArrayList<>();
+    ServiceTypeReq serviceTypeReq;
+    StatusReq statusReq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -70,7 +124,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
 
         radioBusiness = findViewById(R.id.radioBusiness);
         radioPersonal = findViewById(R.id.radioPersonal);
-        confirmButton = findViewById(R.id.confirmButton);
+        btnConfirmBooking = findViewById(R.id.btnConfirmBooking);
         constraintBusinessInput = findViewById(R.id.constraintBusinessInput);
         imageBack = findViewById(R.id.imageBack);
         imgCallConfirmAct = findViewById(R.id.imgCallConfirmAct);
@@ -109,13 +163,56 @@ public class ConfirmBookingActivity extends AppCompatActivity
             Log.d("TAG", "selectedVehicleDataList size = " + selectedVehicleDataList.size());
         }
 
-        //pref data
+        /* get data from pref */
         direction = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DIRECTION,"");
         serviceType = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SERVICE_TYPE,"");
         startDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_DATE_TO_DISPLAY, "");
         endDate = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_DATE_TO_DISPLAY, "");
         startTime = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_TIME_TO_DISPLAY, "");
         distanceInKm = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DISTANCE_IN_KM, "");
+        pickup_city = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_CITY, "");
+        drop_city = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_CITY, "");
+        idToken = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_TOKEN, "");
+        customerName = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_USERNAME, "");
+        customerEmail = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_EMAIL, "");
+        customerPhone = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
+        journeyEndTime = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_TIME_FOR_API, "");
+        journeyTime = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_TIME_FOR_API, "");
+
+        partyId = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.partyId, 0);
+        if(partyId != 0)
+        {
+            Log.d(TAG, "partyId = " + partyId);
+        }
+
+        if(selectedVehicleDataList.get(0).getDriverId() != null)
+        {
+            driverId = selectedVehicleDataList.get(0).getDriverId();
+            Log.d(TAG, "driverId = " + driverId);
+        }
+        else
+        {
+            driverId = 0;
+        }
+
+        providerId = selectedVehicleDataList.get(0).getVehicle().getProvider().getId();
+        if(!providerId.equals(""))
+        {
+            Log.d(TAG, "providerId = " + providerId);
+        }
+
+        distanceInKm = distanceInKm.replaceAll("[^0-9]", "").trim();
+        System.out.println("distanceInKm = " + distanceInKm);
+
+        vehicle_price = String.valueOf(selectedVehicleDataList.get(0).getPrice());
+        vehicle_no = selectedVehicleDataList.get(0).getVehicle().getRegNo();
+        scheduleId = selectedVehicleDataList.get(0).getVehicle().getId();
+        vehicleId = selectedVehicleDataList.get(0).getVehicleId();
+        providerName = selectedVehicleDataList.get(0).getVehicle().getProvider().getName();
+
+        driverName = String.valueOf(selectedVehicleDataList.get(0).getDriverName());
+        driverLicense = "";
+        driverPhone = String.valueOf(selectedVehicleDataList.get(0).getDriverMobileNo());
         pickupAddress = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_ADDRESS, "");
         dropAddress = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_ADDRESS, "");
 
@@ -127,7 +224,6 @@ public class ConfirmBookingActivity extends AppCompatActivity
         txtStartEndDate.setText(startDate);
         txtEstimatedKm.setText("Est km " + distanceInKm);
         txtTitleType.setText(serviceType + " ( " + direction + " ) ");
-
         txtPickupAddress.setText(pickupAddress);
         txtDropAddress.setText(dropAddress);
 
@@ -228,7 +324,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
 
                     ActivityCompat.requestPermissions(ConfirmBookingActivity.this,
                             new String[]{Manifest.permission.CALL_PHONE},
-                            MY_PERMISSIONS_REQUEST_CALL_PHONE);
+                            PermissionRequestConstant.MY_PERMISSIONS_REQUEST_CALL_PHONE);
 
                     // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
                     // app-defined int constant. The callback method gets the
@@ -244,47 +340,87 @@ public class ConfirmBookingActivity extends AppCompatActivity
             }
         });
 
-        confirmButton.setOnClickListener(new View.OnClickListener() {
+        /* get rates from rates array */
+        direction = direction.replace(" ", "-");
+        String contactStr = direction + "-" + serviceType.toLowerCase();
+        Log.d(TAG, "contactStr = " + contactStr);
+
+        String concatClassType = contactStr + "-" + selectedVehicleDataList.get(0).getVehicle().getClassType().toLowerCase();
+        Log.d(TAG, "concatClassType = " + concatClassType);
+
+        List<ScheduleDatesRates> listRates = new ArrayList<>();
+        selectedVehicleDataList.get(0).getVehicle().getRates().removeAll(listRates);
+        listRates.addAll(selectedVehicleDataList.get(0).getVehicle().getRates());
+        Log.d(TAG, "size = " + listRates.size());
+
+        for(int i = 0; i < listRates.size(); i++)
+        {
+            int id = listRates.get(i).getId();
+            String serviceType = listRates.get(i).getServiceType();
+            Log.d(TAG, "id = " + id);
+            Log.d(TAG, "serviceType = " + serviceType);
+
+            if(concatClassType.equals(serviceType))
+            {
+                Log.d(TAG, "Match == " + listRates.get(i).getId());
+                service_type_id = listRates.get(i).getId();
+            }
+        }
+
+        /* separate Name from string */
+        GetNameFromString(customerName);
+
+        /* get current time */
+        getCurrentTimeToSendApi();
+
+        /* payload for create reservation api */
+        /* set static data and send to api call*/
+        channelReq = new ChannelReq();
+        channelReq.setId(1);
+
+        rideReq = new RideReq();
+        rideReq.setDistance(distanceInKm);
+        rideReq.setFromLocation(pickup_city);
+        rideReq.setJourneyEndTime(journeyEndTime);
+        rideReq.setJourneyTime(journeyTime);
+        rideReq.setToLocation(drop_city);
+        rideReq.setCreatedTime("");
+        rideReq.setCreatedUser(customerName);
+
+        rateReq.add(new RateReq(1));
+        rideReq.setRates(rateReq);
+
+        rideReq.setStatus(new RideStatusReq(2));
+
+        rideReq.setUpdatedTime("");
+        rideReq.setUpdatedUser("");
+
+        serviceTypeReq = new ServiceTypeReq();
+        serviceTypeReq.setId(1);
+
+        statusReq = new StatusReq();
+        statusReq.setId(1);
+
+        btnConfirmBooking.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view)
             {
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ConfirmBookingActivity.this);
-                LayoutInflater inflater = getLayoutInflater();
-                View dialogView = inflater.inflate(R.layout.payment_screen, null);
-                dialogBuilder.setView(dialogView);
-                dialogBuilder.setCancelable(false);
-                AlertDialog b = dialogBuilder.create();
+                Log.d(TAG, "idToken = " + idToken);
 
-                AppCompatButton btnPay = dialogView.findViewById(R.id.btnPay);
-
-                btnPay.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ConfirmBookingActivity.this);
-
-                        LayoutInflater inflater = LayoutInflater.from(ConfirmBookingActivity.this);
-                        View dialogView = inflater.inflate(R.layout.thank_you_screen, null);
-                        dialogBuilder.setView(dialogView);
-                        dialogBuilder.setCancelable(false);
-                        AlertDialog b1 = dialogBuilder.create();
-
-                        Button okButton = dialogView.findViewById(R.id.okButton);
-
-                        okButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-
-                                Intent intent = new Intent(ConfirmBookingActivity.this, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                            }
-                        });
-
-                        b1.show();
-                    }
-                });
-
-                b.show();
+                /* create reservation api call */
+                if(!isNetworkConnected())
+                {
+                    Toast.makeText(getApplicationContext(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    BookRide(channelReq, "", firstName, customerEmail, partyId, customerName,
+                            customerPhone, driverId, driverLicense, driverName, driverPhone,
+                            Integer.parseInt(providerId), providerName, createdDateForApi,
+                            rideReq, scheduleId, serviceTypeReq, statusReq, "", "",
+                            vehicleId, idToken);
+                }
             }
         });
     }
@@ -336,12 +472,190 @@ public class ConfirmBookingActivity extends AppCompatActivity
         }
     }
 
+    public void GetNameFromString(String username)
+    {
+        username = username.trim();
+        String[] newStr = username.split("\\s+");
+        for (int i = 0; i < newStr.length; i++) {
+            System.out.println(newStr[i]);
+        }
+
+        firstName = newStr[0];
+        lastName = newStr[2];
+    }
+
+    public void getCurrentTimeToSendApi()
+    {
+        SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        //Date date = Calendar.getInstance().getTime();
+        createdDateForApi = inputDateFormat.format(Calendar.getInstance().getTime());
+        System.out.println("createdDateForApi = " + createdDateForApi);
+    }
+
+    public void BookRide(ChannelReq channel, String createdTime, String createdUser,
+                         String customerEmail, Integer customerId, String customerName,
+                         String customerPhone, Integer driverId, String driverLicense,
+                         String driverName, String driverPhone, Integer providerId,
+                         String providerName, String reservationTime, RideReq ride,
+                         Long scheduleId, ServiceTypeReq serviceType, StatusReq status,
+                         String updatedTime, String updatedUser, Integer vehicleId, String idToken) {
+
+        apiInterface = ApiClient.getClient(AppConstants.BASE_URL).create(ApiInterface.class);
+
+        RideReservationReq reservationReq = new RideReservationReq(channel, createdTime, createdUser,
+                customerEmail, customerId, customerName, customerPhone, driverId, driverLicense,
+                driverName, driverPhone, providerId, providerName, reservationTime, ride, scheduleId,
+                serviceType, status, updatedTime, updatedUser, vehicleId, vehicle_no, Double.parseDouble(vehicle_price));
+
+        Log.d(TAG, "req = " + reservationReq);
+
+        Call<RideReservationResp> call = apiInterface.createRide(reservationReq, idToken);
+
+        // Set up progress before call
+        Dialog lovelyProgressDialog = new LovelyProgressDialog(ConfirmBookingActivity.this)
+                .setIcon(R.drawable.ic_cast_connected_white_36dp)
+                .setTitle(R.string.connecting_to_server)
+                .setMessage(R.string.your_request_is_processing)
+                .setTopColorRes(R.color.teal_200)
+                .show();
+
+        call.enqueue(new Callback<RideReservationResp>() {
+            @Override
+            public void onResponse(Call<RideReservationResp> call, Response<RideReservationResp> response) {
+                lovelyProgressDialog.dismiss();
+                int statusCode = response.code();
+                Log.d(TAG, "statusCode: " + statusCode);
+                Log.d(TAG, "Response = " + response.toString());
+
+                if(statusCode == 201)
+                {
+                    //reservationRespList = response.body();
+                    if(response.body().equals(null))
+                    {
+                        Toast.makeText(getApplicationContext(), "No Data Found", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        /*payment dialog */
+                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ConfirmBookingActivity.this);
+                        LayoutInflater inflater = getLayoutInflater();
+                        View dialogView = inflater.inflate(R.layout.payment_screen, null);
+                        dialogBuilder.setView(dialogView);
+                        dialogBuilder.setCancelable(false);
+                        AlertDialog b = dialogBuilder.create();
+
+                        AppCompatButton btnPay = dialogView.findViewById(R.id.btnPay);
+
+                        btnPay.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                Log.d(TAG, "click");
+
+                                Intent intent = new Intent(ConfirmBookingActivity.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                               /* *//*thank you screen dialog *//*
+                                AlertDialog.Builder dialogBuilder1 = new AlertDialog.Builder(ConfirmBookingActivity.this);
+
+                                LayoutInflater inflater = LayoutInflater.from(ConfirmBookingActivity.this);
+                                View dialogView = inflater.inflate(R.layout.thank_you_screen, null);
+                                dialogBuilder1.setView(dialogView);
+                                dialogBuilder1.setCancelable(false);
+                                AlertDialog b1 = dialogBuilder1.create();
+
+                                Button okButton = dialogView.findViewById(R.id.okButton);
+
+                                okButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        Intent intent = new Intent(ConfirmBookingActivity.this, MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                    }
+                                });
+
+                                b1.show();*/
+                            }
+                        });
+
+                        b.show();
+                    }
+                }
+                else if(statusCode == 401)
+                {
+                    Toast.makeText(getApplicationContext(), "Due to poor network, your session has expired. Please wait... ", Toast.LENGTH_LONG).show();
+
+                    FirebaseAuth.getInstance().getCurrentUser()
+                            .getIdToken(true)
+                            .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                @Override
+                                public void onComplete(@NonNull @NotNull Task<GetTokenResult> task) {
+                                    if (task.isSuccessful())
+                                    {
+                                        refreshToken = "Bearer " + task.getResult().getToken();
+                                        Log.d(TAG,"forceRefresh true = refreshToken = " + refreshToken);
+
+                                        //new generated token set to pref data
+                                        PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_TOKEN, refreshToken);
+
+                                        if(!isNetworkConnected())
+                                        {
+                                            Toast.makeText(getApplicationContext(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
+                                        }
+                                        else
+                                        {
+                                            BookRide(channelReq, "", firstName, customerEmail,
+                                                    partyId, customerName, customerPhone,
+                                                    driverId,driverLicense,driverName,driverPhone,
+                                                    providerId, providerName, createdDateForApi, rideReq,
+                                                    scheduleId, serviceTypeReq, statusReq,
+                                                    "", "", Integer.valueOf(vehicleId), refreshToken);
+                                        }
+                                    }
+                                }
+                            });
+                }
+                else
+                {
+                    Gson gson = new GsonBuilder().create();
+                    BookRideErrorResp mError = new BookRideErrorResp();
+                    try {
+                        mError = gson.fromJson(response.errorBody().string(), BookRideErrorResp.class);
+                        if(!mError.getError().equals(""))
+                        {
+                            Toast.makeText(getApplicationContext(), mError.getError(), Toast.LENGTH_LONG).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), mError.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    } catch (IOException e) {
+                        // handle failure to read error
+                        e.printStackTrace();
+                    }
+                    //Toast.makeText(getActivity(), "Error code = " + statusCode, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RideReservationResp> call, Throwable t) {
+                lovelyProgressDialog.dismiss();
+                Log.d(TAG, "error: " + t.toString());
+                //progressDoalog.dismiss();
+            }
+        });
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+            case PermissionRequestConstant
+                    .MY_PERMISSIONS_REQUEST_CALL_PHONE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -359,6 +673,13 @@ public class ConfirmBookingActivity extends AppCompatActivity
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    private boolean isNetworkConnected()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
     @Override

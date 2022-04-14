@@ -1,4 +1,4 @@
-package com.kiwni.app.user.models;
+package com.kiwni.app.user.models.vehicle_details;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -62,7 +62,7 @@ public class ScheduleMapResp
     private int totalAvailable;
     @SerializedName("vehicle")
     @Expose
-    private com.kiwni.app.user.models.ScheduleDatesVehicle vehicle;
+    private ScheduleDatesVehicle vehicle;
     @SerializedName("price")
     @Expose
     private Double price;
@@ -150,11 +150,11 @@ public class ScheduleMapResp
     }
 
 
-    public com.kiwni.app.user.models.ScheduleDatesVehicle getVehicle() {
+    public ScheduleDatesVehicle getVehicle() {
         return vehicle;
     }
 
-    public void setVehicle(com.kiwni.app.user.models.ScheduleDatesVehicle vehicle) {
+    public void setVehicle(ScheduleDatesVehicle vehicle) {
         this.vehicle = vehicle;
     }
 

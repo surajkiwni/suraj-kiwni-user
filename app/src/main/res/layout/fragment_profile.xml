@@ -5,10 +5,7 @@
     android:id="@+id/profileFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ProfileFragment"
-    >
-
-
+    tools:context=".fragments.ProfileFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -19,7 +16,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <ImageView
         android:id="@+id/imageBack"
@@ -33,7 +29,6 @@
         app:layout_constraintStart_toStartOf="@+id/toolbar"
         app:layout_constraintTop_toTopOf="@+id/toolbar"
         app:layout_constraintVertical_bias="0.533" />
-
 
     <TextView
         android:id="@+id/toolbarText"
@@ -51,35 +46,27 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainConstraintLayout1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#f5f5f5"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-
-
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainConstraintLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
             android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="60dp"
             android:background="@drawable/linear_corner_radius"
-            app:layout_constraintTop_toTopOf="@+id/mainConstraintLayout1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            >
-
-
-
+            app:layout_constraintTop_toTopOf="@+id/mainConstraintLayout1">
 
 
             <androidx.constraintlayout.widget.Guideline
@@ -101,10 +88,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_50"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/guideline1"
                 app:layout_constraintRight_toRightOf="@+id/guideline2"
-                >
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/txtNameHeader"
@@ -112,35 +98,31 @@
                     android:layout_height="wrap_content"
                     android:text="Name"
                     android:textSize="@dimen/dp_12"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txtName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Kiran Patil"
-                    android:textSize="@dimen/dp_16"
                     android:textColor="@color/black"
+                    android:textSize="@dimen/dp_16"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@+id/txtNameHeader"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    />
+                    app:layout_constraintTop_toBottomOf="@+id/txtNameHeader" />
 
                 <ImageView
                     android:id="@+id/imgEdit"
                     android:layout_width="60dp"
                     android:layout_height="0dp"
                     android:src="@drawable/edit"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtName"
                     app:layout_constraintDimensionRatio="2"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txtNameHeader"
-                    app:layout_constraintBottom_toBottomOf="@+id/txtName"
-                    />
-
+                    app:layout_constraintTop_toTopOf="@+id/txtNameHeader" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -149,12 +131,12 @@
                 android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#707070"
-                android:layout_marginTop="5dp"
                 android:layout_gravity="center"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout1"
+                android:layout_marginTop="5dp"
+                android:background="#707070"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout1"
 
                 />
 
@@ -163,10 +145,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_15"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout1"
                 app:layout_constraintLeft_toLeftOf="@+id/guideline1"
                 app:layout_constraintRight_toRightOf="@+id/guideline2"
-                >
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout1">
 
                 <TextView
                     android:id="@+id/txtMobNumberHeader"
@@ -174,35 +155,31 @@
                     android:layout_height="wrap_content"
                     android:text="Mobile Number"
                     android:textSize="@dimen/dp_12"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/txtMobNumber"
+                    android:id="@+id/txtMobileNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0867676785"
-                    android:textSize="@dimen/dp_16"
                     android:textColor="@color/black"
+                    android:textSize="@dimen/dp_16"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@+id/txtMobNumberHeader"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    />
+                    app:layout_constraintTop_toBottomOf="@+id/txtMobNumberHeader" />
 
                 <ImageView
                     android:id="@+id/imgEdit1"
                     android:layout_width="60dp"
                     android:layout_height="0dp"
                     android:src="@drawable/edit"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtMobileNo"
                     app:layout_constraintDimensionRatio="2"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txtMobNumberHeader"
-                    app:layout_constraintBottom_toBottomOf="@+id/txtMobNumber"
-                    />
-
+                    app:layout_constraintTop_toTopOf="@+id/txtMobNumberHeader" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -211,13 +188,12 @@
                 android:id="@+id/view1"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#707070"
-                android:layout_marginTop="5dp"
                 android:layout_gravity="center"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+                android:layout_marginTop="5dp"
+                android:background="#707070"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -225,10 +201,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_15"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
                 app:layout_constraintLeft_toLeftOf="@+id/guideline1"
                 app:layout_constraintRight_toRightOf="@+id/guideline2"
-                >
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
                 <TextView
                     android:id="@+id/txtEmailHeader"
@@ -236,35 +211,31 @@
                     android:layout_height="wrap_content"
                     android:text="Email"
                     android:textSize="@dimen/dp_12"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/txtEmail"
+                    android:id="@+id/txtEmailAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="kiranpatil10@gmail.com"
-                    android:textSize="@dimen/dp_16"
                     android:textColor="@color/black"
+                    android:textSize="@dimen/dp_16"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@+id/txtEmailHeader"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    />
+                    app:layout_constraintTop_toBottomOf="@+id/txtEmailHeader" />
 
                 <ImageView
                     android:id="@+id/imgEdit2"
                     android:layout_width="60dp"
                     android:layout_height="0dp"
                     android:src="@drawable/edit"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtEmailAddress"
                     app:layout_constraintDimensionRatio="2"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txtEmailHeader"
-                    app:layout_constraintBottom_toBottomOf="@+id/txtEmail"
-                    />
-
+                    app:layout_constraintTop_toTopOf="@+id/txtEmailHeader" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -273,23 +244,21 @@
                 android:id="@+id/view2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#707070"
-                android:layout_marginTop="5dp"
                 android:layout_gravity="center"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+                android:layout_marginTop="5dp"
+                android:background="#707070"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_15"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
                 app:layout_constraintLeft_toLeftOf="@+id/guideline1"
                 app:layout_constraintRight_toRightOf="@+id/guideline2"
-                >
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
                 <TextView
                     android:id="@+id/txtEmgContactHeader"
@@ -297,35 +266,31 @@
                     android:layout_height="wrap_content"
                     android:text="Emergency Contacts"
                     android:textSize="@dimen/dp_12"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txtEmgContact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="8888437590"
-                    android:textSize="@dimen/dp_16"
                     android:textColor="@color/black"
+                    android:textSize="@dimen/dp_16"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@+id/txtEmgContactHeader"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    />
+                    app:layout_constraintTop_toBottomOf="@+id/txtEmgContactHeader" />
 
                 <ImageView
                     android:id="@+id/imgEdit3"
                     android:layout_width="60dp"
                     android:layout_height="0dp"
                     android:src="@drawable/edit"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtEmgContact"
                     app:layout_constraintDimensionRatio="2"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txtEmgContactHeader"
-                    app:layout_constraintBottom_toBottomOf="@+id/txtEmgContact"
-                    />
-
+                    app:layout_constraintTop_toTopOf="@+id/txtEmgContactHeader" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -334,13 +299,12 @@
                 android:id="@+id/view3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#707070"
-                android:layout_marginTop="5dp"
                 android:layout_gravity="center"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
+                android:layout_marginTop="5dp"
+                android:background="#707070"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -348,10 +312,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_15"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
+                android:layout_marginBottom="@dimen/dp_10"
                 app:layout_constraintLeft_toLeftOf="@+id/guideline1"
                 app:layout_constraintRight_toRightOf="@+id/guideline2"
-                >
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
 
 
                 <ImageView
@@ -359,23 +323,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/logout"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txtLogOut"
                     app:layout_constraintBottom_toBottomOf="@+id/txtLogOut"
-                    />
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/txtLogOut" />
 
                 <TextView
                     android:id="@+id/txtLogOut"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Log Out"
-                    android:textSize="@dimen/sp_18"
                     android:textColor="@color/black"
+                    android:textSize="@dimen/sp_16"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/imgLogOut"
                     app:layout_constraintRight_toRightOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -386,16 +348,12 @@
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_100"
             android:src="@drawable/change_profile"
+            app:layout_constraintBottom_toTopOf="@id/mainConstraintLayout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/mainConstraintLayout"
-            app:layout_constraintBottom_toTopOf="@id/mainConstraintLayout"/>
+            app:layout_constraintTop_toTopOf="@+id/mainConstraintLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
