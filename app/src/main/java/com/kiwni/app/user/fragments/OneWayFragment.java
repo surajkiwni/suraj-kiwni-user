@@ -726,7 +726,8 @@ public class OneWayFragment extends Fragment implements
 
                                 getCurrentDateToSendApiInFormat(concatDateTime);
 
-                                distanceValueFromApi = String.valueOf(Integer.parseInt(distanceValueFromApi) / 1000);
+                                int distanceConvert = Integer.parseInt(distanceValueFromApi) / 1000;
+                                distanceValueFromApi = String.valueOf(distanceConvert);
                                 Log.d(TAG, "distanceValueFromApi = " + distanceValueFromApi.trim());
                                 convertedDistance = Double.valueOf(distanceValueFromApi.trim());
                                 Log.d(TAG, "convertedDistance = " + convertedDistance);

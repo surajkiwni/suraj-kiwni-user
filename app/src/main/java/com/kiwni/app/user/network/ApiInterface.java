@@ -1,7 +1,11 @@
 package com.kiwni.app.user.network;
 
-import com.kiwni.app.user.models.ScheduleDates;
-import com.kiwni.app.user.models.ScheduleMapResp;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.kiwni.app.user.models.bookride.RideReservationReq;
+import com.kiwni.app.user.models.bookride.RideReservationResp;
+import com.kiwni.app.user.models.vehicle_details.ScheduleDates;
+import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +24,11 @@ public interface ApiInterface
     Call<Map<String, Map<String, Map<String, List<ScheduleMapResp>>>>>
     getProjectionScheduleDates(@Body ScheduleDates scheduleDatesModel,
                                @Header("Authorization") String authHeader);
+
+    @POST("/reservation/api/reservations/")
+    Call<RideReservationResp>
+    createRide(@Body RideReservationReq reservationReq,
+               @Header("Authorization") String header);
 
     /*@POST("/core/api/persons/")
     Call<UserRegisterResponse>

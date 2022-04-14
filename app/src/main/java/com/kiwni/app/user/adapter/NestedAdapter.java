@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.interfaces.BookingListItemClickListener;
-import com.kiwni.app.user.models.ScheduleMapResp;
+import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

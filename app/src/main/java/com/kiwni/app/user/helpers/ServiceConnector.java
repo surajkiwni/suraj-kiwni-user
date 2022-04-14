@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kiwni.app.user.global.NetworkConstant;
+import com.kiwni.app.user.network.ApiInterface;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,8 +41,8 @@ public class ServiceConnector {
         return ourInstance;
     }
 
-    private ServiceConnector() {
-
+    private ServiceConnector()
+    {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
@@ -59,7 +60,7 @@ public class ServiceConnector {
         retrofit = new Retrofit.Builder()
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(NetworkConstant.PROJECTION_BASE_URL)
+                .baseUrl(NetworkConstant.RESERVATION_BASE_URL)
                 .build();
     }
 
@@ -77,13 +78,18 @@ public class ServiceConnector {
         return retrofit.create(AuthenticateService.class).logout(authorization);
     }*/
 
-    public synchronized void addRequestToQueue(Call<JsonElement> request, final IServiceReceiver receiverCallback, final IServiceError errorCallback) {
-        request.enqueue(new Callback<JsonElement>() {
+    public synchronized void addRequestToQueue(Call<JsonElement> request, final IServiceReceiver receiverCallback, final IServiceError errorCallback)
+    {
+        request.enqueue(new Callback<JsonElement>()
+        {
             @Override
             public void onResponse(Call<JsonElement> call, retrofit2.Response<JsonElement> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful())
+                {
                     receiverCallback.onReceiver(response.body());
-                } else {
+                }
+                else
+                {
                     try {
                         String json = response.errorBody().string();
                         if (response.code() == 422) {
@@ -96,7 +102,7 @@ public class ServiceConnector {
                             if (obj.has("message")) {
                                 errorCallback.onError(response.code(), obj.get("message").getAsString());
                             } else if(obj.has("error")) {
-                                errorCallback.onError(response.code(), obj.get("error_description").getAsString());
+                                errorCallback.onError(response.code(), obj.get("error").getAsString());
                             } else {
                                 errorCallback.onError(response.code(), response.message());
                             }
@@ -131,9 +137,9 @@ public class ServiceConnector {
             authorization = null;
     }
 
-    /*Call<JsonElement> authenticate(JsonObject jsonObject)
+   /* Call<JsonElement> authenticate(JsonObject jsonObject)
     {
-        return retrofit.create(ApiInterface.class).getProjectionScheduleDates(jsonObject, authorization);
+        return retrofit.create(ApiInterface.class).createRide(jsonObject, authorization);
     }*/
 
     /*public void requestLogout(Context context) {

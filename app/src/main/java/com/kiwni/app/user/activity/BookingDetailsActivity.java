@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -24,10 +23,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.BookingAdapter;
-import com.kiwni.app.user.adapter.NestedAdapter;
-import com.kiwni.app.user.adapter.TitleItemAdapter;
 import com.kiwni.app.user.datamodels.BookingModel2;
-import com.kiwni.app.user.models.ScheduleMapResp;
+import com.kiwni.app.user.global.PermissionRequestConstant;
+import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
@@ -51,8 +49,6 @@ public class BookingDetailsActivity extends AppCompatActivity
 
     String direction = "", startDate = "", endDate = "", startTime = "", serviceType = "",
             distanceInKm = "", mobile = "", pickupAddress = "", dropAddress = "";
-
-    public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -192,7 +188,7 @@ public class BookingDetailsActivity extends AppCompatActivity
 
                         ActivityCompat.requestPermissions(BookingDetailsActivity.this,
                                 new String[]{Manifest.permission.CALL_PHONE},
-                                MY_PERMISSIONS_REQUEST_CALL_PHONE);
+                                PermissionRequestConstant.MY_PERMISSIONS_REQUEST_CALL_PHONE);
 
                         // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
                         // app-defined int constant. The callback method gets the
@@ -224,7 +220,7 @@ public class BookingDetailsActivity extends AppCompatActivity
                                            String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+            case PermissionRequestConstant.MY_PERMISSIONS_REQUEST_CALL_PHONE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

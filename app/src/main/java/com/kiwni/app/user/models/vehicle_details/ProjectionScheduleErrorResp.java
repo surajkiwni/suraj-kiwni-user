@@ -1,4 +1,4 @@
-package com.kiwni.app.user.models;
+package com.kiwni.app.user.models.vehicle_details;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

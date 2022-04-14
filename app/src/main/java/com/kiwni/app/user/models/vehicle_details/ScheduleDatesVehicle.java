@@ -1,4 +1,4 @@
-package com.kiwni.app.user.models;
+package com.kiwni.app.user.models.vehicle_details;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -50,7 +50,7 @@ public class ScheduleDatesVehicle {
     private Object driver;
     @SerializedName("provider")
     @Expose
-    private com.kiwni.app.user.models.ScheduleDatesProvider provider;
+    private ScheduleDatesProvider provider;
     @SerializedName("rates")
     @Expose
     private List<ScheduleDatesRates> rates = null;
@@ -167,11 +167,11 @@ public class ScheduleDatesVehicle {
         this.driver = driver;
     }
 
-    public com.kiwni.app.user.models.ScheduleDatesProvider getProvider() {
+    public ScheduleDatesProvider getProvider() {
         return provider;
     }
 
-    public void setProvider(com.kiwni.app.user.models.ScheduleDatesProvider provider) {
+    public void setProvider(ScheduleDatesProvider provider) {
         this.provider = provider;
     }
 

@@ -81,14 +81,14 @@ public class SplashActivity extends AppCompatActivity
 
                         if (currentLatitude != 0.0 && currentLongitude != 0.0)
                         {
-                            Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                            /*Intent i = new Intent(SplashActivity.this, LoginActivity.class);
 
                             PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
                             PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
 
                             startActivity(i);
-                            finish();
-                            /*if(hasLoggedIn)
+                            finish();*/
+                            if(hasLoggedIn)
                             {
                                 mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
 
@@ -108,7 +108,7 @@ public class SplashActivity extends AppCompatActivity
 
                                 startActivity(i);
                                 finish();
-                            }*/
+                            }
                         }
 
                         if (mFusedLocationClient != null) {
@@ -208,14 +208,14 @@ public class SplashActivity extends AppCompatActivity
 
                 if (currentLatitude != 0.0 && currentLongitude != 0.0)
                 {
-                    Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                    /*Intent i = new Intent(SplashActivity.this, LoginActivity.class);
 
                     PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
                     PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
 
                     startActivity(i);
-                    finish();
-                    /*if(hasLoggedIn)
+                    finish();*/
+                    if(hasLoggedIn)
                     {
                         mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
 
@@ -235,7 +235,7 @@ public class SplashActivity extends AppCompatActivity
 
                         startActivity(i);
                         finish();
-                    }*/
+                    }
                 }
                 else {
                     mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);

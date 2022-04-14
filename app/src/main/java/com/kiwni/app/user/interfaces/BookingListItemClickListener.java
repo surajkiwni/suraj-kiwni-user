@@ -2,7 +2,7 @@ package com.kiwni.app.user.interfaces;
 
 import android.view.View;
 
-import com.kiwni.app.user.models.ScheduleMapResp;
+import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 
 import java.util.List;
 
