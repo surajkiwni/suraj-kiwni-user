@@ -103,6 +103,23 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
                 Log.d("TAG", "Not Match Condition: ");
             }
         }
+        for (int i = 0 ; i<appendList.size(); i++)
+        {
+            long firstPrice = Math.round((mList.get(position).getPrice()));
+            long secondPrice = Math.round((appendList.get(i).getPrice()));
+
+            if(firstPrice < secondPrice)
+            {
+                holder.txtPriceRangeTitleAdt.setText(firstPrice + " - "  + secondPrice);
+            }
+            else if(firstPrice == secondPrice){
+                holder.txtPriceRangeTitleAdt.setText(String.valueOf(firstPrice) );
+            }
+            else {
+                holder.txtPriceRangeTitleAdt.setText(secondPrice + " - "  + firstPrice);
+            }
+
+        }
 
         // pass response to the nested recycler view
         // same list pass to the nested adapter
