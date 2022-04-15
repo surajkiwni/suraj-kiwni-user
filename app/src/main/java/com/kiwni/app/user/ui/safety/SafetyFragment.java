@@ -96,13 +96,10 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
 
         tryLaterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-              //  tryLaterBtn.setBackground(Color.BLACK);
-
-
+            public void onClick(View view)
+            {
                 alertBtn.setBackgroundResource(R.drawable.square_border);
                 alertBtn.setTextColor(Color.BLACK);
-
 
                 //tryLaterBtn.setBackgroundResource(R.drawable.square_border);
                 tryLaterBtn.setBackgroundColor(Color.BLACK);
@@ -123,17 +120,16 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
                 //tryLaterBtn.setBackgroundColor(Color.BLACK);
                 tryLaterBtn.setTextColor(Color.BLACK);
 
-
-
                 Dialog dialog = new Dialog(getContext(), android.R.style.Theme_Light);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.update_alert_details);
 
                 final ImageView imageBack = dialog.findViewById(R.id.imageBack);
-                AppCompatButton saveBtn = dialog.findViewById(R.id.saveBtn);
+                AppCompatButton btnSaveAlert = dialog.findViewById(R.id.btnSaveAlert);
+                AppCompatButton btnCancelUpdateAlert = dialog.findViewById(R.id.btnCancelUpdateAlert);
 
-                saveBtn.setBackgroundColor(Color.BLACK);
-                saveBtn.setTextColor(Color.WHITE);
+                btnSaveAlert.setBackgroundColor(Color.BLACK);
+                btnSaveAlert.setTextColor(Color.WHITE);
                 imageBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -141,17 +137,26 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
                     }
                 });
 
-                saveBtn.setOnClickListener(new View.OnClickListener() {
+                btnCancelUpdateAlert.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
 
+                btnSaveAlert.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         Dialog dialog = new Dialog(getContext(), android.R.style.Theme_Light);
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.setContentView(R.layout.in_case_emergency);
 
-                        dialog.show();
+                        //dialog.show();
 
                         ImageView imageBack = dialog.findViewById(R.id.imageBack);
+                        ImageView imgPoliceCall = dialog.findViewById(R.id.imgPoliceCall);
+                        ImageView imgKiwniHelpLineCall = dialog.findViewById(R.id.imgKiwniHelpLineCall);
+                        ImageView imgCall = dialog.findViewById(R.id.imgCall);
 
                         imageBack.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -160,10 +165,30 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
                             }
                         });
 
-                        ImageView callImage1 = dialog.findViewById(R.id.callImage1);
-                        callImage1.setOnClickListener(new View.OnClickListener() {
+                        imgPoliceCall.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View view) {
+                            public void onClick(View view)
+                            {
+                                String phone = "7057052508";
+                                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                                startActivity(intent);
+                            }
+                        });
+
+                        imgKiwniHelpLineCall.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                String phone = "7057052508";
+                                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                                startActivity(intent);
+                            }
+                        });
+
+                        imgCall.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view)
+                            {
                                 String phone = "7057052508";
                                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
                                 startActivity(intent);
@@ -172,9 +197,6 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
                     }
                 });
                 dialog.show();
-
-
-
             }
         });
     }

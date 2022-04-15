@@ -55,6 +55,8 @@
         android:padding="7dp"
         android:paddingStart="10dp"
         android:text="Police"
+        android:enabled="false"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
@@ -62,7 +64,7 @@
         app:layout_constraintVertical_bias="0.100000024" />
 
     <ImageView
-        android:id="@+id/callImage1"
+        android:id="@+id/imgPoliceCall"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/call_icon"
@@ -71,9 +73,6 @@
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="@+id/PoliceText"
         app:layout_constraintTop_toTopOf="@+id/PoliceText" />
-
-
-
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
@@ -99,6 +98,8 @@
         android:padding="7dp"
         android:paddingStart="10dp"
         android:text="kiwni Helpline"
+        android:enabled="false"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
@@ -106,7 +107,7 @@
         app:layout_constraintVertical_bias="0.050000012" />
 
     <ImageView
-        android:id="@+id/callImage2"
+        android:id="@+id/imgKiwniHelpLineCall"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/call_icon"
@@ -124,6 +125,8 @@
         android:padding="7dp"
         android:paddingStart="10dp"
         android:text="Shubham"
+        android:enabled="false"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
@@ -131,7 +134,7 @@
         app:layout_constraintVertical_bias="0.050000012" />
 
     <ImageView
-        android:id="@+id/callImage3"
+        android:id="@+id/imgCall"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/call_icon"

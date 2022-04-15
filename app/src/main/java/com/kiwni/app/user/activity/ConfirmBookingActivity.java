@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -56,6 +57,7 @@ import com.kiwni.app.user.models.bookride.RideReservationResp;
 import com.kiwni.app.user.models.bookride.RideStatusReq;
 import com.kiwni.app.user.models.bookride.ServiceTypeReq;
 import com.kiwni.app.user.models.bookride.StatusReq;
+import com.kiwni.app.user.models.socket.SocketReservationResp;
 import com.kiwni.app.user.models.vehicle_details.ScheduleDatesRates;
 import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 import com.kiwni.app.user.network.ApiClient;
@@ -66,15 +68,21 @@ import com.kiwni.app.user.utils.PreferencesUtils;
 import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -116,6 +124,12 @@ public class ConfirmBookingActivity extends AppCompatActivity
     List<RateReq> rateReq = new ArrayList<>();
     ServiceTypeReq serviceTypeReq;
     StatusReq statusReq;
+
+    /* socket */
+    Socket mSocket;
+    SocketReservationResp reservationResp = new SocketReservationResp();
+    List<SocketReservationResp> reservationRespList = new ArrayList<>();
+    Dialog dialogPayment, dialogThankYou;
 
     @SuppressLint("NewApi")
     @Override
@@ -550,12 +564,36 @@ public class ConfirmBookingActivity extends AppCompatActivity
                     else
                     {
                         /*payment dialog */
-                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ConfirmBookingActivity.this);
+                        dialogPayment = new Dialog(ConfirmBookingActivity.this, android.R.style.Theme_Light);
+                        dialogPayment.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialogPayment.setContentView(R.layout.payment_screen);
+
+                        final AppCompatButton btnPay = dialogPayment.findViewById(R.id.btnPay);
+
+                        btnPay.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                Log.d(TAG, "click");
+
+                                if(reservationRespList.size() != 0)
+                                {
+                                    DisplayReservationRespDialog(reservationRespList);
+                                }
+                                else
+                                {
+                                    Log.d(TAG, "list size = " + reservationRespList.size());
+                                }
+                            }
+                        });
+
+                        dialogPayment.show();
+                        /*AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ConfirmBookingActivity.this);
                         LayoutInflater inflater = getLayoutInflater();
                         View dialogView = inflater.inflate(R.layout.payment_screen, null);
                         dialogBuilder.setView(dialogView);
                         dialogBuilder.setCancelable(false);
-                        AlertDialog b = dialogBuilder.create();
+                        bPayment = dialogBuilder.create();
 
                         AppCompatButton btnPay = dialogView.findViewById(R.id.btnPay);
 
@@ -565,36 +603,18 @@ public class ConfirmBookingActivity extends AppCompatActivity
                             {
                                 Log.d(TAG, "click");
 
-                                Intent intent = new Intent(ConfirmBookingActivity.this, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                finish();
-                               /* *//*thank you screen dialog *//*
-                                AlertDialog.Builder dialogBuilder1 = new AlertDialog.Builder(ConfirmBookingActivity.this);
-
-                                LayoutInflater inflater = LayoutInflater.from(ConfirmBookingActivity.this);
-                                View dialogView = inflater.inflate(R.layout.thank_you_screen, null);
-                                dialogBuilder1.setView(dialogView);
-                                dialogBuilder1.setCancelable(false);
-                                AlertDialog b1 = dialogBuilder1.create();
-
-                                Button okButton = dialogView.findViewById(R.id.okButton);
-
-                                okButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-
-                                        Intent intent = new Intent(ConfirmBookingActivity.this, MainActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(intent);
-                                    }
-                                });
-
-                                b1.show();*/
+                                if(reservationRespList.size() != 0)
+                                {
+                                    DisplayReservationRespDialog(reservationRespList);
+                                }
+                                else
+                                {
+                                    Log.d(TAG, "list size = " + reservationRespList.size());
+                                }
                             }
                         });
 
-                        b.show();
+                        bPayment.show();*/
                     }
                 }
                 else if(statusCode == 401)
@@ -662,6 +682,167 @@ public class ConfirmBookingActivity extends AppCompatActivity
         });
     }
 
+    /* socket reservation message */
+    public void SocketConnect()
+    {
+        //Socket Listen
+        try {
+            mSocket = IO.socket(AppConstants.SOCKET_BASE_URL);
+            mSocket.connect();
+
+            mSocket.on(Socket.EVENT_CONNECT,onConnect);
+            mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
+            mSocket.on(Socket.EVENT_CONNECT_ERROR,onConnectError);
+
+            EmitData();
+
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void EmitData()
+    {
+        //{"partyId": 274}
+        JSONObject obj = new JSONObject();
+        try
+        {
+            obj.put("partyId", partyId);
+            mSocket.emit("join", obj);
+            Log.d("join", obj.toString());
+
+            ListenReservationMessage();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    private Emitter.Listener onConnect = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            //Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+            Log.e("IsConnected", String.valueOf(mSocket.connected()));
+            Log.d(TAG, "connected to the server");
+        }
+    };
+
+    private Emitter.Listener onConnectError = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            //Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "connection error");
+        }
+    };
+
+    private Emitter.Listener onDisconnect = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Log.d(TAG, "disconnected from the server");
+        }
+    };
+
+    public void ListenReservationMessage()
+    {
+        mSocket.on(AppConstants.WEBSOCKET_RESERVATION_EVENT, onNewMessage);
+    }
+
+    private final Emitter.Listener onNewMessage = new Emitter.Listener()
+    {
+        @Override
+        public void call(final Object... args)
+        {
+            runOnUiThread(new Runnable() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void run() {
+                    Log.d("MainActivity ", "in new msg");
+                    Log.d("MainActivity ", "data = " + Arrays.toString(args));
+
+                    if (args.length == 0)
+                    {
+                        //Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        try {
+                            JSONObject jsonObject = (JSONObject) args[0];
+
+                            Gson gson = new Gson();
+                            reservationResp = gson.fromJson(jsonObject.toString(), SocketReservationResp.class);
+
+                            Log.d(TAG, "reservationResp = " + reservationResp.toString());
+                            Log.d(TAG, "reservationResp id = " + reservationResp.getId());
+
+                            reservationRespList.clear();
+                            reservationRespList.add(reservationResp);
+                            Log.d(TAG, "reservationRespList = " + reservationRespList.size());
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
+    };
+
+    public void DisplayReservationRespDialog(List<SocketReservationResp> reservationRespList)
+    {
+        dialogThankYou = new Dialog(ConfirmBookingActivity.this, android.R.style.Theme_Light);
+        dialogThankYou.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogThankYou.setContentView(R.layout.thank_you_screen);
+
+        AppCompatButton btnOk = dialogThankYou.findViewById(R.id.btnOk);
+        TextView txtKrnNo = dialogThankYou.findViewById(R.id.txtKrnNo);
+
+        txtKrnNo.setText("" + reservationRespList.get(0).getReservationId());
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                dialogPayment.dismiss();
+                dialogThankYou.dismiss();
+
+                Intent intent = new Intent(ConfirmBookingActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        dialogThankYou.show();
+        /*AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ConfirmBookingActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.thank_you_screen, null);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setCancelable(false);
+        AlertDialog bThankYou = dialogBuilder.create();
+
+        AppCompatButton btnOk = dialogView.findViewById(R.id.btnOk);
+        TextView txtKrnNo = dialogView.findViewById(R.id.txtKrnNo);
+
+        txtKrnNo.setText("" + reservationRespList.get(0).getReservationId());
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                dialogPayment.dismiss();
+                bThankYou.dismiss();
+
+                Intent intent = new Intent(ConfirmBookingActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        bThankYou.show();*/
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -701,6 +882,13 @@ public class ConfirmBookingActivity extends AppCompatActivity
 
         startActivity(new Intent(ConfirmBookingActivity.this, BookingDetailsActivity.class));
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SocketConnect();
     }
 }
 

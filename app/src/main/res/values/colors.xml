@@ -13,5 +13,6 @@
     <color name="text_edit">#2176E3</color>
     <color name="grey_color">#E7E7E7</color>
     <color name="yelow_color">#FFB500</color>
+    <color name="grey">#707070</color>
 
 </resources>

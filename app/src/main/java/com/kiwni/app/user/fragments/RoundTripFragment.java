@@ -1834,14 +1834,14 @@ public class RoundTripFragment extends Fragment implements
     public void onAttach(@NonNull @NotNull Context context) {
         super.onAttach(context);
 
-        Log.d("TAG","onAttach");
+        Log.d(TAG,"onAttach");
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        Log.d("TAG","onStart");
+        Log.d(TAG,"onStart");
 
         try {
             mGoogleApiClient.connect();
@@ -1855,7 +1855,7 @@ public class RoundTripFragment extends Fragment implements
     public void onStop() {
         super.onStop();
 
-        Log.d("TAG","onStop");
+        Log.d(TAG,"onStop");
 
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
@@ -1865,7 +1865,7 @@ public class RoundTripFragment extends Fragment implements
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("TAG","onPause");
+        Log.d(TAG,"onPause");
 
         /*autoCompleteTextViewPickup.setText("");
         autoCompleteTextViewDrop.setText("");*/
@@ -1877,30 +1877,20 @@ public class RoundTripFragment extends Fragment implements
     public void onDestroyView() {
         super.onDestroyView();
 
-        Log.d("TAG","onDestroyView");
+        Log.d(TAG,"onDestroyView");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        Log.d("TAG","onDestroy");
+        Log.d(TAG,"onDestroy");
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        Log.d("TAG","onResume");
-
-        /*if(isCurrent)
-        {
-            //autoCompleteTextViewDrop.setText("");
-            getAddressFromCurrentLocation(currentLatitude,currentLongitude);
-        }
-        else
-        {
-            //autoCompleteTextViewDrop.setText("");
-        }*/
+        Log.d(TAG,"onResume");
     }
 }

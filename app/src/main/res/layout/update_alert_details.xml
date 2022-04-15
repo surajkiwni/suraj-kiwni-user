@@ -188,8 +188,7 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-
-        android:id="@+id/cancelBtn"
+        android:id="@+id/btnCancelUpdateAlert"
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:layout_marginEnd="10dp"
@@ -197,14 +196,14 @@
         android:text="CANCEL"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/saveBtn"
+        app:layout_constraintEnd_toStartOf="@+id/btnSaveAlert"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.94" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/saveBtn"
+        android:id="@+id/btnSaveAlert"
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:layout_marginStart="10dp"
@@ -213,7 +212,7 @@
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintStart_toEndOf="@+id/cancelBtn"
+        app:layout_constraintStart_toEndOf="@+id/btnCancelUpdateAlert"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.94" />
 

@@ -3,8 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/constraint_layout_border">
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/constraint_layout_border"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
     <TextView
         android:id="@+id/thankYouText"
@@ -34,35 +43,60 @@
         android:layout_height="1dp"
         android:background="@color/black"
         android:outlineSpotShadowColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/bookingText"/>
+        app:layout_constraintTop_toBottomOf="@+id/bookingText" />
+
+        <TextView
+            android:id="@+id/txtBookingNoTitle"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="Booking No."
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/txtBookingNo"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bookingText" />
 
     <TextView
         android:id="@+id/txtBookingNo"
         android:layout_width="0dp"
         android:layout_height="30dp"
-        android:text="Booking No. K012"
-        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:text="K012"
         android:textColor="@color/black"
-        android:gravity="center"
-        app:layout_constraintEnd_toStartOf="@+id/txtKrnNo"
-        app:layout_constraintTop_toBottomOf="@+id/bookingText"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/txtKrnNoTitle"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="94dp" />
+        app:layout_constraintStart_toEndOf="@+id/txtBookingNoTitle"
+        app:layout_constraintTop_toBottomOf="@+id/bookingText" />
+
+    <TextView
+        android:id="@+id/txtKrnNoTitle"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="KRN No."
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/txtKrnNo"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/txtBookingNo"
+        app:layout_constraintTop_toBottomOf="@+id/bookingText" />
 
     <TextView
         android:id="@+id/txtKrnNo"
         android:layout_width="0dp"
-        android:text="KRN No. KIWNI234"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:gravity="center"
         android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:text="KIWNI234"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/txtBookingNo"
-        app:layout_constraintTop_toBottomOf="@+id/bookingText"
-        tools:layout_editor_absoluteY="94dp" />
+        app:layout_constraintStart_toEndOf="@+id/txtKrnNoTitle"
+        app:layout_constraintTop_toBottomOf="@+id/bookingText" />
 
     <View
         android:id="@+id/view2"
@@ -70,15 +104,15 @@
         android:layout_height="1dp"
         android:background="@color/black"
         android:outlineSpotShadowColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/txtKrnNo"/>
+        app:layout_constraintTop_toBottomOf="@+id/txtKrnNo" />
 
     <TextView
         android:id="@+id/para1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/thankYouText"
         android:layout_marginTop="5dp"
         android:gravity="center"
+        android:text="@string/thankYouText"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -86,14 +120,17 @@
         android:layout_width="120dp"
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/radius_less_rounded_button"
         android:text="OK"
-        android:layout_marginBottom="10dp"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/para1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

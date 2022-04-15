@@ -66,6 +66,13 @@
     <!--Error strings-->
     <string name="trips_not_available_error">Trips are not available.</string>
 
+    <!--socket dialog strings-->
+    <string name="ride_scheduled">Ride Scheduled</string>
+    <string name="your_krn_numb_is_900890_your_ride_schedule_will_send_your_driver_details_within_few_hours"><![CDATA[Your KRN numb is 900890. Your ride schedule & will send your driver details within few hours.]]></string>
+    <string name="one_way_trip_to_mumbai">One-way-trip To Mumbai</string>
+    <string name="rs_2500">Rs. 2500</string>
+    <string name="estimated_fare">Estimated Fare</string>
+
     <string-array name="select_year">
         <item>Select Year</item>
         <item>2015</item>

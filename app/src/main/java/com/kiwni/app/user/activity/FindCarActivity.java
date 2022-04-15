@@ -501,7 +501,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                     .position(new LatLng(pickup_latitude, pickup_longitude))
                     .title(pickup_city)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pickup_latitude, pickup_longitude), 5.0f));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pickup_latitude, pickup_longitude), 6.0f));
 
             latlong =  dropLocation.split(" ");
             drop_latitude = Double.parseDouble(latlong[0]);
@@ -511,7 +511,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                     .position(new LatLng(drop_latitude, drop_longitude))
                     .title(drop_city)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(drop_latitude, drop_longitude), 5.0f));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(drop_latitude, drop_longitude), 6.0f));
 
             DrawRoute(new LatLng(pickup_latitude, pickup_longitude), new LatLng(drop_latitude, drop_longitude));
         }
