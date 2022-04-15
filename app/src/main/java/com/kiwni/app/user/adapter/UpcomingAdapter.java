@@ -21,7 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.UpcomeViewHolder> {
+public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.UpcomeViewHolder>
+{
     Context context;
     List<TripsHistoryResp> tripHistoryList;
     TripsHistoryResp tripListResp;
@@ -61,12 +62,13 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
         return tripHistoryList.size();
     }
 
-    public class UpcomeViewHolder extends RecyclerView.ViewHolder {
-
+    public class UpcomeViewHolder extends RecyclerView.ViewHolder
+    {
         TextView txtPickupAddress, txtDropAddress, txtDate, txtTime, txtServiceType, txtBookingNo, txtKRNNo;
         AppCompatButton btnCancelRide;
 
-        public UpcomeViewHolder(@NonNull View itemView) {
+        public UpcomeViewHolder(@NonNull View itemView)
+        {
             super(itemView);
 
             txtPickupAddress = itemView.findViewById(R.id.txtPickupAddress);
@@ -78,9 +80,11 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
             txtKRNNo = itemView.findViewById(R.id.txtKRNNo);
             btnCancelRide = (AppCompatButton) itemView.findViewById(R.id.btnCancelRide);
 
-            btnCancelRide.setOnClickListener(new View.OnClickListener() {
+            btnCancelRide.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View view) {
+                public void onClick(View view)
+                {
                     // Navigation.findNavController(view).navigate(R.id.action_nav_myrides_to_mainActivity);
 
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(itemView.getContext());
@@ -93,20 +97,19 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
 
                     b.show();
 
-                    AppCompatButton dontCancelButton = (AppCompatButton) dialogView.findViewById(R.id.dontCancelButton);
-                    AppCompatButton cancelRideButton = (AppCompatButton) dialogView.findViewById(R.id.cancelRideButton);
+                    AppCompatButton btnDoNotCancel = (AppCompatButton) dialogView.findViewById(R.id.btnDoNotCancel);
+                    AppCompatButton btnCancelRide = (AppCompatButton) dialogView.findViewById(R.id.btnCancelRide);
 
-                    dontCancelButton.setOnClickListener(new View.OnClickListener() {
+                    btnDoNotCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             b.dismiss();
                         }
                     });
 
-                    cancelRideButton.setOnClickListener(new View.OnClickListener() {
+                    btnCancelRide.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
                             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(itemView.getContext());
                             LayoutInflater inflater = LayoutInflater.from(itemView.getContext());
                             View dialogView1 = inflater.inflate(R.layout.booking_cancel_successful, null);
@@ -115,13 +118,15 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
                             AlertDialog b1 = dialogBuilder.create();
 
                             b1.show();
-                            AppCompatButton okButton = (AppCompatButton) dialogView1.findViewById(R.id.okButton);
+                            AppCompatButton btnOk = (AppCompatButton) dialogView1.findViewById(R.id.btnOk);
 
-                            okButton.setOnClickListener(new View.OnClickListener() {
+                            btnOk.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onClick(View view) {
+                                public void onClick(View view)
+                                {
                                     b1.dismiss();
                                     b.dismiss();
+                                    removeItem(getAdapterPosition());
                                     //Navigation.findNavController(view).navigate(R.id.action_upcomingFragment_to_mainActivity2);
                                 }
                             });
@@ -129,7 +134,14 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
                     });
                 }
             });
+        }
 
+        public void removeItem(int newPosition)
+        {
+            newPosition = getAdapterPosition();
+            tripHistoryList.remove(newPosition);
+            notifyItemRemoved(newPosition);
+            notifyItemRangeChanged(newPosition, tripHistoryList.size());
         }
     }
 

@@ -66,10 +66,12 @@
     <FrameLayout
         android:id="@+id/homeFrameLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="5dp"
         app:layout_constraintTop_toBottomOf="@+id/myRidesTabLayout"
-        app:layout_constraintLeft_toLeftOf="parent">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <!--<androidx.viewpager2.widget.ViewPager2
             android:id="@+id/myRidesViewPager"

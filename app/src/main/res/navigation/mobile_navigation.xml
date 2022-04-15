@@ -27,9 +27,6 @@
             android:id="@+id/action_nav_home_to_nav_safety"
             app:destination="@id/nav_safety" />
         <action
-            android:id="@+id/action_nav_home_to_nav_shareapp"
-            app:destination="@id/nav_shareapp" />
-        <action
             android:id="@+id/action_nav_home_to_nav_support"
             app:destination="@id/nav_support" />
         <action
@@ -87,16 +84,6 @@
             app:destination="@id/mainActivity" />
     </fragment>
     <fragment
-        android:id="@+id/nav_shareapp"
-        android:name="com.kiwni.app.user.ui.share_app.ShareAppFragment"
-        android:label="@string/menu_share_app"
-        tools:layout="@layout/fragment_share_app" >
-
-        <action
-            android:id="@+id/action_nav_shareapp_to_mainActivity"
-            app:destination="@id/mainActivity" />
-    </fragment>
-    <fragment
         android:id="@+id/nav_safety"
         android:name="com.kiwni.app.user.ui.safety.SafetyFragment"
         android:label="@string/menu_safety"
@@ -139,15 +126,6 @@
         tools:layout="@layout/fragment_about" >
         <action
             android:id="@+id/action_nav_about_to_mainActivity"
-            app:destination="@id/mainActivity" />
-    </fragment>
-    <fragment
-        android:id="@+id/nav_feedback"
-        android:name="com.kiwni.app.user.ui.feedback.FeedbackFragment"
-        android:label="@string/menu_feedback"
-        tools:layout="@layout/fragment_feedback" >
-        <action
-            android:id="@+id/action_nav_feedback_to_mainActivity"
             app:destination="@id/mainActivity" />
     </fragment>
 

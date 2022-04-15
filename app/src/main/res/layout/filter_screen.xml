@@ -197,8 +197,8 @@
                     android:id="@+id/premiumText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
                     android:layout_marginHorizontal="5dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginBottom="10dp"
                     android:focusableInTouchMode="true"
                     android:gravity="center"
@@ -249,8 +249,8 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="20dp"
-                app:layout_constraintRight_toRightOf="@+id/guideline2"
                 app:layout_constraintLeft_toLeftOf="@+id/guideline1"
+                app:layout_constraintRight_toRightOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
 
@@ -272,8 +272,8 @@
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/white"
                     android:spinnerMode="dropdown"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:layout_width="75dp"
@@ -329,7 +329,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.05"/>
+                    app:layout_constraintGuide_percent="0.05" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline4"
@@ -344,7 +344,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:onClick="onCheckboxClicked"
                     android:text="Wheel Chair Assistance"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
                     app:layout_constraintTop_toBottomOf="@+id/view3" />
@@ -353,7 +352,6 @@
                     android:id="@+id/checkBox2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="onCheckboxClicked"
                     android:text="Baby Car Chair"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
                     app:layout_constraintTop_toBottomOf="@+id/checkBox1" />
@@ -362,7 +360,6 @@
                     android:id="@+id/checkBox3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="onCheckboxClicked"
                     android:text="Safety body Guard"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
                     app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
@@ -371,7 +368,6 @@
                     android:id="@+id/checkBox4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="onCheckboxClicked"
                     android:text="Vehicle With Carrier"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
                     app:layout_constraintTop_toBottomOf="@+id/checkBox3" />
@@ -380,7 +376,6 @@
                     android:id="@+id/checkBox5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="onCheckboxClicked"
                     android:text="Pet Comfortable Cab"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
                     app:layout_constraintTop_toBottomOf="@+id/checkBox4" />
@@ -389,7 +384,6 @@
                     android:id="@+id/checkBox6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="onCheckboxClicked"
                     android:text="Travel Sleeping Bed"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
                     app:layout_constraintTop_toBottomOf="@+id/checkBox5" />
