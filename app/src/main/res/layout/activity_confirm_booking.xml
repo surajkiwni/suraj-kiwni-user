@@ -348,7 +348,6 @@
 
                 <CheckBox
                     android:id="@+id/checkBox1"
-                    style="@android:style/Widget.CompoundButton.RadioButton"
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -374,7 +373,6 @@
 
                 <CheckBox
                     android:id="@+id/checkBox2"
-                    style="@android:style/Widget.CompoundButton.RadioButton"
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
@@ -413,7 +411,6 @@
 
                 <CheckBox
                     android:id="@+id/checkBox3"
-                    style="@android:style/Widget.CompoundButton.RadioButton"
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
