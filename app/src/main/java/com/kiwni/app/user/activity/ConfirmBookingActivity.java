@@ -106,7 +106,8 @@ public class ConfirmBookingActivity extends AppCompatActivity
     ImageView imageBack,imgCallConfirmAct, imgVehicleImg;
     TextView txtTitle, txtStartTime, txtStartEndDate, txtEstimatedKm, txtTitleType, txtDropAddress,
             txtPickupAddress, txtProviderName, txtVehicleName, txtVehicleClassType, txtRideFare,
-            txtExtraFareKm, txtExtraFarePerKm, txtTotalFareBase, txtApplyCoupon, txtGst, txtTotalFare;
+            txtExtraFareKm, txtExtraFarePerKm, txtTotalFareBase, txtApplyCoupon, txtGst,
+            txtTotalFare, txtThirtyPercDiscount, txtFiftyPercDiscount, txtHundredPercDiscount;
 
     /* business dialog widgets */
     EditText edtCompanyName, edtCompanyEmail, edtCompanyPhoneNo;
@@ -176,6 +177,9 @@ public class ConfirmBookingActivity extends AppCompatActivity
         chkEmail = findViewById(R.id.chkEmail);
         chkPhone = findViewById(R.id.chkPhone);
         chkWhatsApp = findViewById(R.id.chkWhatsApp);
+        txtThirtyPercDiscount = findViewById(R.id.txtThirtyPercDiscount);
+        txtFiftyPercDiscount = findViewById(R.id.txtFiftyPercDiscount);
+        txtHundredPercDiscount = findViewById(R.id.txtHundredPercDiscount);
 
         Gson gson = new Gson();
         String stringData = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, "");
@@ -269,14 +273,26 @@ public class ConfirmBookingActivity extends AppCompatActivity
 
         /* calculate gst (5%) fro ride fare and set to total fare */
         double rideFare = Double.parseDouble(String.valueOf(selectedVehicleDataList.get(0).getPrice()));
-        //Log.d(TAG, "rideFare = " + rideFare);
         double calculatedGst = (rideFare / 100.0f) * 5;
-        //Log.d(TAG, "calculatedGst = " + calculatedGst);
         txtGst.setText("" + Math.round(calculatedGst));
+
         txtApplyCoupon.setText("" + 0);
         txtRideFare.setText(Math.round(selectedVehicleDataList.get(0).getPrice()) + "/-");
         double totalFare = calculatedGst + rideFare;
         txtTotalFare.setText(Math.round(totalFare) + "/-");
+
+        /* 30% advance */
+        double calculateThirtyAdv = (totalFare / 100.0f) * 30;
+        Log.d(TAG, "calculateThirtyAdv = " + calculateThirtyAdv);
+        txtThirtyPercDiscount.setText(Math.round(calculateThirtyAdv) + "/-");
+
+        /* 50% advance */
+        double calculateFiftyAdv = (totalFare / 100.0f) * 50;
+        Log.d(TAG, "calculateFiftyAdv = " + calculateFiftyAdv);
+        txtFiftyPercDiscount.setText(Math.round(calculateFiftyAdv) + "/-");
+
+        /* 100% advance */
+        txtHundredPercDiscount.setText(Math.round(totalFare) + "/-");
 
         if(!selectedVehicleDataList.get(0).getVehicle().getImagePath().equals(""))
         {

@@ -12,25 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.models.ReviewResponse;
 
+import java.util.ArrayList;
 import java.util.List;
-
-
 
 public class DialogReviewAdapter extends RecyclerView.Adapter<DialogReviewAdapter.ReviewViewHolder> {
 
     Context context;
-    private List<ReviewResponse> reviewResponseList;
+    List<ReviewResponse> reviewResponseList = new ArrayList<>();
 
     public DialogReviewAdapter(Context context, List<ReviewResponse> reviewResponseList) {
-
-        this.context= context;
+        this.context = context;
         this.reviewResponseList = reviewResponseList;
     }
 
     @NonNull
     @Override
     public DialogReviewAdapter.ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review_layout,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review_layout, parent, false);
         return new DialogReviewAdapter.ReviewViewHolder(view);
     }
 
@@ -45,12 +43,12 @@ public class DialogReviewAdapter extends RecyclerView.Adapter<DialogReviewAdapte
 
     @Override
     public int getItemCount() {
-        return 0;
+        return reviewResponseList.size();
     }
 
     public class ReviewViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtDescription,txtName;
+        TextView txtDescription, txtName;
 
         public ReviewViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -654,27 +655,31 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
     @Override
     public void onReviewBtnClick(View v, int position)
     {
-        Toast.makeText(this, "Clicked on review", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Clicked on review", Toast.LENGTH_SHORT).show();
 
         Dialog dialog = new Dialog(CarListTypeActivity.this, android.R.style.Theme_Light);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_review);
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
 
         List<ReviewResponse> reviewResponseList;
 
         RecyclerView recyclerDigReview = dialog.findViewById(R.id.recyclerDigReview);
 
         reviewResponseList = new ArrayList<>();
-
         reviewResponseList.add(new ReviewResponse("Suraj Phadtare","I have booked cab one way from Mumbai to Pune It was great and very much comfortable journey Driver also very helpful.Cab proper clean and they are using all COVID protocols."));
         reviewResponseList.add(new ReviewResponse("Shubham Shinde","I have booked cab one way from Mumbai to Pune It was great and very much comfortable journey Driver also very helpful.Cab proper clean and they are using all COVID protocols."));
+        reviewResponseList.add(new ReviewResponse("Damini Mistri","I have booked cab one way from Mumbai to Pune It was great and very much comfortable journey Driver also very helpful.Cab proper clean and they are using all COVID protocols."));
+        reviewResponseList.add(new ReviewResponse("Nalin Giri","I have booked cab one way from Mumbai to Pune It was great and very much comfortable journey Driver also very helpful.Cab proper clean and they are using all COVID protocols."));
+        reviewResponseList.add(new ReviewResponse("Drashti Patel","I have booked cab one way from Mumbai to Pune It was great and very much comfortable journey Driver also very helpful.Cab proper clean and they are using all COVID protocols."));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerDigReview.setLayoutManager(linearLayoutManager);
 
-        DialogReviewAdapter dialogReviewAdapter = new DialogReviewAdapter(CarListTypeActivity.this,reviewResponseList);
+        DialogReviewAdapter dialogReviewAdapter = new DialogReviewAdapter(CarListTypeActivity.this, reviewResponseList);
         recyclerDigReview.setAdapter(dialogReviewAdapter);
+        dialogReviewAdapter.notifyDataSetChanged();
 
         dialog.show();
     }
