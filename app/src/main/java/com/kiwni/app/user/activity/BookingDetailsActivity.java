@@ -169,7 +169,9 @@ public class BookingDetailsActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                //startActivity(new Intent(BookingDetailsActivity.this, CarListTypeActivity.class));
+                /*Intent intent = new Intent(BookingDetailsActivity.this, CarListTypeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);*/
                 finish();
             }
         });
@@ -210,6 +212,7 @@ public class BookingDetailsActivity extends AppCompatActivity
 
                // navController.navigate(R.id.action_bookingDetailsFragment_to_bookingDetailsSecondFragment);
                 Intent intent = new Intent(BookingDetailsActivity.this, ConfirmBookingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });

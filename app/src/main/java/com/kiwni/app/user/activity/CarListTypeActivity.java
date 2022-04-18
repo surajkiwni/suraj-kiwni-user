@@ -186,9 +186,14 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
 
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                //startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(CarListTypeActivity.this, FindCarActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 finish();
+                //startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
+                //finish();
             }
         });
 
@@ -262,7 +267,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
                     @Override
                     public void onClick(View view) {
 
-                        Toast.makeText(getApplicationContext(), "Clicked On : " + btnLatest.getText().toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Clicked On : " + btnLatest.getText().toString(), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 });
@@ -270,7 +275,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
                     @Override
                     public void onClick(View view) {
 
-                        Toast.makeText(getApplicationContext(), "Clicked On : " + btnPopularity.getText().toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getApplicationContext(), "Clicked On : " + btnPopularity.getText().toString(), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 });
@@ -279,7 +284,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
                     @Override
                     public void onClick(View view) {
 
-                        Toast.makeText(getApplicationContext(), "Clicked On : " + btnLowToHigh.getText().toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Clicked On : " + btnLowToHigh.getText().toString(), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 });
@@ -288,7 +293,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
                     @Override
                     public void onClick(View view) {
 
-                        Toast.makeText(getApplicationContext(), "Clicked On : " + btnHighToLow.getText().toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Clicked On : " + btnHighToLow.getText().toString(), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 });
@@ -333,7 +338,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
 
                         if(checkBox1.isChecked())
                         {
-                            Toast.makeText(getApplicationContext(), "checked = " +checkBox1.getText().toString(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "checked = " +checkBox1.getText().toString(), Toast.LENGTH_SHORT).show();
                             strSpecialReq = checkBox1.getText().toString();
                         }
                         else{
@@ -363,7 +368,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
 
                         if(checkBox3.isChecked())
                         {
-                            Toast.makeText(getApplicationContext(), "checked = " +checkBox3.getText().toString(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "checked = " +checkBox3.getText().toString(), Toast.LENGTH_SHORT).show();
                             strSpecialReq = checkBox3.getText().toString();
                         }
                         else{
@@ -378,7 +383,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
 
                         if(checkBox4.isChecked())
                         {
-                            Toast.makeText(getApplicationContext(), "checked = " +checkBox4.getText().toString(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "checked = " +checkBox4.getText().toString(), Toast.LENGTH_SHORT).show();
                             strSpecialReq = checkBox4.getText().toString();
                         }
                         else{
@@ -393,7 +398,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
 
                         if(checkBox5.isChecked())
                         {
-                            Toast.makeText(getApplicationContext(), "checked = " +checkBox5.getText().toString(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "checked = " +checkBox5.getText().toString(), Toast.LENGTH_SHORT).show();
                             strSpecialReq = checkBox5.getText().toString();
                         }
                         else {
@@ -408,7 +413,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
 
                         if(checkBox6.isChecked())
                         {
-                            Toast.makeText(getApplicationContext(), "checked = " +checkBox6.getText().toString(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "checked = " +checkBox6.getText().toString(), Toast.LENGTH_SHORT).show();
                             strSpecialReq = checkBox6.getText().toString();
                         }
                         else{
@@ -424,7 +429,6 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
                        strSegment = " ";
                         if (strSegment.equals(" "))
                         {
-
                             strSegment = premiumText.getText().toString();
                             isSelected = true;
                         }
@@ -437,13 +441,11 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
                         if(isSelected){
                             //premiumText.setBackgroundColor(Color.WHITE);
                             premiumText.setBackgroundResource(R.drawable.spinner_background);
-
                         }
                         else {
 
                            // premiumText.setBackgroundResource(R.drawable.spinner_background);
                             premiumText.setBackgroundColor(Color.WHITE);
-
                         }
 
                         // fetching length of array
@@ -459,7 +461,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
                         // using setBackground() method.
                         premiumText.setBackground(ContextCompat.getDrawable(getApplicationContext(), back_background[random_number]));
 
-                        Toast.makeText(getApplicationContext(), "Clicked On " + strSegment, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Clicked On " + strSegment, Toast.LENGTH_SHORT).show();
                     }
 
                 });
@@ -484,7 +486,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
 
                         strSegment = luxuryText.getText().toString();
                         //luxuryText.setBackgroundResource(R.drawable.spinner_background);
-                        Toast.makeText(getApplicationContext(), "Clicked On " + strSegment, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Clicked On " + strSegment, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -508,7 +510,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
 
                         strSegment = ultraLuxuryText.getText().toString();
                         //ultraLuxuryText.setBackgroundResource(R.drawable.spinner_background);
-                        Toast.makeText(getApplicationContext(), "Clicked On" + strSegment, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Clicked On" + strSegment, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -518,7 +520,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
                     @Override
                     public void onFilterItemClick(View v, int position, List<Filter> filterModels) {
                         strBrand = filterModels.get(position).getName();
-                        Toast.makeText(getApplicationContext(), "Item Clicked - " + strBrand, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Item Clicked - " + strBrand, Toast.LENGTH_SHORT).show();
                     }
                 };
 
@@ -626,7 +628,9 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(CarListTypeActivity.this, FindCarActivity.class));
+        Intent intent = new Intent(CarListTypeActivity.this, FindCarActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
         finish();
     }
 

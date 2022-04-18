@@ -11,7 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
+import com.kiwni.app.user.MainActivity;
+import com.kiwni.app.user.R;
 import com.kiwni.app.user.databinding.FragmentFaqBinding;
 import com.kiwni.app.user.interfaces.BackKeyPressedListener;
 
@@ -50,28 +53,26 @@ public class FaqFragment extends Fragment implements BackKeyPressedListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ((MainActivity) requireActivity()).getSupportActionBar().hide();
 
-        /*((MainActivity) requireActivity()).getSupportActionBar().hide();*/
-
-        /*imageBack = view.findViewById(R.id.imageBack);
+        imageBack = view.findViewById(R.id.imageBack);
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Navigation.findNavController(view).navigate(R.id.action_nav_faq_to_mainActivity);
             }
-        });*/
+        });
     }
 
     @Override
     public void onBackPressed() {
-        //Navigation.findNavController(view).navigate(R.id.action_nav_faq_to_mainActivity);
 
+        Navigation.findNavController(view).navigate(R.id.action_nav_faq_to_mainActivity);
     }
 
     @Override
     public void onPause() {
-        backKeyPressedListener = null;
+        //backKeyPressedListener = null;
         super.onPause();
     }
 
@@ -79,6 +80,6 @@ public class FaqFragment extends Fragment implements BackKeyPressedListener {
     public void onResume() {
         super.onResume();
 
-        backKeyPressedListener = this;
+        //backKeyPressedListener = this;
     }
 }

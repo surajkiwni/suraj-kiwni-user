@@ -1422,6 +1422,7 @@ public class AirportDropFragment extends Fragment implements
                         errorDialog.show();
 
                         linearBtnConfirm.setVisibility(View.GONE);
+                        imageMarker.setVisibility(View.GONE);
                         //mMap.clear();
                         if(dropMarker != null)
                         {

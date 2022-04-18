@@ -651,6 +651,7 @@ public class RoundTripFragment extends Fragment implements
 
                         //txtMarkerText.setVisibility(View.GONE);
                         imageMarker.setVisibility(View.GONE);
+
                         if(dropMarker != null)
                         {
                             dropMarker.remove();
@@ -1491,6 +1492,7 @@ public class RoundTripFragment extends Fragment implements
                         errorDialog.show();
 
                         linearBtnConfirm.setVisibility(View.GONE);
+                        imageMarker.setVisibility(View.GONE);
                         //mMap.clear();
                         if(dropMarker != null)
                         {

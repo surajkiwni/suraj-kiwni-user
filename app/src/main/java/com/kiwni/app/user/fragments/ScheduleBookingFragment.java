@@ -1449,6 +1449,7 @@ public class ScheduleBookingFragment extends Fragment implements
                         errorDialog.show();
 
                         linearBtnConfirm.setVisibility(View.GONE);
+                        imageMarker.setVisibility(View.GONE);
 
                         if(dropMarker != null)
                         {

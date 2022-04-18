@@ -16,6 +16,7 @@ import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.GridLayoutWrapper;
 import com.kiwni.app.user.adapter.PastAdapter;
 import com.kiwni.app.user.adapter.UpcomingAdapter;
+import com.kiwni.app.user.datamodels.ErrorDialog;
 import com.kiwni.app.user.models.triphistory.TripsHistoryResp;
 import com.kiwni.app.user.network.ApiClient;
 import com.kiwni.app.user.network.ApiInterface;
@@ -59,8 +60,11 @@ public class UpcomingFragment extends Fragment
         partyId = PreferencesUtils.getPreferences(getActivity(), SharedPref.partyId, 0);
         Log.d(TAG,"partyId = " + partyId);
 
+        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "No upcoming trips found.");
+        errorDialog.show();
+
         /* call trip history api */
-        getTripHistoryData(partyId);
+        //getTripHistoryData(partyId);
 
         return view;
     }

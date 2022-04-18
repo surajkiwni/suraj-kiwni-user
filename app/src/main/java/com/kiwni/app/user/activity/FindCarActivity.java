@@ -44,6 +44,7 @@ import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.FindsCarRecyclerAdapter;
 import com.kiwni.app.user.adapter.GridLayoutWrapper;
 import com.kiwni.app.user.adapter.HourPackageAdapter;
+import com.kiwni.app.user.datamodels.ErrorDialog;
 import com.kiwni.app.user.global.PermissionRequestConstant;
 import com.kiwni.app.user.interfaces.FindCarItemClickListener;
 import com.kiwni.app.user.models.DirectionsJSONParser;
@@ -127,6 +128,8 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finds_cars);
+
+        Log.d(TAG, "onCreate");
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getSupportFragmentManager()
                 .findFragmentById(R.id.map1);
@@ -372,7 +375,9 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
                     if(listMap.size() == 0)
                     {
-                        Toast.makeText(FindCarActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                        ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "No Data Found");
+                        errorDialog.show();
+                        //Toast.makeText(FindCarActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
@@ -382,21 +387,21 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                         // = new HashMap<String, Map<String, Map<String, List<ScheduleMapResp>>>>();
                         for(String outerKey : listMap.keySet())
                         {
-                            Log.d("TAG","outerKey = " + outerKey);
+                            Log.d(TAG,"outerKey = " + outerKey);
                             listOfVehicleType.add(outerKey);
 
                             outerMap = listMap.get(outerKey);
                             for(String innerKey : outerMap.keySet())
                             {
-                                Log.d("TAG","innerKey = " + innerKey);
+                                Log.d(TAG,"innerKey = " + innerKey);
                                 innerMap = outerMap.get(innerKey);
                                 for(String model1 : innerMap.keySet())
                                 {
-                                    Log.d("TAG","model1 = " + model1);
+                                    Log.d(TAG,"model1 = " + model1);
 
                                     List<ScheduleMapResp> tempScheduleList = innerMap.get(model1);
-                                    Log.d("TAG","list size = " + tempScheduleList.size());
-                                    Log.d("TAG","list data = " + tempScheduleList.toString());
+                                    Log.d(TAG,"list size = " + tempScheduleList.size());
+                                    Log.d(TAG,"list data = " + tempScheduleList.toString());
 
                                     for (int i = 0; i < tempScheduleList.size(); i++)
                                     {
@@ -404,13 +409,13 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                                         //scheduleMapResp.setTotalAvailable(tempScheduleList.size());
                                         finalScheduleList.add(scheduleMapResp);
                                     }
-                                    Log.d("TAG", "tempScheduleList size in inner model = " + tempScheduleList.size());
-                                    Log.d("TAG", "finalScheduleList size in inner model = " + finalScheduleList.size());
+                                    Log.d(TAG, "tempScheduleList size in inner model = " + tempScheduleList.size());
+                                    Log.d(TAG, "finalScheduleList size in inner model = " + finalScheduleList.size());
                                 }
                             }
                         }
 
-                        Log.d("TAG", "finalScheduleList data outer model = " + listOfVehicleType.toString());
+                        Log.d(TAG, "finalScheduleList data outer model = " + listOfVehicleType.toString());
                         findsCarRecyclerAdapter = new FindsCarRecyclerAdapter(getApplicationContext(), listOfVehicleType, finalScheduleList, listener);
                         recyclerView.setAdapter(findsCarRecyclerAdapter);
                         findsCarRecyclerAdapter.notifyDataSetChanged();
@@ -424,11 +429,15 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                         mError= gson.fromJson(response.errorBody().string(), ProjectionScheduleErrorResp.class);
                         if(!mError.getError().equals("") || !response.message().equals(""))
                         {
-                            Toast.makeText(getApplicationContext(), mError.getError(), Toast.LENGTH_LONG).show();
+                            ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), mError.getError());
+                            errorDialog.show();
+                            //Toast.makeText(getApplicationContext(), mError.getError(), Toast.LENGTH_LONG).show();
                         }
                         else
                         {
-                            Toast.makeText(getApplicationContext(), "Something Went Wrong.", Toast.LENGTH_LONG).show();
+                            ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "Something Went Wrong.");
+                            errorDialog.show();
+                            //Toast.makeText(getApplicationContext(), "Something Went Wrong.", Toast.LENGTH_LONG).show();
                         }
                     } catch (IOException e) {
                         // handle failure to read error
@@ -482,7 +491,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
 
-        Log.d("TAG", "OnMapReady");
+        Log.d(TAG, "OnMapReady");
         if (mMap != null) {
             mMap.clear();
         }
@@ -700,17 +709,17 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     public void onFindCarItemClick(View v, int position, List<String> scheduleMapRespList, String labelName, String seatCapacity)
     {
         /* on click on recyclerview item */
-        Log.d("TAG","label Value = " + labelName);
-        Log.d("TAG","label Value = " + seatCapacity);
+        Log.d(TAG,"label Value = " + labelName);
+        Log.d(TAG,"label Value = " + seatCapacity);
 
         /* get selected vehicle_type and add into another list */
         for (int i = 0; i < finalScheduleList.size();i++)
         {
-            // Log.d("TAG","finalschedulelist i "+i);
+            // Log.d(TAG,"finalschedulelist i "+i);
             if (finalScheduleList.get(i).getVehicleType().equals(labelName))
             {
                 selectedByVehicleTypeList.add(finalScheduleList.get(i));
-                //Log.d("TAG", "selectedByVehicleTypeList " + selectedByVehicleTypeList.toString());
+                //Log.d(TAG, "selectedByVehicleTypeList " + selectedByVehicleTypeList.toString());
             }
         }
 
@@ -720,7 +729,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         /*sorting by model and classType same and different */
         sortByModelAndClassType();
-        //Log.d("TAG","selected by vehicle type = " + tempList.toString());
+        //Log.d(TAG,"selected by vehicle type = " + tempList.toString());
 
         Gson gson = new Gson();
         Type type = new TypeToken<List<ScheduleMapResp>>() {}.getType();
@@ -728,6 +737,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         String jsonForDuplicateData = gson.toJson(remainingList, type);
 
         Intent intent = new Intent(FindCarActivity.this, CarListTypeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         //intent.putExtra(SharedPref.SELECTED_VEHICLE_TYPE_OBJECT, jsonForData);
         //intent.putExtra(SharedPref.DUPLICATE_VEHICLE_OBJECT, jsonForDuplicateData);
         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_TYPE_OBJECT, jsonForData);
@@ -737,8 +747,8 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         startActivity(intent);
         //finish();
 
-        //Log.d("TAG","scheduleDatesResp Data to send next Activity tempList = " + tempList.toString());
-        //Log.d("TAG","scheduleDatesResp Data to send next Activity remainingList = " + remainingList.toString());
+        //Log.d(TAG,"scheduleDatesResp Data to send next Activity tempList = " + tempList.toString());
+        //Log.d(TAG,"scheduleDatesResp Data to send next Activity remainingList = " + remainingList.toString());
     }
 
     public void sortByModelAndClassType()
@@ -754,10 +764,10 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                     {
                         //System.out.println("model compare i = " + mList.get(i).getModel());
                         tempList.add(selectedByVehicleTypeList.get(i));
-                        Log.d("TAG", "templist size" +tempList.size());
+                        Log.d(TAG, "templist size" +tempList.size());
 
                         remainingList.add(selectedByVehicleTypeList.get(j));
-                        Log.d("TAG","remainingList = " +remainingList);
+                        Log.d(TAG,"remainingList = " +remainingList);
 
                         isEqual = true;
                     }
@@ -799,16 +809,19 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy");
     }
 
     @Override

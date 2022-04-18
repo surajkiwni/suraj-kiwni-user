@@ -11,5 +11,5 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        />
+        android:textSize="15sp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

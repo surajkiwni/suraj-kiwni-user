@@ -16,179 +16,169 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--<androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent">-->
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linear1"
-                android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linear1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/linear2"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/txtProviderNameNestedAdt"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/linear2"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:text="Trimurti Travel"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10" />
 
-
-                <TextView
-                    android:id="@+id/txtProviderNameNestedAdt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Trimurti Travel"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12" />
-
-                <TextView
-                    android:id="@+id/txtProviderNoNestedAdt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="TRI5068"
-                    android:textAlignment="center"
-                    android:textColor="#2176E3"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintTop_toBottomOf="@+id/txtProviderNameNestedAdt"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linear2"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/txtProviderNoNestedAdt"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintEnd_toStartOf="@+id/linear3"
-                app:layout_constraintStart_toEndOf="@+id/linear1"
-                app:layout_constraintTop_toTopOf="parent">
+                android:text="TRI5068"
+                android:textAlignment="center"
+                android:textColor="#2176E3"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtProviderNameNestedAdt" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <TextView
-                    android:id="@+id/txtModelRegNestedAdt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Model Register"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linear2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toStartOf="@+id/linear3"
+            app:layout_constraintStart_toEndOf="@+id/linear1"
+            app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/txtRegYearNestedAdt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/rating1"
-                    android:text="2017"
-                    android:textSize="@dimen/dp_12"
-                    app:layout_constraintTop_toBottomOf="@+id/txtModelRegNestedAdt"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    />
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linear3"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/txtModelRegNestedAdt"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintEnd_toStartOf="@+id/linear4"
-                app:layout_constraintStart_toEndOf="@+id/linear2"
-                app:layout_constraintTop_toTopOf="parent"
+                android:text="Model Register"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10" />
 
-                >
-
-
-                <TextView
-                    android:id="@+id/txtServRating"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-
-                    android:text="Service Rating"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12" />
-
-                <ImageView
-                    android:id="@+id/imgRating"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="5dp"
-                    android:src="@drawable/rating1"
-                    app:layout_constraintTop_toBottomOf="@+id/txtServRating"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    />
-
-                <TextView
-                    android:id="@+id/txtReviewNestedAdt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:text="Review"
-                    android:textSize="@dimen/dp_12"
-                    app:layout_constraintTop_toBottomOf="@+id/imgRating"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linear4"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/txtRegYearNestedAdt"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/linear3"
-                app:layout_constraintTop_toTopOf="parent">
+                android:src="@drawable/rating1"
+                android:text="2017"
+                android:textSize="@dimen/dp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtModelRegNestedAdt" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/txtPriceNestedAdt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="3100"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linear3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toStartOf="@+id/linear4"
+            app:layout_constraintStart_toEndOf="@+id/linear2"
+            app:layout_constraintTop_toTopOf="parent"
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnBookNestedAdt"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_25"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/rounded_button"
-                    android:text=" Book "
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    app:layout_constraintTop_toBottomOf="@+id/txtPriceNestedAdt"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    />
+            >
 
-                <TextView
-                    android:id="@+id/txtAvailableHourNestedAdt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Avl in 1hr"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintTop_toBottomOf="@+id/btnBookNestedAdt"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/txtServRating"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:text="Service Rating"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10" />
+
+            <ImageView
+                android:id="@+id/imgRating"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/rating1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtServRating" />
+
+            <TextView
+                android:id="@+id/txtReviewNestedAdt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:text="Review"
+                android:textSize="@dimen/dp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgRating" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-   <!-- </androidx.constraintlayout.widget.ConstraintLayout>-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linear4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/linear3"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/txtPriceNestedAdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="3100"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnBookNestedAdt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_25"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rounded_button"
+                android:text="Book"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtPriceNestedAdt" />
+
+            <TextView
+                android:id="@+id/txtAvailableHourNestedAdt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Avl in 1hr"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnBookNestedAdt" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     <View
         android:id="@+id/view"

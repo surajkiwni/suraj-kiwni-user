@@ -91,6 +91,7 @@ public class OffersFragment extends Fragment implements BackKeyPressedListener {
 
         ((MainActivity) requireActivity()).getSupportActionBar().hide();
 
+
         imageBack = view.findViewById(R.id.imageBack);
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -306,6 +306,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
             tripType = radioPersonal.getText().toString();
 
         /* checkbox functionality */
+        chkEmail.setChecked(true);
         chkEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -467,6 +468,12 @@ public class ConfirmBookingActivity extends AppCompatActivity
                     Log.d(TAG, "tripType = " + tripType);
                     Log.d(TAG, "notificationType = " + notificationType);
 
+                    if(chkEmail.isChecked())
+                    {
+                        notificationType = "Email";
+                    }
+
+
                     BookRide(channelReq, "", firstName, customerEmail, partyId,
                             customerName, customerPhone, driverId, driverLicense, driverName,
                             driverPhone, Integer.parseInt(providerId), providerName,
@@ -617,11 +624,12 @@ public class ConfirmBookingActivity extends AppCompatActivity
 
         apiInterface = ApiClient.getClient(AppConstants.BASE_URL).create(ApiInterface.class);
 
+        double estimatedPrice = Math.round(Double.parseDouble(vehicle_price));
         RideReservationReq reservationReq = new RideReservationReq(channel, createdTime,
                 createdUser, customerEmail, customerId, customerName, customerPhone, driverId,
                 driverLicense, driverName, driverPhone, providerId, providerName, reservationTime,
                 ride, scheduleId, serviceType, status, updatedTime, updatedUser, vehicleId,
-                vehicle_no, Double.parseDouble(vehicle_price), notificationType, tripType,
+                vehicle_no, estimatedPrice, notificationType, tripType,
                 companyName, companyEmail, companyPhone);
 
         Log.d(TAG, "req = " + reservationReq);
@@ -665,15 +673,17 @@ public class ConfirmBookingActivity extends AppCompatActivity
                             public void onClick(View view)
                             {
                                 Log.d(TAG, "click");
+                                DisplayReservationRespDialog(reservationRespList);
 
-                                if(reservationRespList.size() != 0)
+                                /*if(reservationRespList.size() != 0)
                                 {
                                     DisplayReservationRespDialog(reservationRespList);
                                 }
                                 else
                                 {
                                     Log.d(TAG, "list size = " + reservationRespList.size());
-                                }
+                                    DisplayReservationRespDialog(reservationRespList);
+                                }*/
                             }
                         });
 
@@ -861,6 +871,8 @@ public class ConfirmBookingActivity extends AppCompatActivity
 
     public void DisplayReservationRespDialog(List<SocketReservationResp> reservationRespList)
     {
+        Log.d(TAG, "list size = " + reservationRespList.size());
+
         dialogThankYou = new Dialog(ConfirmBookingActivity.this, android.R.style.Theme_Light);
         dialogThankYou.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogThankYou.setContentView(R.layout.thank_you_screen);
@@ -868,7 +880,14 @@ public class ConfirmBookingActivity extends AppCompatActivity
         AppCompatButton btnOk = dialogThankYou.findViewById(R.id.btnOk);
         TextView txtKrnNo = dialogThankYou.findViewById(R.id.txtKrnNo);
 
-        txtKrnNo.setText("" + reservationRespList.get(0).getReservationId());
+        if(reservationRespList.size() == 0)
+        {
+            txtKrnNo.setText("");
+        }
+        else
+        {
+            txtKrnNo.setText("" + reservationRespList.get(0).getReservationId());
+        }
 
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -885,33 +904,6 @@ public class ConfirmBookingActivity extends AppCompatActivity
         });
 
         dialogThankYou.show();
-        /*AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ConfirmBookingActivity.this);
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.thank_you_screen, null);
-        dialogBuilder.setView(dialogView);
-        dialogBuilder.setCancelable(false);
-        AlertDialog bThankYou = dialogBuilder.create();
-
-        AppCompatButton btnOk = dialogView.findViewById(R.id.btnOk);
-        TextView txtKrnNo = dialogView.findViewById(R.id.txtKrnNo);
-
-        txtKrnNo.setText("" + reservationRespList.get(0).getReservationId());
-
-        btnOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                dialogPayment.dismiss();
-                bThankYou.dismiss();
-
-                Intent intent = new Intent(ConfirmBookingActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        bThankYou.show();*/
     }
 
     @Override
@@ -951,7 +943,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
     public void onBackPressed() {
         super.onBackPressed();
 
-        startActivity(new Intent(ConfirmBookingActivity.this, BookingDetailsActivity.class));
+        //startActivity(new Intent(ConfirmBookingActivity.this, BookingDetailsActivity.class));
         finish();
     }
 

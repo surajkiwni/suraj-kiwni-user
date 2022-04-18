@@ -880,7 +880,7 @@ public class OneWayFragment extends Fragment implements
                 .title(city)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                (new LatLng(currentLatitude, currentLongitude), 9.0f));
+                (new LatLng(currentLatitude, currentLongitude), 7.0f));
     }
 
     @Override
@@ -1020,7 +1020,7 @@ public class OneWayFragment extends Fragment implements
                     .title(city)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                    (new LatLng(latitude, longitude), 9.0f));
+                    (new LatLng(latitude, longitude), 7.0f));
         }
         else if(isDrop)
         {
@@ -1029,7 +1029,7 @@ public class OneWayFragment extends Fragment implements
                     .title(city)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                    (new LatLng(latitude, longitude), 9.0f));
+                    (new LatLng(latitude, longitude), 7.0f));
         }
         else
         {
@@ -1431,6 +1431,7 @@ public class OneWayFragment extends Fragment implements
                         errorDialog.show();
 
                         linearBtnConfirm.setVisibility(View.GONE);
+                        imageMarker.setVisibility(View.GONE);
                         //mMap.clear();
                         if(dropMarker != null)
                         {
