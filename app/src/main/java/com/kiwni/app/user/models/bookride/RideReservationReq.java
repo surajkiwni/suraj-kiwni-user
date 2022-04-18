@@ -3,7 +3,8 @@ package com.kiwni.app.user.models.bookride;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RideReservationReq {
+public class RideReservationReq
+{
 
     @SerializedName("channel")
     @Expose
@@ -74,6 +75,21 @@ public class RideReservationReq {
     @SerializedName("estimatedPrice")
     @Expose
     private Double estimatedPrice;
+    @SerializedName("notificationType")
+    @Expose
+    private String notificationType;
+    @SerializedName("tripType")
+    @Expose
+    private String tripType;
+    @SerializedName("companyName")
+    @Expose
+    private String companyName;
+    @SerializedName("companyEmail")
+    @Expose
+    private String companyEmail;
+    @SerializedName("companyPhone")
+    @Expose
+    private String companyPhone;
 
     public RideReservationReq(ChannelReq channel, String createdTime, String createdUser,
                               String customerEmail, Integer customerId, String customerName,
@@ -82,7 +98,10 @@ public class RideReservationReq {
                               String providerName, String reservationTime, RideReq ride,
                               Long scheduleId, ServiceTypeReq serviceType, StatusReq status,
                               String updatedTime, String updatedUser, Integer vehicleId,
-                              String vehicleNo, Double estimatedPrice) {
+                              String vehicleNo, Double estimatedPrice, String notificationType,
+                              String tripType, String companyName, String companyEmail,
+                              String companyPhone)
+    {
         this.channel = channel;
         this.createdTime = createdTime;
         this.createdUser = createdUser;
@@ -106,6 +125,11 @@ public class RideReservationReq {
         this.vehicleId = vehicleId;
         this.vehicleNo = vehicleNo;
         this.estimatedPrice = estimatedPrice;
+        this.notificationType = notificationType;
+        this.tripType = tripType;
+        this.companyName = companyName;
+        this.companyEmail = companyEmail;
+        this.companyPhone = companyPhone;
     }
 
     public ChannelReq getChannel() {
@@ -292,6 +316,46 @@ public class RideReservationReq {
         this.estimatedPrice = estimatedPrice;
     }
 
+    public String getNotificationType() {
+        return notificationType;
+    }
+
+    public void setNotificationType(String notificationType) {
+        this.notificationType = notificationType;
+    }
+
+    public String getTripType() {
+        return tripType;
+    }
+
+    public void setTripType(String tripType) {
+        this.tripType = tripType;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getCompanyEmail() {
+        return companyEmail;
+    }
+
+    public void setCompanyEmail(String companyEmail) {
+        this.companyEmail = companyEmail;
+    }
+
+    public String getCompanyPhone() {
+        return companyPhone;
+    }
+
+    public void setCompanyPhone(String companyPhone) {
+        this.companyPhone = companyPhone;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -318,6 +382,11 @@ public class RideReservationReq {
                 ", vehicleId=" + vehicleId +
                 ", vehicleNo='" + vehicleNo + '\'' +
                 ", estimatedPrice=" + estimatedPrice +
+                ", notificationType='" + notificationType + '\'' +
+                ", tripType='" + tripType + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", companyEmail='" + companyEmail + '\'' +
+                ", companyPhone='" + companyPhone + '\'' +
                 '}';
     }
 }
