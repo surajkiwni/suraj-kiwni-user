@@ -36,10 +36,9 @@
         android:layout_marginEnd="@dimen/dp_12"
         android:src="@drawable/call_icon"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
-        app:layout_constraintTop_toTopOf="@+id/toolbar2"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.533"
-        />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar2" />
 
     <TextView
         android:id="@+id/txtTitle"
@@ -84,8 +83,8 @@
                     android:layout_marginTop="@dimen/dp_10"
                     android:orientation="horizontal"
                     android:padding="@dimen/dp_3"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/linearLayout1">
+                    app:layout_constraintBottom_toTopOf="@id/linearLayout1"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:id="@+id/redSpotImage"
@@ -103,15 +102,15 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:gravity="start"
-                        android:layout_marginEnd="@dimen/dp_5"
                         android:layout_marginStart="@dimen/dp_5"
+                        android:layout_marginEnd="@dimen/dp_5"
+                        android:gravity="start"
                         android:paddingBottom="@dimen/dp_5"
                         android:text="Lane No. 3, Link Road, Navi Mumbai, Maharashtra.."
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp_12"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/redSpotImage"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -122,8 +121,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="@dimen/dp_3"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout2">
+                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
                     <ImageView
                         android:id="@+id/greenSpotImage"
@@ -141,15 +140,15 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="5dp"
-                        android:gravity="start"
-                        android:layout_marginEnd="@dimen/dp_5"
                         android:layout_marginStart="@dimen/dp_5"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="@dimen/dp_5"
+                        android:gravity="start"
                         android:text="Spin plaza, Choudhari wasti, Pune, Maharashtra.."
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp_12"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/greenSpotImage"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -346,79 +345,49 @@
                     app:layout_constraintTop_toBottomOf="@id/titleText" />
 
                 <CheckBox
-                    android:id="@+id/checkBox1"
-                    android:layout_width="@dimen/dp_30"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/chkEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_30"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:text="E-Mail"
+                    android:textColor="@color/black"
                     android:theme="@style/RadioButtonPink"
                     app:buttonTint="#FF1414"
-                    app:layout_constraintBottom_toBottomOf="@+id/emailText"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/emailText" />
+                    app:layout_constraintTop_toBottomOf="@id/view" />
 
                 <!-- android:background="@drawable/state_check_uncheck"-->
-                <TextView
-                    android:id="@+id/emailText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="15dp"
-                    android:gravity="center"
-                    android:padding="3dp"
-                    android:text="E-Mail"
-                    android:textColor="#5D5B5B"
-                    app:layout_constraintStart_toEndOf="@+id/checkBox1"
-                    app:layout_constraintTop_toBottomOf="@id/view" />
 
 
                 <CheckBox
-                    android:id="@+id/checkBox2"
-                    android:layout_width="@dimen/dp_30"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/chkPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_30"
                     android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Phone"
+                    android:textColor="@color/black"
                     android:theme="@style/RadioButtonPink"
                     app:buttonTint="#FF1414"
-                    app:layout_constraintBottom_toBottomOf="@+id/phoneText"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/emailText"
-                    app:layout_constraintTop_toTopOf="@id/phoneText" />
-
-                <TextView
-                    android:id="@+id/phoneText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="15dp"
-                    android:gravity="center"
-                    android:padding="3dp"
-                    android:text="Phone"
-                    android:textColor="#5D5B5B"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/checkBox2"
+                    app:layout_constraintStart_toEndOf="@+id/chkEmail"
                     app:layout_constraintTop_toBottomOf="@id/view" />
 
-                <TextView
-                    android:id="@+id/whatsAppText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="15dp"
-                    android:gravity="center"
-                    android:padding="3dp"
-                    android:text="Whatsapp"
-                    android:textColor="#5D5B5B"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/checkBox3"
-                    app:layout_constraintTop_toBottomOf="@id/view" />
 
                 <CheckBox
-                    android:id="@+id/checkBox3"
-                    android:layout_width="@dimen/dp_30"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/chkWhatsApp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_30"
                     android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="WhatsApp"
+                    android:textColor="@color/black"
                     android:theme="@style/RadioButtonPink"
                     app:buttonTint="#FF1414"
-                    app:layout_constraintBottom_toBottomOf="@+id/whatsAppText"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/phoneText"
-                    app:layout_constraintTop_toTopOf="@+id/whatsAppText" />
+                    app:layout_constraintStart_toEndOf="@+id/chkPhone"
+                    app:layout_constraintTop_toBottomOf="@+id/view" />
 
                 <TextView
                     android:id="@+id/personalBusinessText"
@@ -430,30 +399,39 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_16"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
+                    app:layout_constraintTop_toBottomOf="@+id/chkPhone" />
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radioPersonal"
-                    android:layout_width="wrap_content"
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Personal"
-                    android:textSize="@dimen/sp_12"
-                    app:buttonTint="#FF1414"
+                    android:orientation="horizontal"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/personalBusinessText" />
+                    app:layout_constraintTop_toBottomOf="@+id/personalBusinessText">
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radioBusiness"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:text="Business"
-                    android:textSize="@dimen/sp_12"
-                    app:buttonTint="#FF1414"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/radioPersonal"
-                    app:layout_constraintTop_toBottomOf="@+id/personalBusinessText" />
+                    <RadioButton
+                        android:id="@+id/radioPersonal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Personal"
+                        android:onClick="onRadioClick"
+                        android:checked="true"
+                        android:textSize="@dimen/sp_12"
+                        app:buttonTint="#FF1414" />
+
+                    <RadioButton
+                        android:id="@+id/radioBusiness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:text="Business"
+                        android:onClick="onRadioClick"
+                        android:textSize="@dimen/sp_12"
+                        app:buttonTint="#FF1414"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                </RadioGroup>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintBusinessInput"
@@ -465,7 +443,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="@id/personalBusinessText"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/radioBusiness">
+                    app:layout_constraintTop_toBottomOf="@+id/radioGroup">
 
                     <LinearLayout
                         android:id="@+id/linearLayout3"
@@ -488,10 +466,10 @@
                             android:id="@+id/txtCompanyName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text=" Komfrey Technology Pvt Ltd"
-                            android:textColor="#5D5B5B"
                             android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"/>
+                            android:layout_marginEnd="5dp"
+                            android:text=" Komfrey Technology Pvt Ltd"
+                            android:textColor="#5D5B5B" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -515,10 +493,10 @@
                             android:id="@+id/txtCompanyEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text=" Komfrey123@gmail.com"
-                            android:textColor="#5D5B5B"
                             android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"/>
+                            android:layout_marginEnd="5dp"
+                            android:text=" Komfrey123@gmail.com"
+                            android:textColor="#5D5B5B" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -542,9 +520,9 @@
                             android:id="@+id/txtCompanyPhone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text=" 9856784578"
                             android:layout_marginStart="5dp"
                             android:layout_marginEnd="5dp"
+                            android:text=" 9856784578"
                             android:textColor="#5D5B5B" />
                     </LinearLayout>
 

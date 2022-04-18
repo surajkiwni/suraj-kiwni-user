@@ -14,8 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,10 +93,12 @@ import retrofit2.Response;
 
 public class ConfirmBookingActivity extends AppCompatActivity
 {
-    AppCompatRadioButton radioBusiness, radioPersonal;
+    RadioButton radioBusiness, radioPersonal;
     AppCompatButton btnConfirmBooking;
     String TAG = this.getClass().getSimpleName();
     ApiInterface apiInterface;
+    CheckBox chkPhone, chkEmail, chkWhatsApp;
+    RadioGroup radioGroup;
 
     List<ScheduleMapResp> selectedVehicleDataList = new ArrayList<>();
 
@@ -115,7 +121,8 @@ public class ConfirmBookingActivity extends AppCompatActivity
             customerPhone = "", customerEmail = "", idToken = "", driverName = "",
             driverLicense = "", driverPhone = "", firstName = "", lastName = "", providerId = "",
             providerName = "", createdDateForApi = "", vehicle_no = "", vehicle_price = "",
-            refreshToken = "";
+            refreshToken = "", companyName = "", companyEmail = "",
+            companyPhone = "", tripType = "", notificationType = "";
     int partyId = 0, service_type_id = 0, vehicleId = 0, driverId = 0;
     Long scheduleId;
 
@@ -138,6 +145,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_booking);
 
+        radioGroup = findViewById(R.id.radioGroup);
         radioBusiness = findViewById(R.id.radioBusiness);
         radioPersonal = findViewById(R.id.radioPersonal);
         btnConfirmBooking = findViewById(R.id.btnConfirmBooking);
@@ -165,6 +173,9 @@ public class ConfirmBookingActivity extends AppCompatActivity
         txtCompanyEmail = findViewById(R.id.txtCompanyEmail);
         txtCompanyName = findViewById(R.id.txtCompanyName);
         txtCompanyPhone = findViewById(R.id.txtCompanyPhone);
+        chkEmail = findViewById(R.id.chkEmail);
+        chkPhone = findViewById(R.id.chkPhone);
+        chkWhatsApp = findViewById(R.id.chkWhatsApp);
 
         Gson gson = new Gson();
         String stringData = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, "");
@@ -221,14 +232,23 @@ public class ConfirmBookingActivity extends AppCompatActivity
         System.out.println("distanceInKm = " + distanceInKm);
 
         vehicle_price = String.valueOf(selectedVehicleDataList.get(0).getPrice());
+        Log.d(TAG, "vehicle_price = " + vehicle_price);
         vehicle_no = selectedVehicleDataList.get(0).getVehicle().getRegNo();
         scheduleId = selectedVehicleDataList.get(0).getVehicle().getId();
         vehicleId = selectedVehicleDataList.get(0).getVehicleId();
         providerName = selectedVehicleDataList.get(0).getVehicle().getProvider().getName();
 
         driverName = String.valueOf(selectedVehicleDataList.get(0).getDriverName());
+        if(driverName.equals("null"))
+        {
+            driverName = "";
+        }
         driverLicense = "";
         driverPhone = String.valueOf(selectedVehicleDataList.get(0).getDriverMobileNo());
+        if(driverPhone.equals("null"))
+        {
+            driverPhone = "";
+        }
         pickupAddress = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_ADDRESS, "");
         dropAddress = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_ADDRESS, "");
 
@@ -265,66 +285,39 @@ public class ConfirmBookingActivity extends AppCompatActivity
                     .into(imgVehicleImg);
         }
 
-        radioPersonal.setChecked(true);
+        /* default radio button value */
+        if(radioPersonal.isChecked())
+            tripType = radioPersonal.getText().toString();
 
-        radioPersonal.setOnClickListener(new View.OnClickListener() {
+        /* checkbox functionality */
+        chkEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
-                radioBusiness.setChecked(false);
-                constraintBusinessInput.setVisibility(View.GONE);
+                chkEmail.setChecked(true);
+                chkPhone.setChecked(false);
+                chkWhatsApp.setChecked(false);
+                notificationType = "Email";
             }
         });
 
-        radioBusiness.setOnClickListener(new View.OnClickListener() {
+        chkPhone.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                radioPersonal.setChecked(false);
+            public void onClick(View view) {
+                chkPhone.setChecked(true);
+                chkEmail.setChecked(false);
+                chkWhatsApp.setChecked(false);
+                notificationType = "SMS";
+            }
+        });
 
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ConfirmBookingActivity.this);
-                LayoutInflater inflater = getLayoutInflater();
-                View dialogView = inflater.inflate(R.layout.business_view, null);
-                dialogBuilder.setView(dialogView);
-                dialogBuilder.setCancelable(false);
-                AlertDialog b = dialogBuilder.create();
-
-                edtCompanyName = (EditText) dialogView.findViewById(R.id.edtCompanyName);
-                edtCompanyEmail = (EditText) dialogView.findViewById(R.id.edtCompanyEmail);
-                edtCompanyPhoneNo = (EditText) dialogView.findViewById(R.id.edtCompanyPhoneNo);
-                doneButton = (AppCompatButton) dialogView.findViewById(R.id.doneButton);
-
-                doneButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view)
-                    {
-                        setValidation();
-
-                        if(isCompanyNameValid && isCompanyPhoneNoValid && isCompanyEmailValid)
-                        {
-                            bCompanyName = edtCompanyName.getText().toString();
-                            bCompanyEmail = edtCompanyEmail.getText().toString();
-                            bComapnyPhone = edtCompanyPhoneNo.getText().toString();
-
-                            PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.BUSINESS_COMPANY_NAME, bCompanyName);
-                            PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.BUSINESS_COMPANY_EMAIL, bCompanyEmail);
-                            PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.BUSINESS_COMPANY_PHONE, bComapnyPhone);
-
-                            b.dismiss();
-                            constraintBusinessInput.setVisibility(View.VISIBLE);
-
-                            txtCompanyName.setText(bCompanyName);
-                            txtCompanyEmail.setText(bCompanyEmail);
-                            txtCompanyPhone.setText(bComapnyPhone);
-                        }
-                        else
-                        {
-                            Log.d(TAG, "Invalid data.!");
-                        }
-                    }
-                });
-
-                b.show();
+        chkWhatsApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chkWhatsApp.setChecked(true);
+                chkEmail.setChecked(false);
+                chkPhone.setChecked(false);
+                notificationType = "WhatsApp";
             }
         });
 
@@ -442,14 +435,90 @@ public class ConfirmBookingActivity extends AppCompatActivity
                 }
                 else
                 {
-                    BookRide(channelReq, "", firstName, customerEmail, partyId, customerName,
-                            customerPhone, driverId, driverLicense, driverName, driverPhone,
-                            Integer.parseInt(providerId), providerName, createdDateForApi,
-                            rideReq, scheduleId, serviceTypeReq, statusReq, "", "",
-                            vehicleId, idToken);
+                    if(tripType.equals(radioBusiness.getText().toString()))
+                    {
+                        companyName = txtCompanyName.getText().toString();
+                        companyEmail = txtCompanyEmail.getText().toString();
+                        companyPhone = txtCompanyPhone.getText().toString();
+                    }
+                    else
+                    {
+                        companyName = "";
+                        companyPhone = "";
+                        companyEmail = "";
+                    }
+
+                    Log.d(TAG, "tripType = " + tripType);
+                    Log.d(TAG, "notificationType = " + notificationType);
+
+                    BookRide(channelReq, "", firstName, customerEmail, partyId,
+                            customerName, customerPhone, driverId, driverLicense, driverName,
+                            driverPhone, Integer.parseInt(providerId), providerName,
+                            createdDateForApi, rideReq, scheduleId, serviceTypeReq, statusReq,
+                            "", "", vehicleId, tripType, notificationType,
+                            companyEmail, companyPhone, companyName, idToken);
                 }
             }
         });
+    }
+
+    /* radio button functionality*/
+    public void onRadioClick(View view)
+    {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch(view.getId())
+        {
+            case R.id.radioPersonal:
+                if (checked)
+                    tripType = radioPersonal.getText().toString();
+                    constraintBusinessInput.setVisibility(View.GONE);
+                break;
+            case R.id.radioBusiness:
+                if (checked)
+                    tripType = radioBusiness.getText().toString();
+
+                Dialog dialog = new Dialog(ConfirmBookingActivity.this, android.R.style.Theme_Light);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.business_view);
+
+                edtCompanyName = (EditText) dialog.findViewById(R.id.edtCompanyName);
+                edtCompanyEmail = (EditText) dialog.findViewById(R.id.edtCompanyEmail);
+                edtCompanyPhoneNo = (EditText) dialog.findViewById(R.id.edtCompanyPhoneNo);
+                doneButton = (AppCompatButton) dialog.findViewById(R.id.doneButton);
+
+                doneButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        setValidation();
+
+                        if(isCompanyNameValid && isCompanyPhoneNoValid && isCompanyEmailValid)
+                        {
+                            bCompanyName = edtCompanyName.getText().toString();
+                            bCompanyEmail = edtCompanyEmail.getText().toString();
+                            bComapnyPhone = edtCompanyPhoneNo.getText().toString();
+
+                            PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.BUSINESS_COMPANY_NAME, bCompanyName);
+                            PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.BUSINESS_COMPANY_EMAIL, bCompanyEmail);
+                            PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.BUSINESS_COMPANY_PHONE, bComapnyPhone);
+
+                            dialog.dismiss();
+                            constraintBusinessInput.setVisibility(View.VISIBLE);
+
+                            txtCompanyName.setText(bCompanyName);
+                            txtCompanyEmail.setText(bCompanyEmail);
+                            txtCompanyPhone.setText(bComapnyPhone);
+                        }
+                        else
+                        {
+                            Log.d(TAG, "Invalid data.!");
+                        }
+                    }
+                });
+
+                dialog.show();
+                break;
+        }
     }
 
     /* validation for business details */
@@ -525,14 +594,19 @@ public class ConfirmBookingActivity extends AppCompatActivity
                          String driverName, String driverPhone, Integer providerId,
                          String providerName, String reservationTime, RideReq ride,
                          Long scheduleId, ServiceTypeReq serviceType, StatusReq status,
-                         String updatedTime, String updatedUser, Integer vehicleId, String idToken) {
+                         String updatedTime, String updatedUser, Integer vehicleId, String tripType,
+                         String notificationType, String companyName, String companyEmail,
+                         String companyPhone, String idToken)
+    {
 
         apiInterface = ApiClient.getClient(AppConstants.BASE_URL).create(ApiInterface.class);
 
-        RideReservationReq reservationReq = new RideReservationReq(channel, createdTime, createdUser,
-                customerEmail, customerId, customerName, customerPhone, driverId, driverLicense,
-                driverName, driverPhone, providerId, providerName, reservationTime, ride, scheduleId,
-                serviceType, status, updatedTime, updatedUser, vehicleId, vehicle_no, Double.parseDouble(vehicle_price));
+        RideReservationReq reservationReq = new RideReservationReq(channel, createdTime,
+                createdUser, customerEmail, customerId, customerName, customerPhone, driverId,
+                driverLicense, driverName, driverPhone, providerId, providerName, reservationTime,
+                ride, scheduleId, serviceType, status, updatedTime, updatedUser, vehicleId,
+                vehicle_no, Double.parseDouble(vehicle_price), notificationType, tripType,
+                companyName, companyEmail, companyPhone);
 
         Log.d(TAG, "req = " + reservationReq);
 
@@ -588,33 +662,6 @@ public class ConfirmBookingActivity extends AppCompatActivity
                         });
 
                         dialogPayment.show();
-                        /*AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ConfirmBookingActivity.this);
-                        LayoutInflater inflater = getLayoutInflater();
-                        View dialogView = inflater.inflate(R.layout.payment_screen, null);
-                        dialogBuilder.setView(dialogView);
-                        dialogBuilder.setCancelable(false);
-                        bPayment = dialogBuilder.create();
-
-                        AppCompatButton btnPay = dialogView.findViewById(R.id.btnPay);
-
-                        btnPay.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view)
-                            {
-                                Log.d(TAG, "click");
-
-                                if(reservationRespList.size() != 0)
-                                {
-                                    DisplayReservationRespDialog(reservationRespList);
-                                }
-                                else
-                                {
-                                    Log.d(TAG, "list size = " + reservationRespList.size());
-                                }
-                            }
-                        });
-
-                        bPayment.show();*/
                     }
                 }
                 else if(statusCode == 401)
@@ -640,12 +687,20 @@ public class ConfirmBookingActivity extends AppCompatActivity
                                         }
                                         else
                                         {
-                                            BookRide(channelReq, "", firstName, customerEmail,
+                                            BookRide(channelReq, "", firstName, customerEmail, partyId,
+                                                    customerName, customerPhone, driverId, driverLicense, driverName,
+                                                    driverPhone, providerId, providerName,
+                                                    createdDateForApi, rideReq, scheduleId, serviceTypeReq, statusReq,
+                                                    "", "", vehicleId, tripType, notificationType,
+                                                    companyEmail, companyPhone, companyName, refreshToken);
+                                            /*BookRide(channelReq, "", firstName, customerEmail,
                                                     partyId, customerName, customerPhone,
                                                     driverId,driverLicense,driverName,driverPhone,
                                                     providerId, providerName, createdDateForApi, rideReq,
                                                     scheduleId, serviceTypeReq, statusReq,
-                                                    "", "", Integer.valueOf(vehicleId), refreshToken);
+                                                    "", "", vehicleId,
+                                                    tripType, notificationType, customerEmail,
+                                                    customerName, customerPhone, refreshToken);*/
                                         }
                                     }
                                 }
