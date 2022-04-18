@@ -16,7 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.kiwni.app.user.R;
-import com.kiwni.app.user.interfaces.BookingListItemClickListener;
+import com.kiwni.app.user.interfaces.BookBtnClickListener;
+import com.kiwni.app.user.interfaces.ReviewBtnClickListener;
 import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 import com.kiwni.app.user.network.AppConstants;
 
@@ -26,16 +27,18 @@ import java.util.List;
 public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.TitleViewHolder>
 {
     List<ScheduleMapResp> mList = new ArrayList<>();
-    BookingListItemClickListener listener;
+    BookBtnClickListener listener;
+    ReviewBtnClickListener reviewBtnClickListener;
     List<ScheduleMapResp> appendList = new ArrayList<>();
     List<ScheduleMapResp> remainingList = new ArrayList<>();
     Context context;
 
-    public TitleItemAdapter(Context context, List<ScheduleMapResp> mList, List<ScheduleMapResp> remainingList, BookingListItemClickListener listener){
+    public TitleItemAdapter(Context context, List<ScheduleMapResp> mList, List<ScheduleMapResp> remainingList, BookBtnClickListener listener, ReviewBtnClickListener reviewBtnClickListener){
         this.context  = context;
         this.mList  = mList;
         this.listener = listener;
         this.remainingList = remainingList;
+        this.reviewBtnClickListener = reviewBtnClickListener;
     }
 
     @NonNull
@@ -123,7 +126,7 @@ public class TitleItemAdapter extends RecyclerView.Adapter<TitleItemAdapter.Titl
 
         // pass response to the nested recycler view
         // same list pass to the nested adapter
-        NestedAdapter adapter = new NestedAdapter(context, appendList,listener);
+        NestedAdapter adapter = new NestedAdapter(context, appendList,listener, reviewBtnClickListener);
         Log.d("TAG","append list = " + appendList.size());
 
         holder.nestedRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));

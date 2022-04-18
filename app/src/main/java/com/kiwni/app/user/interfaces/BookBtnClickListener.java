@@ -6,7 +6,7 @@ import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 
 import java.util.List;
 
-public interface BookingListItemClickListener {
-        void onItemClick(View v, int position, List<ScheduleMapResp> bookingModels);
+public interface BookBtnClickListener {
+        void onBookBtnClick(View v, int position, List<ScheduleMapResp> bookingModels);
 }
 

@@ -325,11 +325,12 @@
                     android:id="@+id/titleText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="start"
+                    android:paddingStart="@dimen/dp_10"
                     android:padding="@dimen/dp_3"
                     android:text="SEND ME BOOKING CONFIRMATION BY"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/sp_18"
+                    android:textSize="@dimen/sp_16"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -424,11 +425,12 @@
                     android:id="@+id/personalBusinessText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
+                    android:paddingStart="@dimen/dp_10"
                     android:layout_marginTop="7dp"
                     android:text="PERSONAL OR BUSINESS TRIP?"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_16"
+                    android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
 

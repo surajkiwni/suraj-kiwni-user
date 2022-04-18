@@ -32,14 +32,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
+import com.kiwni.app.user.adapter.DialogReviewAdapter;
 import com.kiwni.app.user.adapter.FilterAdapter;
 import com.kiwni.app.user.adapter.GridLayoutWrapper;
 import com.kiwni.app.user.adapter.TitleItemAdapter;
 import com.kiwni.app.user.global.PermissionRequestConstant;
-import com.kiwni.app.user.interfaces.BookingListItemClickListener;
+import com.kiwni.app.user.interfaces.BookBtnClickListener;
 import com.kiwni.app.user.interfaces.FilterItemClickListener;
+import com.kiwni.app.user.interfaces.ReviewBtnClickListener;
 import com.kiwni.app.user.models.Filter;
+import com.kiwni.app.user.models.ReviewResponse;
 import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
@@ -49,7 +53,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class CarListTypeActivity extends AppCompatActivity implements BookingListItemClickListener {
+public class CarListTypeActivity extends AppCompatActivity implements BookBtnClickListener, ReviewBtnClickListener {
 
     RecyclerView recyclerView;
     TitleItemAdapter adapter;
@@ -58,7 +62,6 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
             startDate = "", endDate = "", startTime = "", distanceInKm = "", mobile = "",
             vehicleTypeForDisplay = "", vehicleSeatCapacityForDisplay = "";
 
-    BookingListItemClickListener bookingListItemClickListener;
     ImageView imageBack,imgCallCarLTAct;
     TextView txtTitle, txtFromTo, txtStartEndDate, txtEstimatedKm, txtStartTime, txtVehicleType,
             txtSeatCapacity;
@@ -578,7 +581,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
     public void setParentLayoutData(List<ScheduleMapResp> numberList, List<ScheduleMapResp> remainingList) {
         // pass all data to the title adapter
         //creating new array
-        adapter = new TitleItemAdapter(getApplicationContext(), numberList, remainingList, this);
+        adapter = new TitleItemAdapter(getApplicationContext(), numberList, remainingList, this,this);
         recyclerView.setAdapter(adapter);
         //adapter.notifyDataSetChanged();
     }
@@ -627,7 +630,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
     }
 
     @Override
-    public void onItemClick(View v, int position, List<ScheduleMapResp> scheduleMapRespList)
+    public void onBookBtnClick(View v, int position, List<ScheduleMapResp> scheduleMapRespList)
     {
         //Toast.makeText(getApplicationContext(), "Clicked on = " + position, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "data get on click = " + scheduleMapRespList.get(position));
@@ -646,6 +649,34 @@ public class CarListTypeActivity extends AppCompatActivity implements BookingLis
         //intent.putExtra(SharedPref.SELECTED_VEHICLE_OBJECT, jsonForData);
         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, jsonForData);
         startActivity(intent);
+    }
+
+    @Override
+    public void onReviewBtnClick(View v, int position)
+    {
+        Toast.makeText(this, "Clicked on review", Toast.LENGTH_SHORT).show();
+
+        Dialog dialog = new Dialog(CarListTypeActivity.this, android.R.style.Theme_Light);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_review);
+
+        List<ReviewResponse> reviewResponseList;
+
+        RecyclerView recyclerDigReview = dialog.findViewById(R.id.recyclerDigReview);
+
+        reviewResponseList = new ArrayList<>();
+
+        reviewResponseList.add(new ReviewResponse("Suraj Phadtare","I have booked cab one way from Mumbai to Pune It was great and very much comfortable journey Driver also very helpful.Cab proper clean and they are using all COVID protocols."));
+        reviewResponseList.add(new ReviewResponse("Shubham Shinde","I have booked cab one way from Mumbai to Pune It was great and very much comfortable journey Driver also very helpful.Cab proper clean and they are using all COVID protocols."));
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerDigReview.setLayoutManager(linearLayoutManager);
+
+        DialogReviewAdapter dialogReviewAdapter = new DialogReviewAdapter(CarListTypeActivity.this,reviewResponseList);
+        recyclerDigReview.setAdapter(dialogReviewAdapter);
+
+        dialog.show();
     }
 }
 

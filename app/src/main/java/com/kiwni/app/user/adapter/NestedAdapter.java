@@ -14,7 +14,8 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kiwni.app.user.R;
-import com.kiwni.app.user.interfaces.BookingListItemClickListener;
+import com.kiwni.app.user.interfaces.BookBtnClickListener;
+import com.kiwni.app.user.interfaces.ReviewBtnClickListener;
 import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 
 import java.text.SimpleDateFormat;
@@ -27,13 +28,15 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutView
 
     List<ScheduleMapResp> mList = new ArrayList<>();
     Context context;
-    BookingListItemClickListener listener;
+    BookBtnClickListener listener;
+    ReviewBtnClickListener reviewBtnClickListener;
     String convertedTime = "";
 
-    public NestedAdapter(Context context, List<ScheduleMapResp> mList, BookingListItemClickListener listener) {
+    public NestedAdapter(Context context, List<ScheduleMapResp> mList, BookBtnClickListener listener, ReviewBtnClickListener reviewBtnClickListener) {
         this.context = context;
         this.mList = mList;
         this.listener = listener;
+        this.reviewBtnClickListener = reviewBtnClickListener;
     }
 
     @NonNull
@@ -66,7 +69,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutView
     public class LayoutViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
 
         AppCompatButton btnBookNestedAdt;
-        TextView txtRegYearNestedAdt,txtProviderNoNestedAdt, txtPriceNestedAdt;
+        TextView txtRegYearNestedAdt,txtProviderNoNestedAdt, txtPriceNestedAdt,txtReviewNestedAdt;
 
         public LayoutViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,8 +78,10 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutView
             txtRegYearNestedAdt = itemView.findViewById(R.id.txtRegYearNestedAdt);
             txtProviderNoNestedAdt = itemView.findViewById(R.id.txtProviderNoNestedAdt);
             txtPriceNestedAdt = itemView.findViewById(R.id.txtPriceNestedAdt);
+            txtReviewNestedAdt = itemView.findViewById(R.id.txtReviewNestedAdt);
 
             btnBookNestedAdt.setOnClickListener(this);
+            txtReviewNestedAdt.setOnClickListener(this);
         }
 
         @Override
@@ -84,7 +89,12 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutView
         {
             if (view.getId() == R.id.btnBookNestedAdt)
             {
-                listener.onItemClick(view, getAdapterPosition(), mList);
+                listener.onBookBtnClick(view, getAdapterPosition(), mList);
+            }
+
+            if (view.getId() == R.id.txtReviewNestedAdt)
+            {
+                reviewBtnClickListener.onReviewBtnClick(view, getAdapterPosition());
             }
         }
     }
