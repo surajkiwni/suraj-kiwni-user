@@ -72,7 +72,7 @@ public class ReferEarnFragment extends Fragment implements BackKeyPressedListene
 
     @Override
     public void onBackPressed() {
-       // Navigation.findNavController(root).navigate(R.id.action_nav_refer_to_mainActivity);
+        Navigation.findNavController(root).navigate(R.id.action_nav_refer_to_mainActivity);
 
     }
 }

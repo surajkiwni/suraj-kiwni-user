@@ -203,7 +203,7 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
 
     @Override
     public void onBackPressed() {
-        //Navigation.findNavController(view).navigate(R.id.action_nav_safety_to_mainActivity);
+        Navigation.findNavController(view).navigate(R.id.action_nav_safety_to_mainActivity);
 
     }
 

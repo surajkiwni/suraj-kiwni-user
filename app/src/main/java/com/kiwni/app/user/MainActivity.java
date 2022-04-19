@@ -33,6 +33,14 @@ import com.kiwni.app.user.models.socket.SocketReservationResp;
 import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.socket.SocketSingletonClass;
+import com.kiwni.app.user.ui.FAQs.FaqFragment;
+import com.kiwni.app.user.ui.about.AboutFragment;
+import com.kiwni.app.user.ui.my_rides.MyRidesFragment;
+import com.kiwni.app.user.ui.offers.OffersFragment;
+import com.kiwni.app.user.ui.payment.PaymentFragment;
+import com.kiwni.app.user.ui.refer.ReferEarnFragment;
+import com.kiwni.app.user.ui.safety.SafetyFragment;
+import com.kiwni.app.user.ui.support.SupportFragment;
 import com.kiwni.app.user.utils.PreferencesUtils;
 
 
@@ -42,6 +50,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -267,7 +276,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            //super.onBackPressed();
+        }
+
+
+        if (MyRidesFragment.backKeyPressedListener!= null){
+
+            MyRidesFragment.backKeyPressedListener.onBackPressed();
+        }
+
+        if (PaymentFragment.backKeyPressedListener!= null){
+
+            PaymentFragment.backKeyPressedListener.onBackPressed();
+        }
+
+        if (OffersFragment.backKeyPressedListener!= null){
+
+            OffersFragment.backKeyPressedListener.onBackPressed();
+        }
+        if (SafetyFragment.backKeyPressedListener!= null){
+
+            SafetyFragment.backKeyPressedListener.onBackPressed();
+        }
+        if (FaqFragment.backKeyPressedListener!= null){
+
+            FaqFragment.backKeyPressedListener.onBackPressed();
+        }
+        if (ReferEarnFragment.backKeyPressedListener!= null){
+
+            ReferEarnFragment.backKeyPressedListener.onBackPressed();
+        }
+        if (SupportFragment.backKeyPressedListener!= null){
+
+            SupportFragment.backKeyPressedListener.onBackPressed();
+        }
+        if (AboutFragment.backKeyPressedListener!= null){
+
+            AboutFragment.backKeyPressedListener.onBackPressed();
+        }
     }
 
     @Override

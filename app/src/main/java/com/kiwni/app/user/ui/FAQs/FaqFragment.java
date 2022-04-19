@@ -72,7 +72,7 @@ public class FaqFragment extends Fragment implements BackKeyPressedListener {
 
     @Override
     public void onPause() {
-        //backKeyPressedListener = null;
+        backKeyPressedListener = null;
         super.onPause();
     }
 
@@ -80,6 +80,6 @@ public class FaqFragment extends Fragment implements BackKeyPressedListener {
     public void onResume() {
         super.onResume();
 
-        //backKeyPressedListener = this;
+        backKeyPressedListener = this;
     }
 }

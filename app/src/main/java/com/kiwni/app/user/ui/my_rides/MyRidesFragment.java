@@ -93,10 +93,7 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
 
     }
 
-    @Override
-    public void onBackPressed() {
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-    }
+
 
     public void replaceFragment(Fragment fragment) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -119,7 +116,11 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
     @Override
     public void onResume() {
         super.onResume();
-
         backKeyPressedListener = this;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Navigation.findNavController(requireView()).navigate(R.id.action_nav_myrides_to_mainActivity);
     }
 }
