@@ -92,17 +92,10 @@ public class OtpActivity extends AppCompatActivity
                 if (otp_code.isEmpty())
                 {
                     Toast.makeText(getApplicationContext(), "Please Enter valid code", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (verificationId != null) {
-                        lovelyProgressDialog = new LovelyProgressDialog(OtpActivity.this)
-                                .setIcon(R.drawable.ic_cast_connected_white_36dp)
-                                .setTitle("Loading..")
-                                .setMessage("Please wait...")
-                                .setTopColorRes(R.color.teal_200)
-                                .show();
-
-                        verifyCode(otp_code);
-                    }
+                }
+                else
+                {
+                    verifyCode(otp_code);
                 }
             }
         });
@@ -121,6 +114,14 @@ public class OtpActivity extends AppCompatActivity
         Log.d(TAG, "verificationId = " + verificationId);
         // credentials from our verification id and code.
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+
+        lovelyProgressDialog = new LovelyProgressDialog(OtpActivity.this)
+                .setIcon(R.drawable.ic_cast_connected_white_36dp)
+                .setTitle("Loading..")
+                .setMessage("Please wait...")
+                .setTopColorRes(R.color.teal_200)
+                .show();
+
         // after getting credential we are
         signInWithPhoneAuthCredential(credential);
     }
@@ -131,10 +132,12 @@ public class OtpActivity extends AppCompatActivity
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    public void onComplete(@NonNull Task<AuthResult> task)
+                    {
+                        lovelyProgressDialog.dismiss();
+
                         if (task.isSuccessful())
                         {
-                            lovelyProgressDialog.dismiss();
                             Log.d(TAG, "signInWithCredential:success");
                             //FirebaseUser user = mAuth.getCurrentUser();
                             FirebaseUser user = task.getResult().getUser();

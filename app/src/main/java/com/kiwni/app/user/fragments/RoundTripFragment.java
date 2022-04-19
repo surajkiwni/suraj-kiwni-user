@@ -39,6 +39,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -49,6 +50,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -105,7 +107,7 @@ public class RoundTripFragment extends Fragment implements
     String TAG = this.getClass().getSimpleName();
     ConstraintLayout layoutPickupDatePicker, layoutDropDatePicker;
 
-
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     public double currentLatitude = 0.0, currentLongitude = 0.0;
     GoogleMap mMap;
     Marker pickupMarker, dropMarker;
@@ -120,7 +122,7 @@ public class RoundTripFragment extends Fragment implements
     private GoogleApiClient mGoogleApiClient;
     private LatLng mCenterLatLong, mOrigin, mDestination;
     double pickup_lat = 0.0, pickup_lng = 0.0, drop_lat = 0.0, drop_lng = 0.0;
-    boolean isPickup = false, isDrop = false, isCurrent = false, isDDSelected = false, isLocated = false;
+    boolean isPickup = false, isDrop = false, isCurrent = false, isDDSelected = false, isLocated = false, isCameraMove = false;
     Context mContext;
     AutocompletePrediction item;
     String direction = "", distanceTextFromApi = "", distanceValueFromApi = "",
@@ -433,7 +435,7 @@ public class RoundTripFragment extends Fragment implements
                 isDrop = false;
                 isLocated = false;
 
-                Log.d(TAG, isPickup + " " + isDrop);
+                Log.d("TAG", isPickup + " " + isDrop);
 
                 autoCompleteTextViewPickup.setSelectAllOnFocus(true);
                 autoCompleteTextViewPickup.selectAll();
@@ -459,8 +461,7 @@ public class RoundTripFragment extends Fragment implements
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 if(s.length() > 15)
                 {
                     autoCompleteTextViewPickup.dismissDropDown();
@@ -520,13 +521,13 @@ public class RoundTripFragment extends Fragment implements
             @Override
             public void onClick(View v)
             {
-                //txtMarkerText.setVisibility(View.VISIBLE);
                 imageMarker.setVisibility(View.VISIBLE);
                 linearFooterButtons.setVisibility(View.GONE);
                 linearBtnConfirm.setVisibility(View.VISIBLE);
 
                 if (isPickup)
                 {
+                    isCameraMove = true;
                     hideKeyboardFrom(getActivity(), autoCompleteTextViewPickup);
                 }
                 else
@@ -562,26 +563,21 @@ public class RoundTripFragment extends Fragment implements
                     if(pickupLocationList.size() > 0)
                     {
                         pickupLocationList.set(0, new LatLng(currentLatitude, currentLongitude));
-                        Log.d(TAG, "size update pickup = " + pickupLocationList.size());
+                        Log.d("TAG", "size update pickup = " + pickupLocationList.size());
                     }
                     else
                     {
-                        Log.d(TAG, "pickup size = " + pickupLocationList.size());
+                        Log.d("TAG", "pickup size = " + pickupLocationList.size());
                     }
 
                     AddMarker(pickup_city);
-                    Log.d(TAG, "size 2 = " + pickupLocationList.size());
-
-                    if(pickupLocationList.size() == 1 && dropLocationList.size() == 1)
-                    {
-                        drawRoute();
-                    }
+                    Log.d("TAG", "size 2 = " + pickupLocationList.size());
                 }
 
                 if(!autoCompleteTextViewPickup.getText().toString().equals("")
                         && !autoCompleteTextViewDrop.getText().toString().equals(""))
                 {
-                    Log.d(TAG,"enable find car button");
+                    Log.d("TAG","enable find car button");
                     linearBtnConfirm.setVisibility(View.GONE);
                     btnViewCabRoundTrip.setVisibility(View.VISIBLE);
                 }
@@ -601,82 +597,59 @@ public class RoundTripFragment extends Fragment implements
 
                 if(isPickup)
                 {
-                    //pickup
-                    if(isDDSelected)
-                    {
-                        isDDSelected = false;
-                        linearBtnConfirm.setVisibility(View.GONE);
+                    //not change camera position
+                    imageMarker.setVisibility(View.GONE);
+                    linearBtnConfirm.setVisibility(View.GONE);
 
-                        if(pickupLocationList.size() == 1 && dropLocationList.size() == 1)
-                        {
-                            drawRoute();
-                        }
+                    //set current location
+                    pickupMarker.remove();
+
+                    DrawMarker(pickup_lat, pickup_lng, pickup_city);
+                    Log.d(TAG, "new Latlng = " + pickup_lat + " " + pickup_lng);
+
+                    if(pickupLocationList.size() > 0)
+                    {
+                        pickupLocationList.set(0, new LatLng(pickup_lat,pickup_lng));
+                        Log.d("TAG", "size update pickup = " + pickupLocationList.size());
                     }
                     else
                     {
-                        imageMarker.setVisibility(View.GONE);
-                        linearBtnConfirm.setVisibility(View.GONE);
-
-                        pickupMarker.remove();
-                        DrawMarker(pickup_lat, pickup_lng, pickup_city);
-
-                        if(pickupLocationList.size() > 0)
-                        {
-                            pickupLocationList.set(0, new LatLng(pickup_lat,pickup_lng));
-                            Log.d(TAG, "size update pickup = " + pickupLocationList.size());
-                        }
-                        else
-                        {
-                            Log.d(TAG, "pickup size = " + pickupLocationList.size());
-                        }
-
-                        AddMarker(pickup_city);
-                        Log.d(TAG, "size 2 = " + pickupLocationList.size());
-
-                        if(pickupLocationList.size() == 1 && dropLocationList.size() == 1)
-                        {
-                            drawRoute();
-                        }
+                        Log.d("TAG", "pickup size = " + pickupLocationList.size());
                     }
+
+                    AddMarker(pickup_city);
+                    Log.d("TAG", "size 2 = " + pickupLocationList.size());
                 }
                 else
                 {
                     //drop
-                    if(pickup_city.equals(drop_city))
+                    Log.d(TAG, "city = " + pickup_city + " - " + drop_city);
+                    if(pickup_city == null || drop_city == null)
                     {
                         autoCompleteTextViewDrop.setText("");
-                        Toast.makeText(getActivity(), "Please Select Different City..!", Toast.LENGTH_SHORT).show();
-                        linearBtnConfirm.setVisibility(View.GONE);
-                        //mMap.clear();
-
-                        //txtMarkerText.setVisibility(View.GONE);
                         imageMarker.setVisibility(View.GONE);
-
-                        if(dropMarker != null)
-                        {
-                            dropMarker.remove();
-                            mPolyline.remove();
-                        }
+                        linearBtnConfirm.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), "Please select proper location.!", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
-                        if(drop_lat != 0.0 && drop_lng != 0.0)
+                        if(pickup_city.equals(drop_city))
                         {
-                            Log.d(TAG,"isDDSelected = " + isDDSelected);
-                            if(isDDSelected)
+                            autoCompleteTextViewDrop.setText("");
+                            Toast.makeText(getActivity(), "Please Select Different City..!", Toast.LENGTH_SHORT).show();
+                            linearBtnConfirm.setVisibility(View.GONE);
+                            //mMap.clear();
+
+                            imageMarker.setVisibility(View.GONE);
+                            if(dropMarker != null)
                             {
-                                isDDSelected = false;
-                                linearBtnConfirm.setVisibility(View.GONE);
-
-                                Log.d(TAG,"dropList Size = " + dropLocationList.size());
-                                Log.d(TAG,"pickupList Size = " + pickupLocationList.size());
-
-                                if(pickupLocationList.size() == 1 && dropLocationList.size() == 1)
-                                {
-                                    drawRoute();
-                                }
+                                dropMarker.remove();
+                                mPolyline.remove();
                             }
-                            else
+                        }
+                        else
+                        {
+                            if(drop_lat != 0.0 && drop_lng != 0.0)
                             {
                                 imageMarker.setVisibility(View.GONE);
                                 linearBtnConfirm.setVisibility(View.GONE);
@@ -685,23 +658,18 @@ public class RoundTripFragment extends Fragment implements
                                 {
                                     DrawMarker(drop_lat, drop_lng, drop_city);
                                     dropLocationList.add(new LatLng(drop_lat, drop_lng));
-                                    Log.d(TAG, "size default = " + dropLocationList.size());
+                                    Log.d("TAG", "size default = " + dropLocationList.size());
                                 }
                                 else
                                 {
                                     dropMarker.remove();
                                     DrawMarker(drop_lat, drop_lng, drop_city);
                                     dropLocationList.set(0, new LatLng(drop_lat,drop_lng));
-                                    Log.d(TAG, "size update drop = " + dropLocationList.size());
+                                    Log.d("TAG", "size update drop = " + dropLocationList.size());
                                 }
 
                                 AddMarker(drop_city);
-                                Log.d(TAG,"size 2 = " + dropLocationList.size());
-
-                                if(pickupLocationList.size() == 1 && dropLocationList.size() == 1)
-                                {
-                                    drawRoute();
-                                }
+                                Log.d("TAG","size 2 = " + dropLocationList.size());
                             }
                         }
                     }
@@ -710,7 +678,7 @@ public class RoundTripFragment extends Fragment implements
                 if(!autoCompleteTextViewPickup.getText().toString().equals("")
                         && !autoCompleteTextViewDrop.getText().toString().equals(""))
                 {
-                    Log.d(TAG,"enable find car button");
+                    Log.d("TAG","enable find car button");
                     linearBtnConfirm.setVisibility(View.GONE);
                     linearFooterButtons.setVisibility(View.GONE);
                     btnViewCabRoundTrip.setVisibility(View.VISIBLE);
@@ -836,6 +804,14 @@ public class RoundTripFragment extends Fragment implements
                         {
                             e.printStackTrace();
                         }
+                        /*if(!distanceValueFromApi.equals("") || !distanceValueFromApi.equals(null))
+                        {
+
+                        }
+                        else
+                        {
+                            Toast.makeText(getActivity(), "Please Wait ...", Toast.LENGTH_SHORT).show();
+                        }*/
                     }
                 }
             }
@@ -860,7 +836,7 @@ public class RoundTripFragment extends Fragment implements
                 List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS
                         , Place.Field.LAT_LNG);
 
-                Log.d(TAG, "places id with list = " + placeID + ", " + placeFields.toString());
+                Log.d("TAG", "places id with list = " + placeID + ", " + placeFields.toString());
 
                 FetchPlaceRequest request = null;
                 if (placeID != null) {
@@ -876,7 +852,7 @@ public class RoundTripFragment extends Fragment implements
                         {
                             FetchPlaceResponse places = task.getResult();
                             final Place place = places.getPlace();
-                            Log.d(TAG, "places = " + place.getAddress());
+                            Log.d("TAG", "places = " + place.getAddress());
 
                             if(isPickup)
                             {
@@ -905,10 +881,10 @@ public class RoundTripFragment extends Fragment implements
                             if(!autoCompleteTextViewPickup.getText().toString().equals("")
                                     && !autoCompleteTextViewDrop.getText().toString().equals(""))
                             {
-                                Log.d(TAG,"enable view cabs button");
-                                linearBtnConfirm.setVisibility(View.VISIBLE);
+                                Log.d("TAG","enable find car button");
+                                linearBtnConfirm.setVisibility(View.GONE);
                                 linearFooterButtons.setVisibility(View.GONE);
-                                btnViewCabRoundTrip.setVisibility(View.GONE);
+                                btnViewCabRoundTrip.setVisibility(View.VISIBLE);
                             }
                             else
                             {
@@ -931,28 +907,9 @@ public class RoundTripFragment extends Fragment implements
     };
 
     @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        Log.d(TAG, "OnMapReady");
-        if (mMap != null) {
-            mMap.clear();
-            autoCompleteTextViewDrop.setText("");
-        }
-        mMap = googleMap;
-
-        pickupMarker = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(currentLatitude, currentLongitude))
-                .title(city)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                (new LatLng(currentLatitude, currentLongitude), 9.0f));
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        if (ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+    public void onConnected(@Nullable Bundle bundle)
+    {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -964,8 +921,8 @@ public class RoundTripFragment extends Fragment implements
         }
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
-        if (mLastLocation != null) {
-            //changeMap(mLastLocation);
+        /*if (mLastLocation != null) {
+            changeMap(mLastLocation);
             Log.d(TAG, "ON connected");
 
         } else
@@ -986,7 +943,7 @@ public class RoundTripFragment extends Fragment implements
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
@@ -1001,25 +958,36 @@ public class RoundTripFragment extends Fragment implements
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-        try
-        {
+    public void onLocationChanged(@NonNull Location location)
+    {
+       /* try {
             if (location != null)
-                //changeMap(location);
-                LocationServices.FusedLocationApi.removeLocationUpdates(
-                        mGoogleApiClient, this);
+                changeMap(location);
+            LocationServices.FusedLocationApi.removeLocationUpdates(
+                    mGoogleApiClient, this);
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap)
+    {
+        Log.d(TAG, "OnMapReady");
+        if(mMap != null)
+        {
+            mMap.clear();
+            autoCompleteTextViewDrop.setText("");
+        }
+        mMap = googleMap;
+
+        pickupMarker = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(currentLatitude, currentLongitude))
+                .title(city)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                (new LatLng(currentLatitude, currentLongitude), 10.0f));
     }
 
     public void CameraChange()
@@ -1033,6 +1001,8 @@ public class RoundTripFragment extends Fragment implements
                 {
                     Log.d("Camera position change " + "", cameraPosition + "");
                     mCenterLatLong = cameraPosition.target;
+
+                    isCameraMove = false;
 
                     try
                     {
@@ -1075,6 +1045,162 @@ public class RoundTripFragment extends Fragment implements
         });
     }
 
+    private boolean checkPlayServices()
+    {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, getActivity(),
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                //finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    protected synchronized void buildGoogleApiClient()
+    {
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    public void getAddressFromCurrentLocation(Double latitude, Double longitude)
+    {
+        Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            address = addresses.get(0).getAddressLine(0);
+            city = addresses.get(0).getLocality();
+
+            Log.d("TAG", "address : " + address);
+            Log.d("TAG", "city : " + city);
+
+            if(isPickup)
+            {
+                //pickup
+                pickup_city = city;
+
+                if(isDDSelected)
+                {
+                    //autoCompleteTextViewPickup.setText(pickup_address);
+                    isDDSelected = false;
+                    isLocated = true;
+                    autoCompleteTextViewPickup.setSelection(autoCompleteTextViewPickup.getText().length());
+                    hideKeyboardFrom(getActivity(), autoCompleteTextViewPickup);
+
+                    //pickup
+                    imageMarker.setVisibility(View.GONE);
+                    linearBtnConfirm.setVisibility(View.GONE);
+
+                    pickupMarker.remove();
+                    DrawMarker(pickup_lat, pickup_lng, pickup_city);
+
+                    if(pickupLocationList.size() > 0)
+                    {
+                        pickupLocationList.set(0, new LatLng(pickup_lat,pickup_lng));
+                        Log.d("TAG", "size update pickup = " + pickupLocationList.size());
+                    }
+                    else
+                    {
+                        Log.d("TAG", "pickup size = " + pickupLocationList.size());
+                    }
+
+                    AddMarker(pickup_city);
+                    Log.d("TAG", "size 2 = " + pickupLocationList.size());
+                }
+                else
+                {
+                    pickup_address = address;
+                    autoCompleteTextViewPickup.setText(pickup_address);
+                    autoCompleteTextViewPickup.setSelection(autoCompleteTextViewPickup.getText().length());
+                    hideKeyboardFrom(getActivity(), autoCompleteTextViewPickup);
+                }
+            }
+            else if(isDrop)
+            {
+                //drop
+                drop_city = city;
+
+                if(isDDSelected)
+                {
+                    //autoCompleteTextViewDrop.setText(drop_address);
+                    isDDSelected = false;
+                    isLocated = true;
+                    autoCompleteTextViewDrop.setSelection(autoCompleteTextViewDrop.getText().length());
+                    hideKeyboardFrom(getActivity(), autoCompleteTextViewDrop);
+
+                    //drop
+                    if(pickup_city.equals(drop_city))
+                    {
+                        autoCompleteTextViewDrop.setText("");
+                        Toast.makeText(getActivity(), "Please Select Different City..!", Toast.LENGTH_SHORT).show();
+                        linearBtnConfirm.setVisibility(View.GONE);
+                        //mMap.clear();
+                        if(dropMarker != null)
+                        {
+                            dropMarker.remove();
+                            mPolyline.remove();
+                        }
+                    }
+                    else
+                    {
+                        if(drop_lat != 0.0 && drop_lng != 0.0)
+                        {
+                            imageMarker.setVisibility(View.GONE);
+                            linearBtnConfirm.setVisibility(View.GONE);
+
+                            if(dropLocationList.size() == 0)
+                            {
+                                DrawMarker(drop_lat, drop_lng, drop_city);
+                                dropLocationList.add(new LatLng(drop_lat, drop_lng));
+                                Log.d("TAG", "size default = " + dropLocationList.size());
+                            }
+                            else
+                            {
+                                dropMarker.remove();
+                                DrawMarker(drop_lat, drop_lng, drop_city);
+                                dropLocationList.set(0, new LatLng(drop_lat,drop_lng));
+                                Log.d("TAG", "size update drop = " + dropLocationList.size());
+                            }
+
+                            AddMarker(drop_city);
+                            Log.d("TAG","size 2 = " + dropLocationList.size());
+                        }
+                    }
+                }
+                else
+                {
+                    autoCompleteTextViewDrop.setText(address);
+
+                    autoCompleteTextViewDrop.setSelection(autoCompleteTextViewDrop.getText().length());
+                    hideKeyboardFrom(getActivity(), autoCompleteTextViewDrop);
+                }
+            }
+            else
+            {
+                //current
+                autoCompleteTextViewPickup.setText(address);
+                pickup_city = city;
+
+                /*//pickupMarker.remove();
+                DrawMarker(currentLatitude, currentLongitude, pickup_city);
+                //add marker
+                pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
+                AddMarker(pickup_city);
+                Log.d("TAG", "size 0 = " + pickupLocationList.size());*/
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void DrawMarker(Double latitude, Double longitude, String city)
     {
         if(isPickup)
@@ -1084,7 +1210,7 @@ public class RoundTripFragment extends Fragment implements
                     .title(city)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                    (new LatLng(latitude, longitude), 9.0f));
+                    (new LatLng(latitude, longitude), 10.0f));
         }
         else if(isDrop)
         {
@@ -1093,7 +1219,7 @@ public class RoundTripFragment extends Fragment implements
                     .title(city)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                    (new LatLng(latitude, longitude), 9.0f));
+                    (new LatLng(latitude, longitude), 10.0f));
         }
         else
         {
@@ -1102,7 +1228,7 @@ public class RoundTripFragment extends Fragment implements
                     .title(city)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                    (new LatLng(latitude, longitude), 10.0f));*/
+                    (new LatLng(latitude, longitude), 8.0f));*/
         }
     }
 
@@ -1115,7 +1241,6 @@ public class RoundTripFragment extends Fragment implements
         }
         else
         {
-            mOrigin = null;
             Log.d(TAG, "size of add marker 1 = " + pickupLocationList.size());
         }
 
@@ -1126,48 +1251,65 @@ public class RoundTripFragment extends Fragment implements
         }
         else
         {
-            mDestination = null;
-            Log.d(TAG, "size of add marker 1 = " + pickupLocationList.size());
-            Log.d(TAG, "size of add marker 2 = " + dropLocationList.size());
+            Log.d("TAG", "size of add marker 1 = " + pickupLocationList.size());
+        }
+
+        if(pickupLocationList.size() == 1 && dropLocationList.size() == 1)
+        {
+            Log.d("TAG", "size of add marker 1 = " + pickupLocationList.size());
+            Log.d("TAG", "size of add marker 2 = " + dropLocationList.size());
+
+            drawRoute(title);
         }
     }
 
-    public void drawRoute()
+    private void drawRoute(String title)
     {
-        Log.d(TAG, "mOrigin = " + mOrigin);
-        Log.d(TAG, "mDestination = " + mDestination);
+        Log.d("TAG", "mOrigin = " + mOrigin);
+        Log.d("TAG", "mDestination = " + mDestination);
+
+        //Draw marker again with new latlng
+        /*mMap.addMarker(new MarkerOptions()
+                .position(mOrigin)
+                .title(title)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mOrigin, 8.0f));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(mDestination)
+                .title(title)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mDestination, 8.0f));*/
 
         /*Getting URL to the Google Directions API*/
         String directionUrl = getDirectionsUrl(mOrigin, mDestination);
-        Log.d(TAG, "directionUrl = " + directionUrl);
+        Log.d("TAG", "directionUrl = " + directionUrl);
 
         DownloadDirectionTask downloadTask = new DownloadDirectionTask();
         // Start downloading json data from Google Directions API
         downloadTask.execute(directionUrl);
     }
 
-    private String getDirectionsUrl(LatLng origin, LatLng dest)
-    {
+    private String getDirectionsUrl(LatLng origin, LatLng dest) {
         // Origin of route
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-        Log.d(TAG, "str_origin = " + str_origin);
+        Log.d("TAG", "str_origin = " + str_origin);
         //String str_origin = "origin=18.5204,73.8567";
         // Destination of route
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-        Log.d(TAG, "str_dest = " + str_dest);
+        Log.d("TAG", "str_dest = " + str_dest);
         //String str_dest = "destination=19.0760,72.8777";
-        String mode = "driving";
         // Key
         //String key = "key=" + getString(R.string.google_maps_key);
         String key = "key=" + ApiInterface.GOOGLE_MAP_API_KEY;
-        Log.d(TAG, "api key = " + key);
+        Log.d("TAG", "api key = " + key);
         // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + mode + "&" + key;
+        String parameters = str_origin + "&" + str_dest + "&" + key;
         // Output format
         String output = "json";
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
-        Log.d(TAG, "url = " + url);
+        Log.d("TAG", "url = " + url);
 
         return url;
     }
@@ -1316,6 +1458,12 @@ public class RoundTripFragment extends Fragment implements
 
             /*get distance from distance matrix api google map*/
             GetDistance(mOrigin, mDestination);
+
+            /* zoom */
+            List<LatLng> latLngList = new ArrayList<>();
+            latLngList.add(mOrigin);
+            latLngList.add(mDestination);
+            zoomRoute(mMap, latLngList);
         }
     }
 
@@ -1408,147 +1556,6 @@ public class RoundTripFragment extends Fragment implements
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        }
-    }
-
-    public void getAddressFromCurrentLocation(Double latitude, Double longitude)
-    {
-        Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-        List<Address> addresses = null;
-        try {
-            addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            address = addresses.get(0).getAddressLine(0);
-            city = addresses.get(0).getLocality();
-
-            Log.d(TAG, "address : " + address);
-            Log.d(TAG, "city : " + city);
-
-            if(isPickup)
-            {
-                //pickup
-                pickup_city = city;
-
-                if(isDDSelected)
-                {
-                    isDDSelected = true;
-                    isLocated = true;
-                    autoCompleteTextViewPickup.setSelection(autoCompleteTextViewPickup.getText().length());
-                    hideKeyboardFrom(getActivity(), autoCompleteTextViewPickup);
-
-                    //pickup
-                    //txtMarkerText.setVisibility(View.GONE);
-                    imageMarker.setVisibility(View.GONE);
-                    linearBtnConfirm.setVisibility(View.GONE);
-
-                    pickupMarker.remove();
-                    DrawMarker(pickup_lat, pickup_lng, pickup_city);
-
-                    if(pickupLocationList.size() > 0)
-                    {
-                        pickupLocationList.set(0, new LatLng(pickup_lat,pickup_lng));
-                        Log.d(TAG, "size update pickup = " + pickupLocationList.size());
-
-                        if(mPolyline != null)
-                        {
-                            mPolyline.remove();
-                        }
-                    }
-                    else
-                    {
-                        Log.d(TAG, "pickup size = " + pickupLocationList.size());
-                    }
-
-                    AddMarker(pickup_city);
-                    Log.d(TAG, "size 2 = " + pickupLocationList.size());
-                }
-                else
-                {
-                    pickup_address = address;
-                    autoCompleteTextViewPickup.setText(pickup_address);
-                    autoCompleteTextViewPickup.setSelection(autoCompleteTextViewPickup.getText().length());
-                    hideKeyboardFrom(getActivity(), autoCompleteTextViewPickup);
-                }
-            }
-            else if(isDrop)
-            {
-                //drop
-                drop_city = city;
-
-                if(isDDSelected)
-                {
-                    //autoCompleteTextViewDrop.setText(drop_address);
-                    isDDSelected = true;
-                    isLocated = true;
-                    autoCompleteTextViewDrop.setSelection(autoCompleteTextViewDrop.getText().length());
-                    hideKeyboardFrom(getActivity(), autoCompleteTextViewDrop);
-
-                    //drop
-                    if(pickup_city.equals(drop_city))
-                    {
-                        autoCompleteTextViewDrop.setText("");
-                        //Toast.makeText(getActivity(), "Please Select Different City..!", Toast.LENGTH_SHORT).show();
-
-                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Please Select Different City..!");
-                        errorDialog.show();
-
-                        linearBtnConfirm.setVisibility(View.GONE);
-                        imageMarker.setVisibility(View.GONE);
-                        //mMap.clear();
-                        if(dropMarker != null)
-                        {
-                            dropMarker.remove();
-                            mPolyline.remove();
-                        }
-                    }
-                    else
-                    {
-                        if(drop_lat != 0.0 && drop_lng != 0.0)
-                        {
-                            //txtMarkerText.setVisibility(View.GONE);
-                            imageMarker.setVisibility(View.GONE);
-                            linearBtnConfirm.setVisibility(View.GONE);
-
-                            if(dropLocationList.size() == 0)
-                            {
-                                DrawMarker(drop_lat, drop_lng, drop_city);
-                                dropLocationList.add(new LatLng(drop_lat, drop_lng));
-                                Log.d(TAG, "size default = " + dropLocationList.size());
-                            }
-                            else
-                            {
-                                dropMarker.remove();
-                                DrawMarker(drop_lat, drop_lng, drop_city);
-                                dropLocationList.set(0, new LatLng(drop_lat,drop_lng));
-                                Log.d(TAG, "size update drop = " + dropLocationList.size());
-
-                                if(mPolyline != null)
-                                {
-                                    mPolyline.remove();
-                                }
-                            }
-
-                            AddMarker(drop_city);
-                            Log.d(TAG,"size 2 = " + dropLocationList.size());
-                        }
-                    }
-                }
-                else
-                {
-                    autoCompleteTextViewDrop.setText(address);
-
-                    autoCompleteTextViewDrop.setSelection(autoCompleteTextViewDrop.getText().length());
-                    hideKeyboardFrom(getActivity(), autoCompleteTextViewDrop);
-                }
-            }
-            else
-            {
-                //current
-                pickup_city = city;
-                autoCompleteTextViewPickup.setText(address);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -1818,6 +1825,27 @@ public class RoundTripFragment extends Fragment implements
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Zooms a Route (given a List of LalLng) at the greatest possible zoom level.
+     *
+     * @param googleMap: instance of GoogleMap
+     * @param lstLatLngRoute: list of LatLng forming Route
+     */
+    public void zoomRoute(GoogleMap googleMap, List<LatLng> lstLatLngRoute) {
+
+        if (googleMap == null || lstLatLngRoute == null || lstLatLngRoute.isEmpty()) return;
+
+        LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
+        for (LatLng latLngPoint : lstLatLngRoute)
+            boundsBuilder.include(latLngPoint);
+
+        int routePadding = 200;
+        LatLngBounds latLngBounds = boundsBuilder.build();
+        int left, right,bottom, top;
+        //googleMap.setPadding(left = 10, top = 30, right = 10, bottom = 10);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, routePadding));
     }
 
     public static void hideKeyboardFrom(Context context, View view)

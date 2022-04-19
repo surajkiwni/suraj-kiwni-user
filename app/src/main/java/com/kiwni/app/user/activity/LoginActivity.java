@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity
                     @Override
                     public void onVerificationFailed(@NonNull FirebaseException e) {
                         lovelyProgressDialog.dismiss();
-                        //Toast.makeText(LoginActivity.this,"verification fialed",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,"verification failed.!",Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -162,7 +162,7 @@ public class LoginActivity extends AppCompatActivity
                         if(!s.equals(null))
                         {
                             Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             intent.putExtra("verificationId",verificationId);
                             intent.putExtra("mobile",mobile);
                             startActivity(intent);

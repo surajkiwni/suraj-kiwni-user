@@ -307,6 +307,8 @@ public class ConfirmBookingActivity extends AppCompatActivity
 
         /* checkbox functionality */
         chkEmail.setChecked(true);
+        notificationType = "Email";
+
         chkEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -467,11 +469,6 @@ public class ConfirmBookingActivity extends AppCompatActivity
 
                     Log.d(TAG, "tripType = " + tripType);
                     Log.d(TAG, "notificationType = " + notificationType);
-
-                    if(chkEmail.isChecked())
-                    {
-                        notificationType = "Email";
-                    }
 
 
                     BookRide(channelReq, "", firstName, customerEmail, partyId,
@@ -882,7 +879,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
 
         if(reservationRespList.size() == 0)
         {
-            txtKrnNo.setText("");
+            txtKrnNo.setText("1234");
         }
         else
         {
@@ -893,11 +890,12 @@ public class ConfirmBookingActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
+                Intent intent = new Intent(ConfirmBookingActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                 dialogPayment.dismiss();
                 dialogThankYou.dismiss();
 
-                Intent intent = new Intent(ConfirmBookingActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
             }

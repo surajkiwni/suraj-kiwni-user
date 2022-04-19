@@ -33,6 +33,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -702,6 +703,12 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
             } else
                 Toast.makeText(getApplicationContext(), "No route is found", Toast.LENGTH_LONG).show();
+
+            /* zoom */
+            List<LatLng> latLngList = new ArrayList<>();
+            latLngList.add(new LatLng(pickup_latitude, pickup_longitude));
+            latLngList.add(new LatLng(drop_latitude, drop_longitude));
+            zoomRoute(mMap, latLngList);
         }
     }
 
@@ -805,6 +812,27 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
             return o1.getVehicle().getModel().compareTo(o2.getVehicle().getModel());
         }
     };
+
+    /**
+     * Zooms a Route (given a List of LalLng) at the greatest possible zoom level.
+     *
+     * @param googleMap: instance of GoogleMap
+     * @param lstLatLngRoute: list of LatLng forming Route
+     */
+    public void zoomRoute(GoogleMap googleMap, List<LatLng> lstLatLngRoute) {
+
+        if (googleMap == null || lstLatLngRoute == null || lstLatLngRoute.isEmpty()) return;
+
+        LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
+        for (LatLng latLngPoint : lstLatLngRoute)
+            boundsBuilder.include(latLngPoint);
+
+        int routePadding = 200;
+        LatLngBounds latLngBounds = boundsBuilder.build();
+        int left, right,bottom, top;
+        //googleMap.setPadding(left = 10, top = 30, right = 10, bottom = 10);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, routePadding));
+    }
 
     @Override
     protected void onResume() {
