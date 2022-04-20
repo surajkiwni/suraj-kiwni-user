@@ -674,32 +674,30 @@ public class OneWayFragment extends Fragment implements
                     }
                     else
                     {
-                        try
+                        if(distanceValueFromApi.equals("") || distanceValueFromApi.equals(null))
                         {
-                            Date currentDate = inputFormat.parse(curr_converted_date);
-                            Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
+                            ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Please Wait..!");
+                            errorDialog.show();
+                        }
+                        else
+                        {
+                            try
+                            {
+                                Date currentDate = inputFormat.parse(curr_converted_date);
+                                Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
 
-                            if (currentDate.compareTo(pickerDate) == 0 && pickup_spinner_time.getSelectedItem().toString() == "select time")
-                            {
-                                //Toast.makeText(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.", Toast.LENGTH_SHORT).show();
-                                ErrorDialog errorDialog = new ErrorDialog(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.");
-                                errorDialog.show();
-                            }
-                            else
-                            {
-                                if(!distanceValueFromApi.equals("") || !distanceValueFromApi.equals(null))
+                                if (currentDate.compareTo(pickerDate) == 0 && pickup_spinner_time.getSelectedItem().toString() == "select time")
+                                {
+                                    //Toast.makeText(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.", Toast.LENGTH_SHORT).show();
+                                    ErrorDialog errorDialog = new ErrorDialog(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.");
+                                    errorDialog.show();
+                                }
+                                else
                                 {
                                     concatDateTime = strDate + " " + pickup_spinner_time.getSelectedItem().toString();
                                     Log.d(TAG,"concatDateTime = " + concatDateTime);
 
                                     getCurrentDateToSendApiInFormat(concatDateTime);
-                                    //Log.d(TAG, "distanceValueFromApi = " + distanceValueFromApi);
-                                    int distanceConvert = Integer.parseInt(distanceValueFromApi) / 1000;
-                                    //Log.d(TAG, "distanceConvert = " + distanceConvert);
-                                    distanceValueFromApi = String.valueOf(distanceConvert);
-                                    Log.d(TAG, "distanceValueFromApi = " + distanceValueFromApi.trim());
-                                    convertedDistance = Double.valueOf(distanceValueFromApi.trim());
-                                    Log.d(TAG, "convertedDistance = " + convertedDistance);
 
                                     //change date format and send to next screen
                                     getStartDateInFormat(concatDateTime);
@@ -713,7 +711,7 @@ public class OneWayFragment extends Fragment implements
                                     Log.d(TAG, "mDestination = " + mDestination);
 
                                     Intent i = new Intent(getActivity(), FindCarActivity.class);
-
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     //send data to next screen
                                     PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_CITY, pickup_city);
                                     PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_CITY, drop_city);
@@ -736,15 +734,11 @@ public class OneWayFragment extends Fragment implements
                                     startActivity(i);
                                     //getActivity().finish();
                                 }
-                                else
-                                {
-                                    Toast.makeText(getActivity(), "Please Wait ...", Toast.LENGTH_SHORT).show();
-                                }
                             }
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -1482,9 +1476,11 @@ public class OneWayFragment extends Fragment implements
                                 + ", durationTextFromApi = " + durationTextFromApi
                                 + ", durationInTrafficFromApi = " + durationInTrafficFromApi);
 
-                        /*//Calculate droptime from startdate and duration
-                        Log.d(TAG, "date with duration = " + concatDateTime + "\n " + durationInTrafficFromApi);
-                        CalculateDropTime(concatDateTime, durationInTrafficFromApi);*/
+                        /* calculate distance */
+                        distanceValueFromApi = String.valueOf(Double.parseDouble(distanceValueFromApi) / 1000);
+                        Log.d(TAG, "distanceValueFromApi = " + distanceValueFromApi);
+                        convertedDistance = Double.valueOf(distanceValueFromApi.trim());
+                        Log.d(TAG, "convertedDistance = " + convertedDistance);
                     }
                 }
             } catch (Exception ex) {
