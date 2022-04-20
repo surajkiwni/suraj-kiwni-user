@@ -173,13 +173,13 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         Log.d(TAG,"fromLocation = " + pickup_city
                 + " endLocation = " + drop_city);
         Log.d(TAG,"endDate = " + endDate
-                + " direction = " + direction);
+                + " convertedDistance = " + convertedDistance);
 
         /* set data to ui */
         txtFromTo.setText(pickup_city + " To " + drop_city);
         txtStartTime.setText(startTime);
         txtStartEndDate.setText(startDate);
-        txtEstimatedKm.setText("Est km " + distanceInKm);
+        txtEstimatedKm.setText("Est km " + Math.round(Double.parseDouble(distanceInKm)));
 
         switch (serviceType)
         {
@@ -240,7 +240,8 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 finish();
             }
         });
