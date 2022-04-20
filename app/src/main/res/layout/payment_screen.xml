@@ -7,18 +7,20 @@
     android:layout_marginHorizontal="@dimen/dp_10"
     android:layout_marginTop="@dimen/dp_10"
     android:layout_gravity="center"
-    android:background="@drawable/constraint_layout_border">
+    >
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/constraint_layout_border">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

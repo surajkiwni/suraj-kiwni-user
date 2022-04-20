@@ -431,6 +431,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mSocket.emit("join", obj);
             Log.d("join", obj.toString());
 
+            ListenReservationMessage();
+
             ListenDriverDataMessage();
         }
         catch (Exception ex)
@@ -463,6 +465,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     };
 
+    private final Emitter.Listener onNewMessage = new Emitter.Listener()
+    {
+        @Override
+        public void call(final Object... args)
+        {
+            runOnUiThread(new Runnable() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void run() {
+                    Log.d(TAG, "in new msg");
+                    Log.d(TAG, "data in new msg = " + Arrays.toString(args));
+
+                    if (args.length == 0)
+                    {
+                        //Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        try {
+                            JSONObject jsonObject = (JSONObject) args[0];
+
+                            Gson gson = new Gson();
+                            reservationResp = gson.fromJson(jsonObject.toString(), SocketReservationResp.class);
+
+                            Log.d(TAG, "reservationResp = " + reservationResp.toString());
+                            Log.d(TAG, "reservationResp id = " + reservationResp.getId());
+
+                            reservationRespList.clear();
+                            reservationRespList.add(reservationResp);
+                            Log.d(TAG, "reservationRespList in new msg = " + reservationRespList.size());
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
+    };
+
     private final Emitter.Listener onUpdatedMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -470,8 +512,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void run() {
-                    Log.d("MainActivity ", "in updated msg");
-                    Log.d("MainActivity ", "data = " + Arrays.toString(args));
+                    Log.d(TAG, "in updated msg");
+                    Log.d(TAG, "data = " + Arrays.toString(args));
 
                     driver_data_updated = true;
 
@@ -492,7 +534,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                             reservationRespList.clear();
                             reservationRespList.add(reservationResp);
-                            Log.d(TAG, "reservationRespList = " + reservationRespList.size());
+                            Log.d(TAG, "reservationRespList in update msg = " + reservationRespList.size());
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -506,6 +548,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void ListenDriverDataMessage()
     {
         mSocket.on(AppConstants.WEBSOCKET_DRIVER_DATA_EVENT, onUpdatedMessage);
+    }
+
+    public void ListenReservationMessage()
+    {
+        mSocket.on(AppConstants.WEBSOCKET_RESERVATION_EVENT, onNewMessage);
     }
 
     public void DisplaySuccessDialog(List<SocketReservationResp> reservationRespList)
@@ -534,42 +581,88 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String KrnNo = "Your KRN number is" + "<b> " + reservationRespList.get(0).getReservationId() + "</b>" + ". Your ride is scheduled & will send your driver details within few hours.";
         txtKRNno.setText(Html.fromHtml(KrnNo));
 
-        Log.d(TAG, "name = " + reservationResp.getDriver().getName().trim());
+        Log.d(TAG, "name = " + reservationRespList.get(0).getDriver().getName().trim());
         String driver_name = reservationRespList.get(0).getDriver().getName();
         String driver_mobile = reservationRespList.get(0).getDriver().getMobile();
 
-        //driver profile
-        txtDriverName.setText(driver_name);
-        txtMobile.setText("Contact : " + driver_mobile);
-        if(reservationRespList.get(0).getDriverImageUrl() != null)
+        Log.d(TAG, "driver_data_updated before check= " + driver_data_updated);
+        if(driver_data_updated)
         {
-            Log.d(TAG, "image = " + reservationRespList.get(0).getDriverImageUrl());
+            Log.d(TAG, "driver_data_updated true = " + driver_data_updated);
+            Log.d("TAG", "image = " + reservationRespList.get(0).getDriverImageUrl());
 
-            Glide.with(context)
-                    .load(reservationRespList.get(0).getDriverImageUrl())
-                    .into(imgDriverImg);
+            txtDriverName.setVisibility(View.VISIBLE);
+            txtDriverName.setText(driver_name);
+
+            txtMobile.setVisibility(View.VISIBLE);
+            txtMobile.setText("Contact : " + driver_mobile);
+
+            if(reservationRespList.get(0).getDriverImageUrl() != null)
+            {
+                imgDriverImg.setVisibility(View.VISIBLE);
+                Log.d(TAG, "image = " + reservationRespList.get(0).getDriverImageUrl());
+
+                Glide.with(context)
+                        .load(reservationRespList.get(0).getDriverImageUrl())
+                        .into(imgDriverImg);
+            }
+            else
+            {
+                imgDriverImg.setVisibility(View.GONE);
+            }
+
+            //vehicle no
+            if(reservationRespList.get(0).getVehcileNo() != null)
+            {
+                txtVehicleNo.setVisibility(View.VISIBLE);
+                txtVehicleNo.setText("Vehicle No : " + reservationRespList.get(0).getVehcileNo());
+            }
+            else
+            {
+                txtVehicleNo.setVisibility(View.GONE);
+            }
         }
         else
         {
-            imgDriverImg.setVisibility(View.GONE);
-        }
+            driver_data_updated = false;
+            Log.d(TAG, "driver_data_updated false = " + driver_data_updated);
 
-        //vehicle no
-        if(reservationResp.getVehcileNo() != null)
-        {
-            txtVehicleNo.setVisibility(View.VISIBLE);
-            txtVehicleNo.setText("Vehicle No : " + reservationResp.getVehcileNo());
-        }
-        else
-        {
-            txtVehicleNo.setVisibility(View.GONE);
+            if(driver_name.equals("null") || driver_name.equals(""))
+            {
+                txtDriverName.setVisibility(View.GONE);
+
+                if(driver_mobile.equals("null") || driver_name.equals(""))
+                {
+                    txtMobile.setVisibility(View.GONE);
+                }
+                else
+                {
+                    txtMobile.setVisibility(View.VISIBLE);
+                    txtMobile.setText("Contact : " + driver_mobile);
+
+                    if(reservationRespList.get(0).getDriverImageUrl() != null)
+                    {
+                        imgDriverImg.setVisibility(View.VISIBLE);
+                        Log.d(TAG, "image = " + reservationRespList.get(0).getDriverImageUrl());
+                    }
+                    else
+                    {
+                        imgDriverImg.setVisibility(View.GONE);
+                    }
+                }
+            }
+            else
+            {
+                txtDriverName.setVisibility(View.VISIBLE);
+                txtDriverName.setText(driver_name);
+            }
         }
 
         //estimated fare
-        if(reservationResp.getEstimatedPrice() != null)
+        if(reservationRespList.get(0).getEstimatedPrice() != null)
         {
             txtEstimatedFare.setVisibility(View.VISIBLE);
-            Float estimatedFare = Float.parseFloat(String.valueOf(reservationResp.getEstimatedPrice()));
+            Float estimatedFare = Float.parseFloat(String.valueOf(reservationRespList.get(0).getEstimatedPrice()));
             txtEstimatedFare.setText("Rs. " + String.format("%.2f",estimatedFare));
         }
         else
@@ -578,13 +671,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         //decode otp
-        ConvertOtp(reservationResp.getOtp());
+        ConvertOtp(reservationRespList.get(0).getOtp());
         txtOtp.setText("OTP: " + new String(valueDecoded));
 
-        txtServiceType.setText(reservationResp.getServiceType() + " To " + reservationResp.getEndlocationCity());
+        txtServiceType.setText(reservationRespList.get(0).getServiceType() + " To " + reservationRespList.get(0).getEndlocationCity());
 
         //convert date in format
-        ConvertDate(reservationResp.getStartTime());
+        ConvertDate(reservationRespList.get(0).getStartTime());
         txtStartDateTime.setText(convertedDateTime);
 
         btnDone.setOnClickListener(new View.OnClickListener() {
@@ -651,25 +744,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
+
+        SocketConnect();
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
-
         Log.d(TAG, "in onResume method ");
+        //Toast.makeText(getApplicationContext(), "on Resume()", Toast.LENGTH_SHORT).show();
 
-        SocketConnect();
-
-        Log.d(TAG, "reservation resp list size = " + reservationRespList.size());
-
+        Log.d(TAG, "reservation resp list size in on resume = " + reservationRespList.size());
         if(reservationRespList.size() != 0)
         {
             DisplaySuccessDialog(reservationRespList);
         }
         else
         {
-            Log.d(TAG, "reservation resp list = " + reservationRespList.size());
+            Log.d(TAG, "reservation resp list size is empty = " + reservationRespList.size());
         }
     }
 
@@ -687,6 +780,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
 
-
+        mSocket.disconnect();
     }
 }

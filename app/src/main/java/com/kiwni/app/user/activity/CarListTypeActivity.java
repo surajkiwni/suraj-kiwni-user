@@ -649,7 +649,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
         Type type = new TypeToken<List<ScheduleMapResp>>() {}.getType();
         String jsonForData = gson.toJson(selectedVehicleData, type);
 
-        Intent intent = new Intent(CarListTypeActivity.this, BookingDetailsActivity.class);
+        Intent intent = new Intent(CarListTypeActivity.this, ConfirmBookingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         //intent.putExtra(SharedPref.SELECTED_VEHICLE_OBJECT, jsonForData);
         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, jsonForData);

@@ -835,8 +835,8 @@ public class ConfirmBookingActivity extends AppCompatActivity
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void run() {
-                    Log.d("MainActivity ", "in new msg");
-                    Log.d("MainActivity ", "data = " + Arrays.toString(args));
+                    Log.d(TAG, "in new msg");
+                    Log.d(TAG, "data = " + Arrays.toString(args));
 
                     if (args.length == 0)
                     {
@@ -898,6 +898,8 @@ public class ConfirmBookingActivity extends AppCompatActivity
 
                 startActivity(intent);
                 finish();
+
+                mSocket.disconnect();
             }
         });
 

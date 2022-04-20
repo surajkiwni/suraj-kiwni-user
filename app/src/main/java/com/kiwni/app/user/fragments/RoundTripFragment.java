@@ -119,7 +119,7 @@ public class RoundTripFragment extends Fragment implements
     ArrayList<LatLng> dropLocationList = new ArrayList<>();
     PlacesClient placesClient;
     String address = "", city = "", pickup_city = "", drop_city = "", pickup_address = "", drop_address = "";
-    private GoogleApiClient mGoogleApiClient;
+    //private GoogleApiClient mGoogleApiClient;
     private LatLng mCenterLatLong, mOrigin, mDestination;
     double pickup_lat = 0.0, pickup_lng = 0.0, drop_lat = 0.0, drop_lng = 0.0;
     boolean isPickup = false, isDrop = false, isCurrent = false, isDDSelected = false, isLocated = false, isCameraMove = false;
@@ -919,8 +919,8 @@ public class RoundTripFragment extends Fragment implements
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
+        /*Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);*/
         /*if (mLastLocation != null) {
             changeMap(mLastLocation);
             Log.d(TAG, "ON connected");
@@ -949,7 +949,7 @@ public class RoundTripFragment extends Fragment implements
     @Override
     public void onConnectionSuspended(int i) {
         Log.i(TAG, "Connection suspended");
-        mGoogleApiClient.connect();
+        //mGoogleApiClient.connect();
     }
 
     @Override
@@ -1062,11 +1062,11 @@ public class RoundTripFragment extends Fragment implements
 
     protected synchronized void buildGoogleApiClient()
     {
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+        /*mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
-                .build();
+                .build();*/
     }
 
     public void getAddressFromCurrentLocation(Double latitude, Double longitude)
@@ -1873,12 +1873,12 @@ public class RoundTripFragment extends Fragment implements
 
         Log.d(TAG,"onStart");
 
-        try {
+        /*try {
             mGoogleApiClient.connect();
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
@@ -1887,9 +1887,9 @@ public class RoundTripFragment extends Fragment implements
 
         Log.d(TAG,"onStop");
 
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+        /*if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
-        }
+        }*/
     }
 
     @Override
