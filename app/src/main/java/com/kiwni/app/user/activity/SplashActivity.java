@@ -60,7 +60,7 @@ public class SplashActivity extends AppCompatActivity
 
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10 * 1000); // 10 seconds
+        locationRequest.setInterval(10 * 5000); // 10 seconds
         locationRequest.setFastestInterval(5 * 1000); // 5 seconds
 
         locationCallback = new LocationCallback() {
@@ -76,18 +76,51 @@ public class SplashActivity extends AppCompatActivity
                         currentLatitude = location.getLatitude();
                         currentLongitude = location.getLongitude();
 
+                        String currentLocation = + currentLatitude + ", " + currentLongitude;
                         Log.d(TAG, currentLatitude + ", " + currentLongitude);
-                        Log.d(TAG, "current location = " + currentLatitude + ", " + currentLongitude);
+                        Log.d(TAG, "current location 1 = " +currentLocation);
+
+                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
+                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+
+
+                        String str = String.valueOf(currentLatitude);
+                        String str2 = String.valueOf(currentLongitude);
+
+                        String sharedLatLong =str +"," +str2;
+
+                        Log.d(TAG,"str3 =" +str);
+                        Log.d(TAG,"str4 =" +str2);
+
+
+                        Log.d(TAG,"Shared Value"+ str +"," +str2);
 
                         if (currentLatitude != 0.0 && currentLongitude != 0.0)
                         {
                             /*Intent i = new Intent(SplashActivity.this, LoginActivity.class);
 
-                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+                            if(!currentLocation.equals(sharedLatLong)){
+
+                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
+                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
+
+                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
+                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+                            }
+                            else if (currentLocation.equals(sharedLatLong)){
+
+                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
+                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
+
+                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
+                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+                            }
+
 
                             startActivity(i);
-                            finish();*/
+                            finish();
+*/
+
                             if(hasLoggedIn)
                             {
                                 mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
@@ -103,8 +136,22 @@ public class SplashActivity extends AppCompatActivity
                             {
                                 Intent i = new Intent(SplashActivity.this, LoginActivity.class);
 
-                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+                                if(!currentLocation.equals(sharedLatLong)){
+
+                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
+                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
+
+                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
+                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+                                }
+                                else if (currentLocation.equals(sharedLatLong)){
+
+                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
+                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
+
+                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
+                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+                                }
 
                                 startActivity(i);
                                 finish();
@@ -204,17 +251,48 @@ public class SplashActivity extends AppCompatActivity
             {
                 currentLatitude = location.getLatitude();
                 currentLongitude = location.getLongitude();
-                Log.d(TAG, "current location = " + currentLatitude + ", " + currentLongitude);
+                String currentLocation = + currentLatitude + ", " + currentLongitude;
+                Log.d(TAG, currentLatitude + ", " + currentLongitude);
+                Log.d(TAG, "current location = " +currentLocation);
+
+
+                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
+                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+
+
+                String str = String.valueOf(currentLatitude);
+                String str2 = String.valueOf(currentLongitude);
+
+                String sharedLatLong =str +"," +str2;
+
+                Log.d(TAG,"str1 =" +str);
+                Log.d(TAG,"str2 =" +str2);
+
+                Log.d(TAG,"Shared Value2 = "+ str +"," +str2);
 
                 if (currentLatitude != 0.0 && currentLongitude != 0.0)
                 {
                     /*Intent i = new Intent(SplashActivity.this, LoginActivity.class);
 
-                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+                    if(!currentLocation.equals(sharedLatLong)){
 
+                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
+                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
+
+                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
+                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+                    }
+                    else if (currentLocation.equals(sharedLatLong)){
+
+                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
+                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
+
+                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
+                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+                    }
                     startActivity(i);
                     finish();*/
+
                     if(hasLoggedIn)
                     {
                         mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
@@ -230,8 +308,22 @@ public class SplashActivity extends AppCompatActivity
                     {
                         Intent i = new Intent(SplashActivity.this, LoginActivity.class);
 
-                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+                        if(!currentLocation.equals(sharedLatLong)){
+
+                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
+                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
+
+                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
+                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+                        }
+                        else if (currentLocation.equals(sharedLatLong)){
+
+                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
+                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
+
+                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
+                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
+                        }
 
                         startActivity(i);
                         finish();
@@ -250,5 +342,12 @@ public class SplashActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
     }
 }
