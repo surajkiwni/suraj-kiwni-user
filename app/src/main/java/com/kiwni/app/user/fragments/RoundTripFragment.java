@@ -141,6 +141,8 @@ public class RoundTripFragment extends Fragment implements
             sendToApiDropTime = "", changeStartDateFormat ="";
     int mYear, mMonth, mDay, mHour, mMinute;
 
+    ErrorDialog errorDialog;
+
     public RoundTripFragment() {
         // Required empty public constructor
     }
@@ -697,7 +699,7 @@ public class RoundTripFragment extends Fragment implements
                 if(!isNetworkConnected())
                 {
                     //Toast.makeText(getActivity(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
-                    ErrorDialog errorDialog = new ErrorDialog(getActivity(), "No internet. Connect to wifi or cellular network.");
+                    errorDialog = new ErrorDialog(getActivity(), "No internet. Connect to wifi or cellular network.");
                     errorDialog.show();
                 }
                 else
@@ -709,109 +711,113 @@ public class RoundTripFragment extends Fragment implements
                     {
                         //txtPickupLocation.setError("Pickup location field cannot be empty.!");
                         //Toast.makeText(getActivity(), "Pickup location field cannot be empty.!", Toast.LENGTH_SHORT).show();
-                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup location field cannot be empty.!");
+                        errorDialog = new ErrorDialog(getActivity(), "Pickup location field cannot be empty.!");
                         errorDialog.show();
                     } else if (autoCompleteTextViewDrop.getText().toString().equals("")) {
                         //txtDropLocation.setError("Drop location field cannot be empty.!");
                         //Toast.makeText(getActivity(), "Drop location field cannot be empty.!", Toast.LENGTH_SHORT).show();
-                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Drop location field cannot be empty.!");
+                        errorDialog = new ErrorDialog(getActivity(), "Drop location field cannot be empty.!");
                         errorDialog.show();
                     } else if (txtPickupDatePicker.getText().toString().equals("")) {
                         //txtDropLocation.setError("Drop location field cannot be empty.!");
                         //Toast.makeText(getActivity(), "Pickup Date field cannot be empty.!", Toast.LENGTH_SHORT).show();
-                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup Date field cannot be empty.!");
+                        errorDialog = new ErrorDialog(getActivity(), "Pickup Date field cannot be empty.!");
                         errorDialog.show();
                     }
                     else if(pickup_spinner_time.getSelectedItem().toString().isEmpty() || pickup_spinner_time.getSelectedItem().toString() == "")
                     {
                         //Toast.makeText(getActivity(), "Pickup Time field cannot be empty.!", Toast.LENGTH_SHORT).show();
-                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup Time field cannot be empty.!");
+                        errorDialog = new ErrorDialog(getActivity(), "Pickup Time field cannot be empty.!");
                         errorDialog.show();
                     }
                     else if(txtDropDatePicker.getText().toString().equals(""))
                     {
                         //Toast.makeText(getActivity(), "Destination Date field cannot be empty.!", Toast.LENGTH_SHORT).show();
-                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Destination Date field cannot be empty.!");
+                        errorDialog = new ErrorDialog(getActivity(), "Destination Date field cannot be empty.!");
                         errorDialog.show();
                     }
                     else
                     {
-                        try
+                        /* check distance should not be null or empty */
+                        if(distanceValueFromApi.equals("") || distanceValueFromApi.equals(null))
                         {
-                            Date currentDate = inputFormat.parse(curr_converted_date);
-                            Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
-
-                            if (currentDate.compareTo(pickerDate) == 0 && pickup_spinner_time.getSelectedItem().toString() == "select time")
-                            {
-                                //Toast.makeText(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.", Toast.LENGTH_SHORT).show();
-                                ErrorDialog errorDialog = new ErrorDialog(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.");
-                                errorDialog.show();
-                            }
-                            else
-                            {
-                                concatDateTime = strPickupDate + " " + pickup_spinner_time.getSelectedItem().toString();
-                                Log.d(TAG,"concat pickup date time = " + concatDateTime);
-
-                                getCurrentDateToSendApiInFormat(concatDateTime);
-
-                                distanceValueFromApi = String.valueOf(Double.parseDouble(distanceValueFromApi) / 1000);
-                                Log.d(TAG, "distanceValueFromApi = " + distanceValueFromApi.trim());
-                                convertedDistance = Double.valueOf(distanceValueFromApi.trim());
-                                Log.d(TAG, "convertedDistance = " + convertedDistance);
-                                convertedDistance = convertedDistance * 2;
-                                Log.d(TAG, "convertedDistance = " + convertedDistance);
-
-                                //change date format and send to next screen
-                                getStartDateInFormat(concatDateTime);
-
-                                //Calculate droptime from startdate and 23:59:59
-                                Log.d(TAG, "field time = " + txtDropDatePicker.getText().toString());
-
-                                CalculateDropTimeForRoundTrip(strDropDate + " 23:59:59");
-                                Log.d(TAG, "dropDateTime = " + sendToApiDropTime);
-
-                                // call next activity
-                                Log.d(TAG, "mOrigin = " + mOrigin + ", " + pickup_city + ", " + drop_city);
-                                Log.d(TAG, "mDestination = " + mDestination);
-
-                                Intent i = new Intent(getActivity(), FindCarActivity.class);
-
-                                //send data to next screen
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_CITY, pickup_city);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_CITY, drop_city);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_ADDRESS, autoCompleteTextViewPickup.getText().toString());
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_ADDRESS, autoCompleteTextViewDrop.getText().toString());
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_LOCATION, mOrigin.latitude + " " + mOrigin.longitude);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_LOCATION, mDestination.latitude + " " + mDestination.longitude);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_DATE, concatDateTime);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.START_DATE_WITH_MONTH_DAY, changeStartDateFormat);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DIRECTION, direction);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.SERVICE_TYPE, "Outstation");
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE, String.valueOf(convertedDistance));
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DURATION_IN_TRAFFIC, durationInTrafficFromApi);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_TIME_FOR_API, sendToApiPickupTime);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_TIME_FOR_API, sendToApiDropTime);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_DATE_TO_DISPLAY, txtPickupDatePicker.getText().toString());
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_TIME_TO_DISPLAY, pickup_spinner_time.getSelectedItem().toString());
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_DATE_TO_DISPLAY, txtDropDatePicker.getText().toString());
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE_IN_KM, distanceTextFromApi);
-
-                                startActivity(i);
-                                //getActivity().finish();
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                        /*if(!distanceValueFromApi.equals("") || !distanceValueFromApi.equals(null))
-                        {
-
+                            errorDialog = new ErrorDialog(getActivity(), "Please Wait..!");
+                            errorDialog.show();
                         }
                         else
                         {
-                            Toast.makeText(getActivity(), "Please Wait ...", Toast.LENGTH_SHORT).show();
-                        }*/
+                            try
+                            {
+                                Date currentDate = inputFormat.parse(curr_converted_date);
+                                Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
+
+                                if (currentDate.compareTo(pickerDate) == 0 && pickup_spinner_time.getSelectedItem().toString() == "select time")
+                                {
+                                    //Toast.makeText(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.", Toast.LENGTH_SHORT).show();
+                                    errorDialog = new ErrorDialog(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.");
+                                    errorDialog.show();
+                                }
+                                else
+                                {
+                                    concatDateTime = strPickupDate + " " + pickup_spinner_time.getSelectedItem().toString();
+                                    Log.d(TAG,"concat pickup date time = " + concatDateTime);
+
+                                    getCurrentDateToSendApiInFormat(concatDateTime);
+
+                                    //change date format and send to next screen
+                                    getStartDateInFormat(concatDateTime);
+
+                                    //Calculate droptime from startdate and 23:59:59
+                                    Log.d(TAG, "field time = " + txtDropDatePicker.getText().toString());
+
+                                    CalculateDropTimeForRoundTrip(strDropDate + " 23:59:59");
+                                    Log.d(TAG, "dropDateTime = " + sendToApiDropTime);
+
+                                    // call next activity
+                                    Log.d(TAG, "mOrigin = " + mOrigin + ", " + pickup_city + ", " + drop_city);
+                                    Log.d(TAG, "mDestination = " + mDestination);
+
+                                    if(isDateAfter(sendToApiPickupTime, sendToApiDropTime))
+                                    {
+                                        //true condition
+                                        Intent i = new Intent(getActivity(), FindCarActivity.class);
+                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        //send data to next screen
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_CITY, pickup_city);
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_CITY, drop_city);
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_ADDRESS, autoCompleteTextViewPickup.getText().toString());
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_ADDRESS, autoCompleteTextViewDrop.getText().toString());
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_LOCATION, mOrigin.latitude + " " + mOrigin.longitude);
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_LOCATION, mDestination.latitude + " " + mDestination.longitude);
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_DATE, concatDateTime);
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.START_DATE_WITH_MONTH_DAY, changeStartDateFormat);
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.DIRECTION, direction);
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.SERVICE_TYPE, "Outstation");
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE, String.valueOf(convertedDistance));
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.DURATION_IN_TRAFFIC, durationInTrafficFromApi);
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_TIME_FOR_API, sendToApiPickupTime);
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_TIME_FOR_API, sendToApiDropTime);
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_DATE_TO_DISPLAY, txtPickupDatePicker.getText().toString());
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_TIME_TO_DISPLAY, pickup_spinner_time.getSelectedItem().toString());
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_DATE_TO_DISPLAY, txtDropDatePicker.getText().toString());
+                                        PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE_IN_KM, distanceTextFromApi);
+
+                                        startActivity(i);
+                                        //getActivity().finish();
+                                    }
+                                    else
+                                    {
+                                        //false condition
+                                        errorDialog = new ErrorDialog(getActivity(), "Kindly select proper return date..!");
+                                        errorDialog.show();
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
             }
@@ -1548,14 +1554,40 @@ public class RoundTripFragment extends Fragment implements
                                 + ", durationTextFromApi = " + durationTextFromApi
                                 + ", durationInTrafficFromApi = " + durationInTrafficFromApi);
 
-                        /*//Calculate droptime from startdate and duration
-                        Log.d(TAG, "date with duration = " + concatDateTime + "\n " + durationInTrafficFromApi);
-                        CalculateDropTime(concatDateTime, durationInTrafficFromApi);*/
+                        /* calculate distance */
+                        distanceValueFromApi = String.valueOf(Double.parseDouble(distanceValueFromApi) / 1000);
+                        Log.d(TAG, "distanceValueFromApi = " + distanceValueFromApi.trim());
+                        convertedDistance = Double.valueOf(distanceValueFromApi.trim());
+                        Log.d(TAG, "convertedDistance = " + convertedDistance);
+                        /* for round trip multiply by 2 */
+                        convertedDistance = convertedDistance * 2;
+                        Log.d(TAG, "convertedDistance = " + convertedDistance);
                     }
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    /* compare two dates end date is not less than start date */
+    public static boolean isDateAfter(String startDate,String endDate)
+    {
+        try
+        {
+            String myFormatString = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"; // for example
+            SimpleDateFormat df = new SimpleDateFormat(myFormatString);
+            Date end_date = df.parse(endDate);
+            Date start_date = df.parse(startDate);
+
+            if (end_date.after(start_date))
+                return true;
+            else
+                return false;
+        }
+        catch (Exception e)
+        {
+            return false;
         }
     }
 
@@ -1754,7 +1786,7 @@ public class RoundTripFragment extends Fragment implements
             if(i_hour >= 23)
             {
                 //Toast.makeText(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.", Toast.LENGTH_SHORT).show();
-                ErrorDialog errorDialog = new ErrorDialog(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.");
+                errorDialog = new ErrorDialog(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.");
                 errorDialog.show();
             }
             else
