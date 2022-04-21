@@ -1,5 +1,6 @@
 package com.kiwni.app.user.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ public class PastAdapter extends RecyclerView.Adapter<PastAdapter.PastViewHolder
         return new PastViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull PastViewHolder holder, int position)
     {
@@ -46,7 +48,14 @@ public class PastAdapter extends RecyclerView.Adapter<PastAdapter.PastViewHolder
         holder.txtDropAddress.setText(tripListResp.getEndlocationCity());
         holder.txtServiceType.setText(tripListResp.getServiceType());
 
-        holder.txtPrice.setText("Rs. " + Math.round(tripListResp.getEstimatedPrice()));
+        if(tripListResp.getEstimatedPrice() != null)
+        {
+            holder.txtPrice.setText("Rs. " + Math.round(tripListResp.getEstimatedPrice()));
+        }
+        else
+        {
+            holder.txtPrice.setText(0);
+        }
 
         getDateAndTimeFromString(tripListResp.getStartTime());
         holder.txtStartDateTime.setText(startDateFromString + " - " + startTimeFromString);

@@ -47,6 +47,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
+import com.kiwni.app.user.datamodels.ErrorDialog;
 import com.kiwni.app.user.global.PermissionRequestConstant;
 import com.kiwni.app.user.helpers.ApiHelper;
 import com.kiwni.app.user.helpers.IServiceError;
@@ -450,7 +451,9 @@ public class ConfirmBookingActivity extends AppCompatActivity
                 /* create reservation api call */
                 if(!isNetworkConnected())
                 {
-                    Toast.makeText(getApplicationContext(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
+                    ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "No internet. Connect to wifi or cellular network.");
+                    errorDialog.show();
+                    //Toast.makeText(getApplicationContext(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
@@ -671,16 +674,6 @@ public class ConfirmBookingActivity extends AppCompatActivity
                             {
                                 Log.d(TAG, "click");
                                 DisplayReservationRespDialog(reservationRespList);
-
-                                /*if(reservationRespList.size() != 0)
-                                {
-                                    DisplayReservationRespDialog(reservationRespList);
-                                }
-                                else
-                                {
-                                    Log.d(TAG, "list size = " + reservationRespList.size());
-                                    DisplayReservationRespDialog(reservationRespList);
-                                }*/
                             }
                         });
 
@@ -716,14 +709,6 @@ public class ConfirmBookingActivity extends AppCompatActivity
                                                     createdDateForApi, rideReq, scheduleId, serviceTypeReq, statusReq,
                                                     "", "", vehicleId, tripType, notificationType,
                                                     companyEmail, companyPhone, companyName, refreshToken);
-                                            /*BookRide(channelReq, "", firstName, customerEmail,
-                                                    partyId, customerName, customerPhone,
-                                                    driverId,driverLicense,driverName,driverPhone,
-                                                    providerId, providerName, createdDateForApi, rideReq,
-                                                    scheduleId, serviceTypeReq, statusReq,
-                                                    "", "", vehicleId,
-                                                    tripType, notificationType, customerEmail,
-                                                    customerName, customerPhone, refreshToken);*/
                                         }
                                     }
                                 }
@@ -898,8 +883,6 @@ public class ConfirmBookingActivity extends AppCompatActivity
 
                 startActivity(intent);
                 finish();
-
-                mSocket.disconnect();
             }
         });
 
@@ -952,6 +935,12 @@ public class ConfirmBookingActivity extends AppCompatActivity
         super.onResume();
 
         SocketConnect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mSocket.disconnect();
     }
 }
 

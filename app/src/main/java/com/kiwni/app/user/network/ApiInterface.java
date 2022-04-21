@@ -33,8 +33,11 @@ public interface ApiInterface
     createRide(@Body RideReservationReq reservationReq,
                @Header("Authorization") String header);
 
+    @GET("/trip/api/trips/user/{id}/{status}")
+    Call<List<TripsHistoryResp>> getUpcomingTripHistory(@Path("id") int id, @Path("status") String status);
+
     @GET("/trip/api/trips/user/{id}/")
-    Call<List<TripsHistoryResp>> getTripHistory(@Path("id") int id);
+    Call<List<TripsHistoryResp>> getPastTripHistory(@Path("id") int id);
 
     /*@POST("/core/api/persons/")
     Call<UserRegisterResponse>

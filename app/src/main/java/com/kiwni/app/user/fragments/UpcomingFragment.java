@@ -1,6 +1,8 @@
 package com.kiwni.app.user.fragments;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,13 +62,25 @@ public class UpcomingFragment extends Fragment
         partyId = PreferencesUtils.getPreferences(getActivity(), SharedPref.partyId, 0);
         Log.d(TAG,"partyId = " + partyId);
 
-        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "No upcoming trips found.");
-        errorDialog.show();
-
         /* call trip history api */
-        //getTripHistoryData(partyId);
+        if(!isNetworkConnected())
+        {
+            ErrorDialog errorDialog = new ErrorDialog(getActivity(), "No internet. Connect to wifi or cellular network.");
+            errorDialog.show();
+            //Toast.makeText(getActivity(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            getTripHistoryData(partyId);
+        }
 
         return view;
+    }
+
+    private boolean isNetworkConnected()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
     public void getTripHistoryData(int id)
@@ -74,7 +88,7 @@ public class UpcomingFragment extends Fragment
         Log.d(TAG, "id = " + id);
 
         ApiInterface apiInterface = ApiClient.getClient(AppConstants.BASE_URL).create(ApiInterface.class);
-        Call<List<TripsHistoryResp>> listCall = apiInterface.getTripHistory(id);
+        Call<List<TripsHistoryResp>> listCall = apiInterface.getUpcomingTripHistory(id, "In-Progress");
 
         // Set up progress before call
         Dialog lovelyProgressDialog = new LovelyProgressDialog(getActivity())

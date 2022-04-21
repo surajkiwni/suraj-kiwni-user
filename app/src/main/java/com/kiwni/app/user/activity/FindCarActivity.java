@@ -179,7 +179,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         txtFromTo.setText(pickup_city + " To " + drop_city);
         txtStartTime.setText(startTime);
         txtStartEndDate.setText(startDate);
-        txtEstimatedKm.setText("Est km " + Math.round(Double.parseDouble(distanceInKm)));
+        txtEstimatedKm.setText("Est km " + distanceInKm);
 
         switch (serviceType)
         {

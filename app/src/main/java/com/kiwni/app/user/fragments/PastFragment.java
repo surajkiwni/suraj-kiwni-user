@@ -1,6 +1,8 @@
 package com.kiwni.app.user.fragments;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.GridLayoutWrapper;
 import com.kiwni.app.user.adapter.PastAdapter;
+import com.kiwni.app.user.datamodels.ErrorDialog;
 import com.kiwni.app.user.models.triphistory.TripsHistoryResp;
 import com.kiwni.app.user.network.ApiClient;
 import com.kiwni.app.user.network.ApiInterface;
@@ -59,9 +62,24 @@ public class PastFragment extends Fragment
         Log.d(TAG,"partyId = " + partyId);
 
         /* call trip history api */
-        getTripHistoryData(partyId);
+        if(!isNetworkConnected())
+        {
+            ErrorDialog errorDialog = new ErrorDialog(getActivity(), "No internet. Connect to wifi or cellular network.");
+            errorDialog.show();
+            //Toast.makeText(getActivity(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            getTripHistoryData(partyId);
+        }
 
         return view;
+    }
+
+    private boolean isNetworkConnected()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
     public void getTripHistoryData(int id)
@@ -69,7 +87,7 @@ public class PastFragment extends Fragment
         Log.d(TAG, "id = " + id);
 
         ApiInterface apiInterface = ApiClient.getClient(AppConstants.BASE_URL).create(ApiInterface.class);
-        Call<List<TripsHistoryResp>> listCall = apiInterface.getTripHistory(id);
+        Call<List<TripsHistoryResp>> listCall = apiInterface.getPastTripHistory(id);
 
         // Set up progress before call
         Dialog lovelyProgressDialog = new LovelyProgressDialog(getActivity())
