@@ -55,6 +55,7 @@ import com.kiwni.app.user.helpers.IServiceReceiver;
 import com.kiwni.app.user.helpers.ServiceConnector;
 import com.kiwni.app.user.models.bookride.BookRideErrorResp;
 import com.kiwni.app.user.models.bookride.ChannelReq;
+import com.kiwni.app.user.models.bookride.FromLocationCoordinates;
 import com.kiwni.app.user.models.bookride.RateReq;
 import com.kiwni.app.user.models.bookride.RideReq;
 import com.kiwni.app.user.models.bookride.RideReservationReq;
@@ -62,6 +63,7 @@ import com.kiwni.app.user.models.bookride.RideReservationResp;
 import com.kiwni.app.user.models.bookride.RideStatusReq;
 import com.kiwni.app.user.models.bookride.ServiceTypeReq;
 import com.kiwni.app.user.models.bookride.StatusReq;
+import com.kiwni.app.user.models.bookride.ToLocationCoordinates;
 import com.kiwni.app.user.models.socket.SocketReservationResp;
 import com.kiwni.app.user.models.vehicle_details.ScheduleDatesRates;
 import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
@@ -124,8 +126,10 @@ public class ConfirmBookingActivity extends AppCompatActivity
             driverLicense = "", driverPhone = "", firstName = "", lastName = "", providerId = "",
             providerName = "", createdDateForApi = "", vehicle_no = "", vehicle_price = "",
             refreshToken = "", companyName = "", companyEmail = "",
-            companyPhone = "", tripType = "", notificationType = "";
+            companyPhone = "", tripType = "", notificationType = "", pickupLocation = "",
+            dropLocation = "", notification_type = "";
     int partyId = 0, service_type_id = 0, vehicleId = 0, driverId = 0;
+    double pickupLocationLat = 0.0, pickupLocationLng = 0.0, dropLocationLat = 0.0, dropLocationLng = 0.0;
     Long scheduleId;
 
     ChannelReq channelReq;
@@ -192,7 +196,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
             Type type = new TypeToken<List<ScheduleMapResp>>() {
             }.getType();
             selectedVehicleDataList = gson.fromJson(stringData, type);
-            Log.d("TAG", "selectedVehicleDataList size = " + selectedVehicleDataList.size());
+            Log.d(TAG, "selectedVehicleDataList size = " + selectedVehicleDataList.size());
         }
 
         /* get data from pref */
@@ -234,10 +238,10 @@ public class ConfirmBookingActivity extends AppCompatActivity
         }
 
         distanceInKm = distanceInKm.replaceAll("[^0-9]", "").trim();
-        System.out.println("distanceInKm = " + distanceInKm);
+        //System.out.println("distanceInKm = " + distanceInKm);
 
         vehicle_price = String.valueOf(selectedVehicleDataList.get(0).getPrice());
-        Log.d(TAG, "vehicle_price = " + vehicle_price);
+        //Log.d(TAG, "vehicle_price = " + vehicle_price);
         vehicle_no = selectedVehicleDataList.get(0).getVehicle().getRegNo();
         scheduleId = selectedVehicleDataList.get(0).getVehicle().getId();
         vehicleId = selectedVehicleDataList.get(0).getVehicleId();
@@ -257,7 +261,15 @@ public class ConfirmBookingActivity extends AppCompatActivity
         pickupAddress = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_ADDRESS, "");
         dropAddress = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_ADDRESS, "");
 
-        Log.d("TAG","data from previous screen - " + direction + " , " + serviceType);
+        Log.d(TAG,"data from previous screen - " + direction + " , " + serviceType);
+
+        /* pickup and drop location latlng */
+        pickupLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.PICKUP_LOCATION, "");
+        dropLocation = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DROP_LOCATION, "");
+        Log.d(TAG,"pickupLocation and dropLocation - " + pickupLocation + " , " + dropLocation);
+
+        GetSeparatedCoordinatesFromPickupString(pickupLocation);
+        GetSeparatedCoordinatesFromDropString(dropLocation);
 
         /* set data on ui */
         txtTitle.setText("Confirm Booking");
@@ -307,37 +319,26 @@ public class ConfirmBookingActivity extends AppCompatActivity
             tripType = radioPersonal.getText().toString();
 
         /* checkbox functionality */
-        chkEmail.setChecked(true);
-        notificationType = "Email";
+        CheckboxSelectedData();
 
         chkEmail.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                chkEmail.setChecked(true);
-                chkPhone.setChecked(false);
-                chkWhatsApp.setChecked(false);
-                notificationType = "Email";
+            public void onClick(View view) {
+                CheckboxSelectedData();
             }
         });
 
         chkPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chkPhone.setChecked(true);
-                chkEmail.setChecked(false);
-                chkWhatsApp.setChecked(false);
-                notificationType = "SMS";
+                CheckboxSelectedData();
             }
         });
 
         chkWhatsApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chkWhatsApp.setChecked(true);
-                chkEmail.setChecked(false);
-                chkPhone.setChecked(false);
-                notificationType = "WhatsApp";
+                CheckboxSelectedData();
             }
         });
 
@@ -412,25 +413,32 @@ public class ConfirmBookingActivity extends AppCompatActivity
         /* get current time */
         getCurrentTimeToSendApi();
 
+        /* call socket */
+        SocketConnect();
+
         /* payload for create reservation api */
         /* set static data and send to api call*/
         channelReq = new ChannelReq();
         channelReq.setId(1);
 
         rideReq = new RideReq();
+        rideReq.setCreatedTime("");
+        rideReq.setCreatedUser(customerName);
         rideReq.setDistance(distanceInKm);
         rideReq.setFromLocation(pickup_city);
         rideReq.setJourneyEndTime(journeyEndTime);
         rideReq.setJourneyTime(journeyTime);
-        rideReq.setToLocation(drop_city);
-        rideReq.setCreatedTime("");
-        rideReq.setCreatedUser(customerName);
 
         //rateReq.add(new RateReq(1));
         rateReq.add(new RateReq(service_type_id));
         rideReq.setRates(rateReq);
 
         rideReq.setStatus(new RideStatusReq(2));
+
+        rideReq.setToLocation(drop_city);
+
+        rideReq.setFromLocationCoordinates(new FromLocationCoordinates(pickupLocationLat, pickupLocationLng));
+        rideReq.setToLocationCoordinates(new ToLocationCoordinates(dropLocationLat, dropLocationLng));
 
         rideReq.setUpdatedTime("");
         rideReq.setUpdatedUser("");
@@ -478,7 +486,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
                             customerName, customerPhone, driverId, driverLicense, driverName,
                             driverPhone, Integer.parseInt(providerId), providerName,
                             createdDateForApi, rideReq, scheduleId, serviceTypeReq, statusReq,
-                            "", "", vehicleId, tripType, notificationType,
+                            "", "", vehicleId, tripType, notification_type,
                             companyEmail, companyPhone, companyName, idToken);
                 }
             }
@@ -611,6 +619,56 @@ public class ConfirmBookingActivity extends AppCompatActivity
         System.out.println("createdDateForApi = " + createdDateForApi);
     }
 
+    /* split coordinates from string */
+    public void GetSeparatedCoordinatesFromPickupString(String coordinates)
+    {
+        String[] str = coordinates.split(" ");
+        for (String locations : str)
+        {
+            pickupLocationLat = Double.parseDouble(str[0]);
+            pickupLocationLng = Double.parseDouble(str[1]);
+        }
+
+        Log.d(TAG, "coordinates = " + pickupLocationLat + ", " + pickupLocationLng);
+    }
+
+    public void GetSeparatedCoordinatesFromDropString(String coordinates)
+    {
+        String[] str = coordinates.split(" ");
+        for (String locations : str)
+        {
+            dropLocationLat = Double.parseDouble(str[0]);
+            dropLocationLng = Double.parseDouble(str[1]);
+        }
+
+        Log.d(TAG, "coordinates = " + dropLocationLat + ", " + dropLocationLng);
+    }
+
+    /* Checkbox selection */
+    public void CheckboxSelectedData()
+    {
+        StringBuilder result = new StringBuilder();
+        if(chkEmail.isChecked())
+        {
+            notificationType = "Email";
+            result.append(notificationType);
+        }
+        if(chkPhone.isChecked())
+        {
+            notificationType = "SMS";
+            result.append(" ").append(notificationType);
+        }
+        if(chkWhatsApp.isChecked())
+        {
+            notificationType = "WhatsApp";
+            result.append(" ").append(notificationType);
+        }
+        //Log.d(TAG, "result = " + result.toString().trim());
+        notification_type = result.toString().trim();
+        notification_type = notification_type.replace(" ",",");
+        //Log.d(TAG, "type = " + notification_type);
+    }
+
     public void BookRide(ChannelReq channel, String createdTime, String createdUser,
                          String customerEmail, Integer customerId, String customerName,
                          String customerPhone, Integer driverId, String driverLicense,
@@ -707,7 +765,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
                                                     customerName, customerPhone, driverId, driverLicense, driverName,
                                                     driverPhone, providerId, providerName,
                                                     createdDateForApi, rideReq, scheduleId, serviceTypeReq, statusReq,
-                                                    "", "", vehicleId, tripType, notificationType,
+                                                    "", "", vehicleId, tripType, notification_type,
                                                     companyEmail, companyPhone, companyName, refreshToken);
                                         }
                                     }
@@ -853,7 +911,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
 
     public void DisplayReservationRespDialog(List<SocketReservationResp> reservationRespList)
     {
-        Log.d(TAG, "list size = " + reservationRespList.size());
+        Log.d(TAG, "list size in dialog = " + reservationRespList.size());
 
         dialogThankYou = new Dialog(ConfirmBookingActivity.this, android.R.style.Theme_Light);
         dialogThankYou.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -933,14 +991,26 @@ public class ConfirmBookingActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-
-        SocketConnect();
+        Log.d(TAG,"onResume");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d(TAG,"onStop");
         mSocket.disconnect();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"onDestroy");
     }
 }
 

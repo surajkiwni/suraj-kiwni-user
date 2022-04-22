@@ -167,6 +167,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         context = getApplicationContext();
+
+        SocketConnect();
     }
 
     @Override
@@ -441,9 +443,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mSocket.emit("join", obj);
             Log.d("join", obj.toString());
 
+            /* reservation success */
             ListenReservationMessage();
 
-            ListenDriverDataMessage();
+            //ListenDriverDataMessage();
         }
         catch (Exception ex)
         {
@@ -754,8 +757,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart");
 
-        SocketConnect();
+        //SocketConnect();
     }
 
     @Override
@@ -763,6 +767,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     {
         super.onResume();
         Log.d(TAG, "in onResume method ");
+
+        SocketConnect();
         //Toast.makeText(getApplicationContext(), "on Resume()", Toast.LENGTH_SHORT).show();
 
         Log.d(TAG, "reservation resp list size in on resume = " + reservationRespList.size());
@@ -779,16 +785,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+        Log.d(TAG, "onRestart");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy");
 
         mSocket.disconnect();
     }

@@ -34,6 +34,12 @@ public class RideReq
     @SerializedName("toLocation")
     @Expose
     private String toLocation;
+    @SerializedName("fromLocationCoordinates")
+    @Expose
+    private FromLocationCoordinates fromLocationCoordinates;
+    @SerializedName("toLocationCoordinates")
+    @Expose
+    private ToLocationCoordinates toLocationCoordinates;
     @SerializedName("updatedTime")
     @Expose
     private String updatedTime;
@@ -127,5 +133,21 @@ public class RideReq
 
     public void setUpdatedUser(String updatedUser) {
         this.updatedUser = updatedUser;
+    }
+
+    public FromLocationCoordinates getFromLocationCoordinates() {
+        return fromLocationCoordinates;
+    }
+
+    public void setFromLocationCoordinates(FromLocationCoordinates fromLocationCoordinates) {
+        this.fromLocationCoordinates = fromLocationCoordinates;
+    }
+
+    public ToLocationCoordinates getToLocationCoordinates() {
+        return toLocationCoordinates;
+    }
+
+    public void setToLocationCoordinates(ToLocationCoordinates toLocationCoordinates) {
+        this.toLocationCoordinates = toLocationCoordinates;
     }
 }

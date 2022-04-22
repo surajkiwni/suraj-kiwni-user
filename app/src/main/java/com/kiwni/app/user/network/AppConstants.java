@@ -4,6 +4,11 @@ public class AppConstants
 {
     public static final String WEBSOCKET_RESERVATION_EVENT = "reservation_success";
     public static final String WEBSOCKET_DRIVER_DATA_EVENT = "driver_data_updated";
+    public static final int SERVER_CONNECTION_TIMEOUT = 3000;
+    public static final int SERVER_CONNECTION_ERROR = 3001;
+    public static final int SERVER_CONNECTED = 3002;
+    public static final int SERVER_DISCONNECTED = 3003;
+
     public static final int LOCATION_REQUEST = 1000;
     public static final int GPS_REQUEST = 1001;
     public final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
