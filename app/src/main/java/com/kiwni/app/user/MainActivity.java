@@ -377,9 +377,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.nav_feedback:
 
-                Dialog dialog = new Dialog(MainActivity.this, android.R.style.Theme_Light);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.feedback_bottom_sheet);
+                BottomSheetDialog dialog = new BottomSheetDialog(this);
+                View view = getLayoutInflater().inflate(R.layout.feedback_bottom_sheet,null,false);
+
+                dialog.setCancelable(false);
+
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        BottomSheetDialog d = (BottomSheetDialog) dialog;
+
+                        FrameLayout bottomSheet = (FrameLayout) d.findViewById(R.id.design_bottom_sheet);
+                        BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                });
+                dialog.setContentView(view);
+
 
                 final ImageView imageClose = dialog.findViewById(R.id.imageClose);
 

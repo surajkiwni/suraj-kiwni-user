@@ -1,28 +1,25 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item>
         <shape>
-            <padding android:top="0dp" />
-            <corners
-                android:radius="2dp"
+            <padding
+                android:top="0dp" />
+            <solid android:color="@android:color/darker_gray" />
+            <corners android:radius="1dp"
                 android:topLeftRadius="30dp"
-                android:topRightRadius="30dp" />
-            <stroke
-                android:width="3dp"
-                android:color="@android:color/darker_gray"/>
+                android:topRightRadius="30dp"
+                />
         </shape>
     </item>
 
     <!-- Background -->
     <item android:top="3dp">
         <shape>
-            <corners
-                android:radius="1dp"
+            <solid android:color="@color/white" />
+            <corners android:radius="1dp"
                 android:topLeftRadius="30dp"
-                android:topRightRadius="30dp" />
-            <stroke
-                android:width="3dp"
-                android:color="@android:color/darker_gray"/>
+                android:topRightRadius="30dp"
+                />
         </shape>
 
     </item>

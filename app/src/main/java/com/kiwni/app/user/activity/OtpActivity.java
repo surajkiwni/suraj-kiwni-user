@@ -83,7 +83,7 @@ public class OtpActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-               /* Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                /*Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
                 finish();*/
                 otp_code = pinView.getText().toString();
