@@ -28,23 +28,42 @@
             android:id="@+id/txtStartDateTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/dp_8"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="5-07-2021 on 6 : 00 am"
             android:textColor="@color/black"
             android:textSize="@dimen/sp_14" />
 
         <TextView
-            android:id="@+id/txtPrice"
+            android:id="@+id/txtStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
             android:layout_weight="1"
-            android:text="RS 4000"
+            android:text="Trip Accepted"
+            android:textStyle="bold"
             android:textAlignment="textEnd"
             android:textColor="@color/black"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_14"/>
+
+
     </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_weight="1"
+            android:text="RS 4000"
+            android:layout_marginTop="@dimen/dp_5"
+            android:textAlignment="textEnd"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
+            app:layout_constraintRight_toRightOf="parent"
+            />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout2"
@@ -60,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/pickuppoint"
+            android:src="@drawable/droppoint"
             app:layout_constraintBottom_toBottomOf="@+id/txtPickupAddress"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@+id/txtPickupAddress" />
@@ -78,34 +97,39 @@
             app:layout_constraintLeft_toRightOf="@+id/pickupImage"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <TextView
         android:id="@+id/txtEndDateTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:text="5-07-2021 on 6 : 00 am"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_14"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"/>
+        app:layout_constraintTop_toBottomOf="@+id/txtPickupAddress"
+        app:layout_constraintLeft_toLeftOf="@+id/txtPickupAddress"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtEndDateTime">
+        <View
+            android:id="@+id/imageView6"
+            android:layout_width="5dp"
+            android:layout_height="0dp"
+            android:background="@drawable/dotted_line"
+            android:layerType="software"
+            app:layout_constraintTop_toBottomOf="@+id/pickupImage"
+            app:layout_constraintLeft_toLeftOf="@+id/pickupImage"
+            app:layout_constraintRight_toRightOf="@+id/pickupImage"
+            app:layout_constraintBottom_toTopOf="@+id/dropPointImage"
+            />
+
+
 
         <ImageView
             android:id="@+id/dropPointImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/droppoint"
+            android:src="@drawable/pickuppoint"
             app:layout_constraintBottom_toBottomOf="@+id/txtDropAddress"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@+id/txtDropAddress" />
@@ -121,14 +145,14 @@
             android:textColor="#000000"
             android:textSize="13sp"
             app:layout_constraintLeft_toRightOf="@+id/dropPointImage"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/txtEndDateTime" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:src="@drawable/driver_image"
         app:layout_constraintBottom_toBottomOf="@+id/txtServiceType"
@@ -143,7 +167,7 @@
         android:layout_marginTop="@dimen/dp_10"
         android:text="One Way Trip"
         android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout3"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout2"
         />
 
     <View
