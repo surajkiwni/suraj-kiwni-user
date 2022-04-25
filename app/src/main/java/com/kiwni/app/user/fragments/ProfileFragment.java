@@ -47,9 +47,6 @@ public class ProfileFragment extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-
-        ((MainActivity) requireActivity()).getSupportActionBar().hide();
-
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         imageBack = view.findViewById(R.id.imageBack);
@@ -58,6 +55,8 @@ public class ProfileFragment extends Fragment
         txtMobileNo = view.findViewById(R.id.txtMobileNo);
         txtName = view.findViewById(R.id.txtName);
         txtEmgContact = view.findViewById(R.id.txtEmgContact);
+
+        ((MainActivity) getActivity()).getSupportActionBar().hide();
 
         //pref values
         userName = PreferencesUtils.getPreferences(getActivity(), SharedPref.FIREBASE_USERNAME, "");

@@ -47,6 +47,7 @@ public class PastAdapter extends RecyclerView.Adapter<PastAdapter.PastViewHolder
         holder.txtPickupAddress.setText(tripListResp.getStartLocationCity());
         holder.txtDropAddress.setText(tripListResp.getEndlocationCity());
         holder.txtServiceType.setText(tripListResp.getServiceType());
+        holder.txtStatus.setText(tripListResp.getStatus());
 
         if(tripListResp.getEstimatedPrice() != null)
         {
@@ -71,7 +72,8 @@ public class PastAdapter extends RecyclerView.Adapter<PastAdapter.PastViewHolder
 
     public class PastViewHolder extends RecyclerView.ViewHolder
     {
-        TextView txtStartDateTime, txtEndDateTime, txtPrice, txtPickupAddress, txtDropAddress, txtServiceType;
+        TextView txtStartDateTime, txtEndDateTime, txtPrice, txtPickupAddress, txtDropAddress,
+                txtServiceType, txtStatus;
 
         public PastViewHolder(@NonNull View itemView)
         {
@@ -83,6 +85,7 @@ public class PastAdapter extends RecyclerView.Adapter<PastAdapter.PastViewHolder
             txtPickupAddress = itemView.findViewById(R.id.txtPickupAddress);
             txtDropAddress = itemView.findViewById(R.id.txtDropAddress);
             txtServiceType = itemView.findViewById(R.id.txtServiceType);
+            txtStatus = itemView.findViewById(R.id.txtStatus);
         }
     }
 

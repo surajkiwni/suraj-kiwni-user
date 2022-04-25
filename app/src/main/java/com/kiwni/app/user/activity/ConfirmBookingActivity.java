@@ -3,8 +3,10 @@ package com.kiwni.app.user.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -48,11 +50,13 @@ import com.google.gson.reflect.TypeToken;
 import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.datamodels.ErrorDialog;
+import com.kiwni.app.user.datamodels.ErrorDialog1;
 import com.kiwni.app.user.global.PermissionRequestConstant;
 import com.kiwni.app.user.helpers.ApiHelper;
 import com.kiwni.app.user.helpers.IServiceError;
 import com.kiwni.app.user.helpers.IServiceReceiver;
 import com.kiwni.app.user.helpers.ServiceConnector;
+import com.kiwni.app.user.interfaces.ErrorDialogInterface;
 import com.kiwni.app.user.models.bookride.BookRideErrorResp;
 import com.kiwni.app.user.models.bookride.ChannelReq;
 import com.kiwni.app.user.models.bookride.FromLocationCoordinates;
@@ -70,6 +74,7 @@ import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 import com.kiwni.app.user.network.ApiClient;
 import com.kiwni.app.user.network.ApiInterface;
 import com.kiwni.app.user.network.AppConstants;
+import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
 import com.yarolegovich.lovelydialog.LovelyProgressDialog;
@@ -94,7 +99,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ConfirmBookingActivity extends AppCompatActivity
+public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDialogInterface
 {
     RadioButton radioBusiness, radioPersonal;
     AppCompatButton btnConfirmBooking;
@@ -102,6 +107,8 @@ public class ConfirmBookingActivity extends AppCompatActivity
     ApiInterface apiInterface;
     CheckBox chkPhone, chkEmail, chkWhatsApp;
     RadioGroup radioGroup;
+    ErrorDialogInterface errorDialogInterface;
+    BroadcastReceiver broadcastReceiver = null;
 
     List<ScheduleMapResp> selectedVehicleDataList = new ArrayList<>();
 
@@ -186,9 +193,14 @@ public class ConfirmBookingActivity extends AppCompatActivity
         txtFiftyPercDiscount = findViewById(R.id.txtFiftyPercDiscount);
         txtHundredPercDiscount = findViewById(R.id.txtHundredPercDiscount);
 
+        errorDialogInterface = this::onClick;
+
+        /* check internet connection */
+        broadcastReceiver = new ConnectivityHelper();
+        checkInternet();
+
         Gson gson = new Gson();
         String stringData = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, "");
-        //String stringData = getIntent().getStringExtra(SharedPref.SELECTED_VEHICLE_OBJECT);
         Log.d(TAG, "string data = " + stringData);
 
         if(stringData != null)
@@ -238,10 +250,8 @@ public class ConfirmBookingActivity extends AppCompatActivity
         }
 
         distanceInKm = distanceInKm.replaceAll("[^0-9]", "").trim();
-        //System.out.println("distanceInKm = " + distanceInKm);
 
         vehicle_price = String.valueOf(selectedVehicleDataList.get(0).getPrice());
-        //Log.d(TAG, "vehicle_price = " + vehicle_price);
         vehicle_no = selectedVehicleDataList.get(0).getVehicle().getRegNo();
         scheduleId = selectedVehicleDataList.get(0).getVehicle().getId();
         vehicleId = selectedVehicleDataList.get(0).getVehicleId();
@@ -345,7 +355,6 @@ public class ConfirmBookingActivity extends AppCompatActivity
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //startActivity(new Intent(ConfirmBookingActivity.this, BookingDetailsActivity.class));
                 finish();
             }
         });
@@ -366,9 +375,6 @@ public class ConfirmBookingActivity extends AppCompatActivity
                             new String[]{Manifest.permission.CALL_PHONE},
                             PermissionRequestConstant.MY_PERMISSIONS_REQUEST_CALL_PHONE);
 
-                    // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
-                    // app-defined int constant. The callback method gets the
-                    // result of the request.
                 } else {
                     //You already have permission
                     try {
@@ -457,38 +463,37 @@ public class ConfirmBookingActivity extends AppCompatActivity
                 Log.d(TAG, "idToken = " + idToken);
 
                 /* create reservation api call */
-                if(!isNetworkConnected())
+                if(tripType.equals(radioBusiness.getText().toString()))
                 {
-                    ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "No internet. Connect to wifi or cellular network.");
-                    errorDialog.show();
-                    //Toast.makeText(getApplicationContext(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
+                    companyName = txtCompanyName.getText().toString();
+                    companyEmail = txtCompanyEmail.getText().toString();
+                    companyPhone = txtCompanyPhone.getText().toString();
                 }
                 else
                 {
-                    if(tripType.equals(radioBusiness.getText().toString()))
-                    {
-                        companyName = txtCompanyName.getText().toString();
-                        companyEmail = txtCompanyEmail.getText().toString();
-                        companyPhone = txtCompanyPhone.getText().toString();
-                    }
-                    else
-                    {
-                        companyName = "";
-                        companyPhone = "";
-                        companyEmail = "";
-                    }
-
-                    Log.d(TAG, "tripType = " + tripType);
-                    Log.d(TAG, "notificationType = " + notificationType);
-
-
-                    BookRide(channelReq, "", firstName, customerEmail, partyId,
-                            customerName, customerPhone, driverId, driverLicense, driverName,
-                            driverPhone, Integer.parseInt(providerId), providerName,
-                            createdDateForApi, rideReq, scheduleId, serviceTypeReq, statusReq,
-                            "", "", vehicleId, tripType, notification_type,
-                            companyEmail, companyPhone, companyName, idToken);
+                    companyName = "";
+                    companyPhone = "";
+                    companyEmail = "";
                 }
+
+                BookRide(channelReq, "", firstName, customerEmail, partyId,
+                        customerName, customerPhone, driverId, driverLicense, driverName,
+                        driverPhone, Integer.parseInt(providerId), providerName,
+                        createdDateForApi, rideReq, scheduleId, serviceTypeReq, statusReq,
+                        "", "", vehicleId, tripType, notification_type,
+                        companyEmail, companyPhone, companyName, idToken);
+                /*if(!isNetworkConnected())
+                {
+                    *//*ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "No internet. Connect to wifi or cellular network.");
+                    errorDialog.show();*//*
+                    ErrorDialog1 errorDialog1 = new ErrorDialog1();
+                    errorDialog1.showError(ConfirmBookingActivity.this,
+                            "No internet. Connect to wifi or cellular network.", errorDialogInterface);
+                }
+                else
+                {
+
+                }*/
             }
         });
     }
@@ -558,15 +563,12 @@ public class ConfirmBookingActivity extends AppCompatActivity
         //Email validation
         if (edtCompanyEmail.getText().toString().isEmpty()) {
             edtCompanyEmail.setError(getResources().getString(R.string.email_error));
-            //edtEmailId.requestFocus();
             isCompanyEmailValid = false;
         } else if (!edtCompanyEmail.getText().toString().matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")) {
             edtCompanyEmail.setError("Invalid email address");
-            //edtEmailId.requestFocus();
             isCompanyEmailValid = false;
         } else {
             edtCompanyEmail.setError(null);
-            //edtEmailId.setErrorEnabled(false);
             isCompanyEmailValid = true;
         }
 
@@ -574,27 +576,22 @@ public class ConfirmBookingActivity extends AppCompatActivity
         if (edtCompanyPhoneNo.getText().toString().isEmpty())
         {
             edtCompanyPhoneNo.setError(getResources().getString(R.string.phoneno_error));
-            //edtPhoneNo.requestFocus();
             isCompanyPhoneNoValid = false;
         } else if (edtCompanyPhoneNo.getText().toString().length() > 10) {
             edtCompanyPhoneNo.setError("Enter 10 digit mobile no");
-            //edtPhoneNo.requestFocus();
             isCompanyPhoneNoValid = false;
         } else {
             edtCompanyPhoneNo.setError(null);
-            //edtEmailId.setErrorEnabled(false);
             isCompanyPhoneNoValid = true;
         }
 
         //Last name validation
         if (edtCompanyName.getText().toString().isEmpty()) {
             edtCompanyName.setError(getResources().getString(R.string.first_name_error));
-            //edtLastName.requestFocus();
             isCompanyNameValid = false;
         }
         else {
             edtCompanyName.setError(null);
-            //edtEmailId.setErrorEnabled(false);
             isCompanyNameValid = true;
         }
     }
@@ -611,6 +608,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
         lastName = newStr[2];
     }
 
+    /* get current date time */
     public void getCurrentTimeToSendApi()
     {
         SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -619,7 +617,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
         System.out.println("createdDateForApi = " + createdDateForApi);
     }
 
-    /* split coordinates from string */
+    /* split pickup location coordinates from string */
     public void GetSeparatedCoordinatesFromPickupString(String coordinates)
     {
         String[] str = coordinates.split(" ");
@@ -632,6 +630,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
         Log.d(TAG, "coordinates = " + pickupLocationLat + ", " + pickupLocationLng);
     }
 
+    /* split drop location coordinates from string */
     public void GetSeparatedCoordinatesFromDropString(String coordinates)
     {
         String[] str = coordinates.split(" ");
@@ -669,6 +668,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
         //Log.d(TAG, "type = " + notification_type);
     }
 
+    /* create reservation api call method*/
     public void BookRide(ChannelReq channel, String createdTime, String createdUser,
                          String customerEmail, Integer customerId, String customerName,
                          String customerPhone, Integer driverId, String driverLicense,
@@ -755,19 +755,20 @@ public class ConfirmBookingActivity extends AppCompatActivity
                                         //new generated token set to pref data
                                         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_TOKEN, refreshToken);
 
-                                        if(!isNetworkConnected())
+                                        BookRide(channelReq, "", firstName, customerEmail, partyId,
+                                                customerName, customerPhone, driverId, driverLicense, driverName,
+                                                driverPhone, providerId, providerName,
+                                                createdDateForApi, rideReq, scheduleId, serviceTypeReq, statusReq,
+                                                "", "", vehicleId, tripType, notification_type,
+                                                companyEmail, companyPhone, companyName, refreshToken);
+                                        /*if(!isNetworkConnected())
                                         {
                                             Toast.makeText(getApplicationContext(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
                                         }
                                         else
                                         {
-                                            BookRide(channelReq, "", firstName, customerEmail, partyId,
-                                                    customerName, customerPhone, driverId, driverLicense, driverName,
-                                                    driverPhone, providerId, providerName,
-                                                    createdDateForApi, rideReq, scheduleId, serviceTypeReq, statusReq,
-                                                    "", "", vehicleId, tripType, notification_type,
-                                                    companyEmail, companyPhone, companyName, refreshToken);
-                                        }
+
+                                        }*/
                                     }
                                 }
                             });
@@ -822,6 +823,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
         }
     }
 
+    /* emit party id for join in web socket */
     public void EmitData()
     {
         //{"partyId": 274}
@@ -843,7 +845,6 @@ public class ConfirmBookingActivity extends AppCompatActivity
     private Emitter.Listener onConnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            //Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
             Log.e("IsConnected", String.valueOf(mSocket.connected()));
             Log.d(TAG, "connected to the server");
         }
@@ -852,7 +853,6 @@ public class ConfirmBookingActivity extends AppCompatActivity
     private Emitter.Listener onConnectError = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            //Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "connection error");
         }
     };
@@ -869,6 +869,7 @@ public class ConfirmBookingActivity extends AppCompatActivity
         mSocket.on(AppConstants.WEBSOCKET_RESERVATION_EVENT, onNewMessage);
     }
 
+    /* reservation success web socket response */
     private final Emitter.Listener onNewMessage = new Emitter.Listener()
     {
         @Override
@@ -1011,6 +1012,16 @@ public class ConfirmBookingActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG,"onDestroy");
+    }
+
+    @Override
+    public void onClick(Context context) {
+        finish();
+    }
+
+    /* internet connection */
+    private void checkInternet() {
+        registerReceiver(broadcastReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 }
 

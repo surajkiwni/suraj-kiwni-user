@@ -1,5 +1,8 @@
 package com.kiwni.app.user.ui.my_rides;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +23,7 @@ import com.kiwni.app.user.fragments.PastFragment;
 import com.kiwni.app.user.fragments.UpcomingFragment;
 import com.kiwni.app.user.interfaces.BackKeyPressedListener;
 import com.google.android.material.tabs.TabLayout;
+import com.kiwni.app.user.network.ConnectivityHelper;
 
 
 public class MyRidesFragment extends Fragment implements BackKeyPressedListener
@@ -31,6 +35,7 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
     View view;
     ImageView imageBack;
     Fragment upcomingFragment, pastFragment;
+    BroadcastReceiver broadcastReceiver = null;
 
     public MyRidesFragment() {
     }
@@ -40,6 +45,10 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
         view = inflater.inflate(R.layout.fragment_my_rides, container, false);
 
         ((MainActivity) requireActivity()).getSupportActionBar().hide();
+
+        /* check internet connection */
+        broadcastReceiver = new ConnectivityHelper();
+        checkInternet();
 
         return view ;
     }
@@ -105,6 +114,11 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
 
     public static MyRidesFragment getInstance() {
         return instance;
+    }
+
+    /* internet connection */
+    private void checkInternet() {
+        getActivity().registerReceiver(broadcastReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override

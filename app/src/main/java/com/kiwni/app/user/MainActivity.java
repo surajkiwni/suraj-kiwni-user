@@ -6,11 +6,14 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -39,6 +42,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
 import com.kiwni.app.user.models.socket.SocketReservationResp;
 import com.kiwni.app.user.network.AppConstants;
+import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.socket.SocketSingletonClass;
 import com.kiwni.app.user.ui.FAQs.FaqFragment;
@@ -106,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     AlertDialog b;
     AlertDialog.Builder dialogBuilder;
     List<SocketReservationResp> reservationRespList = new ArrayList<>();
+    BroadcastReceiver broadcastReceiver = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -167,6 +172,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         context = getApplicationContext();
+
+        /* check internet connection */
+        broadcastReceiver = new ConnectivityHelper();
+        checkInternet();
 
         SocketConnect();
     }
@@ -765,6 +774,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             Toast.makeText(getApplicationContext(), "Given date is not in correct format.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /* internet connection */
+    private void checkInternet() {
+        registerReceiver(broadcastReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override

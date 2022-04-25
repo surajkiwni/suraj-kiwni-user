@@ -2,6 +2,7 @@ package com.kiwni.app.user.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,10 +15,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.GridLayoutWrapper;
 import com.kiwni.app.user.adapter.PastAdapter;
 import com.kiwni.app.user.datamodels.ErrorDialog;
+import com.kiwni.app.user.datamodels.ErrorDialog1;
+import com.kiwni.app.user.interfaces.ErrorDialogInterface;
 import com.kiwni.app.user.models.triphistory.TripsHistoryResp;
 import com.kiwni.app.user.network.ApiClient;
 import com.kiwni.app.user.network.ApiInterface;
@@ -33,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PastFragment extends Fragment
+public class PastFragment extends Fragment implements ErrorDialogInterface
 {
     RecyclerView pastRecyclerView;
     PastAdapter pastAdapter;
@@ -62,16 +66,18 @@ public class PastFragment extends Fragment
         Log.d(TAG,"partyId = " + partyId);
 
         /* call trip history api */
-        if(!isNetworkConnected())
+        getTripHistoryData(partyId);
+        /*if(!isNetworkConnected())
         {
-            ErrorDialog errorDialog = new ErrorDialog(getActivity(), "No internet. Connect to wifi or cellular network.");
-            errorDialog.show();
-            //Toast.makeText(getActivity(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
+            *//*ErrorDialog errorDialog = new ErrorDialog(getActivity(), "No internet. Connect to wifi or cellular network.");
+            errorDialog.show();*//*
+            ErrorDialog1 errorDialog1 = new ErrorDialog1();
+            errorDialog1.showError(getActivity(), "No internet. Connect to wifi or cellular network.", this);
         }
         else
         {
-            getTripHistoryData(partyId);
-        }
+
+        }*/
 
         return view;
     }
@@ -116,15 +122,28 @@ public class PastFragment extends Fragment
                     }
                     else
                     {
+                        List<TripsHistoryResp> tempList = new ArrayList<>();
+
                         tripHistoryList = response.body();
-                        Log.d(TAG, "size = " + tripHistoryList.size());
+                        //Log.d(TAG, "size = " + tripHistoryList.size());
 
                         pastRecyclerView.setHasFixedSize(true);
                         pastRecyclerView.setLayoutManager(new GridLayoutWrapper(getActivity(), 1));
 
+                        for (int i = 0; i < tripHistoryList.size(); i++)
+                        {
+                            if(tripHistoryList.get(i).getStatus().equals("In-Progress"))
+                            {
+                                tempList.add(tripHistoryList.get(i));
+                                //Log.d(TAG, "temp list size = " + tempList.size());
+                            }
+                        }
+
+                        tripHistoryList.removeAll(tempList);
+                        //Log.d(TAG, "main list size = " + tripHistoryList.size());
+
                         pastAdapter = new PastAdapter(getActivity(), tripHistoryList);
                         pastRecyclerView.setAdapter(pastAdapter);
-                        pastAdapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -137,5 +156,12 @@ public class PastFragment extends Fragment
                 lovelyProgressDialog.dismiss();
             }
         });
+    }
+
+    @Override
+    public void onClick(Context context) {
+        Intent i = new Intent(context, MainActivity.class);
+        startActivity(i);
+        getActivity().finish();
     }
 }

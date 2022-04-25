@@ -3,8 +3,10 @@ package com.kiwni.app.user.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -46,7 +48,9 @@ import com.kiwni.app.user.adapter.FindsCarRecyclerAdapter;
 import com.kiwni.app.user.adapter.GridLayoutWrapper;
 import com.kiwni.app.user.adapter.HourPackageAdapter;
 import com.kiwni.app.user.datamodels.ErrorDialog;
+import com.kiwni.app.user.datamodels.ErrorDialog1;
 import com.kiwni.app.user.global.PermissionRequestConstant;
+import com.kiwni.app.user.interfaces.ErrorDialogInterface;
 import com.kiwni.app.user.interfaces.FindCarItemClickListener;
 import com.kiwni.app.user.models.DirectionsJSONParser;
 import com.kiwni.app.user.models.FindCar;
@@ -57,6 +61,7 @@ import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 import com.kiwni.app.user.network.ApiClient;
 import com.kiwni.app.user.network.ApiInterface;
 import com.kiwni.app.user.network.AppConstants;
+import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
 import com.yarolegovich.lovelydialog.LovelyProgressDialog;
@@ -81,7 +86,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FindCarActivity extends AppCompatActivity implements OnMapReadyCallback,FindCarItemClickListener
+public class FindCarActivity extends AppCompatActivity implements OnMapReadyCallback,
+        FindCarItemClickListener, ErrorDialogInterface
 {
     GoogleMap mMap;
     RecyclerView recyclerView,findsCarsRecyclerView;
@@ -105,6 +111,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
             convertedDistance = 0.0;
 
     Polyline mPolyline;
+    BroadcastReceiver broadcastReceiver = null;
 
     FindCarItemClickListener listener;
     ApiInterface apiInterface;
@@ -137,6 +144,10 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         mapFragment.getMapAsync(this
 
         );
+
+        /* check internet connection */
+        broadcastReceiver = new ConnectivityHelper();
+        checkInternet();
 
         imageBack = findViewById(R.id.imageBack);
         imgCallFindCarAct = findViewById(R.id.imgCallFindAct);
@@ -335,16 +346,22 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         listener = this::onFindCarItemClick;
 
-        if(!isNetworkConnected())
+        /* api call */
+        getProjectionScheduleMap(pickup_time,drop_time,
+                pickup_city, direction,serviceType,
+                "","",convertedDistance , idToken,true);
+        /*if(!isNetworkConnected())
         {
-            Toast.makeText(getApplicationContext(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
+            *//*ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "No internet. Connect to wifi or cellular network.");
+            errorDialog.show();*//*
+            ErrorDialog1 errorDialog1 = new ErrorDialog1();
+            errorDialog1.showError(FindCarActivity.this,
+                    "No internet. Connect to wifi or cellular network.", this);
         }
         else
         {
-            getProjectionScheduleMap(pickup_time,drop_time,
-                    pickup_city, direction,serviceType,
-                    "","",convertedDistance , idToken,true);
-        }
+
+        }*/
     }
 
     public void getProjectionScheduleMap(String startTime, String endTime, String startLocation,
@@ -524,7 +541,18 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(drop_latitude, drop_longitude), 6.0f));
 
+            /* draw route */
             DrawRoute(new LatLng(pickup_latitude, pickup_longitude), new LatLng(drop_latitude, drop_longitude));
+            /*if(!isNetworkConnected())
+            {
+                ErrorDialog1 errorDialog1 = new ErrorDialog1();
+                errorDialog1.showError(FindCarActivity.this,
+                        "No internet. Connect to wifi or cellular network.", this);
+            }
+            else
+            {
+                DrawRoute(new LatLng(pickup_latitude, pickup_longitude), new LatLng(drop_latitude, drop_longitude));
+            }*/
         }
         else
         {
@@ -605,6 +633,12 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
             urlConnection.disconnect();
         }
         return data;
+    }
+
+    @Override
+    public void onClick(Context context)
+    {
+        finish();
     }
 
     /** A class to download data from Google Directions URL */
@@ -833,6 +867,11 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         int left, right,bottom, top;
         //googleMap.setPadding(left = 10, top = 30, right = 10, bottom = 10);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, routePadding));
+    }
+
+    /* internet connection */
+    private void checkInternet() {
+        registerReceiver(broadcastReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override

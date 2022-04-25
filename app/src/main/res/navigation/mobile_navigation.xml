@@ -142,7 +142,11 @@
         android:id="@+id/upcomingFragment"
         android:name="com.kiwni.app.user.fragments.UpcomingFragment"
         android:label="fragment_upcoming"
-        tools:layout="@layout/fragment_upcoming" />
+        tools:layout="@layout/fragment_upcoming" >
+        <action
+            android:id="@+id/action_upcomingFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/profileFragment"

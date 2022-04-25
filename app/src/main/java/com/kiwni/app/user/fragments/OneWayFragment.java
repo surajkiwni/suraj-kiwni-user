@@ -637,7 +637,103 @@ public class OneWayFragment extends Fragment implements
             @Override
             public void onClick(View view)
             {
-                if(!isNetworkConnected())
+                //one-way
+                isPickup = false;
+                isDrop = false;
+                if (autoCompleteTextViewPickup.getText().toString().equals("")) {
+                    //txtPickupLocation.setError("Pickup location field cannot be empty.!");
+                    //Toast.makeText(getActivity(), "Pickup location field cannot be empty.!", Toast.LENGTH_SHORT).show();
+                    ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup location field cannot be empty.!");
+                    errorDialog.show();
+                }
+                else if (autoCompleteTextViewDrop.getText().toString().equals(""))
+                {
+                    //Toast.makeText(getActivity(), "Drop location field cannot be empty.!", Toast.LENGTH_SHORT).show();
+                    ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Please select a Drop Location.!");
+                    errorDialog.show();
+                }
+                else if (txtPickupDatePicker.getText().toString().equals("")) {
+                    //txtDropLocation.setError("Drop location field cannot be empty.!");
+                    //Toast.makeText(getActivity(), "Pickup Date field cannot be empty.!", Toast.LENGTH_SHORT).show();
+                    ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup Date field cannot be empty.!");
+                    errorDialog.show();
+                }
+                else if(pickup_spinner_time.getSelectedItem().toString().isEmpty() || pickup_spinner_time.getSelectedItem().toString() == "")
+                {
+                    //Toast.makeText(getActivity(), "Pickup Time field cannot be empty.!", Toast.LENGTH_SHORT).show();
+                    ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup Time field cannot be empty.!");
+                    errorDialog.show();
+                }
+                else
+                {
+                    if(distanceValueFromApi.equals("") || distanceValueFromApi.equals(null))
+                    {
+                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Please Wait..!");
+                        errorDialog.show();
+                    }
+                    else
+                    {
+                        try
+                        {
+                            Date currentDate = inputFormat.parse(curr_converted_date);
+                            Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
+
+                            if (currentDate.compareTo(pickerDate) == 0 && pickup_spinner_time.getSelectedItem().toString() == "select time")
+                            {
+                                //Toast.makeText(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.", Toast.LENGTH_SHORT).show();
+                                ErrorDialog errorDialog = new ErrorDialog(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.");
+                                errorDialog.show();
+                            }
+                            else
+                            {
+                                concatDateTime = strDate + " " + pickup_spinner_time.getSelectedItem().toString();
+                                Log.d(TAG,"concatDateTime = " + concatDateTime);
+
+                                getCurrentDateToSendApiInFormat(concatDateTime);
+
+                                //change date format and send to next screen
+                                getStartDateInFormat(concatDateTime);
+
+                                //Calculate drop_time from start_date and duration
+                                Log.d(TAG, "date with duration = " + concatDateTime + "\n " + durationInTrafficFromApi);
+                                CalculateDropTime(concatDateTime, durationInTrafficFromApi);
+
+                                Log.d(TAG, "dropDateTime = " + sendToApiDropTime);
+                                Log.d(TAG, "mOrigin = " + mOrigin);
+                                Log.d(TAG, "mDestination = " + mDestination);
+
+                                Intent i = new Intent(getActivity(), FindCarActivity.class);
+                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                //send data to next screen
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_CITY, pickup_city);
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_CITY, drop_city);
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_ADDRESS, autoCompleteTextViewPickup.getText().toString());
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_ADDRESS, autoCompleteTextViewDrop.getText().toString());
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_LOCATION, mOrigin.latitude + " " + mOrigin.longitude);
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_LOCATION, mDestination.latitude + " " + mDestination.longitude);
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_DATE, txtPickupDatePicker.getText().toString());
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.START_DATE_WITH_MONTH_DAY, changeStartDateFormat);
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DIRECTION, direction);
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.SERVICE_TYPE, "Outstation");
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE, String.valueOf(convertedDistance));
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DURATION_IN_TRAFFIC, durationInTrafficFromApi);
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_TIME_FOR_API, sendToApiPickupTime);
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_TIME_FOR_API, sendToApiDropTime);
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_DATE_TO_DISPLAY, txtPickupDatePicker.getText().toString());
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_TIME_TO_DISPLAY, pickup_spinner_time.getSelectedItem().toString());
+                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE_IN_KM, distanceTextFromApi);
+
+                                startActivity(i);
+                                //getActivity().finish();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                /*if(!isNetworkConnected())
                 {
                     //Toast.makeText(getActivity(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
                     ErrorDialog errorDialog = new ErrorDialog(getActivity(), "No internet. Connect to wifi or cellular network.");
@@ -645,103 +741,8 @@ public class OneWayFragment extends Fragment implements
                 }
                 else
                 {
-                    //one-way
-                    isPickup = false;
-                    isDrop = false;
-                    if (autoCompleteTextViewPickup.getText().toString().equals("")) {
-                        //txtPickupLocation.setError("Pickup location field cannot be empty.!");
-                        //Toast.makeText(getActivity(), "Pickup location field cannot be empty.!", Toast.LENGTH_SHORT).show();
-                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup location field cannot be empty.!");
-                        errorDialog.show();
-                    }
-                    else if (autoCompleteTextViewDrop.getText().toString().equals(""))
-                    {
-                        //Toast.makeText(getActivity(), "Drop location field cannot be empty.!", Toast.LENGTH_SHORT).show();
-                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Please select a Drop Location.!");
-                        errorDialog.show();
-                    }
-                    else if (txtPickupDatePicker.getText().toString().equals("")) {
-                        //txtDropLocation.setError("Drop location field cannot be empty.!");
-                        //Toast.makeText(getActivity(), "Pickup Date field cannot be empty.!", Toast.LENGTH_SHORT).show();
-                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup Date field cannot be empty.!");
-                        errorDialog.show();
-                    }
-                    else if(pickup_spinner_time.getSelectedItem().toString().isEmpty() || pickup_spinner_time.getSelectedItem().toString() == "")
-                    {
-                        //Toast.makeText(getActivity(), "Pickup Time field cannot be empty.!", Toast.LENGTH_SHORT).show();
-                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup Time field cannot be empty.!");
-                        errorDialog.show();
-                    }
-                    else
-                    {
-                        if(distanceValueFromApi.equals("") || distanceValueFromApi.equals(null))
-                        {
-                            ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Please Wait..!");
-                            errorDialog.show();
-                        }
-                        else
-                        {
-                            try
-                            {
-                                Date currentDate = inputFormat.parse(curr_converted_date);
-                                Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
 
-                                if (currentDate.compareTo(pickerDate) == 0 && pickup_spinner_time.getSelectedItem().toString() == "select time")
-                                {
-                                    //Toast.makeText(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.", Toast.LENGTH_SHORT).show();
-                                    ErrorDialog errorDialog = new ErrorDialog(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.");
-                                    errorDialog.show();
-                                }
-                                else
-                                {
-                                    concatDateTime = strDate + " " + pickup_spinner_time.getSelectedItem().toString();
-                                    Log.d(TAG,"concatDateTime = " + concatDateTime);
-
-                                    getCurrentDateToSendApiInFormat(concatDateTime);
-
-                                    //change date format and send to next screen
-                                    getStartDateInFormat(concatDateTime);
-
-                                    //Calculate drop_time from start_date and duration
-                                    Log.d(TAG, "date with duration = " + concatDateTime + "\n " + durationInTrafficFromApi);
-                                    CalculateDropTime(concatDateTime, durationInTrafficFromApi);
-
-                                    Log.d(TAG, "dropDateTime = " + sendToApiDropTime);
-                                    Log.d(TAG, "mOrigin = " + mOrigin);
-                                    Log.d(TAG, "mDestination = " + mDestination);
-
-                                    Intent i = new Intent(getActivity(), FindCarActivity.class);
-                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    //send data to next screen
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_CITY, pickup_city);
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_CITY, drop_city);
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_ADDRESS, autoCompleteTextViewPickup.getText().toString());
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_ADDRESS, autoCompleteTextViewDrop.getText().toString());
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_LOCATION, mOrigin.latitude + " " + mOrigin.longitude);
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_LOCATION, mDestination.latitude + " " + mDestination.longitude);
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_DATE, txtPickupDatePicker.getText().toString());
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.START_DATE_WITH_MONTH_DAY, changeStartDateFormat);
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DIRECTION, direction);
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.SERVICE_TYPE, "Outstation");
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE, String.valueOf(convertedDistance));
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DURATION_IN_TRAFFIC, durationInTrafficFromApi);
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_TIME_FOR_API, sendToApiPickupTime);
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_TIME_FOR_API, sendToApiDropTime);
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_DATE_TO_DISPLAY, txtPickupDatePicker.getText().toString());
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_TIME_TO_DISPLAY, pickup_spinner_time.getSelectedItem().toString());
-                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE_IN_KM, distanceTextFromApi);
-
-                                    startActivity(i);
-                                    //getActivity().finish();
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
+                }*/
             }
         });
     }

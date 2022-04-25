@@ -313,4 +313,38 @@ public class TripsHistoryResp
     public void setOtp(String otp) {
         this.otp = otp;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", startLocation=" + startLocation +
+                ", endLocation=" + endLocation +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", status='" + status + '\'' +
+                ", rating=" + rating +
+                ", createdAt='" + createdAt + '\'' +
+                ", createdByparty=" + createdByparty +
+                ", provider=" + provider +
+                ", driver=" + driver +
+                ", passenger=" + passenger +
+                ", reservationStatus='" + reservationStatus + '\'' +
+                ", bookingChannel='" + bookingChannel + '\'' +
+                ", serviceType='" + serviceType + '\'' +
+                ", acceptedByDriverAt='" + acceptedByDriverAt + '\'' +
+                ", reachedLocationAt=" + reachedLocationAt +
+                ", vehicleId=" + vehicleId +
+                ", reservationId=" + reservationId +
+                ", invoiceId=" + invoiceId +
+                ", paymentId=" + paymentId +
+                ", startLocationCity='" + startLocationCity + '\'' +
+                ", endlocationCity='" + endlocationCity + '\'' +
+                ", scheduleId=" + scheduleId +
+                ", vehcileNo='" + vehcileNo + '\'' +
+                ", estimatedPrice=" + estimatedPrice +
+                ", driverImageUrl='" + driverImageUrl + '\'' +
+                ", otp='" + otp + '\'' +
+                '}';
+    }
 }
