@@ -3,9 +3,12 @@ package com.kiwni.app.user.fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.DatePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -37,6 +40,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -64,6 +68,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.activity.FindCarActivity;
 import com.kiwni.app.user.adapter.AutoCompleteAdapter;
@@ -72,6 +77,7 @@ import com.kiwni.app.user.datamodels.ErrorDialog;
 import com.kiwni.app.user.models.DirectionsJSONParser;
 import com.kiwni.app.user.models.KeyValue;
 import com.kiwni.app.user.network.ApiInterface;
+import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
 
@@ -99,13 +105,12 @@ public class RoundTripFragment extends Fragment implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        com.google.android.gms.location.LocationListener
-
-{
+        com.google.android.gms.location.LocationListener {
     AppCompatButton btnViewCabRoundTrip, btnCurrentLocation, btnLocationOnMap, btnConfirm;
     ImageView imageMarker;
     String TAG = this.getClass().getSimpleName();
     ConstraintLayout layoutPickupDatePicker, layoutDropDatePicker;
+    public static BroadcastReceiver broadcastReceiver = null;
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     public double currentLatitude = 0.0, currentLongitude = 0.0;
@@ -119,7 +124,7 @@ public class RoundTripFragment extends Fragment implements
     ArrayList<LatLng> dropLocationList = new ArrayList<>();
     PlacesClient placesClient;
     String address = "", city = "", pickup_city = "", drop_city = "", pickup_address = "", drop_address = "";
-    //private GoogleApiClient mGoogleApiClient;
+    GoogleApiClient mGoogleApiClient;
     private LatLng mCenterLatLong, mOrigin, mDestination;
     double pickup_lat = 0.0, pickup_lng = 0.0, drop_lat = 0.0, drop_lng = 0.0;
     boolean isPickup = false, isDrop = false, isCurrent = false, isDDSelected = false, isLocated = false, isCameraMove = false;
@@ -138,10 +143,12 @@ public class RoundTripFragment extends Fragment implements
     Double convertedDistance;
 
     String concatDateTime = "", sendToApiPickupTime = "",
-            sendToApiDropTime = "", changeStartDateFormat ="";
+            sendToApiDropTime = "", changeStartDateFormat = "";
     int mYear, mMonth, mDay, mHour, mMinute;
 
     ErrorDialog errorDialog;
+
+
 
     public RoundTripFragment() {
         // Required empty public constructor
@@ -154,8 +161,7 @@ public class RoundTripFragment extends Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_round_trip, container, false);
 
         mContext = getActivity();
@@ -163,13 +169,21 @@ public class RoundTripFragment extends Fragment implements
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity()) // Pass context here
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
+
+        /* check internet connection */
+        broadcastReceiver = new ConnectivityHelper();
+        checkInternet();
+
         return view;
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         btnViewCabRoundTrip = view.findViewById(R.id.btnViewCabRoundTrip);
@@ -212,23 +226,6 @@ public class RoundTripFragment extends Fragment implements
         autoCompleteTextViewDrop.setAdapter(adapter);
 
         direction = "two-way";
-        //get current location and draw marker on map
-        currentLatitude = Double.parseDouble(PreferencesUtils.getPreferences(getActivity(), SharedPref.USER_CURRENT_LAT, ""));
-        currentLongitude = Double.parseDouble(PreferencesUtils.getPreferences(getActivity(), SharedPref.USER_CURRENT_LNG, ""));
-        Log.d(TAG, currentLatitude + ", " + currentLongitude);
-
-        if(currentLatitude != 0.0 && currentLongitude != 0.0)
-        {
-            getAddressFromCurrentLocation(currentLatitude, currentLongitude);
-            //DrawMarker(currentLatitude, currentLongitude, pickup_city);
-            pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
-            AddMarker(pickup_city);
-            Log.d(TAG, "size 0 for current loc = " + pickupLocationList.size());
-        }
-        else
-        {
-            Log.d(TAG, "Not getting co-ordinates");
-        }
 
         //get current date in format and set to UI
         GetCurrentPickupDate();
@@ -240,20 +237,16 @@ public class RoundTripFragment extends Fragment implements
             Date currentDate = inputFormat.parse(curr_converted_date);
             Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
 
-            if(currentDate.compareTo(pickerDate) == 0)
-            {
+            if (currentDate.compareTo(pickerDate) == 0) {
                 time.clear();
 
                 KeyValue keyValue = new KeyValue("0", "select time");
                 time.add(0, keyValue);
                 isCurrentDateBooking = true;
-            }
-            else {
+            } else {
                 isCurrentDateBooking = false;
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -267,30 +260,23 @@ public class RoundTripFragment extends Fragment implements
         int i_hour = Integer.parseInt(hour);
         int i_mint = Integer.parseInt(min);
 
-        if(isCurrentDateBooking)
-        {
-            if(i_hour >= 23)
-            {
+        if (isCurrentDateBooking) {
+            if (i_hour >= 23) {
                 //Toast.makeText(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.", Toast.LENGTH_SHORT).show();
+            } else {
+                SetTimeForCurrentDate(i_hour, i_mint);
             }
-            else
-            {
-                SetTimeForCurrentDate(i_hour,i_mint);
-            }
-        }
-        else
-        {
+        } else {
             SetTimeForFutureDate();
         }
 
-        timeAdapter = new TimeAdapter(getActivity(), R.layout.spinner_list_item,time);
+        timeAdapter = new TimeAdapter(getActivity(), R.layout.spinner_list_item, time);
         pickup_spinner_time.setAdapter(timeAdapter);
 
         //Date picker
         layoutPickupDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 final Calendar c = Calendar.getInstance();
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
@@ -331,20 +317,16 @@ public class RoundTripFragment extends Fragment implements
                                     Date currentDate = inputFormat.parse(curr_converted_date);
                                     Date pickerDate = inputFormat.parse(convertedDateFormat);
 
-                                    if(currentDate.compareTo(pickerDate) == 0)
-                                    {
+                                    if (currentDate.compareTo(pickerDate) == 0) {
                                         time.clear();
 
                                         KeyValue keyValue = new KeyValue("0", "select time");
                                         time.add(0, keyValue);
                                         isCurrentDateBooking = true;
-                                    }
-                                    else {
+                                    } else {
                                         isCurrentDateBooking = false;
                                     }
-                                }
-                                catch (Exception e)
-                                {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -400,16 +382,12 @@ public class RoundTripFragment extends Fragment implements
                                     Date currentDate = inputFormat.parse(curr_converted_date);
                                     Date pickerDate = inputFormat.parse(convertedDropDateFormat);
 
-                                    if(currentDate.compareTo(pickerDate) == 0)
-                                    {
+                                    if (currentDate.compareTo(pickerDate) == 0) {
                                         isCurrentDateBooking = true;
-                                    }
-                                    else {
+                                    } else {
                                         isCurrentDateBooking = false;
                                     }
-                                }
-                                catch (Exception e)
-                                {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -422,8 +400,7 @@ public class RoundTripFragment extends Fragment implements
         //click events of autocomplete
         autoCompleteTextViewPickup.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 isLocated = false;
                 autoCompleteTextViewPickup.setSelectAllOnFocus(true);
             }
@@ -431,8 +408,7 @@ public class RoundTripFragment extends Fragment implements
 
         autoCompleteTextViewPickup.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
+            public boolean onTouch(View v, MotionEvent event) {
                 isPickup = true;
                 isDrop = false;
                 isLocated = false;
@@ -464,8 +440,7 @@ public class RoundTripFragment extends Fragment implements
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length() > 15)
-                {
+                if (s.length() > 15) {
                     autoCompleteTextViewPickup.dismissDropDown();
                 }
             }
@@ -480,8 +455,7 @@ public class RoundTripFragment extends Fragment implements
 
         autoCompleteTextViewDrop.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
+            public boolean onTouch(View v, MotionEvent event) {
                 isDrop = true;
                 isPickup = false;
                 isLocated = false;
@@ -512,8 +486,7 @@ public class RoundTripFragment extends Fragment implements
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length() > 15)
-                {
+                if (s.length() > 15) {
                     autoCompleteTextViewDrop.dismissDropDown();
                 }
             }
@@ -521,54 +494,44 @@ public class RoundTripFragment extends Fragment implements
 
         btnLocationOnMap.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 imageMarker.setVisibility(View.VISIBLE);
                 linearFooterButtons.setVisibility(View.GONE);
                 linearBtnConfirm.setVisibility(View.VISIBLE);
 
-                if (isPickup)
-                {
+                if (isPickup) {
                     isCameraMove = true;
                     hideKeyboardFrom(getActivity(), autoCompleteTextViewPickup);
-                }
-                else
-                {
+                } else {
                     hideKeyboardFrom(getActivity(), autoCompleteTextViewDrop);
                 }
 
-                if(!isLocated)
-                {
+                if (!isLocated) {
                     CameraChange();
                 }
             }
         });
 
-        btnCurrentLocation.setOnClickListener(new View.OnClickListener()
-        {
+        btnCurrentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 isCurrent = true;
                 isLocated = true;
                 linearFooterButtons.setVisibility(View.GONE);
                 //linearBtnDone.setVisibility(View.VISIBLE);
 
                 //get current location
-                if(currentLatitude != 0.0 && currentLongitude != 0.0)
+                if (currentLatitude != 0.0 && currentLongitude != 0.0)
                 {
                     getAddressFromCurrentLocation(currentLatitude, currentLongitude);
 
                     pickupMarker.remove();
                     DrawMarker(currentLatitude, currentLongitude, pickup_city);
 
-                    if(pickupLocationList.size() > 0)
-                    {
+                    if (pickupLocationList.size() > 0) {
                         pickupLocationList.set(0, new LatLng(currentLatitude, currentLongitude));
                         Log.d("TAG", "size update pickup = " + pickupLocationList.size());
-                    }
-                    else
-                    {
+                    } else {
                         Log.d("TAG", "pickup size = " + pickupLocationList.size());
                     }
 
@@ -576,29 +539,23 @@ public class RoundTripFragment extends Fragment implements
                     Log.d("TAG", "size 2 = " + pickupLocationList.size());
                 }
 
-                if(!autoCompleteTextViewPickup.getText().toString().equals("")
-                        && !autoCompleteTextViewDrop.getText().toString().equals(""))
-                {
-                    Log.d("TAG","enable find car button");
+                if (!autoCompleteTextViewPickup.getText().toString().equals("")
+                        && !autoCompleteTextViewDrop.getText().toString().equals("")) {
+                    Log.d("TAG", "enable find car button");
                     linearBtnConfirm.setVisibility(View.GONE);
                     btnViewCabRoundTrip.setVisibility(View.VISIBLE);
-                }
-                else
-                {
+                } else {
                     linearBtnConfirm.setVisibility(View.GONE);
                 }
             }
         });
 
-        btnConfirm.setOnClickListener(new View.OnClickListener()
-        {
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 isLocated = true;
 
-                if(isPickup)
-                {
+                if (isPickup) {
                     //not change camera position
                     imageMarker.setVisibility(View.GONE);
                     linearBtnConfirm.setVisibility(View.GONE);
@@ -609,84 +566,65 @@ public class RoundTripFragment extends Fragment implements
                     DrawMarker(pickup_lat, pickup_lng, pickup_city);
                     Log.d(TAG, "new Latlng = " + pickup_lat + " " + pickup_lng);
 
-                    if(pickupLocationList.size() > 0)
-                    {
-                        pickupLocationList.set(0, new LatLng(pickup_lat,pickup_lng));
+                    if (pickupLocationList.size() > 0) {
+                        pickupLocationList.set(0, new LatLng(pickup_lat, pickup_lng));
                         Log.d("TAG", "size update pickup = " + pickupLocationList.size());
-                    }
-                    else
-                    {
+                    } else {
                         Log.d("TAG", "pickup size = " + pickupLocationList.size());
                     }
 
                     AddMarker(pickup_city);
                     Log.d("TAG", "size 2 = " + pickupLocationList.size());
-                }
-                else
-                {
+                } else {
                     //drop
                     Log.d(TAG, "city = " + pickup_city + " - " + drop_city);
-                    if(pickup_city == null || drop_city == null)
-                    {
+                    if (pickup_city == null || drop_city == null) {
                         autoCompleteTextViewDrop.setText("");
                         imageMarker.setVisibility(View.GONE);
                         linearBtnConfirm.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "Please select proper location.!", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        if(pickup_city.equals(drop_city))
-                        {
+                    } else {
+                        if (pickup_city.equals(drop_city)) {
                             autoCompleteTextViewDrop.setText("");
                             Toast.makeText(getActivity(), "Please Select Different City..!", Toast.LENGTH_SHORT).show();
                             linearBtnConfirm.setVisibility(View.GONE);
                             //mMap.clear();
 
                             imageMarker.setVisibility(View.GONE);
-                            if(dropMarker != null)
-                            {
+                            if (dropMarker != null) {
                                 dropMarker.remove();
                                 mPolyline.remove();
                             }
-                        }
-                        else
-                        {
-                            if(drop_lat != 0.0 && drop_lng != 0.0)
-                            {
+                        } else {
+                            if (drop_lat != 0.0 && drop_lng != 0.0) {
                                 imageMarker.setVisibility(View.GONE);
                                 linearBtnConfirm.setVisibility(View.GONE);
 
-                                if(dropLocationList.size() == 0)
-                                {
+                                if (dropLocationList.size() == 0) {
                                     DrawMarker(drop_lat, drop_lng, drop_city);
                                     dropLocationList.add(new LatLng(drop_lat, drop_lng));
                                     Log.d("TAG", "size default = " + dropLocationList.size());
-                                }
-                                else
-                                {
+                                } else {
                                     dropMarker.remove();
                                     DrawMarker(drop_lat, drop_lng, drop_city);
-                                    dropLocationList.set(0, new LatLng(drop_lat,drop_lng));
+                                    dropLocationList.set(0, new LatLng(drop_lat, drop_lng));
                                     Log.d("TAG", "size update drop = " + dropLocationList.size());
                                 }
 
                                 AddMarker(drop_city);
-                                Log.d("TAG","size 2 = " + dropLocationList.size());
+                                Log.d("TAG", "size 2 = " + dropLocationList.size());
                             }
                         }
                     }
                 }
 
-                if(!autoCompleteTextViewPickup.getText().toString().equals("")
-                        && !autoCompleteTextViewDrop.getText().toString().equals(""))
-                {
-                    Log.d("TAG","enable find car button");
+                if (!autoCompleteTextViewPickup.getText().toString().equals("")
+                        && !autoCompleteTextViewDrop.getText().toString().equals("")) {
+                    Log.d("TAG", "enable find car button");
                     linearBtnConfirm.setVisibility(View.GONE);
                     linearFooterButtons.setVisibility(View.GONE);
                     btnViewCabRoundTrip.setVisibility(View.VISIBLE);
-                }
-                else
-                {
+                } else {
                     linearFooterButtons.setVisibility(View.GONE);
                 }
             }
@@ -694,13 +632,11 @@ public class RoundTripFragment extends Fragment implements
 
         btnViewCabRoundTrip.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 //round-trip
                 isPickup = false;
                 isDrop = false;
-                if (autoCompleteTextViewPickup.getText().toString().equals(""))
-                {
+                if (autoCompleteTextViewPickup.getText().toString().equals("")) {
                     //txtPickupLocation.setError("Pickup location field cannot be empty.!");
                     //Toast.makeText(getActivity(), "Pickup location field cannot be empty.!", Toast.LENGTH_SHORT).show();
                     errorDialog = new ErrorDialog(getActivity(), "Pickup location field cannot be empty.!");
@@ -715,44 +651,31 @@ public class RoundTripFragment extends Fragment implements
                     //Toast.makeText(getActivity(), "Pickup Date field cannot be empty.!", Toast.LENGTH_SHORT).show();
                     errorDialog = new ErrorDialog(getActivity(), "Pickup Date field cannot be empty.!");
                     errorDialog.show();
-                }
-                else if(pickup_spinner_time.getSelectedItem().toString().isEmpty() || pickup_spinner_time.getSelectedItem().toString() == "")
-                {
+                } else if (pickup_spinner_time.getSelectedItem().toString().isEmpty() || pickup_spinner_time.getSelectedItem().toString() == "") {
                     //Toast.makeText(getActivity(), "Pickup Time field cannot be empty.!", Toast.LENGTH_SHORT).show();
                     errorDialog = new ErrorDialog(getActivity(), "Pickup Time field cannot be empty.!");
                     errorDialog.show();
-                }
-                else if(txtDropDatePicker.getText().toString().equals(""))
-                {
+                } else if (txtDropDatePicker.getText().toString().equals("")) {
                     //Toast.makeText(getActivity(), "Destination Date field cannot be empty.!", Toast.LENGTH_SHORT).show();
                     errorDialog = new ErrorDialog(getActivity(), "Destination Date field cannot be empty.!");
                     errorDialog.show();
-                }
-                else
-                {
+                } else {
                     /* check distance should not be null or empty */
-                    if(distanceValueFromApi.equals("") || distanceValueFromApi.equals(null))
-                    {
+                    if (distanceValueFromApi.equals("") || distanceValueFromApi.equals(null)) {
                         errorDialog = new ErrorDialog(getActivity(), "Please Wait..!");
                         errorDialog.show();
-                    }
-                    else
-                    {
-                        try
-                        {
+                    } else {
+                        try {
                             Date currentDate = inputFormat.parse(curr_converted_date);
                             Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
 
-                            if (currentDate.compareTo(pickerDate) == 0 && pickup_spinner_time.getSelectedItem().toString() == "select time")
-                            {
+                            if (currentDate.compareTo(pickerDate) == 0 && pickup_spinner_time.getSelectedItem().toString() == "select time") {
                                 //Toast.makeText(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.", Toast.LENGTH_SHORT).show();
                                 errorDialog = new ErrorDialog(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.");
                                 errorDialog.show();
-                            }
-                            else
-                            {
+                            } else {
                                 concatDateTime = strPickupDate + " " + pickup_spinner_time.getSelectedItem().toString();
-                                Log.d(TAG,"concat pickup date time = " + concatDateTime);
+                                Log.d(TAG, "concat pickup date time = " + concatDateTime);
 
                                 getCurrentDateToSendApiInFormat(concatDateTime);
 
@@ -769,8 +692,7 @@ public class RoundTripFragment extends Fragment implements
                                 Log.d(TAG, "mOrigin = " + mOrigin + ", " + pickup_city + ", " + drop_city);
                                 Log.d(TAG, "mDestination = " + mDestination);
 
-                                if(isDateAfter(sendToApiPickupTime, sendToApiDropTime))
-                                {
+                                if (isDateAfter(sendToApiPickupTime, sendToApiDropTime)) {
                                     //true condition
                                     Intent i = new Intent(getActivity(), FindCarActivity.class);
                                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -796,17 +718,13 @@ public class RoundTripFragment extends Fragment implements
 
                                     startActivity(i);
                                     //getActivity().finish();
-                                }
-                                else
-                                {
+                                } else {
                                     //false condition
                                     errorDialog = new ErrorDialog(getActivity(), "Kindly select proper return date..!");
                                     errorDialog.show();
                                 }
                             }
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -829,8 +747,7 @@ public class RoundTripFragment extends Fragment implements
     public AdapterView.OnItemClickListener autocompleteClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            try
-            {
+            try {
                 item = adapter.getItem(i);
                 String placeID = null;
                 if (item != null) {
@@ -851,32 +768,26 @@ public class RoundTripFragment extends Fragment implements
                             .build();
                 }
 
-                if (request != null)
-                {
+                if (request != null) {
                     placesClient.fetchPlace(request).addOnCompleteListener(new OnCompleteListener<FetchPlaceResponse>() {
                         @Override
-                        public void onComplete(@NonNull Task<FetchPlaceResponse> task)
-                        {
+                        public void onComplete(@NonNull Task<FetchPlaceResponse> task) {
                             FetchPlaceResponse places = task.getResult();
                             final Place place = places.getPlace();
                             Log.d("TAG", "places = " + place.getAddress());
 
-                            if(isPickup)
-                            {
+                            if (isPickup) {
                                 pickup_lat = places.getPlace().getLatLng().latitude;
                                 pickup_lng = places.getPlace().getLatLng().longitude;
                                 pickup_address = places.getPlace().getAddress();
 
-                                if(!isDDSelected)
-                                {
+                                if (!isDDSelected) {
                                     item = adapter.getItem(i);
                                 }
 
                                 isDDSelected = true;
                                 getAddressFromCurrentLocation(pickup_lat, pickup_lng);
-                            }
-                            else
-                            {
+                            } else {
                                 drop_lat = places.getPlace().getLatLng().latitude;
                                 drop_lng = places.getPlace().getLatLng().longitude;
                                 drop_address = places.getPlace().getAddress();
@@ -885,23 +796,19 @@ public class RoundTripFragment extends Fragment implements
                                 getAddressFromCurrentLocation(drop_lat, drop_lng);
                             }
 
-                            if(!autoCompleteTextViewPickup.getText().toString().equals("")
-                                    && !autoCompleteTextViewDrop.getText().toString().equals(""))
-                            {
-                                Log.d("TAG","enable find car button");
+                            if (!autoCompleteTextViewPickup.getText().toString().equals("")
+                                    && !autoCompleteTextViewDrop.getText().toString().equals("")) {
+                                Log.d("TAG", "enable find car button");
                                 linearBtnConfirm.setVisibility(View.GONE);
                                 linearFooterButtons.setVisibility(View.GONE);
                                 btnViewCabRoundTrip.setVisibility(View.VISIBLE);
-                            }
-                            else
-                            {
+                            } else {
                                 linearFooterButtons.setVisibility(View.GONE);
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
+                        public void onFailure(@NonNull Exception e) {
                             e.printStackTrace();
                             autoCompleteTextViewPickup.setText(e.getMessage());
                         }
@@ -926,12 +833,53 @@ public class RoundTripFragment extends Fragment implements
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        /*Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);*/
-        /*if (mLastLocation != null) {
-            changeMap(mLastLocation);
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (mLastLocation != null)
+        {
+            //  changeMap(mLastLocation);
             Log.d(TAG, "ON connected");
+            Log.d(TAG, "Location on Connected = " + mLastLocation.getLatitude() + " " + mLastLocation.getLongitude());
 
+           // Toast.makeText(getActivity(), "Location change", Toast.LENGTH_SHORT).show();
+
+            currentLatitude = mLastLocation.getLatitude();
+            currentLongitude = mLastLocation.getLongitude();
+
+            //true
+            if(ConnectivityHelper.isConnected)
+            {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                        (new LatLng(currentLatitude, currentLongitude), 10.0f));
+
+                Log.d(TAG, "current location = " + currentLatitude + " " + currentLongitude);
+
+                //get current location and draw marker on map
+                if (currentLatitude != 0.0 && currentLongitude != 0.0)
+                {
+                    pickupMarker = mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(currentLatitude, currentLongitude))
+                            .title(city)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                            (new LatLng(currentLatitude, currentLongitude), 10.0f));
+
+
+                    getAddressFromCurrentLocation(currentLatitude, currentLongitude);
+                    //DrawMarker(currentLatitude, currentLongitude, pickup_city);
+                    pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
+                    AddMarker(pickup_city);
+                    Log.d(TAG, "size 0 for current loc = " + pickupLocationList.size());
+                } else {
+                    Log.d(TAG, "Not getting co-ordinates");
+                }
+            }
+            else            //false
+            {
+                //Toast.makeText(getActivity(), "BroadCast", Toast.LENGTH_SHORT).show();
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                        (new LatLng(currentLatitude, currentLongitude), 10.0f));
+            }
         } else
             try {
                 LocationServices.FusedLocationApi.removeLocationUpdates(
@@ -950,13 +898,13 @@ public class RoundTripFragment extends Fragment implements
 
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     @Override
     public void onConnectionSuspended(int i) {
         Log.i(TAG, "Connection suspended");
-        //mGoogleApiClient.connect();
+        mGoogleApiClient.connect();
     }
 
     @Override
@@ -965,11 +913,13 @@ public class RoundTripFragment extends Fragment implements
     }
 
     @Override
-    public void onLocationChanged(@NonNull Location location)
-    {
-       /* try {
+    public void onLocationChanged(@NonNull Location location) {
+        /*try {
             if (location != null)
-                changeMap(location);
+                //changeMap(location);
+
+            *//*Log.d(TAG, "Location = " + location.getLatitude() + " " + location.getLongitude());
+            Toast.makeText(getActivity(), "Location change", Toast.LENGTH_SHORT).show();*//*
             LocationServices.FusedLocationApi.removeLocationUpdates(
                     mGoogleApiClient, this);
 
@@ -979,22 +929,26 @@ public class RoundTripFragment extends Fragment implements
     }
 
     @Override
-    public void onMapReady(@NonNull GoogleMap googleMap)
-    {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         Log.d(TAG, "OnMapReady");
-        if(mMap != null)
-        {
+        if (mMap != null) {
             mMap.clear();
             autoCompleteTextViewDrop.setText("");
         }
         mMap = googleMap;
-
-        pickupMarker = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(currentLatitude, currentLongitude))
-                .title(city)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                (new LatLng(currentLatitude, currentLongitude), 10.0f));
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
     }
 
     public void CameraChange()
@@ -1067,14 +1021,14 @@ public class RoundTripFragment extends Fragment implements
         return true;
     }
 
-    protected synchronized void buildGoogleApiClient()
+   /* protected synchronized void buildGoogleApiClient()
     {
-        /*mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
-                .build();*/
-    }
+                .build();
+    }*/
 
     public void getAddressFromCurrentLocation(Double latitude, Double longitude)
     {
@@ -1230,12 +1184,14 @@ public class RoundTripFragment extends Fragment implements
         }
         else
         {
-            /*mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(latitude, longitude))
+
+
+           /* pickupMarker = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(currentLatitude, currentLongitude))
                     .title(city)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                    (new LatLng(latitude, longitude), 8.0f));*/
+                    (new LatLng(currentLatitude, currentLongitude), 10.0f));*/
         }
     }
 
@@ -1892,6 +1848,10 @@ public class RoundTripFragment extends Fragment implements
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
+    public void checkInternet() {
+        getActivity().registerReceiver(broadcastReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
     @Override
     public void onAttach(@NonNull @NotNull Context context) {
         super.onAttach(context);
@@ -1905,12 +1865,12 @@ public class RoundTripFragment extends Fragment implements
 
         Log.d(TAG,"onStart");
 
-        /*try {
+        try {
             mGoogleApiClient.connect();
 
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     @Override
@@ -1932,6 +1892,8 @@ public class RoundTripFragment extends Fragment implements
         /*autoCompleteTextViewPickup.setText("");
         autoCompleteTextViewDrop.setText("");*/
 
+        mGoogleApiClient.connect();
+
         isCurrent = true;
     }
 
@@ -1945,7 +1907,7 @@ public class RoundTripFragment extends Fragment implements
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        getActivity().unregisterReceiver(broadcastReceiver);
         Log.d(TAG,"onDestroy");
     }
 
@@ -1953,6 +1915,26 @@ public class RoundTripFragment extends Fragment implements
     public void onResume() {
         super.onResume();
 
+
+
         Log.d(TAG,"onResume");
     }
+
+    private boolean isMyServiceRunning(Class<?> ConnectivityHelper) {
+
+        ActivityManager manager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (ConnectivityHelper.getName().equals(service.service.getClassName())) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
+
+
 }

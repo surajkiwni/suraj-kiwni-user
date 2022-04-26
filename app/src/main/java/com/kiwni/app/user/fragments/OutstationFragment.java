@@ -1,6 +1,7 @@
 package com.kiwni.app.user.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.tabs.TabLayout;
 import com.kiwni.app.user.R;
+import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.ui.home.HomeFragment;
 
 public class OutstationFragment extends Fragment {
@@ -22,6 +24,8 @@ public class OutstationFragment extends Fragment {
     public static OutstationFragment instance;
     String TAG = this.getClass().getSimpleName();
     View view;
+    String currentLat = "", currentLng = "";
+    Bundle bundle;
 
     public OutstationFragment() {
         // Required empty public constructor
@@ -39,6 +43,15 @@ public class OutstationFragment extends Fragment {
 
         instance = this;
         tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+
+        /* get bundle value here */
+        bundle = this.getArguments();
+        if (bundle != null)
+        {
+            currentLat = bundle.getString(SharedPref.USER_CURRENT_LAT, "");
+            currentLng = bundle.getString(SharedPref.USER_CURRENT_LNG, "");
+        }
+        Log.d(TAG, "Location = " + currentLat + " " + currentLng);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -67,7 +80,6 @@ public class OutstationFragment extends Fragment {
 
         roundTripFragment = new RoundTripFragment();
         oneWayFragment = new OneWayFragment();
-
         tabLayout.addTab(tabLayout.newTab().setText("Round Trip"), true);
         tabLayout.addTab(tabLayout.newTab().setText("One Way"));
     }
@@ -87,5 +99,14 @@ public class OutstationFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        bundle = this.getArguments();
+        if (bundle != null)
+        {
+            currentLat = bundle.getString(SharedPref.USER_CURRENT_LAT, "");
+            currentLng = bundle.getString(SharedPref.USER_CURRENT_LNG, "");
+        }
+        Log.d(TAG, "Location = " + currentLat + " " + currentLng);
+
     }
 }

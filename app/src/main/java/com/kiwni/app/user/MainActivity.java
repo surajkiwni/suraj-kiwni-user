@@ -13,9 +13,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -33,13 +35,21 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.gson.Gson;
 import com.kiwni.app.user.R;
+import com.kiwni.app.user.activity.LoginActivity;
+import com.kiwni.app.user.activity.SplashActivity;
 import com.kiwni.app.user.databinding.ActivityMainBinding;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
+import com.kiwni.app.user.fragments.RoundTripFragment;
 import com.kiwni.app.user.models.socket.SocketReservationResp;
 import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.network.ConnectivityHelper;
@@ -57,12 +67,14 @@ import com.kiwni.app.user.utils.PreferencesUtils;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -100,6 +112,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     MenuItem action_like;
     public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
 
+    FragmentManager fragmentManager = getSupportFragmentManager();
+
+
+
+
     /* socket */
     Socket mSocket;
     SocketReservationResp reservationResp = new SocketReservationResp();
@@ -110,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     AlertDialog b;
     AlertDialog.Builder dialogBuilder;
     List<SocketReservationResp> reservationRespList = new ArrayList<>();
-    BroadcastReceiver broadcastReceiver = null;
+    public static BroadcastReceiver broadcastReceiver = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -124,6 +141,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         getSupportActionBar().setTitle("title");
+
+        // for data sharing
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -178,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         checkInternet();
 
         SocketConnect();
+
     }
 
     @Override
@@ -260,30 +280,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    // permission was granted, yay! Do the phone call
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -825,7 +822,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
-
+        unregisterReceiver(broadcastReceiver);
         mSocket.disconnect();
     }
 }
