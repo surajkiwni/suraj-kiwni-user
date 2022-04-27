@@ -61,14 +61,14 @@
             android:parentActivityName="com.kiwni.app.user.MainActivity"
             android:theme="@style/Theme.User.NoActionBar" />
 
-        <receiver android:name=".network.ConnectivityHelper"
+        <!--<receiver android:name=".network.ConnectivityHelper"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
                     tools:ignore="BatteryLife"/>
             </intent-filter>
-        </receiver>
-    </application>
+        </receiver>-->
+        </application>
 
 </manifest>

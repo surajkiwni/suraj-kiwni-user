@@ -40,7 +40,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -68,7 +67,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import com.kiwni.app.user.MainActivity;
+import com.google.android.material.snackbar.Snackbar;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.activity.FindCarActivity;
 import com.kiwni.app.user.adapter.AutoCompleteAdapter;
@@ -105,15 +104,14 @@ public class RoundTripFragment extends Fragment implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        com.google.android.gms.location.LocationListener {
+        com.google.android.gms.location.LocationListener,ConnectivityHelper.NetworkStateReceiverListener{
     AppCompatButton btnViewCabRoundTrip, btnCurrentLocation, btnLocationOnMap, btnConfirm;
     ImageView imageMarker;
     String TAG = this.getClass().getSimpleName();
     ConstraintLayout layoutPickupDatePicker, layoutDropDatePicker;
-    public static BroadcastReceiver broadcastReceiver = null;
+    //public BroadcastReceiver broadcastReceiver = null;
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    public double currentLatitude = 0.0, currentLongitude = 0.0;
     GoogleMap mMap;
     Marker pickupMarker, dropMarker;
     private Polyline mPolyline;
@@ -123,36 +121,33 @@ public class RoundTripFragment extends Fragment implements
     ArrayList<LatLng> pickupLocationList = new ArrayList<>();
     ArrayList<LatLng> dropLocationList = new ArrayList<>();
     PlacesClient placesClient;
-    String address = "", city = "", pickup_city = "", drop_city = "", pickup_address = "", drop_address = "";
     GoogleApiClient mGoogleApiClient;
     private LatLng mCenterLatLong, mOrigin, mDestination;
-    double pickup_lat = 0.0, pickup_lng = 0.0, drop_lat = 0.0, drop_lng = 0.0;
     boolean isPickup = false, isDrop = false, isCurrent = false, isDDSelected = false, isLocated = false, isCameraMove = false;
     Context mContext;
     AutocompletePrediction item;
     String direction = "", distanceTextFromApi = "", distanceValueFromApi = "",
             durationTextFromApi = "", durationInTrafficFromApi = "",
             curr_converted_date = "", strDropDate = "", strPickupDate = "", convertedDateFormat = "",
-            convertedDropDateFormat = "";
-
+            convertedDropDateFormat = "", concatDateTime = "", sendToApiPickupTime = "",
+            sendToApiDropTime = "", changeStartDateFormat = "";
+    String address = "", city = "", pickup_city = "", drop_city = "", pickup_address = "", drop_address = "";
     Spinner pickup_spinner_time;
     ArrayList<KeyValue> time = new ArrayList<>();
     TimeAdapter timeAdapter;
     boolean isCurrentDateBooking = false;
     TextView txtPickupDatePicker, txtDropDatePicker;
-    Double convertedDistance;
-
-    String concatDateTime = "", sendToApiPickupTime = "",
-            sendToApiDropTime = "", changeStartDateFormat = "";
+    double convertedDistance = 0.0, currentLatitude = 0.0, currentLongitude = 0.0, pickup_lat = 0.0,
+            pickup_lng = 0.0, drop_lat = 0.0, drop_lng = 0.0;
     int mYear, mMonth, mDay, mHour, mMinute;
 
     ErrorDialog errorDialog;
-
-
+    private ConnectivityHelper connectivityHelper;      // Receiver that detects network state changes
 
     public RoundTripFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -160,8 +155,8 @@ public class RoundTripFragment extends Fragment implements
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.fragment_round_trip, container, false);
 
         mContext = getActivity();
@@ -169,14 +164,15 @@ public class RoundTripFragment extends Fragment implements
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        /* for gps */
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity()) // Pass context here
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
 
-        /* check internet connection */
-        broadcastReceiver = new ConnectivityHelper();
-        checkInternet();
+        /* start receiver for network state */
+        startNetworkBroadcastReceiver(getActivity());
+
 
         return view;
     }
@@ -838,10 +834,8 @@ public class RoundTripFragment extends Fragment implements
         if (mLastLocation != null)
         {
             //  changeMap(mLastLocation);
-            Log.d(TAG, "ON connected");
-            Log.d(TAG, "Location on Connected = " + mLastLocation.getLatitude() + " " + mLastLocation.getLongitude());
-
-           // Toast.makeText(getActivity(), "Location change", Toast.LENGTH_SHORT).show();
+            //Log.d(TAG, "ON connected");
+            //Log.d(TAG, "Location on Connected = " + mLastLocation.getLatitude() + " " + mLastLocation.getLongitude());
 
             currentLatitude = mLastLocation.getLatitude();
             currentLongitude = mLastLocation.getLongitude();
@@ -879,6 +873,8 @@ public class RoundTripFragment extends Fragment implements
                 //Toast.makeText(getActivity(), "BroadCast", Toast.LENGTH_SHORT).show();
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
                         (new LatLng(currentLatitude, currentLongitude), 10.0f));
+
+
             }
         } else
             try {
@@ -1315,6 +1311,60 @@ public class RoundTripFragment extends Fragment implements
             urlConnection.disconnect();
         }
         return data;
+    }
+
+    @SuppressLint("ResourceAsColor")
+    @Override
+    public void networkAvailable()
+    {
+        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.GREEN)
+                .setDuration(5000)
+                .show();
+
+        Log.d(TAG, "current location = " + currentLatitude + " " + currentLongitude);
+
+        //get current location and draw marker on map
+        if (currentLatitude != 0.0 && currentLongitude != 0.0)
+        {
+            pickupMarker = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(currentLatitude, currentLongitude))
+                    .title(city)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                    (new LatLng(currentLatitude, currentLongitude), 10.0f));
+
+
+            getAddressFromCurrentLocation(currentLatitude, currentLongitude);
+            //DrawMarker(currentLatitude, currentLongitude, pickup_city);
+            pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
+            AddMarker(pickup_city);
+            Log.d(TAG, "size 0 for current loc = " + pickupLocationList.size());
+        } else {
+            Log.d(TAG, "Not getting co-ordinates");
+        }
+    }
+
+    @Override
+    public void networkUnavailable() {
+       // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.RED)
+                .setDuration(5000)
+                .show();
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                (new LatLng(currentLatitude, currentLongitude), 10.0f));
+
+    }
+
+    public void startNetworkBroadcastReceiver(Context currentContext) {
+        connectivityHelper = new ConnectivityHelper();
+        connectivityHelper.addListener(this);
+        registerNetworkBroadcastReceiver(currentContext);
     }
 
     /**
@@ -1848,8 +1898,12 @@ public class RoundTripFragment extends Fragment implements
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-    public void checkInternet() {
-        getActivity().registerReceiver(broadcastReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    public void registerNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+    public void unregisterNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.unregisterReceiver(connectivityHelper);
     }
 
     @Override
@@ -1893,8 +1947,10 @@ public class RoundTripFragment extends Fragment implements
         autoCompleteTextViewDrop.setText("");*/
 
         mGoogleApiClient.connect();
-
         isCurrent = true;
+
+        unregisterNetworkBroadcastReceiver(getActivity());
+        super.onPause();
     }
 
     @Override
@@ -1907,34 +1963,16 @@ public class RoundTripFragment extends Fragment implements
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getActivity().unregisterReceiver(broadcastReceiver);
+        getActivity().unregisterReceiver(connectivityHelper);
         Log.d(TAG,"onDestroy");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-
-
-        Log.d(TAG,"onResume");
+        registerNetworkBroadcastReceiver(getActivity());
+        super.onResume();
     }
-
-    private boolean isMyServiceRunning(Class<?> ConnectivityHelper) {
-
-        ActivityManager manager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (ConnectivityHelper.getName().equals(service.service.getClassName())) {
-
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-
-
 
 
 }

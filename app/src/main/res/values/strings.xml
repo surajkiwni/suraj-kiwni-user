@@ -72,6 +72,8 @@
     <string name="one_way_trip_to_mumbai">One-way-trip To Mumbai</string>
     <string name="rs_2500">Rs. 2500</string>
     <string name="estimated_fare">Estimated Fare</string>
+    <string name="no_internet_msg">You are not connected to internet. Please check and try again. </string>
+    <string name="internet_msg">You are connected to internet now.</string>
 
     <string-array name="select_year">
         <item>Select Year</item>
