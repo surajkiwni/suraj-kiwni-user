@@ -1,7 +1,12 @@
 package com.kiwni.app.user.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.chaos.view.PinView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -25,6 +31,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
+import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
 import com.yarolegovich.lovelydialog.LovelyProgressDialog;
@@ -34,7 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-public class OtpActivity extends AppCompatActivity
+public class OtpActivity extends AppCompatActivity implements ConnectivityHelper.NetworkStateReceiverListener
 {
     Button btnLogin;
     TextView txtPhoneNo;
@@ -54,6 +61,8 @@ public class OtpActivity extends AppCompatActivity
     String TAG = this.getClass().getSimpleName();
     Dialog lovelyProgressDialog;
 
+    private ConnectivityHelper connectivityHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +76,8 @@ public class OtpActivity extends AppCompatActivity
         pinView = findViewById(R.id.pinView);
         imgBack = findViewById(R.id.imgBack);
         btnLogin = findViewById(R.id.btnLogin);
+
+        startNetworkBroadcastReceiver(this);
 
         mobileno = getIntent().getStringExtra("mobile");
         if (mobileno != null) {
@@ -313,5 +324,60 @@ public class OtpActivity extends AppCompatActivity
                         }
                     }
                 });
+    }
+
+    @SuppressLint("ResourceAsColor")
+    @Override
+    public void networkAvailable()
+    {
+        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.GREEN)
+                .setDuration(5000)
+                .show();
+
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.RED)
+                .setDuration(5000)
+                .show();
+
+
+    }
+
+    public void startNetworkBroadcastReceiver(Context currentContext) {
+        connectivityHelper = new ConnectivityHelper();
+        connectivityHelper.addListener(this);
+        registerNetworkBroadcastReceiver(currentContext);
+    }
+
+
+    public void registerNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+    public void unregisterNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.unregisterReceiver(connectivityHelper);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        registerNetworkBroadcastReceiver(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        unregisterNetworkBroadcastReceiver(this);
     }
 }

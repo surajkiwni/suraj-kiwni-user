@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.Gson;
@@ -99,7 +101,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDialogInterface
+public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDialogInterface,ConnectivityHelper.NetworkStateReceiverListener
 {
     RadioButton radioBusiness, radioPersonal;
     AppCompatButton btnConfirmBooking;
@@ -151,6 +153,8 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     List<SocketReservationResp> reservationRespList = new ArrayList<>();
     Dialog dialogPayment, dialogThankYou;
 
+    private ConnectivityHelper connectivityHelper;
+
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -195,9 +199,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
 
         errorDialogInterface = this::onClick;
 
-        /* check internet connection */
-        broadcastReceiver = new ConnectivityHelper();
-        checkInternet();
+
 
         Gson gson = new Gson();
         String stringData = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, "");
@@ -974,11 +976,46 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
         }
     }
 
-    private boolean isNetworkConnected()
-    {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    @SuppressLint("ResourceAsColor")
+    @Override
+    public void networkAvailable()
+    {
+        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.GREEN)
+                .setDuration(5000)
+                .show();
+
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.RED)
+                .setDuration(5000)
+                .show();
+
+
+    }
+
+    public void startNetworkBroadcastReceiver(Context currentContext) {
+        connectivityHelper = new ConnectivityHelper();
+        connectivityHelper.addListener(this);
+        registerNetworkBroadcastReceiver(currentContext);
+    }
+
+
+    public void registerNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+    public void unregisterNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.unregisterReceiver(connectivityHelper);
     }
 
     @Override
@@ -992,6 +1029,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     @Override
     protected void onResume() {
         super.onResume();
+        registerNetworkBroadcastReceiver(this);
         Log.d(TAG,"onResume");
     }
 
@@ -1015,13 +1053,18 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        unregisterNetworkBroadcastReceiver(this);
+    }
+
+    @Override
     public void onClick(Context context) {
         finish();
     }
 
-    /* internet connection */
-    private void checkInternet() {
-        registerReceiver(broadcastReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-    }
+
+
 }
 

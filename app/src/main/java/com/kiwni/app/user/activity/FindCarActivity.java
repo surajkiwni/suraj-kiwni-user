@@ -40,9 +40,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.FindsCarRecyclerAdapter;
 import com.kiwni.app.user.adapter.GridLayoutWrapper;
@@ -87,7 +89,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FindCarActivity extends AppCompatActivity implements OnMapReadyCallback,
-        FindCarItemClickListener, ErrorDialogInterface
+        FindCarItemClickListener, ErrorDialogInterface,ConnectivityHelper.NetworkStateReceiverListener
 {
     GoogleMap mMap;
     RecyclerView recyclerView,findsCarsRecyclerView;
@@ -131,6 +133,8 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
     boolean isEqual = false;
 
+    private ConnectivityHelper connectivityHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -145,9 +149,8 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         );
 
-        /* check internet connection */
-        broadcastReceiver = new ConnectivityHelper();
-        checkInternet();
+        /* start receiver for network state */
+        startNetworkBroadcastReceiver(this);
 
         imageBack = findViewById(R.id.imageBack);
         imgCallFindCarAct = findViewById(R.id.imgCallFindAct);
@@ -346,14 +349,18 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         listener = this::onFindCarItemClick;
 
-        /* api call */
-        getProjectionScheduleMap(pickup_time,drop_time,
-                pickup_city, direction,serviceType,
-                "","",convertedDistance , idToken,true);
+
+
+            /* api call */
+            getProjectionScheduleMap(pickup_time,drop_time,
+                    pickup_city, direction,serviceType,
+                    "","",convertedDistance , idToken,true);
+
+
         /*if(!isNetworkConnected())
         {
-            *//*ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "No internet. Connect to wifi or cellular network.");
-            errorDialog.show();*//*
+            ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "No internet. Connect to wifi or cellular network.");
+            errorDialog.show();
             ErrorDialog1 errorDialog1 = new ErrorDialog1();
             errorDialog1.showError(FindCarActivity.this,
                     "No internet. Connect to wifi or cellular network.", this);
@@ -641,6 +648,47 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         finish();
     }
 
+    @SuppressLint("ResourceAsColor")
+    @Override
+    public void networkAvailable()
+    {
+        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.GREEN)
+                .setDuration(5000)
+                .show();
+
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.RED)
+                .setDuration(5000)
+                .show();
+
+
+    }
+
+    public void startNetworkBroadcastReceiver(Context currentContext) {
+        connectivityHelper = new ConnectivityHelper();
+        connectivityHelper.addListener(this);
+        registerNetworkBroadcastReceiver(currentContext);
+    }
+
+
+    public void registerNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+    public void unregisterNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.unregisterReceiver(connectivityHelper);
+    }
+
     /** A class to download data from Google Directions URL */
     @SuppressLint("StaticFieldLeak")
     private class DownloadDirectionTask extends AsyncTask<String, Void, String>
@@ -877,7 +925,15 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     protected void onResume() {
         super.onResume();
+        registerNetworkBroadcastReceiver(this);
         Log.d(TAG, "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        unregisterNetworkBroadcastReceiver(this);
     }
 
     @Override

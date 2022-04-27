@@ -41,6 +41,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.activity.LoginActivity;
@@ -98,7 +99,7 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ConnectivityHelper.NetworkStateReceiverListener{
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     String TAG = this.getClass().getSimpleName();
@@ -113,6 +114,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
+
+    ConnectivityHelper connectivityHelper = new ConnectivityHelper();
 
 
 
@@ -161,6 +164,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawer_layout);
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        startNetworkBroadcastReceiver(this);
 
         View headerView = navigationView.getHeaderView(0);
         txtHeaderName = headerView.findViewById(R.id.txtHeaderName);
@@ -357,7 +362,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.nav_myrides:
 
-                navController.navigate(R.id.action_nav_home_to_nav_myrides);
+                if(ConnectivityHelper.isConnected){
+                    navController.navigate(R.id.action_nav_home_to_nav_myrides);
+                }
+                else{
+                    Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                            .setTextColor(Color.WHITE)
+                            .setBackgroundTint(Color.RED)
+                            .setDuration(5000)
+                            .show();
+                }
 
                 break;
 
@@ -804,12 +818,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             Log.d(TAG, "reservation resp list size is empty = " + reservationRespList.size());
         }
+
+        registerNetworkBroadcastReceiver(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
+
+        unregisterNetworkBroadcastReceiver(this);
+
     }
 
     @Override
@@ -822,7 +841,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
-        unregisterReceiver(broadcastReceiver);
+        //unregisterReceiver(broadcastReceiver);
         mSocket.disconnect();
     }
+
+    @SuppressLint("ResourceAsColor")
+    @Override
+    public void networkAvailable()
+    {
+        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.GREEN)
+                .setDuration(5000)
+                .show();
+
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.RED)
+                .setDuration(5000)
+                .show();
+
+
+    }
+
+    public void startNetworkBroadcastReceiver(Context currentContext) {
+        connectivityHelper = new ConnectivityHelper();
+        connectivityHelper.addListener(this);
+        registerNetworkBroadcastReceiver(currentContext);
+    }
+
+
+    public void registerNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+    public void unregisterNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.unregisterReceiver(connectivityHelper);
+    }
+
 }

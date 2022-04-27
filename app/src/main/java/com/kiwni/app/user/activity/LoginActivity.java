@@ -2,8 +2,12 @@ package com.kiwni.app.user.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,18 +20,20 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.datamodels.ErrorDialog;
+import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
 import java.util.concurrent.TimeUnit;
 
-public class LoginActivity extends AppCompatActivity
+public class LoginActivity extends AppCompatActivity implements ConnectivityHelper.NetworkStateReceiverListener
 {
     Button btnConfirm;
     EditText edtPhoneNumber;
@@ -47,6 +53,8 @@ public class LoginActivity extends AppCompatActivity
     String TAG = this.getClass().getSimpleName();
     Dialog lovelyProgressDialog;
 
+    private ConnectivityHelper connectivityHelper;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -63,6 +71,8 @@ public class LoginActivity extends AppCompatActivity
 
         edtPhoneNumber = findViewById(R.id.edtPhoneNumber);
         btnConfirm = findViewById(R.id.btnConfirm);
+
+        startNetworkBroadcastReceiver(this);
 
         edtPhoneNumber.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -196,5 +206,59 @@ public class LoginActivity extends AppCompatActivity
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+
+    @SuppressLint("ResourceAsColor")
+    @Override
+    public void networkAvailable()
+    {
+        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.GREEN)
+                .setDuration(5000)
+                .show();
+
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.RED)
+                .setDuration(5000)
+                .show();
+
+
+    }
+
+    public void startNetworkBroadcastReceiver(Context currentContext) {
+        connectivityHelper = new ConnectivityHelper();
+        connectivityHelper.addListener(this);
+        registerNetworkBroadcastReceiver(currentContext);
+    }
+
+
+    public void registerNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+    public void unregisterNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.unregisterReceiver(connectivityHelper);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerNetworkBroadcastReceiver(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterNetworkBroadcastReceiver(this);
     }
 }

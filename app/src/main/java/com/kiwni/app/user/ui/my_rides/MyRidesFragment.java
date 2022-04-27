@@ -1,7 +1,10 @@
 package com.kiwni.app.user.ui.my_rides;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.databinding.FragmentMyRidesBinding;
@@ -35,7 +39,9 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
     View view;
     ImageView imageBack;
     Fragment upcomingFragment, pastFragment;
-    BroadcastReceiver broadcastReceiver = null;
+
+
+    private ConnectivityHelper connectivityHelper;
 
     public MyRidesFragment() {
     }
@@ -45,10 +51,6 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
         view = inflater.inflate(R.layout.fragment_my_rides, container, false);
 
         ((MainActivity) requireActivity()).getSupportActionBar().hide();
-
-        /* check internet connection */
-        broadcastReceiver = new ConnectivityHelper();
-        checkInternet();
 
         return view ;
     }
@@ -116,10 +118,6 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
         return instance;
     }
 
-    /* internet connection */
-    private void checkInternet() {
-        getActivity().registerReceiver(broadcastReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-    }
 
     @Override
     public void onPause() {
@@ -137,4 +135,6 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
     public void onBackPressed() {
         Navigation.findNavController(requireView()).navigate(R.id.action_nav_myrides_to_mainActivity);
     }
+
+
 }

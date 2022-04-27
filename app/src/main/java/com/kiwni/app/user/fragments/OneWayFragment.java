@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -64,6 +65,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.material.snackbar.Snackbar;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.activity.FindCarActivity;
 import com.kiwni.app.user.adapter.AutoCompleteAdapter;
@@ -73,6 +75,7 @@ import com.kiwni.app.user.models.DirectionsJSONParser;
 import com.kiwni.app.user.models.KeyValue;
 import com.kiwni.app.user.network.ApiInterface;
 import com.kiwni.app.user.network.AppConstants;
+import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
 
@@ -100,7 +103,7 @@ public class OneWayFragment extends Fragment implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        com.google.android.gms.location.LocationListener
+        com.google.android.gms.location.LocationListener,ConnectivityHelper.NetworkStateReceiverListener
 {
     AppCompatButton btnViewCabOneWay, btnCurrentLocation, btnLocationOnMap, btnConfirm;
     //TextView txtMarkerText;
@@ -119,6 +122,7 @@ public class OneWayFragment extends Fragment implements
     ArrayList<LatLng> pickupLocationList = new ArrayList<>();
     ArrayList<LatLng> dropLocationList = new ArrayList<>();
     PlacesClient placesClient;
+
     String address = "", city = "", pickup_city = "", drop_city = "",
             pickup_address = "", drop_address = "", strDate = "";
     private GoogleApiClient mGoogleApiClient;
@@ -143,6 +147,8 @@ public class OneWayFragment extends Fragment implements
             sendToApiDropTime = "", changeStartDateFormat ="";
     int mYear, mMonth, mDay, mHour, mMinute;
 
+    private ConnectivityHelper connectivityHelper;      // Receiver that detects network state changes
+
     public OneWayFragment() {
         // Required empty public constructor
     }
@@ -164,6 +170,16 @@ public class OneWayFragment extends Fragment implements
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        /* for gps */
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity()) // Pass context here
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
+
+
+        /* start receiver for network state */
+        startNetworkBroadcastReceiver(getActivity());
 
         return view;
     }
@@ -216,11 +232,11 @@ public class OneWayFragment extends Fragment implements
 
         direction = "one-way";
         //get current location and draw marker on map
-        currentLatitude = Double.parseDouble(PreferencesUtils.getPreferences(getActivity(), SharedPref.USER_CURRENT_LAT, ""));
-        currentLongitude = Double.parseDouble(PreferencesUtils.getPreferences(getActivity(), SharedPref.USER_CURRENT_LNG, ""));
+       // currentLatitude = Double.parseDouble(PreferencesUtils.getPreferences(getActivity(), SharedPref.USER_CURRENT_LAT, ""));
+        //currentLongitude = Double.parseDouble(PreferencesUtils.getPreferences(getActivity(), SharedPref.USER_CURRENT_LNG, ""));
         Log.d(TAG, currentLatitude + ", " + currentLongitude);
 
-        if(currentLatitude != 0.0 && currentLongitude != 0.0)
+       /* if(currentLatitude != 0.0 && currentLongitude != 0.0)
         {
             getAddressFromCurrentLocation(currentLatitude, currentLongitude);
             //DrawMarker(currentLatitude, currentLongitude, pickup_city);
@@ -231,7 +247,7 @@ public class OneWayFragment extends Fragment implements
         else
         {
             Log.d(TAG, "Not getting co-ordinates");
-        }
+        }*/
 
         //get current date in format and set to UI
         GetCurrentDate();
@@ -640,98 +656,93 @@ public class OneWayFragment extends Fragment implements
                 //one-way
                 isPickup = false;
                 isDrop = false;
-                if (autoCompleteTextViewPickup.getText().toString().equals("")) {
-                    //txtPickupLocation.setError("Pickup location field cannot be empty.!");
-                    //Toast.makeText(getActivity(), "Pickup location field cannot be empty.!", Toast.LENGTH_SHORT).show();
-                    ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup location field cannot be empty.!");
-                    errorDialog.show();
-                }
-                else if (autoCompleteTextViewDrop.getText().toString().equals(""))
-                {
-                    //Toast.makeText(getActivity(), "Drop location field cannot be empty.!", Toast.LENGTH_SHORT).show();
-                    ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Please select a Drop Location.!");
-                    errorDialog.show();
-                }
-                else if (txtPickupDatePicker.getText().toString().equals("")) {
-                    //txtDropLocation.setError("Drop location field cannot be empty.!");
-                    //Toast.makeText(getActivity(), "Pickup Date field cannot be empty.!", Toast.LENGTH_SHORT).show();
-                    ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup Date field cannot be empty.!");
-                    errorDialog.show();
-                }
-                else if(pickup_spinner_time.getSelectedItem().toString().isEmpty() || pickup_spinner_time.getSelectedItem().toString() == "")
-                {
-                    //Toast.makeText(getActivity(), "Pickup Time field cannot be empty.!", Toast.LENGTH_SHORT).show();
-                    ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup Time field cannot be empty.!");
-                    errorDialog.show();
-                }
-                else
-                {
-                    if(distanceValueFromApi.equals("") || distanceValueFromApi.equals(null))
-                    {
-                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Please Wait..!");
+                if(ConnectivityHelper.isConnected) {
+
+                    if (autoCompleteTextViewPickup.getText().toString().equals("")) {
+                        //txtPickupLocation.setError("Pickup location field cannot be empty.!");
+                        //Toast.makeText(getActivity(), "Pickup location field cannot be empty.!", Toast.LENGTH_SHORT).show();
+                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup location field cannot be empty.!");
                         errorDialog.show();
-                    }
-                    else
-                    {
-                        try
-                        {
-                            Date currentDate = inputFormat.parse(curr_converted_date);
-                            Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
+                    } else if (autoCompleteTextViewDrop.getText().toString().equals("")) {
+                        //Toast.makeText(getActivity(), "Drop location field cannot be empty.!", Toast.LENGTH_SHORT).show();
+                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Please select a Drop Location.!");
+                        errorDialog.show();
+                    } else if (txtPickupDatePicker.getText().toString().equals("")) {
+                        //txtDropLocation.setError("Drop location field cannot be empty.!");
+                        //Toast.makeText(getActivity(), "Pickup Date field cannot be empty.!", Toast.LENGTH_SHORT).show();
+                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup Date field cannot be empty.!");
+                        errorDialog.show();
+                    } else if (pickup_spinner_time.getSelectedItem().toString().isEmpty() || pickup_spinner_time.getSelectedItem().toString() == "") {
+                        //Toast.makeText(getActivity(), "Pickup Time field cannot be empty.!", Toast.LENGTH_SHORT).show();
+                        ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup Time field cannot be empty.!");
+                        errorDialog.show();
+                    } else {
+                        if (distanceValueFromApi.equals("") || distanceValueFromApi.equals(null)) {
+                            ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Please Wait..!");
+                            errorDialog.show();
+                        } else {
+                            try {
+                                Date currentDate = inputFormat.parse(curr_converted_date);
+                                Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
 
-                            if (currentDate.compareTo(pickerDate) == 0 && pickup_spinner_time.getSelectedItem().toString() == "select time")
-                            {
-                                //Toast.makeText(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.", Toast.LENGTH_SHORT).show();
-                                ErrorDialog errorDialog = new ErrorDialog(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.");
-                                errorDialog.show();
-                            }
-                            else
-                            {
-                                concatDateTime = strDate + " " + pickup_spinner_time.getSelectedItem().toString();
-                                Log.d(TAG,"concatDateTime = " + concatDateTime);
+                                if (currentDate.compareTo(pickerDate) == 0 && pickup_spinner_time.getSelectedItem().toString() == "select time") {
+                                    //Toast.makeText(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.", Toast.LENGTH_SHORT).show();
+                                    ErrorDialog errorDialog = new ErrorDialog(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.");
+                                    errorDialog.show();
+                                } else {
+                                    concatDateTime = strDate + " " + pickup_spinner_time.getSelectedItem().toString();
+                                    Log.d(TAG, "concatDateTime = " + concatDateTime);
 
-                                getCurrentDateToSendApiInFormat(concatDateTime);
+                                    getCurrentDateToSendApiInFormat(concatDateTime);
 
-                                //change date format and send to next screen
-                                getStartDateInFormat(concatDateTime);
+                                    //change date format and send to next screen
+                                    getStartDateInFormat(concatDateTime);
 
-                                //Calculate drop_time from start_date and duration
-                                Log.d(TAG, "date with duration = " + concatDateTime + "\n " + durationInTrafficFromApi);
-                                CalculateDropTime(concatDateTime, durationInTrafficFromApi);
+                                    //Calculate drop_time from start_date and duration
+                                    Log.d(TAG, "date with duration = " + concatDateTime + "\n " + durationInTrafficFromApi);
+                                    CalculateDropTime(concatDateTime, durationInTrafficFromApi);
 
-                                Log.d(TAG, "dropDateTime = " + sendToApiDropTime);
-                                Log.d(TAG, "mOrigin = " + mOrigin);
-                                Log.d(TAG, "mDestination = " + mDestination);
+                                    Log.d(TAG, "dropDateTime = " + sendToApiDropTime);
+                                    Log.d(TAG, "mOrigin = " + mOrigin);
+                                    Log.d(TAG, "mDestination = " + mDestination);
 
-                                Intent i = new Intent(getActivity(), FindCarActivity.class);
-                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                //send data to next screen
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_CITY, pickup_city);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_CITY, drop_city);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_ADDRESS, autoCompleteTextViewPickup.getText().toString());
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_ADDRESS, autoCompleteTextViewDrop.getText().toString());
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_LOCATION, mOrigin.latitude + " " + mOrigin.longitude);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_LOCATION, mDestination.latitude + " " + mDestination.longitude);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_DATE, txtPickupDatePicker.getText().toString());
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.START_DATE_WITH_MONTH_DAY, changeStartDateFormat);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DIRECTION, direction);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.SERVICE_TYPE, "Outstation");
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE, String.valueOf(convertedDistance));
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DURATION_IN_TRAFFIC, durationInTrafficFromApi);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_TIME_FOR_API, sendToApiPickupTime);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_TIME_FOR_API, sendToApiDropTime);
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_DATE_TO_DISPLAY, txtPickupDatePicker.getText().toString());
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_TIME_TO_DISPLAY, pickup_spinner_time.getSelectedItem().toString());
-                                PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE_IN_KM, distanceTextFromApi);
+                                    Intent i = new Intent(getActivity(), FindCarActivity.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    //send data to next screen
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_CITY, pickup_city);
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_CITY, drop_city);
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_ADDRESS, autoCompleteTextViewPickup.getText().toString());
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_ADDRESS, autoCompleteTextViewDrop.getText().toString());
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_LOCATION, mOrigin.latitude + " " + mOrigin.longitude);
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_LOCATION, mDestination.latitude + " " + mDestination.longitude);
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_DATE, txtPickupDatePicker.getText().toString());
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.START_DATE_WITH_MONTH_DAY, changeStartDateFormat);
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DIRECTION, direction);
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.SERVICE_TYPE, "Outstation");
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE, String.valueOf(convertedDistance));
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DURATION_IN_TRAFFIC, durationInTrafficFromApi);
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_TIME_FOR_API, sendToApiPickupTime);
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_TIME_FOR_API, sendToApiDropTime);
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_DATE_TO_DISPLAY, txtPickupDatePicker.getText().toString());
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_TIME_TO_DISPLAY, pickup_spinner_time.getSelectedItem().toString());
+                                    PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE_IN_KM, distanceTextFromApi);
 
-                                startActivity(i);
-                                //getActivity().finish();
+                                    startActivity(i);
+                                    //getActivity().finish();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
                     }
+
+                }
+                else {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                            .setTextColor(Color.WHITE)
+                            .setBackgroundTint(Color.RED)
+                            .setDuration(5000)
+                            .show();
                 }
                 /*if(!isNetworkConnected())
                 {
@@ -850,9 +861,48 @@ public class OneWayFragment extends Fragment implements
         }
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
-        /*if (mLastLocation != null) {
-            changeMap(mLastLocation);
-            Log.d(TAG, "ON connected");
+        if (mLastLocation != null) {
+           // changeMap(mLastLocation);
+            //Log.d(TAG, "ON connected");
+
+            currentLatitude = mLastLocation.getLatitude();
+            currentLongitude = mLastLocation.getLongitude();
+
+            //true
+            if(ConnectivityHelper.isConnected)
+            {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                        (new LatLng(currentLatitude, currentLongitude), 10.0f));
+
+                Log.d(TAG, "current location = " + currentLatitude + " " + currentLongitude);
+
+                //get current location and draw marker on map
+                if (currentLatitude != 0.0 && currentLongitude != 0.0)
+                {
+                    pickupMarker = mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(currentLatitude, currentLongitude))
+                            .title(city)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                            (new LatLng(currentLatitude, currentLongitude), 10.0f));
+
+                    autoCompleteTextViewDrop.setText("");
+
+                    getAddressFromCurrentLocation(currentLatitude, currentLongitude);
+                    //DrawMarker(currentLatitude, currentLongitude, pickup_city);
+                    pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
+                    AddMarker(pickup_city);
+                    Log.d(TAG, "size 0 for current loc = " + pickupLocationList.size());
+                } else {
+                    Log.d(TAG, "Not getting co-ordinates");
+                }
+            }
+            else            //false
+            {
+                //Toast.makeText(getActivity(), "BroadCast", Toast.LENGTH_SHORT).show();
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                        (new LatLng(currentLatitude, currentLongitude), 10.0f));
+            }
 
         } else
             try {
@@ -872,7 +922,7 @@ public class OneWayFragment extends Fragment implements
 
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     @Override
@@ -911,12 +961,25 @@ public class OneWayFragment extends Fragment implements
         }
         mMap = googleMap;
 
-        pickupMarker = mMap.addMarker(new MarkerOptions()
+        /*pickupMarker = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(currentLatitude, currentLongitude))
                 .title(city)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                (new LatLng(currentLatitude, currentLongitude), 10.0f));
+                (new LatLng(currentLatitude, currentLongitude), 10.0f));*/
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
     }
 
     public void CameraChange()
@@ -1281,6 +1344,83 @@ public class OneWayFragment extends Fragment implements
             urlConnection.disconnect();
         }
         return data;
+    }
+
+    @SuppressLint("ResourceAsColor")
+    @Override
+    public void networkAvailable()
+    {
+        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.GREEN)
+                .setDuration(5000)
+                .show();
+
+        Log.d(TAG, "current location = " + currentLatitude + " " + currentLongitude);
+
+        //get current location and draw marker on map
+        if (currentLatitude != 0.0 && currentLongitude != 0.0)
+        {
+            getAddressFromCurrentLocation(currentLatitude, currentLongitude);
+
+            if(pickupMarker != null)
+            {
+                pickupMarker.remove();
+            }
+            pickupMarker = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(currentLatitude, currentLongitude))
+                    .title(city)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                    (new LatLng(currentLatitude, currentLongitude), 10.0f));
+            autoCompleteTextViewDrop.setText("");
+
+            if(pickupLocationList.size() > 0)
+            {
+                pickupLocationList.set(0, new LatLng(currentLatitude, currentLongitude));
+                Log.d("TAG", "size update pickup = " + pickupLocationList.size());
+            }
+            else
+            {
+                pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
+                Log.d("TAG", "pickup size = " + pickupLocationList.size());
+            }
+
+            //pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
+            AddMarker(pickup_city);
+            Log.d(TAG, "size 0 for current loc = " + pickupLocationList.size());
+        } else {
+            Log.d(TAG, "Not getting co-ordinates");
+        }
+    }
+
+    @Override
+    public void networkUnavailable() {
+        // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.RED)
+                .setDuration(5000)
+                .show();
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                (new LatLng(currentLatitude, currentLongitude), 10.0f));
+
+    }
+
+    public void startNetworkBroadcastReceiver(Context currentContext) {
+        connectivityHelper = new ConnectivityHelper();
+        connectivityHelper.addListener(this);
+        registerNetworkBroadcastReceiver(currentContext);
+    }
+
+    public void registerNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+    public void unregisterNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.unregisterReceiver(connectivityHelper);
     }
 
     /**
@@ -1827,6 +1967,7 @@ public class OneWayFragment extends Fragment implements
             if (mGoogleApiClient != null)
             {
                 mGoogleApiClient.connect();
+                //autoCompleteTextViewDrop.setText("");
             }
 
         } catch (Exception e) {
@@ -1837,23 +1978,21 @@ public class OneWayFragment extends Fragment implements
     @Override
     public void onStop() {
         super.onStop();
-        try {
 
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+        /*if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
-        }
+        }*/
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        unregisterNetworkBroadcastReceiver(getActivity());
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        registerNetworkBroadcastReceiver(getActivity());
     }
 }

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -34,6 +35,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kiwni.app.user.MainActivity;
@@ -58,7 +60,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class CarListTypeActivity extends AppCompatActivity implements BookBtnClickListener, ReviewBtnClickListener {
+public class CarListTypeActivity extends AppCompatActivity implements BookBtnClickListener,
+        ReviewBtnClickListener, ConnectivityHelper.NetworkStateReceiverListener {
     RecyclerView recyclerView;
     TitleItemAdapter adapter;
     String TAG = this.getClass().getSimpleName();
@@ -78,6 +81,8 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
 
     List<ScheduleMapResp> mList = new ArrayList<>();
     List<ScheduleMapResp> remainingList = new ArrayList<>();
+
+    private ConnectivityHelper connectivityHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -121,9 +126,8 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
         txtVehicleType.setText(vehicleTypeForDisplay);
         txtSeatCapacity.setText(vehicleSeatCapacityForDisplay);
 
-        /* check internet connection */
-        broadcastReceiver = new ConnectivityHelper();
-        checkInternet();
+        /* start receiver for network state */
+        startNetworkBroadcastReceiver(this);
 
         switch (serviceType)
         {
@@ -669,6 +673,47 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
     /* internet connection */
     private void checkInternet() {
         registerReceiver(broadcastReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @SuppressLint("ResourceAsColor")
+    @Override
+    public void networkAvailable()
+    {
+        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.GREEN)
+                .setDuration(5000)
+                .show();
+
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.RED)
+                .setDuration(5000)
+                .show();
+
+
+    }
+
+    public void startNetworkBroadcastReceiver(Context currentContext) {
+        connectivityHelper = new ConnectivityHelper();
+        connectivityHelper.addListener(this);
+        registerNetworkBroadcastReceiver(currentContext);
+    }
+
+
+    public void registerNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+    public void unregisterNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.unregisterReceiver(connectivityHelper);
     }
 }
 
