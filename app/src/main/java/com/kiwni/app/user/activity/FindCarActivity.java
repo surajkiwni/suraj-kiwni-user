@@ -130,7 +130,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     List<ScheduleMapResp> tempList1 = new ArrayList<>();
     List<ScheduleMapResp> remainingList = new ArrayList<>();
 
-    boolean isEqual = false;
+    boolean isEqual = false, isNetworkAvailable = false;
 
     private ConnectivityHelper connectivityHelper;
 
@@ -634,11 +634,13 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     public void networkAvailable()
     {
         //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
-        Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
-                .setTextColor(Color.WHITE)
-                .setBackgroundTint(Color.GREEN)
-                .setDuration(5000)
-                .show();
+        if(isNetworkAvailable){
+            Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                    .setTextColor(Color.WHITE)
+                    .setBackgroundTint(Color.GREEN)
+                    .setDuration(5000)
+                    .show();
+        }
     }
 
     @Override
@@ -649,6 +651,8 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                 .setBackgroundTint(Color.RED)
                 .setDuration(5000)
                 .show();
+
+        isNetworkAvailable = true;
     }
 
     public void startNetworkBroadcastReceiver(Context currentContext) {

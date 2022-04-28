@@ -126,7 +126,7 @@ public class AirportPickupFragment extends Fragment implements
     private LatLng mCenterLatLong, mOrigin, mDestination;
     double pickup_lat = 0.0, pickup_lng = 0.0, drop_lat = 0.0, drop_lng = 0.0;
     boolean isPickup = false, isDrop = false, isCurrent = false, isDDSelected = false,
-            isLocated = false, isCameraMove = false;
+            isLocated = false, isCameraMove = false, isNetworkAvailable = false;
     Context mContext;
     AutocompletePrediction item;
     String distanceTextFromApi = "", distanceValueFromApi = "",
@@ -1317,11 +1317,14 @@ public class AirportPickupFragment extends Fragment implements
     public void networkAvailable()
     {
         //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
-        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
-                .setTextColor(Color.WHITE)
-                .setBackgroundTint(Color.GREEN)
-                .setDuration(5000)
-                .show();
+        if(isNetworkAvailable){
+            Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                    .setTextColor(Color.WHITE)
+                    .setBackgroundTint(Color.GREEN)
+                    .setDuration(5000)
+                    .show();
+        }
+
 
         Log.d(TAG, "current location = " + currentLatitude + " " + currentLongitude);
 
@@ -1372,6 +1375,8 @@ public class AirportPickupFragment extends Fragment implements
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
                 (new LatLng(currentLatitude, currentLongitude), 10.0f));
+
+        isNetworkAvailable = true;
 
     }
 

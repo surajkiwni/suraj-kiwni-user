@@ -140,7 +140,7 @@ public class OneWayFragment extends Fragment implements
     Spinner pickup_spinner_time;
     ArrayList<KeyValue> time = new ArrayList<>();
     TimeAdapter timeAdapter;
-    boolean isCurrentDateBooking = false;
+    boolean isCurrentDateBooking = false, isNetworkAvailable = false;
     TextView txtPickupDatePicker, txtDropDatePicker;
     Double convertedDistance;
 
@@ -1339,11 +1339,15 @@ public class OneWayFragment extends Fragment implements
     public void networkAvailable()
     {
         //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
-        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
-                .setTextColor(Color.WHITE)
-                .setBackgroundTint(Color.GREEN)
-                .setDuration(5000)
-                .show();
+
+        if(isNetworkAvailable){
+            Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                    .setTextColor(Color.WHITE)
+                    .setBackgroundTint(Color.GREEN)
+                    .setDuration(5000)
+                    .show();
+        }
+
 
         Log.d(TAG, "current location = " + currentLatitude + " " + currentLongitude);
 
@@ -1394,6 +1398,8 @@ public class OneWayFragment extends Fragment implements
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
                 (new LatLng(currentLatitude, currentLongitude), 10.0f));
+
+        isNetworkAvailable = true;
 
     }
 

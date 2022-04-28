@@ -123,7 +123,7 @@ public class RoundTripFragment extends Fragment implements
     PlacesClient placesClient;
     GoogleApiClient mGoogleApiClient;
     private LatLng mCenterLatLong, mOrigin, mDestination;
-    boolean isPickup = false, isDrop = false, isCurrent = false, isDDSelected = false, isLocated = false, isCameraMove = false;
+    boolean isPickup = false, isDrop = false, isCurrent = false, isDDSelected = false, isLocated = false, isCameraMove = false,isNetworkAvailable = false;
     Context mContext;
     AutocompletePrediction item;
     String direction = "", distanceTextFromApi = "", distanceValueFromApi = "",
@@ -1347,11 +1347,16 @@ public class RoundTripFragment extends Fragment implements
     public void networkAvailable()
     {
         //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
-        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
-                .setTextColor(Color.WHITE)
-                .setBackgroundTint(Color.GREEN)
-                .setDuration(5000)
-                .show();
+
+        if(isNetworkAvailable){
+
+            Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                    .setTextColor(Color.WHITE)
+                    .setBackgroundTint(Color.GREEN)
+                    .setDuration(5000)
+                    .show();
+        }
+
 
         Log.d(TAG, "current location = " + currentLatitude + " " + currentLongitude);
 
@@ -1404,6 +1409,8 @@ public class RoundTripFragment extends Fragment implements
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
                 (new LatLng(currentLatitude, currentLongitude), 10.0f));
+
+        isNetworkAvailable = true;
 
     }
 

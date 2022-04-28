@@ -77,7 +77,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
     ConstraintLayout sortLayout, mapLayout, filterLayout, constraintLayoutForRentalPackage;
     String strBrand = "", strSegment = "", strYear = "", strSpecialReq = "";
 
-    boolean isSelected = false;
+    boolean isSelected = false, isNetworkAvailable = false;
 
     List<ScheduleMapResp> mList = new ArrayList<>();
     List<ScheduleMapResp> remainingList = new ArrayList<>();
@@ -680,11 +680,14 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
     public void networkAvailable()
     {
         //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
-        Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
-                .setTextColor(Color.WHITE)
-                .setBackgroundTint(Color.GREEN)
-                .setDuration(5000)
-                .show();
+        if(isNetworkAvailable){
+            Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                    .setTextColor(Color.WHITE)
+                    .setBackgroundTint(Color.GREEN)
+                    .setDuration(5000)
+                    .show();
+
+        }
 
 
     }
@@ -697,6 +700,8 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
                 .setBackgroundTint(Color.RED)
                 .setDuration(5000)
                 .show();
+
+        isNetworkAvailable = true;
 
 
     }

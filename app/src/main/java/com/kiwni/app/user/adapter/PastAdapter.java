@@ -25,6 +25,10 @@ public class PastAdapter extends RecyclerView.Adapter<PastAdapter.PastViewHolder
     TripsHistoryResp tripListResp;
     String startTimeFromString = "", startDateFromString = "";
 
+    String TAG = this.getClass().getSimpleName();
+    String splittedStr1 ="", splittedStr2 = "",
+            splittedStr3 = "", splittedStr4 = "", concatDirection = "";
+
     public PastAdapter(Context context, List<TripsHistoryResp> tripHistoryList) {
         this.tripHistoryList = tripHistoryList;
         this.context = context;
@@ -46,8 +50,11 @@ public class PastAdapter extends RecyclerView.Adapter<PastAdapter.PastViewHolder
 
         holder.txtPickupAddress.setText(tripListResp.getStartLocationCity());
         holder.txtDropAddress.setText(tripListResp.getEndlocationCity());
-        holder.txtServiceType.setText(tripListResp.getServiceType());
         holder.txtStatus.setText(tripListResp.getStatus());
+
+        /*/split service type */
+        GetClassTypeFromServiceType(tripListResp.getServiceType());
+        holder.txtServiceType.setText(concatDirection + " Trip");
 
         if(tripListResp.getEstimatedPrice() != null)
         {
@@ -130,5 +137,23 @@ public class PastAdapter extends RecyclerView.Adapter<PastAdapter.PastViewHolder
         } else {
             Toast.makeText(context, "Given date is not in correct format.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void GetClassTypeFromServiceType(String str)
+    {
+        String[] split = str.split("-");
+        for (String s : split)
+        {
+            System.out.println(s);
+            splittedStr1 = split[0];
+            splittedStr2 = split[1];
+            splittedStr3 = split[2];
+            splittedStr4 = split[3];
+        }
+        Log.d(TAG, "data print from array = " + splittedStr1 + ", " + splittedStr2 +
+                ", " + splittedStr3 + ", " + splittedStr4);
+
+        concatDirection = splittedStr1.substring(0, 1).toUpperCase() + splittedStr1.substring(1).toLowerCase() + " " + splittedStr2.substring(0, 1).toUpperCase() + splittedStr2.substring(1).toLowerCase();
+        Log.d(TAG, "concatDirection = " + concatDirection);
     }
 }

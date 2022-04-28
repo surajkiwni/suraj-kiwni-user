@@ -822,10 +822,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 DisplaySuccessDialog(socketSuccessRespList);
             }
-            else
-            {
-                Toast.makeText(getApplicationContext(), "No Data Found.", Toast.LENGTH_SHORT).show();
-            }
+
         }
     }
 
@@ -862,12 +859,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
+        stringData = "";
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
         Log.d(TAG, "onRestart");
+        stringData = "";
     }
 
     @Override

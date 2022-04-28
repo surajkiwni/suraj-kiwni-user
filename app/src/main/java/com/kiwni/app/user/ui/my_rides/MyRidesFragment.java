@@ -40,9 +40,6 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
     ImageView imageBack;
     Fragment upcomingFragment, pastFragment;
 
-
-    private ConnectivityHelper connectivityHelper;
-
     public MyRidesFragment() {
     }
 

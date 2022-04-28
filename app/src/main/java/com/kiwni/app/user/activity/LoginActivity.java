@@ -42,9 +42,10 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
 
     String mobile = "";
     Boolean isPhoneNoValid = false;
-
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+
+    boolean isNetworkAvailable = false;
 
     // variable for FirebaseAuth class
     private FirebaseAuth mAuth;
@@ -211,11 +212,16 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
     public void networkAvailable()
     {
         //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
-        Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
-                .setTextColor(Color.WHITE)
-                .setBackgroundTint(Color.GREEN)
-                .setDuration(5000)
-                .show();
+
+        if(isNetworkAvailable){
+            Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                    .setTextColor(Color.WHITE)
+                    .setBackgroundTint(Color.GREEN)
+                    .setDuration(5000)
+                    .show();
+
+        }
+
     }
 
     @Override
@@ -226,6 +232,8 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
                 .setBackgroundTint(Color.RED)
                 .setDuration(5000)
                 .show();
+
+        isNetworkAvailable = true;
     }
 
     public void startNetworkBroadcastReceiver(Context currentContext) {
