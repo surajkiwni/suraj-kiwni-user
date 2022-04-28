@@ -71,17 +71,6 @@ public class UpcomingFragment extends Fragment implements ErrorDialogInterface
 
         /* call trip history api */
         getTripHistoryData(partyId);
-        /*if(!isNetworkConnected())
-        {
-            *//*ErrorDialog errorDialog = new ErrorDialog(getActivity(), "No internet. Connect to wifi or cellular network.");
-            errorDialog.show();*//*
-            ErrorDialog1 errorDialog1 = new ErrorDialog1();
-            errorDialog1.showError(getActivity(), "No internet. Connect to wifi or cellular network.", this);
-        }
-        else
-        {
-
-        }*/
 
         return view;
     }

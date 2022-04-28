@@ -45,6 +45,7 @@ public class SharedPref
     public static final String SELECTED_VEHICLE_TYPE_OBJECT = "selectedVehicleTypeObject";
     public static final String DUPLICATE_VEHICLE_OBJECT = "duplicateVehicleObject";
     public static final String SELECTED_VEHICLE_OBJECT = "selectedVehicleObject";
+    public static final String SOCKET_RESP_OBJECT = "socketRespObject";
 
     //Find car screen
     public static final String VEHICLE_ID = "vehicleId";

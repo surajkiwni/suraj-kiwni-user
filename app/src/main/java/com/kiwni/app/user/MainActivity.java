@@ -43,15 +43,20 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kiwni.app.user.R;
+import com.kiwni.app.user.activity.FindCarActivity;
 import com.kiwni.app.user.activity.LoginActivity;
 import com.kiwni.app.user.activity.SplashActivity;
+import com.kiwni.app.user.adapter.GridLayoutWrapper;
 import com.kiwni.app.user.databinding.ActivityMainBinding;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
 import com.kiwni.app.user.fragments.RoundTripFragment;
+import com.kiwni.app.user.global.PermissionRequestConstant;
 import com.kiwni.app.user.models.socket.SocketReservationResp;
+import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
@@ -86,6 +91,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -111,10 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     BottomSheetDialog bottomSheetDialog;
     String mobile = "", userName = "", mobileNumber = "";
     int partyId = 0;
-    MenuItem action_like;
     public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
-
-    FragmentManager fragmentManager = getSupportFragmentManager();
 
     /* socket */
     Socket mSocket;
@@ -122,11 +125,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Context context;
     boolean driver_data_updated = false;
     byte[] valueDecoded= new byte[0];
-    String convertedDateTime = "";
+    String convertedDateTime = "", stringData = "", splittedStr1 ="", splittedStr2 = "",
+            splittedStr3 = "", splittedStr4 = "", concatDirection = "";
     AlertDialog b;
     AlertDialog.Builder dialogBuilder;
-    List<SocketReservationResp> reservationRespList = new ArrayList<>();
-    public static BroadcastReceiver broadcastReceiver = null;
+    List<SocketReservationResp> driverDataRespList = new ArrayList<>();
+    List<SocketReservationResp> socketSuccessRespList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -464,10 +468,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mSocket.emit("join", obj);
             Log.d("join", obj.toString());
 
-            /* reservation success */
-            ListenReservationMessage();
-
-            //ListenDriverDataMessage();
+            ListenDriverDataMessage();
         }
         catch (Exception ex)
         {
@@ -499,46 +500,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     };
 
-    private final Emitter.Listener onNewMessage = new Emitter.Listener()
-    {
-        @Override
-        public void call(final Object... args)
-        {
-            runOnUiThread(new Runnable() {
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void run() {
-                    Log.d(TAG, "in new msg");
-                    Log.d(TAG, "data in new msg = " + Arrays.toString(args));
-
-                    if (args.length == 0)
-                    {
-                        //Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        try {
-                            JSONObject jsonObject = (JSONObject) args[0];
-
-                            Gson gson = new Gson();
-                            reservationResp = gson.fromJson(jsonObject.toString(), SocketReservationResp.class);
-
-                            Log.d(TAG, "reservationResp = " + reservationResp.toString());
-                            Log.d(TAG, "reservationResp id = " + reservationResp.getId());
-
-                            reservationRespList.clear();
-                            reservationRespList.add(reservationResp);
-                            Log.d(TAG, "reservationRespList in new msg = " + reservationRespList.size());
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-        }
-    };
-
     private final Emitter.Listener onUpdatedMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -566,9 +527,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             Log.d(TAG, "reservationResp = " + reservationResp.toString());
                             Log.d(TAG, "reservationResp id = " + reservationResp.getId());
 
-                            reservationRespList.clear();
-                            reservationRespList.add(reservationResp);
-                            Log.d(TAG, "reservationRespList in update msg = " + reservationRespList.size());
+                            driverDataRespList.clear();
+                            driverDataRespList.add(reservationResp);
+                            Log.d(TAG, "reservationRespList in update msg = " + driverDataRespList.size());
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -584,12 +545,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mSocket.on(AppConstants.WEBSOCKET_DRIVER_DATA_EVENT, onUpdatedMessage);
     }
 
-    public void ListenReservationMessage()
-    {
-        mSocket.on(AppConstants.WEBSOCKET_RESERVATION_EVENT, onNewMessage);
-    }
-
-    public void DisplaySuccessDialog(List<SocketReservationResp> reservationRespList)
+    public void DisplayDriverDataUpdatedDialog(List<SocketReservationResp> reservationRespList)
     {
         //create custom dialog here
         dialogBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -601,6 +557,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         TextView txtKRNno = dialogView.findViewById(R.id.txtKRNno);
         ImageView imgDriverImg = dialogView.findViewById(R.id.imgDriverImg);
+        ImageView imgCallToDriver = dialogView.findViewById(R.id.imgCallToDriver);
         TextView txtDriverName = dialogView.findViewById(R.id.txtDriverName);
         TextView txtOtp = dialogView.findViewById(R.id.txtOtp);
         TextView txtMobile = dialogView.findViewById(R.id.txtMobile);
@@ -619,17 +576,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String driver_name = reservationRespList.get(0).getDriver().getName();
         String driver_mobile = reservationRespList.get(0).getDriver().getMobile();
 
-        Log.d(TAG, "driver_data_updated before check= " + driver_data_updated);
         if(driver_data_updated)
         {
-            Log.d(TAG, "driver_data_updated true = " + driver_data_updated);
-            Log.d("TAG", "image = " + reservationRespList.get(0).getDriverImageUrl());
-
             txtDriverName.setVisibility(View.VISIBLE);
             txtDriverName.setText(driver_name);
 
             txtMobile.setVisibility(View.VISIBLE);
             txtMobile.setText("Contact : " + driver_mobile);
+
+            imgCallToDriver.setVisibility(View.VISIBLE);
+
+            imgCallToDriver.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    Uri call = Uri.parse("tel:" + txtMobile.getText().toString());
+                    Intent intent = new Intent(Intent.ACTION_CALL, call);
+
+                    // Here, thisActivity is the current activity
+                    if (ContextCompat.checkSelfPermission(MainActivity.this,
+                            Manifest.permission.CALL_PHONE)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(MainActivity.this,
+                                new String[]{Manifest.permission.CALL_PHONE},
+                                PermissionRequestConstant.MY_PERMISSIONS_REQUEST_CALL_PHONE);
+
+                        // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
+                        // app-defined int constant. The callback method gets the
+                        // result of the request.
+                    } else {
+                        //You already have permission
+                        try {
+                            startActivity(intent);
+                        } catch(SecurityException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
 
             if(reservationRespList.get(0).getDriverImageUrl() != null)
             {
@@ -656,41 +642,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 txtVehicleNo.setVisibility(View.GONE);
             }
         }
-        else
-        {
-            driver_data_updated = false;
-            Log.d(TAG, "driver_data_updated false = " + driver_data_updated);
-
-            if(driver_name.equals("null") || driver_name.equals(""))
-            {
-                txtDriverName.setVisibility(View.GONE);
-
-                if(driver_mobile.equals("null") || driver_name.equals(""))
-                {
-                    txtMobile.setVisibility(View.GONE);
-                }
-                else
-                {
-                    txtMobile.setVisibility(View.VISIBLE);
-                    txtMobile.setText("Contact : " + driver_mobile);
-
-                    if(reservationRespList.get(0).getDriverImageUrl() != null)
-                    {
-                        imgDriverImg.setVisibility(View.VISIBLE);
-                        Log.d(TAG, "image = " + reservationRespList.get(0).getDriverImageUrl());
-                    }
-                    else
-                    {
-                        imgDriverImg.setVisibility(View.GONE);
-                    }
-                }
-            }
-            else
-            {
-                txtDriverName.setVisibility(View.VISIBLE);
-                txtDriverName.setText(driver_name);
-            }
-        }
 
         //estimated fare
         if(reservationRespList.get(0).getEstimatedPrice() != null)
@@ -706,9 +657,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //decode otp
         ConvertOtp(reservationRespList.get(0).getOtp());
-        txtOtp.setText("OTP: " + new String(valueDecoded));
+        txtOtp.setText("OTP : " + new String(valueDecoded));
 
-        txtServiceType.setText(reservationRespList.get(0).getServiceType() + " To " + reservationRespList.get(0).getEndlocationCity());
+        /* split service type */
+        GetClassTypeFromServiceType(reservationRespList.get(0).getServiceType());
+
+        txtServiceType.setText(concatDirection + "-trip" + " To " + reservationRespList.get(0).getEndlocationCity());
 
         //convert date in format
         ConvertDate(reservationRespList.get(0).getStartTime());
@@ -722,6 +676,80 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         b.show();
+    }
+
+    public void DisplaySuccessDialog(List<SocketReservationResp> socketReservationRespList)
+    {
+        dialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.reservation_confirmation_krn_no_dialog, null);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setCancelable(false);
+        b = dialogBuilder.create();
+
+        TextView txtKRNno = dialogView.findViewById(R.id.txtKRNno);
+        TextView txtOtp = dialogView.findViewById(R.id.txtOtp);
+        TextView txtServiceType = dialogView.findViewById(R.id.txtServiceType);
+        TextView txtStartDateTime = dialogView.findViewById(R.id.txtStartDateTime);
+        TextView txtEstimatedFare = dialogView.findViewById(R.id.txtEstimatedFare);
+        AppCompatButton btnDone = dialogView.findViewById(R.id.btnDone);
+
+        /* set data to view */
+        Log.d(TAG, "reservation id = " + socketReservationRespList.get(0).getReservationId());
+        String KrnNo = "Your KRN number is" + "<b> " + socketReservationRespList.get(0).getReservationId() + "</b>" + ". Your ride is scheduled & will send your driver details within few hours.";
+        txtKRNno.setText(Html.fromHtml(KrnNo));
+
+        //estimated fare
+        if(socketReservationRespList.get(0).getEstimatedPrice() != null)
+        {
+            txtEstimatedFare.setVisibility(View.VISIBLE);
+            Float estimatedFare = Float.parseFloat(String.valueOf(socketReservationRespList.get(0).getEstimatedPrice()));
+            txtEstimatedFare.setText("Rs. " + String.format("%.2f",estimatedFare));
+        }
+        else
+        {
+            txtEstimatedFare.setVisibility(View.GONE);
+        }
+
+        //decode otp
+        ConvertOtp(socketReservationRespList.get(0).getOtp());
+        txtOtp.setText("OTP : " + new String(valueDecoded));
+
+        /* split service type */
+        GetClassTypeFromServiceType(socketReservationRespList.get(0).getServiceType());
+
+        txtServiceType.setText(concatDirection + "-trip" + " To " + socketReservationRespList.get(0).getEndlocationCity());
+
+        //convert date in format
+        ConvertDate(socketReservationRespList.get(0).getStartTime());
+        txtStartDateTime.setText(convertedDateTime);
+
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                b.dismiss();
+            }
+        });
+        b.show();
+    }
+
+    public void GetClassTypeFromServiceType(String str)
+    {
+        String[] split = str.split("-");
+        for (String s : split)
+        {
+            System.out.println(s);
+            splittedStr1 = split[0];
+            splittedStr2 = split[1];
+            splittedStr3 = split[2];
+            splittedStr4 = split[3];
+        }
+        Log.d(TAG, "data print from array = " + splittedStr1 + ", " + splittedStr2 +
+                ", " + splittedStr3 + ", " + splittedStr4);
+
+        concatDirection = splittedStr1.substring(0, 1).toUpperCase() + splittedStr1.substring(1).toLowerCase() + "-" + splittedStr2;
+        Log.d(TAG, "concatDirection = " + concatDirection);
     }
 
     public void ConvertOtp(String otp)
@@ -775,12 +803,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    public void GetReservationSuccessData()
+    {
+        Gson gson = new Gson();
+        //String stringData = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SOCKET_RESP_OBJECT, "");
+        Intent intent = getIntent();
+        if(intent != null)
+        {
+            stringData = getIntent().getStringExtra(SharedPref.SOCKET_RESP_OBJECT);
+            Log.d(TAG, "stringData Data = " + stringData);
+
+            if(stringData != null)
+            {
+                Type type = new TypeToken<List<SocketReservationResp>>() {
+                }.getType();
+                socketSuccessRespList = new ArrayList<>();
+                socketSuccessRespList = gson.fromJson(stringData, type);
+
+                DisplaySuccessDialog(socketSuccessRespList);
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(), "No Data Found.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart");
-
-        //SocketConnect();
     }
 
     @Override
@@ -789,17 +841,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
         Log.d(TAG, "in onResume method ");
 
-        SocketConnect();
-        //Toast.makeText(getApplicationContext(), "on Resume()", Toast.LENGTH_SHORT).show();
+        /* get list from confirm booking screen and show reservation success dialog */
+        GetReservationSuccessData();
 
-        Log.d(TAG, "reservation resp list size in on resume = " + reservationRespList.size());
-        if(reservationRespList.size() != 0)
+        /* for driver data updated connect socket and show dialog */
+        SocketConnect();
+
+        Log.d(TAG, "reservation resp list size in on resume = " + driverDataRespList.size());
+        if(driverDataRespList.size() != 0)
         {
-            DisplaySuccessDialog(reservationRespList);
+            DisplayDriverDataUpdatedDialog(driverDataRespList);
         }
         else
         {
-            Log.d(TAG, "reservation resp list size is empty = " + reservationRespList.size());
+            Log.d(TAG, "reservation resp list size is empty = " + driverDataRespList.size());
         }
     }
 
@@ -819,7 +874,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
-        //unregisterReceiver(broadcastReceiver);
         mSocket.disconnect();
     }
 }

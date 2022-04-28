@@ -97,7 +97,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     FindCarItemClickListener findCarItemClickListener;
     String TAG = this.getClass().getSimpleName();
 
-
     ImageView imageBack,imgCallFindCarAct;
     TextView txtTitle,viewDetailsText, txtFromTo, txtStartEndDate, txtStartTime, txtEstimatedKm;
     BottomSheetDialog bottomSheetDialog;
@@ -145,9 +144,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getSupportFragmentManager()
                 .findFragmentById(R.id.map1);
-        mapFragment.getMapAsync(this
-
-        );
+        mapFragment.getMapAsync(this);
 
         /* start receiver for network state */
         startNetworkBroadcastReceiver(this);
@@ -349,26 +346,10 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         listener = this::onFindCarItemClick;
 
-
-
-            /* api call */
-            getProjectionScheduleMap(pickup_time,drop_time,
-                    pickup_city, direction,serviceType,
-                    "","",convertedDistance , idToken,true);
-
-
-        /*if(!isNetworkConnected())
-        {
-            ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "No internet. Connect to wifi or cellular network.");
-            errorDialog.show();
-            ErrorDialog1 errorDialog1 = new ErrorDialog1();
-            errorDialog1.showError(FindCarActivity.this,
-                    "No internet. Connect to wifi or cellular network.", this);
-        }
-        else
-        {
-
-        }*/
+        /* api call */
+        getProjectionScheduleMap(pickup_time,drop_time,
+                pickup_city, direction,serviceType,
+                "","",convertedDistance , idToken,true);
     }
 
     public void getProjectionScheduleMap(String startTime, String endTime, String startLocation,
@@ -658,8 +639,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                 .setBackgroundTint(Color.GREEN)
                 .setDuration(5000)
                 .show();
-
-
     }
 
     @Override
@@ -670,8 +649,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                 .setBackgroundTint(Color.RED)
                 .setDuration(5000)
                 .show();
-
-
     }
 
     public void startNetworkBroadcastReceiver(Context currentContext) {
@@ -816,7 +793,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         /* sort by model */
         Collections.sort(selectedByVehicleTypeList, orderModel);
-        //Log.d("sorted list = ", selectedByVehicleTypeList.toString());
 
         /*sorting by model and classType same and different */
         sortByModelAndClassType();
@@ -829,17 +805,12 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         Intent intent = new Intent(FindCarActivity.this, CarListTypeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //intent.putExtra(SharedPref.SELECTED_VEHICLE_TYPE_OBJECT, jsonForData);
-        //intent.putExtra(SharedPref.DUPLICATE_VEHICLE_OBJECT, jsonForDuplicateData);
         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_TYPE_OBJECT, jsonForData);
         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.DUPLICATE_VEHICLE_OBJECT, jsonForDuplicateData);
         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.VEHICLE_TYPE_FOR_DISPLAY, labelName);
         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.VEHICLE_SEAT_CAPACITY_FOR_DISPLAY, seatCapacity);
         startActivity(intent);
         //finish();
-
-        //Log.d(TAG,"scheduleDatesResp Data to send next Activity tempList = " + tempList.toString());
-        //Log.d(TAG,"scheduleDatesResp Data to send next Activity remainingList = " + remainingList.toString());
     }
 
     public void sortByModelAndClassType()
@@ -867,9 +838,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                 {
                     if (selectedByVehicleTypeList.get(i).getModel().equals(selectedByVehicleTypeList.get(j).getModel()))
                     {
-                        //System.out.println("class type not same i " + selectedByVehicleTypeList.get(i).getModel());
-                        //System.out.println("class type not same  j " + selectedByVehicleTypeList.get(j).getModel());
-
                         tempList.add(selectedByVehicleTypeList.get(i));
                         tempList1.add(selectedByVehicleTypeList.get(j));
 
@@ -916,11 +884,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         int left, right,bottom, top;
         //googleMap.setPadding(left = 10, top = 30, right = 10, bottom = 10);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, routePadding));
-    }
-
-    /* internet connection */
-    private void checkInternet() {
-        registerReceiver(broadcastReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override
