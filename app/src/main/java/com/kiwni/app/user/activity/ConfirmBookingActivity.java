@@ -947,8 +947,17 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
             @Override
             public void onClick(View view)
             {
+                /* send list to main activity for display data in dialog */
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<SocketReservationResp>>() {}.getType();
+                String jsonForData = gson.toJson(reservationRespList, type);
+
+                Log.d(TAG, "jsonForData = " + jsonForData);
+
                 Intent intent = new Intent(ConfirmBookingActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra(SharedPref.SOCKET_RESP_OBJECT, jsonForData);
+                //PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.SOCKET_RESP_OBJECT, jsonForData);
 
                 dialogPayment.dismiss();
                 dialogThankYou.dismiss();
@@ -1044,7 +1053,6 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     protected void onStop() {
         super.onStop();
         Log.d(TAG,"onStop");
-        mSocket.disconnect();
     }
 
     @Override
@@ -1057,6 +1065,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG,"onDestroy");
+        mSocket.disconnect();
     }
 
     @Override
@@ -1070,8 +1079,5 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     public void onClick(Context context) {
         finish();
     }
-
-
-
 }
 

@@ -93,19 +93,19 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
                     holder.txtVehicleNo.setText(tripListResp.getVehcileNo());
                     holder.txtVehicleModel.setText("Vehicle Model : ");
 
-                    /*if(splittedStr4.equals("ultra"))
+                    if(splittedStr4.equals("ultra"))
                     {
                         holder.txtVehicleClassType.setText(splittedStr4 + "-luxury");
                     }
                     else
                     {
                         holder.txtVehicleClassType.setText(splittedStr4);
-                    }*/
-                    holder.txtVehicleClassType.setText(splittedStr4);
+                    }
+                    //holder.txtVehicleClassType.setText(splittedStr4);
 
                     /* decode otp and then set to ui */
                     DecodeOtp(tripListResp.getOtp());
-                    holder.txtOTP.setText("OTP " + new String(valueDecoded));
+                    holder.txtOTP.setText("OTP : " + new String(valueDecoded));
 
                     /* set image to ui */
                     if(tripListResp.getDriverImageUrl() != null)

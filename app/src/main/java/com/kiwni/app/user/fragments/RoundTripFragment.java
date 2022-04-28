@@ -464,7 +464,7 @@ public class RoundTripFragment extends Fragment implements
 
                 linearFooterButtons.setVisibility(View.VISIBLE);
                 btnCurrentLocation.setVisibility(View.GONE);
-                linearBtnConfirm.setVisibility(View.VISIBLE);
+                linearBtnConfirm.setVisibility(View.GONE);
                 btnViewCabRoundTrip.setVisibility(View.GONE);
 
                 return false;
@@ -575,14 +575,19 @@ public class RoundTripFragment extends Fragment implements
                     Log.d("TAG", "size 2 = " + pickupLocationList.size());
                 } else {
                     //drop
+                    //for unnamed location
                     Log.d(TAG, "city = " + pickup_city + " - " + drop_city);
-                    if (pickup_city == null || drop_city == null) {
+                    if (pickup_city == null || drop_city == null)
+                    {
                         autoCompleteTextViewDrop.setText("");
                         imageMarker.setVisibility(View.GONE);
                         linearBtnConfirm.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "Please select proper location.!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (pickup_city.equals(drop_city)) {
+                    }
+                    else
+                    {
+                        if (pickup_city.equals(drop_city))
+                        {
                             autoCompleteTextViewDrop.setText("");
                             Toast.makeText(getActivity(), "Please Select Different City..!", Toast.LENGTH_SHORT).show();
                             linearBtnConfirm.setVisibility(View.GONE);
@@ -875,7 +880,16 @@ public class RoundTripFragment extends Fragment implements
 
                     getAddressFromCurrentLocation(currentLatitude, currentLongitude);
                     autoCompleteTextViewDrop.setText("");
-                    pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
+
+                    if(pickupLocationList.size() == 0)
+                    {
+                        pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
+                    }
+                    else
+                    {
+                        pickupLocationList.set(0, new LatLng(currentLatitude, currentLongitude));
+                    }
+
                     AddMarker(pickup_city);
                     Log.d(TAG, "size 0 for current loc = " + pickupLocationList.size());
                 } else {
@@ -1358,7 +1372,7 @@ public class RoundTripFragment extends Fragment implements
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
                     (new LatLng(currentLatitude, currentLongitude), 10.0f));
 
-            autoCompleteTextViewDrop.setText("");
+            //autoCompleteTextViewDrop.setText("");
 
             if(pickupLocationList.size() > 0)
             {
@@ -1964,6 +1978,7 @@ public class RoundTripFragment extends Fragment implements
         super.onStop();
 
         Log.d(TAG,"onStop");
+        isDrop = false;
 
         /*if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
@@ -1974,9 +1989,6 @@ public class RoundTripFragment extends Fragment implements
     public void onPause() {
         super.onPause();
         Log.d(TAG,"onPause");
-
-        /*autoCompleteTextViewPickup.setText("");
-        autoCompleteTextViewDrop.setText("");*/
 
         mGoogleApiClient.connect();
         //isCurrent = true;
@@ -1990,6 +2002,7 @@ public class RoundTripFragment extends Fragment implements
         super.onDestroy();
         //getActivity().unregisterReceiver(connectivityHelper);
         Log.d(TAG,"onDestroy");
+        isDrop = false;
     }
 
     @Override

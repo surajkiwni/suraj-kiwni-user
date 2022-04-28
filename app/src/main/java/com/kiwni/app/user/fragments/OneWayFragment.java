@@ -103,7 +103,8 @@ public class OneWayFragment extends Fragment implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        com.google.android.gms.location.LocationListener,ConnectivityHelper.NetworkStateReceiverListener
+        com.google.android.gms.location.LocationListener,
+        ConnectivityHelper.NetworkStateReceiverListener
 {
     AppCompatButton btnViewCabOneWay, btnCurrentLocation, btnLocationOnMap, btnConfirm;
     //TextView txtMarkerText;
@@ -231,23 +232,7 @@ public class OneWayFragment extends Fragment implements
         autoCompleteTextViewDrop.setAdapter(adapter);
 
         direction = "one-way";
-        //get current location and draw marker on map
-       // currentLatitude = Double.parseDouble(PreferencesUtils.getPreferences(getActivity(), SharedPref.USER_CURRENT_LAT, ""));
-        //currentLongitude = Double.parseDouble(PreferencesUtils.getPreferences(getActivity(), SharedPref.USER_CURRENT_LNG, ""));
         Log.d(TAG, currentLatitude + ", " + currentLongitude);
-
-       /* if(currentLatitude != 0.0 && currentLongitude != 0.0)
-        {
-            getAddressFromCurrentLocation(currentLatitude, currentLongitude);
-            //DrawMarker(currentLatitude, currentLongitude, pickup_city);
-            pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
-            AddMarker(pickup_city);
-            Log.d(TAG, "size 0 for current loc = " + pickupLocationList.size());
-        }
-        else
-        {
-            Log.d(TAG, "Not getting co-ordinates");
-        }*/
 
         //get current date in format and set to UI
         GetCurrentDate();
@@ -449,7 +434,7 @@ public class OneWayFragment extends Fragment implements
 
                 linearFooterButtons.setVisibility(View.VISIBLE);
                 btnCurrentLocation.setVisibility(View.GONE);
-                linearBtnConfirm.setVisibility(View.VISIBLE);
+                linearBtnConfirm.setVisibility(View.GONE);
                 btnViewCabOneWay.setVisibility(View.GONE);
 
                 return false;
@@ -658,7 +643,6 @@ public class OneWayFragment extends Fragment implements
                 isDrop = false;
                 if(ConnectivityHelper.isConnected)
                 {
-
                     if (autoCompleteTextViewPickup.getText().toString().equals("")) {
                         //txtPickupLocation.setError("Pickup location field cannot be empty.!");
                         //Toast.makeText(getActivity(), "Pickup location field cannot be empty.!", Toast.LENGTH_SHORT).show();
@@ -677,12 +661,18 @@ public class OneWayFragment extends Fragment implements
                         //Toast.makeText(getActivity(), "Pickup Time field cannot be empty.!", Toast.LENGTH_SHORT).show();
                         ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup Time field cannot be empty.!");
                         errorDialog.show();
-                    } else {
-                        if (distanceValueFromApi.equals("") || distanceValueFromApi.equals(null)) {
+                    }
+                    else
+                    {
+                        if (distanceValueFromApi.equals("") || distanceValueFromApi.equals(null))
+                        {
                             ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Please Wait..!");
                             errorDialog.show();
-                        } else {
-                            try {
+                        }
+                        else
+                        {
+                            try
+                            {
                                 Date currentDate = inputFormat.parse(curr_converted_date);
                                 Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
 
@@ -690,7 +680,9 @@ public class OneWayFragment extends Fragment implements
                                     //Toast.makeText(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.", Toast.LENGTH_SHORT).show();
                                     ErrorDialog errorDialog = new ErrorDialog(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.");
                                     errorDialog.show();
-                                } else {
+                                }
+                                else
+                                {
                                     concatDateTime = strDate + " " + pickup_spinner_time.getSelectedItem().toString();
                                     Log.d(TAG, "concatDateTime = " + concatDateTime);
 
@@ -736,7 +728,6 @@ public class OneWayFragment extends Fragment implements
                             }
                         }
                     }
-
                 }
                 else {
                     Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
@@ -745,16 +736,6 @@ public class OneWayFragment extends Fragment implements
                             .setDuration(5000)
                             .show();
                 }
-                /*if(!isNetworkConnected())
-                {
-                    //Toast.makeText(getActivity(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
-                    ErrorDialog errorDialog = new ErrorDialog(getActivity(), "No internet. Connect to wifi or cellular network.");
-                    errorDialog.show();
-                }
-                else
-                {
-
-                }*/
             }
         });
     }
@@ -887,11 +868,17 @@ public class OneWayFragment extends Fragment implements
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
                             (new LatLng(currentLatitude, currentLongitude), 10.0f));
 
+                    getAddressFromCurrentLocation(currentLatitude, currentLongitude);
                     autoCompleteTextViewDrop.setText("");
 
-                    getAddressFromCurrentLocation(currentLatitude, currentLongitude);
-                    //DrawMarker(currentLatitude, currentLongitude, pickup_city);
-                    pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
+                    if(pickupLocationList.size() == 0)
+                    {
+                        pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
+                    }
+                    else
+                    {
+                        pickupLocationList.set(0, new LatLng(currentLatitude, currentLongitude));
+                    }
                     AddMarker(pickup_city);
                     Log.d(TAG, "size 0 for current loc = " + pickupLocationList.size());
                 } else {
@@ -1420,6 +1407,7 @@ public class OneWayFragment extends Fragment implements
         currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
     }
+
     public void unregisterNetworkBroadcastReceiver(Context currentContext) {
         currentContext.unregisterReceiver(connectivityHelper);
     }
@@ -1968,7 +1956,6 @@ public class OneWayFragment extends Fragment implements
             if (mGoogleApiClient != null)
             {
                 mGoogleApiClient.connect();
-                //autoCompleteTextViewDrop.setText("");
             }
 
         } catch (Exception e) {
@@ -1979,10 +1966,7 @@ public class OneWayFragment extends Fragment implements
     @Override
     public void onStop() {
         super.onStop();
-
-        /*if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }*/
+        isDrop = false;
     }
 
     @Override
@@ -1995,5 +1979,11 @@ public class OneWayFragment extends Fragment implements
     public void onResume() {
         super.onResume();
         registerNetworkBroadcastReceiver(getActivity());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isDrop = false;
     }
 }
