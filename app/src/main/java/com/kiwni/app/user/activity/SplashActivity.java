@@ -83,7 +83,7 @@ public class SplashActivity extends AppCompatActivity
                     }
                     else
                     {
-                        Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                        Intent i = new Intent(SplashActivity.this, HomeActivity.class);
                         startActivity(i);
                         finish();
                     }
@@ -134,7 +134,7 @@ public class SplashActivity extends AppCompatActivity
             }
             else
             {
-                Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                Intent i = new Intent(SplashActivity.this, HomeActivity.class);
                 startActivity(i);
                 finish();
             }

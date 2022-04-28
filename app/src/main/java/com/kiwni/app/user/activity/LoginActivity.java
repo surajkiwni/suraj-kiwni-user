@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
 {
     Button btnConfirm;
     EditText edtPhoneNumber;
+    ImageView imageBack;
 
     String mobile = "";
     Boolean isPhoneNoValid = false;
@@ -71,6 +73,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
 
         edtPhoneNumber = findViewById(R.id.edtPhoneNumber);
         btnConfirm = findViewById(R.id.btnConfirm);
+        imageBack = findViewById(R.id.imageBack);
 
         startNetworkBroadcastReceiver(this);
 
@@ -115,6 +118,16 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
                             .setDuration(5000)
                             .show();
                 }
+            }
+        });
+
+        imageBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
             }
         });
     }

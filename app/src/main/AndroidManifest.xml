@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
@@ -16,9 +16,19 @@
         android:roundIcon="@drawable/rounded_app_icons"
         android:supportsRtl="true"
         android:theme="@style/Theme.User">
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:exported="false"
+            android:theme="@style/Theme.User.NoActionBar"/>
+        <activity
+            android:name=".activity.HomeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.User.NoActionBar" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true"
@@ -53,22 +63,12 @@
             android:name=".activity.FindCarActivity"
             android:exported="false"
             android:theme="@style/Theme.User.NoActionBar" />
-
         <activity
-            android:name="com.kiwni.app.user.MainActivity"
+            android:name=".MainActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:parentActivityName="com.kiwni.app.user.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.User.NoActionBar" />
-
-        <!--<receiver android:name=".network.ConnectivityHelper"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
-                    tools:ignore="BatteryLife"/>
-            </intent-filter>
-        </receiver>-->
-        </application>
+    </application>
 
 </manifest>
