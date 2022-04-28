@@ -31,11 +31,6 @@ public class SplashActivity extends AppCompatActivity
     /*private static int SPLASH_SCREEN_TIME_OUT = 2000;
     private static int GPS_ON_CODE = 1001;*/
     boolean hasLoggedIn = false;
-
-    FusedLocationProviderClient mFusedLocationClient;
-    double currentLatitude = 0.0, currentLongitude = 0.0;
-    LocationRequest locationRequest;
-    LocationCallback locationCallback;
     String TAG = this.getClass().getSimpleName();
     String mobile = "";
 
@@ -56,115 +51,6 @@ public class SplashActivity extends AppCompatActivity
         hasLoggedIn = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.hasLoggedIn, false);
         Log.d("TAG", "logged in status = " + hasLoggedIn);
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(SplashActivity.this);
-
-        locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10 * 5000); // 10 seconds
-        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
-
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                for (Location location : locationResult.getLocations())
-                {
-                    if (location != null)
-                    {
-                        currentLatitude = location.getLatitude();
-                        currentLongitude = location.getLongitude();
-
-                        String currentLocation = + currentLatitude + ", " + currentLongitude;
-                        Log.d(TAG, currentLatitude + ", " + currentLongitude);
-                        Log.d(TAG, "current location 1 = " +currentLocation);
-
-                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
-
-
-                        String str = String.valueOf(currentLatitude);
-                        String str2 = String.valueOf(currentLongitude);
-
-                        String sharedLatLong =str +"," +str2;
-
-                        Log.d(TAG,"str3 =" +str);
-                        Log.d(TAG,"str4 =" +str2);
-
-
-                        Log.d(TAG,"Shared Value"+ str +"," +str2);
-
-                        if (currentLatitude != 0.0 && currentLongitude != 0.0)
-                        {
-                            /*Intent i = new Intent(SplashActivity.this, LoginActivity.class);
-
-                            if(!currentLocation.equals(sharedLatLong)){
-
-                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
-                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
-
-                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
-                            }
-                            else if (currentLocation.equals(sharedLatLong)){
-
-                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
-                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
-
-                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
-                            }
-
-
-                            startActivity(i);
-                            finish();*/
-
-                            if(hasLoggedIn)
-                            {
-                                mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
-
-                                Intent i = new Intent(SplashActivity.this, MainActivity.class);
-
-                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, mobile);
-                                startActivity(i);
-                                finish();
-                            }
-                            else
-                            {
-                                Intent i = new Intent(SplashActivity.this, LoginActivity.class);
-
-                                if(!currentLocation.equals(sharedLatLong)){
-
-                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
-                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
-
-                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
-                                }
-                                else if (currentLocation.equals(sharedLatLong)){
-
-                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
-                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
-
-                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                                    PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
-                                }
-
-                                startActivity(i);
-                                finish();
-                            }
-                        }
-
-                        if (mFusedLocationClient != null) {
-                            mFusedLocationClient.removeLocationUpdates(locationCallback);
-                        }
-                    }
-                }
-            }
-        };
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run()
@@ -183,11 +69,30 @@ public class SplashActivity extends AppCompatActivity
                         ActivityCompat.requestPermissions(SplashActivity.this,
                                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                     }
+
+                    //permission denied
                 }
                 else
                 {
+                    // permission granted
                     startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), AppConstants.GPS_REQUEST);
-                    GetCurrentLocation();
+                    //GetCurrentLocation();
+
+                    if(hasLoggedIn)
+                    {
+                        mobile = PreferencesUtils.getPreferences(SplashActivity.this, SharedPref.FIREBASE_MOBILE_NO, "");
+                        Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, mobile);
+                        startActivity(i);
+                        finish();
+                    }
+                    else
+                    {
+                        Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
                 }
             }
         }, AppConstants.SPLASH_SCREEN_TIME_OUT);
@@ -224,118 +129,27 @@ public class SplashActivity extends AppCompatActivity
         if (requestCode == AppConstants.GPS_REQUEST)
         {
             //startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), GPS_ON_CODE);
-            GetCurrentLocation();
+            if(hasLoggedIn)
+            {
+                mobile = PreferencesUtils.getPreferences(SplashActivity.this, SharedPref.FIREBASE_MOBILE_NO, "");
+                Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, mobile);
+                startActivity(i);
+                finish();
+            }
+            else
+            {
+                Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
+            }
         }
         else
         {
             Log.d("TAG", "failed");
             finish();
         }
-    }
-
-    public void GetCurrentLocation()
-    {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        mFusedLocationClient.getLastLocation().addOnSuccessListener(SplashActivity.this, location -> {
-            if (location != null)
-            {
-                currentLatitude = location.getLatitude();
-                currentLongitude = location.getLongitude();
-                String currentLocation = + currentLatitude + ", " + currentLongitude;
-                Log.d(TAG, currentLatitude + ", " + currentLongitude);
-                Log.d(TAG, "current location = " +currentLocation);
-
-
-                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
-
-
-                String str = String.valueOf(currentLatitude);
-                String str2 = String.valueOf(currentLongitude);
-
-                String sharedLatLong =str +"," +str2;
-
-                Log.d(TAG,"str1 =" +str);
-                Log.d(TAG,"str2 =" +str2);
-
-                Log.d(TAG,"Shared Value2 = "+ str +"," +str2);
-
-                if (currentLatitude != 0.0 && currentLongitude != 0.0)
-                {
-                    /*Intent i = new Intent(SplashActivity.this, LoginActivity.class);
-
-                    if(!currentLocation.equals(sharedLatLong)){
-
-                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
-                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
-
-                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
-                    }
-                    else if (currentLocation.equals(sharedLatLong)){
-
-                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
-                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
-
-                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                        PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
-                    }
-                    startActivity(i);
-                    finish();*/
-
-                    if(hasLoggedIn)
-                    {
-                        mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
-
-                        Intent i = new Intent(SplashActivity.this, MainActivity.class);
-
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, mobile);
-                        startActivity(i);
-                        finish();
-                    }
-                    else
-                    {
-                        Intent i = new Intent(SplashActivity.this, LoginActivity.class);
-
-                        if(!currentLocation.equals(sharedLatLong)){
-
-                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
-                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
-
-                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
-                        }
-                        else if (currentLocation.equals(sharedLatLong)){
-
-                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, "");
-                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, "");
-
-                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                            PreferencesUtils.putPreferences(SplashActivity.this, SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
-                        }
-
-                        startActivity(i);
-                        finish();
-                    }
-                }
-                else {
-                    mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-                }
-            } else {
-                mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-                //finish();
-            }
-        });
     }
 
     @Override
