@@ -99,7 +99,8 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ConnectivityHelper.NetworkStateReceiverListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+{
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     String TAG = this.getClass().getSimpleName();
@@ -114,11 +115,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
-
-    ConnectivityHelper connectivityHelper = new ConnectivityHelper();
-
-
-
 
     /* socket */
     Socket mSocket;
@@ -145,8 +141,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getSupportActionBar().setTitle("title");
 
-        // for data sharing
-
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
@@ -164,8 +158,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawer_layout);
 
         navigationView.setNavigationItemSelectedListener(this);
-
-        startNetworkBroadcastReceiver(this);
 
         View headerView = navigationView.getHeaderView(0);
         txtHeaderName = headerView.findViewById(R.id.txtHeaderName);
@@ -196,10 +188,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         context = getApplicationContext();
-
-        /* check internet connection */
-        broadcastReceiver = new ConnectivityHelper();
-        checkInternet();
 
         SocketConnect();
 
@@ -787,11 +775,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    /* internet connection */
-    private void checkInternet() {
-        registerReceiver(broadcastReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -818,17 +801,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             Log.d(TAG, "reservation resp list size is empty = " + reservationRespList.size());
         }
-
-        registerNetworkBroadcastReceiver(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
-
-        unregisterNetworkBroadcastReceiver(this);
-
     }
 
     @Override
@@ -844,46 +822,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //unregisterReceiver(broadcastReceiver);
         mSocket.disconnect();
     }
-
-    @SuppressLint("ResourceAsColor")
-    @Override
-    public void networkAvailable()
-    {
-        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
-        Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
-                .setTextColor(Color.WHITE)
-                .setBackgroundTint(Color.GREEN)
-                .setDuration(5000)
-                .show();
-
-
-    }
-
-    @Override
-    public void networkUnavailable() {
-        // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
-        Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
-                .setTextColor(Color.WHITE)
-                .setBackgroundTint(Color.RED)
-                .setDuration(5000)
-                .show();
-
-
-    }
-
-    public void startNetworkBroadcastReceiver(Context currentContext) {
-        connectivityHelper = new ConnectivityHelper();
-        connectivityHelper.addListener(this);
-        registerNetworkBroadcastReceiver(currentContext);
-    }
-
-
-    public void registerNetworkBroadcastReceiver(Context currentContext) {
-        currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-
-    }
-    public void unregisterNetworkBroadcastReceiver(Context currentContext) {
-        currentContext.unregisterReceiver(connectivityHelper);
-    }
-
 }

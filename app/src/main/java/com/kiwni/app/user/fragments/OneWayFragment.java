@@ -656,7 +656,8 @@ public class OneWayFragment extends Fragment implements
                 //one-way
                 isPickup = false;
                 isDrop = false;
-                if(ConnectivityHelper.isConnected) {
+                if(ConnectivityHelper.isConnected)
+                {
 
                     if (autoCompleteTextViewPickup.getText().toString().equals("")) {
                         //txtPickupLocation.setError("Pickup location field cannot be empty.!");

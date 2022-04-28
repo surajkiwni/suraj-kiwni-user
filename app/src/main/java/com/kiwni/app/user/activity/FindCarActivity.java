@@ -791,6 +791,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
             List<LatLng> latLngList = new ArrayList<>();
             latLngList.add(new LatLng(pickup_latitude, pickup_longitude));
             latLngList.add(new LatLng(drop_latitude, drop_longitude));
+            Log.d(TAG, "size = " + latLngList.size());
             zoomRoute(mMap, latLngList);
         }
     }

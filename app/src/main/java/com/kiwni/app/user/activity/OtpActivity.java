@@ -97,16 +97,28 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                 /*Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
                 finish();*/
-                otp_code = pinView.getText().toString();
-                Log.d(TAG, "otp_code = " + otp_code);
 
-                if (otp_code.isEmpty())
+                if(ConnectivityHelper.isConnected)
                 {
-                    Toast.makeText(getApplicationContext(), "Please Enter valid code", Toast.LENGTH_SHORT).show();
+                    otp_code = pinView.getText().toString();
+                    Log.d(TAG, "otp_code = " + otp_code);
+
+                    if (otp_code.isEmpty())
+                    {
+                        Toast.makeText(getApplicationContext(), "Please Enter valid code", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        verifyCode(otp_code);
+                    }
                 }
                 else
                 {
-                    verifyCode(otp_code);
+                    Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                            .setTextColor(Color.WHITE)
+                            .setBackgroundTint(Color.RED)
+                            .setDuration(5000)
+                            .show();
                 }
             }
         });
@@ -336,8 +348,6 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                 .setBackgroundTint(Color.GREEN)
                 .setDuration(5000)
                 .show();
-
-
     }
 
     @Override
@@ -348,8 +358,6 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                 .setBackgroundTint(Color.RED)
                 .setDuration(5000)
                 .show();
-
-
     }
 
     public void startNetworkBroadcastReceiver(Context currentContext) {

@@ -90,19 +90,30 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
                 /*Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);*/
-                mobile = edtPhoneNumber.getText().toString();
-                Log.d("TAG", "mobile = " + mobile);
-
-                setValidation();
-
-                if(isPhoneNoValid)
+                if(ConnectivityHelper.isConnected)
                 {
-                    if(!mobile.contains("+91"))
-                    {
-                        mobile = "+91" + mobile;
-                    }
+                    mobile = edtPhoneNumber.getText().toString();
+                    Log.d("TAG", "mobile = " + mobile);
 
-                    sendVerificationCode(mobile);
+                    setValidation();
+
+                    if(isPhoneNoValid)
+                    {
+                        if(!mobile.contains("+91"))
+                        {
+                            mobile = "+91" + mobile;
+                        }
+
+                        sendVerificationCode(mobile);
+                    }
+                }
+                else
+                {
+                    Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                            .setTextColor(Color.WHITE)
+                            .setBackgroundTint(Color.RED)
+                            .setDuration(5000)
+                            .show();
                 }
             }
         });
@@ -182,33 +193,6 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
                 });
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if(keyCode==KeyEvent.KEYCODE_BACK)
-        {
-            // Toast.makeText(getApplicationContext(), "back button pressed", Toast.LENGTH_LONG).show(); //doesn't work here
-            finish();
-            return true;
-        }
-
-        if (keyCode==KeyEvent.KEYCODE_HOME)
-        {
-            //Toast.makeText(getApplicationContext(), "home button pressed", Toast.LENGTH_LONG).show(); //doesn't work here
-            finish();
-            return true;
-        }
-
-        if(keyCode==KeyEvent.KEYCODE_ESCAPE)
-        {
-            //Toast.makeText(getApplicationContext(), "Escape button pressed", Toast.LENGTH_LONG).show(); //doesn't work here
-            finish();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-
     @SuppressLint("ResourceAsColor")
     @Override
     public void networkAvailable()
@@ -219,8 +203,6 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
                 .setBackgroundTint(Color.GREEN)
                 .setDuration(5000)
                 .show();
-
-
     }
 
     @Override
@@ -231,8 +213,6 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
                 .setBackgroundTint(Color.RED)
                 .setDuration(5000)
                 .show();
-
-
     }
 
     public void startNetworkBroadcastReceiver(Context currentContext) {
@@ -260,5 +240,31 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
     protected void onPause() {
         super.onPause();
         unregisterNetworkBroadcastReceiver(this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if(keyCode==KeyEvent.KEYCODE_BACK)
+        {
+            // Toast.makeText(getApplicationContext(), "back button pressed", Toast.LENGTH_LONG).show(); //doesn't work here
+            finish();
+            return true;
+        }
+
+        if (keyCode==KeyEvent.KEYCODE_HOME)
+        {
+            //Toast.makeText(getApplicationContext(), "home button pressed", Toast.LENGTH_LONG).show(); //doesn't work here
+            finish();
+            return true;
+        }
+
+        if(keyCode==KeyEvent.KEYCODE_ESCAPE)
+        {
+            //Toast.makeText(getApplicationContext(), "Escape button pressed", Toast.LENGTH_LONG).show(); //doesn't work here
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

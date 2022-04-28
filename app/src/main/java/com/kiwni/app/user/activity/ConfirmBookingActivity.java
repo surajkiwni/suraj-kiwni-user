@@ -162,6 +162,8 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_booking);
 
+        startNetworkBroadcastReceiver(this);
+
         radioGroup = findViewById(R.id.radioGroup);
         radioBusiness = findViewById(R.id.radioBusiness);
         radioPersonal = findViewById(R.id.radioPersonal);
@@ -396,23 +398,30 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
         String concatClassType = contactStr + "-" + selectedVehicleDataList.get(0).getVehicle().getClassType().toLowerCase();
         Log.d(TAG, "concatClassType = " + concatClassType);
 
-        List<ScheduleDatesRates> listRates = new ArrayList<>();
-        selectedVehicleDataList.get(0).getVehicle().getRates().removeAll(listRates);
-        listRates.addAll(selectedVehicleDataList.get(0).getVehicle().getRates());
-        Log.d(TAG, "size = " + listRates.size());
-
-        for(int i = 0; i < listRates.size(); i++)
+        /* set value to service_type id */
+        switch (concatClassType)
         {
-            int id = listRates.get(i).getId();
-            String serviceType = listRates.get(i).getServiceType();
-            Log.d(TAG, "id = " + id);
-            Log.d(TAG, "serviceType = " + serviceType);
-
-            if(concatClassType.equals(serviceType))
-            {
-                Log.d(TAG, "Match == " + listRates.get(i).getId());
-                service_type_id = listRates.get(i).getId();
-            }
+            case "one-way-outstation-premium":
+                service_type_id = 1;
+                break;
+            case "one-way-outstation-luxury":
+                service_type_id = 2;
+                break;
+            case "one-way-outstation-ultra-luxury":
+                service_type_id = 3;
+                break;
+            case "two-way-outstation-premium":
+                service_type_id = 4;
+                break;
+            case "two-way-outstation-luxury":
+                service_type_id = 5;
+                break;
+            case "two-way-outstation-ultra-luxury":
+                service_type_id = 6;
+                break;
+            default:
+                Log.d(TAG, "does not match concatenated serviceType.");
+                break;
         }
 
         /* separate Name from string */
@@ -438,7 +447,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
         rideReq.setJourneyTime(journeyTime);
 
         //rateReq.add(new RateReq(1));
-        rateReq.add(new RateReq(service_type_id));
+        rateReq.add(new RateReq(1));
         rideReq.setRates(rateReq);
 
         rideReq.setStatus(new RideStatusReq(2));
@@ -452,7 +461,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
         rideReq.setUpdatedUser("");
 
         serviceTypeReq = new ServiceTypeReq();
-        serviceTypeReq.setId(1);
+        serviceTypeReq.setId(service_type_id);
 
         statusReq = new StatusReq();
         statusReq.setId(1);
@@ -478,24 +487,23 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
                     companyEmail = "";
                 }
 
-                BookRide(channelReq, "", firstName, customerEmail, partyId,
-                        customerName, customerPhone, driverId, driverLicense, driverName,
-                        driverPhone, Integer.parseInt(providerId), providerName,
-                        createdDateForApi, rideReq, scheduleId, serviceTypeReq, statusReq,
-                        "", "", vehicleId, tripType, notification_type,
-                        companyEmail, companyPhone, companyName, idToken);
-                /*if(!isNetworkConnected())
+                if(ConnectivityHelper.isConnected)
                 {
-                    *//*ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "No internet. Connect to wifi or cellular network.");
-                    errorDialog.show();*//*
-                    ErrorDialog1 errorDialog1 = new ErrorDialog1();
-                    errorDialog1.showError(ConfirmBookingActivity.this,
-                            "No internet. Connect to wifi or cellular network.", errorDialogInterface);
+                    BookRide(channelReq, "", firstName, customerEmail, partyId,
+                            customerName, customerPhone, driverId, driverLicense, driverName,
+                            driverPhone, Integer.parseInt(providerId), providerName,
+                            createdDateForApi, rideReq, scheduleId, serviceTypeReq, statusReq,
+                            "", "", vehicleId, tripType, notification_type,
+                            companyEmail, companyPhone, companyName, idToken);
                 }
                 else
                 {
-
-                }*/
+                    Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                            .setTextColor(Color.WHITE)
+                            .setBackgroundTint(Color.RED)
+                            .setDuration(5000)
+                            .show();
+                }
             }
         });
     }
@@ -757,20 +765,23 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
                                         //new generated token set to pref data
                                         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_TOKEN, refreshToken);
 
-                                        BookRide(channelReq, "", firstName, customerEmail, partyId,
-                                                customerName, customerPhone, driverId, driverLicense, driverName,
-                                                driverPhone, providerId, providerName,
-                                                createdDateForApi, rideReq, scheduleId, serviceTypeReq, statusReq,
-                                                "", "", vehicleId, tripType, notification_type,
-                                                companyEmail, companyPhone, companyName, refreshToken);
-                                        /*if(!isNetworkConnected())
+                                        if(ConnectivityHelper.isConnected)
                                         {
-                                            Toast.makeText(getApplicationContext(), "No internet. Connect to wifi or cellular network.", Toast.LENGTH_SHORT).show();
+                                            BookRide(channelReq, "", firstName, customerEmail, partyId,
+                                                    customerName, customerPhone, driverId, driverLicense, driverName,
+                                                    driverPhone, providerId, providerName,
+                                                    createdDateForApi, rideReq, scheduleId, serviceTypeReq, statusReq,
+                                                    "", "", vehicleId, tripType, notification_type,
+                                                    companyEmail, companyPhone, companyName, refreshToken);
                                         }
                                         else
                                         {
-
-                                        }*/
+                                            Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                                                    .setTextColor(Color.WHITE)
+                                                    .setBackgroundTint(Color.RED)
+                                                    .setDuration(5000)
+                                                    .show();
+                                        }
                                     }
                                 }
                             });
@@ -987,8 +998,6 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
                 .setBackgroundTint(Color.GREEN)
                 .setDuration(5000)
                 .show();
-
-
     }
 
     @Override
@@ -999,8 +1008,6 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
                 .setBackgroundTint(Color.RED)
                 .setDuration(5000)
                 .show();
-
-
     }
 
     public void startNetworkBroadcastReceiver(Context currentContext) {
