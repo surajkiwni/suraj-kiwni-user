@@ -71,7 +71,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_30"
         android:layout_marginTop="@dimen/dp_20"
-        android:text="Sign Up"
+        android:text="Sign In"
         android:background="@drawable/viewcabs_roundedbutton"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/btnSignUp"

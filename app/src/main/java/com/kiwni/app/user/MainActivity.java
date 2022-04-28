@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Socket mSocket;
     SocketReservationResp reservationResp = new SocketReservationResp();
     Context context;
-    boolean driver_data_updated = false;
+    boolean driver_data_updated = false, isValid = true;
     byte[] valueDecoded= new byte[0];
     String convertedDateTime = "", stringData = "", splittedStr1 ="", splittedStr2 = "",
             splittedStr3 = "", splittedStr4 = "", concatDirection = "";
@@ -820,7 +820,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 socketSuccessRespList = new ArrayList<>();
                 socketSuccessRespList = gson.fromJson(stringData, type);
 
-                DisplaySuccessDialog(socketSuccessRespList);
+                if(socketSuccessRespList.size() != 0)
+                {
+                    DisplaySuccessDialog(socketSuccessRespList);
+                }
             }
 
         }
@@ -839,7 +842,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.d(TAG, "in onResume method ");
 
         /* get list from confirm booking screen and show reservation success dialog */
-        GetReservationSuccessData();
+        if(isValid)
+        {
+            GetReservationSuccessData();
+        }
 
         /* for driver data updated connect socket and show dialog */
         SocketConnect();
@@ -859,14 +865,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
-        stringData = "";
+        isValid = false;
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
         Log.d(TAG, "onRestart");
-        stringData = "";
+        stringData = null;
     }
 
     @Override

@@ -31,6 +31,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
+import com.kiwni.app.user.datamodels.ErrorDialog;
 import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
@@ -106,7 +107,9 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
 
                     if (otp_code.isEmpty())
                     {
-                        Toast.makeText(getApplicationContext(), "Please Enter valid code", Toast.LENGTH_SHORT).show();
+                        ErrorDialog errorDialog = new ErrorDialog(OtpActivity.this, "Please Enter valid code");
+                        errorDialog.show();
+                        //Toast.makeText(getApplicationContext(), "Please Enter valid code", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {

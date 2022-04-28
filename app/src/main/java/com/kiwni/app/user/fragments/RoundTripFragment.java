@@ -1986,6 +1986,7 @@ public class RoundTripFragment extends Fragment implements
 
         Log.d(TAG,"onStop");
         isDrop = false;
+        isNetworkAvailable = false;
 
         /*if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
@@ -2010,6 +2011,7 @@ public class RoundTripFragment extends Fragment implements
         //getActivity().unregisterReceiver(connectivityHelper);
         Log.d(TAG,"onDestroy");
         isDrop = false;
+        isNetworkAvailable = false;
     }
 
     @Override

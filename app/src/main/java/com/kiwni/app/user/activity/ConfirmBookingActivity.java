@@ -125,7 +125,8 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     EditText edtCompanyName, edtCompanyEmail, edtCompanyPhoneNo;
     TextView txtCompanyPhone, txtCompanyEmail, txtCompanyName;
     AppCompatButton doneButton;
-    boolean isCompanyNameValid = false, isCompanyEmailValid = false, isCompanyPhoneNoValid = false, isNetworkAvailable = true;
+    boolean isCompanyNameValid = false, isCompanyEmailValid = false, isCompanyPhoneNoValid = false,
+            isNetworkAvailable = false;
 
     String direction = "", startDate = "", endDate = "", startTime = "", serviceType = "",
             distanceInKm = "", mobile = "", pickupAddress = "", dropAddress = "",
@@ -1002,7 +1003,8 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     public void networkAvailable()
     {
         //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
-        if(isNetworkAvailable){
+        if(isNetworkAvailable)
+        {
             Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
                     .setTextColor(Color.WHITE)
                     .setBackgroundTint(Color.GREEN)

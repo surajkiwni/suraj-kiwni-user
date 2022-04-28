@@ -1994,6 +1994,7 @@ public class CurrentBookingFragment extends Fragment implements
     public void onStop() {
         super.onStop();
         isDrop = false;
+        isNetworkAvailable = false;
     }
 
     @Override
@@ -2012,5 +2013,6 @@ public class CurrentBookingFragment extends Fragment implements
     public void onDestroy() {
         super.onDestroy();
         isDrop = false;
+        isNetworkAvailable = false;
     }
 }
