@@ -260,6 +260,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         saveButton.setTextColor(Color.BLACK);
                         cancelButton.setBackgroundColor(Color.BLACK);
                         cancelButton.setTextColor(Color.WHITE);
+                        bottomSheetDialog.dismiss();
                     }
                 });
 

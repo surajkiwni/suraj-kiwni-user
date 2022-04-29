@@ -339,13 +339,13 @@
 
             <TextView
                 android:id="@+id/txtDriverName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="Kiran"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                app:layout_constraintEnd_toEndOf="@+id/imgDriverImg"
+                app:layout_constraintEnd_toEndOf="@id/imgDriverImg"
                 app:layout_constraintStart_toStartOf="@+id/imgDriverImg"
                 app:layout_constraintTop_toBottomOf="@id/imgDriverImg" />
 
