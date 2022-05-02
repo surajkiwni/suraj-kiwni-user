@@ -2,9 +2,12 @@ package com.kiwni.app.user.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.utils.widget.ImageFilterButton;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,7 +21,8 @@ public class RegisterActivity extends AppCompatActivity {
     ImageView imageBack;
     TextInputEditText txtInputPassword;
     boolean isEmailValid = false,isPhoneNoValid = false,isPasswordValid = false,isLastNameValid = false,isFirstNameValid = false;
-    EditText edtEmailId ,edtPhoneNo,edtLastName, edtFirstName;
+    EditText edtEmailId ,edtPhoneNo,edtLastName, edtFirstName, edtPassword;
+    ImageView imgEyeOpen, imgEyeClose;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +36,10 @@ public class RegisterActivity extends AppCompatActivity {
         edtPhoneNo = findViewById(R.id.edtMobile);
         edtLastName = findViewById(R.id.edtLastName);
         edtFirstName = findViewById(R.id.edtFirstName);
+        edtPassword = findViewById(R.id.edtPassword);
 
-        txtInputPassword = findViewById(R.id.txtPasswordInput);
+        imgEyeClose = findViewById(R.id.imgEyeClose);
+        imgEyeOpen = findViewById(R.id.imgEyeOpen);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +67,26 @@ public class RegisterActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
 
+            }
+        });
+
+        imgEyeOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imgEyeClose.setVisibility(View.VISIBLE);
+                imgEyeOpen.setVisibility(View.GONE);
+                //for textview show
+                edtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            }
+        });
+
+        imgEyeClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imgEyeClose.setVisibility(View.GONE);
+                imgEyeOpen.setVisibility(View.VISIBLE);
+                //for textview hide
+                edtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             }
         });
     }
@@ -135,5 +161,15 @@ public class RegisterActivity extends AppCompatActivity {
             //edtEmailId.setErrorEnabled(false);
             isFirstNameValid = true;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 }
