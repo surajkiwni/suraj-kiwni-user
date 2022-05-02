@@ -109,7 +109,6 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                     {
                         ErrorDialog errorDialog = new ErrorDialog(OtpActivity.this, "Please Enter valid code");
                         errorDialog.show();
-                        //Toast.makeText(getApplicationContext(), "Please Enter valid code", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {

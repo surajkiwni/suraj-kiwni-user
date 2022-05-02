@@ -9,8 +9,8 @@ import android.view.View;
 
 import com.kiwni.app.user.R;
 
-public class HomeActivity extends AppCompatActivity {
-
+public class HomeActivity extends AppCompatActivity
+{
     AppCompatButton btnSignUp, btnSignIn;
 
     @Override
@@ -21,6 +21,7 @@ public class HomeActivity extends AppCompatActivity {
         btnSignIn = findViewById(R.id.btnSignIn);
         btnSignUp = findViewById(R.id.btnSignUp);
 
+        /* register new user */
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -31,6 +32,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        /* login existing user */
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

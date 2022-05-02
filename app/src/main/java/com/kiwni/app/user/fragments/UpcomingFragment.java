@@ -47,7 +47,6 @@ public class UpcomingFragment extends Fragment implements ErrorDialogInterface
     String TAG = this.getClass().getSimpleName();
     int partyId = 0;
     View view;
-    ErrorDialogInterface errorDialogInterface;
 
     public UpcomingFragment() {
         // Required empty public constructor
@@ -61,7 +60,6 @@ public class UpcomingFragment extends Fragment implements ErrorDialogInterface
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_upcoming, container, false);
 
         upcomingRecyclerView = view.findViewById(R.id.upcomingRecyclerView);
@@ -73,12 +71,6 @@ public class UpcomingFragment extends Fragment implements ErrorDialogInterface
         getTripHistoryData(partyId);
 
         return view;
-    }
-
-    private boolean isNetworkConnected()
-    {
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
     public void getTripHistoryData(int id)

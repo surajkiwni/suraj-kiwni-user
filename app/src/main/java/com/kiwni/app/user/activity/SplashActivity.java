@@ -39,14 +39,7 @@ public class SplashActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //This method is used so that your splash activity
-        //can cover the entire screen.
-
-        setContentView(R.layout.activity_splash);
-        //this will bind your MainActivity.class file with activity_main.
-
+        /* session handling */
         hasLoggedIn = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.hasLoggedIn, false);
         Log.d(TAG, "logged in status = " + hasLoggedIn);
 
@@ -71,10 +64,12 @@ public class SplashActivity extends AppCompatActivity
                 }
                 else
                 {
+                    /* location permission */
                     startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), AppConstants.GPS_REQUEST);
 
                     if(hasLoggedIn)
                     {
+                        /* already login */
                         mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
                         Intent i = new Intent(SplashActivity.this, MainActivity.class);
                         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, mobile);
@@ -83,6 +78,7 @@ public class SplashActivity extends AppCompatActivity
                     }
                     else
                     {
+                        /* call home activity */
                         Intent i = new Intent(SplashActivity.this, HomeActivity.class);
                         startActivity(i);
                         finish();
@@ -125,6 +121,7 @@ public class SplashActivity extends AppCompatActivity
         {
             if(hasLoggedIn)
             {
+                /* already login */
                 mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
 
                 Intent i = new Intent(SplashActivity.this, MainActivity.class);
@@ -134,6 +131,7 @@ public class SplashActivity extends AppCompatActivity
             }
             else
             {
+                /* call home activity */
                 Intent i = new Intent(SplashActivity.this, HomeActivity.class);
                 startActivity(i);
                 finish();
@@ -154,5 +152,15 @@ public class SplashActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

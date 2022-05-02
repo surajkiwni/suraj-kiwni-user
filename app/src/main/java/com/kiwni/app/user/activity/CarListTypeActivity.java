@@ -72,7 +72,6 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
     ImageView imageBack,imgCallCarLTAct;
     TextView txtTitle, txtFromTo, txtStartEndDate, txtEstimatedKm, txtStartTime, txtVehicleType,
             txtSeatCapacity;
-    BroadcastReceiver broadcastReceiver = null;
 
     ConstraintLayout sortLayout, mapLayout, filterLayout, constraintLayoutForRentalPackage;
     String strBrand = "", strSegment = "", strYear = "", strSpecialReq = "";
@@ -179,11 +178,6 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
             }.getType();
             mList = gson.fromJson(stringData, type);
             remainingList = gson.fromJson(stringDuplicateData, type);
-            //Log.d("data Count = ", String.valueOf(mList.size()));
-            //Log.d("value Data = ", mList.toString());
-
-            //Log.d("duplicate Data size = ", String.valueOf(remainingList.size()));
-            //Log.d("duplicate Data = ", remainingList.toString());
 
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new GridLayoutWrapper(getApplicationContext(), 1));
@@ -252,7 +246,6 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
                 AppCompatButton btnPopularity = dialog.findViewById(R.id.btnPopularity);
                 AppCompatButton btnLowToHigh = dialog.findViewById(R.id.btnLowToHigh);
                 AppCompatButton btnHighToLow = dialog.findViewById(R.id.btnHighToLow);
-
 
                 ImageView imageBack = dialog.findViewById(R.id.imageBack);
 
@@ -670,31 +663,21 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
         dialog.show();
     }
 
-    /* internet connection */
-    private void checkInternet() {
-        registerReceiver(broadcastReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-    }
-
     @SuppressLint("ResourceAsColor")
     @Override
     public void networkAvailable()
     {
-        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
         if(isNetworkAvailable){
             Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
                     .setTextColor(Color.WHITE)
                     .setBackgroundTint(Color.GREEN)
                     .setDuration(5000)
                     .show();
-
         }
-
-
     }
 
     @Override
     public void networkUnavailable() {
-        // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
         Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
                 .setTextColor(Color.WHITE)
                 .setBackgroundTint(Color.RED)
@@ -702,8 +685,6 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
                 .show();
 
         isNetworkAvailable = true;
-
-
     }
 
     public void startNetworkBroadcastReceiver(Context currentContext) {
