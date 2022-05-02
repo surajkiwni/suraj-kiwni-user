@@ -29,7 +29,6 @@ public class ProfileFragment extends Fragment
     ImageView imageBack;
 
     String TAG = this.getClass().getSimpleName();
-
     String userName = "", mobileNumber = "", emailAddress = "", emergencyContact = "";
 
     public ProfileFragment() {

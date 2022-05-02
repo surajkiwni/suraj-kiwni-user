@@ -67,25 +67,8 @@ public class PastFragment extends Fragment implements ErrorDialogInterface
 
         /* call trip history api */
         getTripHistoryData(partyId);
-        /*if(!isNetworkConnected())
-        {
-            *//*ErrorDialog errorDialog = new ErrorDialog(getActivity(), "No internet. Connect to wifi or cellular network.");
-            errorDialog.show();*//*
-            ErrorDialog1 errorDialog1 = new ErrorDialog1();
-            errorDialog1.showError(getActivity(), "No internet. Connect to wifi or cellular network.", this);
-        }
-        else
-        {
-
-        }*/
 
         return view;
-    }
-
-    private boolean isNetworkConnected()
-    {
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
     public void getTripHistoryData(int id)
@@ -125,7 +108,6 @@ public class PastFragment extends Fragment implements ErrorDialogInterface
                         List<TripsHistoryResp> tempList = new ArrayList<>();
 
                         tripHistoryList = response.body();
-                        //Log.d(TAG, "size = " + tripHistoryList.size());
 
                         pastRecyclerView.setHasFixedSize(true);
                         pastRecyclerView.setLayoutManager(new GridLayoutWrapper(getActivity(), 1));
@@ -140,7 +122,6 @@ public class PastFragment extends Fragment implements ErrorDialogInterface
                         }
 
                         tripHistoryList.removeAll(tempList);
-                        //Log.d(TAG, "main list size = " + tripHistoryList.size());
 
                         pastAdapter = new PastAdapter(getActivity(), tripHistoryList);
                         pastRecyclerView.setAdapter(pastAdapter);

@@ -158,7 +158,7 @@
                 android:paddingTop="@dimen/dp_10"
                 android:textColor="@android:color/transparent"
                 android:textStyle="bold"
-                app:drawableEndCompat="@drawable/downa_arrow"
+                app:drawableEndCompat="@drawable/down_arrow"
                 app:drawableTint="@color/purple_500"
                 app:layout_constraintBottom_toBottomOf="@+id/cl_truck_detail"
                 app:layout_constraintEnd_toEndOf="parent" />

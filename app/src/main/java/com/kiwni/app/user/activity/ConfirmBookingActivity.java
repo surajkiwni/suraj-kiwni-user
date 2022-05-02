@@ -110,7 +110,6 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     CheckBox chkPhone, chkEmail, chkWhatsApp;
     RadioGroup radioGroup;
     ErrorDialogInterface errorDialogInterface;
-    BroadcastReceiver broadcastReceiver = null;
 
     List<ScheduleMapResp> selectedVehicleDataList = new ArrayList<>();
 
@@ -813,7 +812,6 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
             public void onFailure(Call<RideReservationResp> call, Throwable t) {
                 lovelyProgressDialog.dismiss();
                 Log.d(TAG, "error: " + t.toString());
-                //progressDoalog.dismiss();
             }
         });
     }
@@ -1002,7 +1000,6 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     @Override
     public void networkAvailable()
     {
-        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
         if(isNetworkAvailable)
         {
             Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
@@ -1015,7 +1012,6 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
 
     @Override
     public void networkUnavailable() {
-        // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
         Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
                 .setTextColor(Color.WHITE)
                 .setBackgroundTint(Color.RED)
@@ -1044,7 +1040,6 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     public void onBackPressed() {
         super.onBackPressed();
 
-        //startActivity(new Intent(ConfirmBookingActivity.this, BookingDetailsActivity.class));
         finish();
     }
 

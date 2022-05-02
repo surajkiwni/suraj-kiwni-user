@@ -22,8 +22,6 @@ public class ConnectivityHelper extends BroadcastReceiver
     private String TAG = "ConnectivityHelper";
     protected Boolean connected;
 
-
-
     public ConnectivityHelper() {
         listeners = new ArrayList<>();
         connected = null;

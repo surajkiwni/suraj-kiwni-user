@@ -41,16 +41,12 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
     ImageView imageBack;
 
     String mobile = "";
-    Boolean isPhoneNoValid = false;
+    Boolean isPhoneNoValid = false, isNetworkAvailable = false;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
-    boolean isNetworkAvailable = false;
-
-    // variable for FirebaseAuth class
-    private FirebaseAuth mAuth;
-    private PhoneAuthProvider.ForceResendingToken mResendToken;
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    /* variable for FirebaseAuth class */
+    FirebaseAuth mAuth;
     String verificationId;
 
     String TAG = this.getClass().getSimpleName();
@@ -65,8 +61,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // below line is for getting instance
-        // of our FirebaseAuth.
+        /* getting instance of our FirebaseAuth. */
         mAuth = FirebaseAuth.getInstance();
 
         sharedPreferences = getSharedPreferences(SharedPref.SHARED_PREF_NAME,MODE_PRIVATE);
@@ -76,8 +71,10 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
         btnConfirm = findViewById(R.id.btnConfirm);
         imageBack = findViewById(R.id.imageBack);
 
+        /* broadcast internet connection msg */
         startNetworkBroadcastReceiver(this);
 
+        /* change button color on click */
         edtPhoneNumber.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -91,9 +88,6 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
             @Override
             public void onClick(View view)
             {
-                /*Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);*/
                 if(ConnectivityHelper.isConnected)
                 {
                     mobile = edtPhoneNumber.getText().toString();
@@ -133,33 +127,32 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
         });
     }
 
+    /* validation for empty fields and correct format of string */
     public void setValidation()
     {
-        //Phone no validation
+        /* Phone no validation */
         if (edtPhoneNumber.getText().toString().isEmpty())
         {
-            //edtPhoneNumber.setError(getResources().getString(R.string.phoneno_error));
-            //edtPhoneNo.requestFocus();
             ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), getResources().getString(R.string.phoneno_error));
             errorDialog.show();
             isPhoneNoValid = false;
-        } else if (edtPhoneNumber.getText().toString().length() > 10)
+        }
+        else if (edtPhoneNumber.getText().toString().length() > 10)
         {
-            //edtPhoneNumber.setError("Enter 10 digit mobile no");
-            //edtPhoneNo.requestFocus();
-            ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "Enter 10 digit mobile no");
+            ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), getResources().getString(R.string.enter_10_digit_mobile_no));
             errorDialog.show();
             isPhoneNoValid = false;
-        } else {
+        }
+        else
+        {
             edtPhoneNumber.setError(null);
-            //edtEmailId.setErrorEnabled(false);
             isPhoneNoValid = true;
         }
     }
 
     private void sendVerificationCode(String mobile)
     {
-        // Set up progress before call
+        /*Set up progress before call*/
         lovelyProgressDialog = new LovelyProgressDialog(LoginActivity.this)
                 .setIcon(R.drawable.ic_cast_connected_white_36dp)
                 .setTitle("Loading..")
@@ -167,7 +160,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
                 .setTopColorRes(R.color.teal_200)
                 .show();
 
-        // OnVerificationStateChangedCallbacks
+        /*OnVerificationStateChangedCallbacks*/
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 mobile,            // Phone number to verify
                 60,         // Timeout duration
@@ -207,26 +200,25 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
                 });
     }
 
+    /* internet connection available callback method */
     @SuppressLint("ResourceAsColor")
     @Override
     public void networkAvailable()
     {
-        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
-
-        if(isNetworkAvailable){
+        if(isNetworkAvailable)
+        {
             Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
                     .setTextColor(Color.WHITE)
                     .setBackgroundTint(Color.GREEN)
                     .setDuration(5000)
                     .show();
-
         }
-
     }
 
+    /* internet connection not available callback method */
     @Override
-    public void networkUnavailable() {
-        // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
+    public void networkUnavailable()
+    {
         Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
                 .setTextColor(Color.WHITE)
                 .setBackgroundTint(Color.RED)
@@ -236,27 +228,32 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
         isNetworkAvailable = true;
     }
 
+    /* internet connection broadcast receiver */
     public void startNetworkBroadcastReceiver(Context currentContext) {
         connectivityHelper = new ConnectivityHelper();
         connectivityHelper.addListener(this);
         registerNetworkBroadcastReceiver(currentContext);
     }
 
-
+    /* register receiver */
     public void registerNetworkBroadcastReceiver(Context currentContext) {
         currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
     }
+
+    /* unregister receiver */
     public void unregisterNetworkBroadcastReceiver(Context currentContext) {
         currentContext.unregisterReceiver(connectivityHelper);
     }
 
+    /* call register receiver here */
     @Override
     protected void onResume() {
         super.onResume();
         registerNetworkBroadcastReceiver(this);
     }
 
+    /* call unregister receiver here */
     @Override
     protected void onPause() {
         super.onPause();

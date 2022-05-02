@@ -105,7 +105,8 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener, ConnectivityHelper.NetworkStateReceiverListener
 {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
@@ -117,25 +118,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     BottomSheetDialog bottomSheetDialog;
     String mobile = "", userName = "", mobileNumber = "";
     int partyId = 0;
-    public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1001;
+    Handler handler = new Handler();
 
     /* socket */
     Socket mSocket;
     SocketReservationResp reservationResp = new SocketReservationResp();
     Context context;
-    boolean driver_data_updated = false, isValid = true;
+    boolean driver_data_updated = false, isValid = true, isRefresh = false;
     byte[] valueDecoded= new byte[0];
-    String convertedDateTime = "", stringData = "", splittedStr1 ="", splittedStr2 = "",
-            splittedStr3 = "", splittedStr4 = "", concatDirection = "";
-    AlertDialog b;
+    String convertedStartDateTime = "", stringData = "", splittedStr1 ="", splittedStr2 = "",
+            splittedStr3 = "", splittedStr4 = "", concatDirection = "", convertedEndDate = "";
+    AlertDialog success_alert, data_updated_alert;
     AlertDialog.Builder dialogBuilder;
     List<SocketReservationResp> driverDataRespList = new ArrayList<>();
     List<SocketReservationResp> socketSuccessRespList = new ArrayList<>();
+    private ConnectivityHelper connectivityHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        startNetworkBroadcastReceiver(this);
+
+        /* auto refresh */
+        doTheAutoRefresh();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -222,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     ActivityCompat.requestPermissions(MainActivity.this,
                             new String[]{Manifest.permission.CALL_PHONE},
-                            MY_PERMISSIONS_REQUEST_CALL_PHONE);
+                            PermissionRequestConstant.MY_PERMISSIONS_REQUEST_CALL_PHONE);
 
                     // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
                     // app-defined int constant. The callback method gets the
@@ -260,7 +267,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         saveButton.setTextColor(Color.BLACK);
                         cancelButton.setBackgroundColor(Color.BLACK);
                         cancelButton.setTextColor(Color.WHITE);
-                        bottomSheetDialog.dismiss();
                     }
                 });
 
@@ -546,7 +552,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mSocket.on(AppConstants.WEBSOCKET_DRIVER_DATA_EVENT, onUpdatedMessage);
     }
 
-    public void DisplayDriverDataUpdatedDialog(List<SocketReservationResp> reservationRespList)
+    @SuppressLint("SetTextI18n")
+    public void DisplayDriverDataUpdatedDialog(List<SocketReservationResp> driverDataRespList)
     {
         //create custom dialog here
         dialogBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -554,7 +561,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View dialogView = inflater.inflate(R.layout.reservation_confirmation_krn_no_dialog, null);
         dialogBuilder.setView(dialogView);
         dialogBuilder.setCancelable(false);
-        b = dialogBuilder.create();
+        data_updated_alert = dialogBuilder.create();
 
         TextView txtKRNno = dialogView.findViewById(R.id.txtKRNno);
         ImageView imgDriverImg = dialogView.findViewById(R.id.imgDriverImg);
@@ -569,13 +576,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AppCompatButton btnDone = dialogView.findViewById(R.id.btnDone);
 
         /* set data to view */
-        Log.d(TAG, "reservation id = " + reservationRespList.get(0).getReservationId());
-        String KrnNo = "Your KRN number is" + "<b> " + reservationRespList.get(0).getReservationId() + "</b>" + ". Your ride is scheduled & will send your driver details within few hours.";
+        Log.d(TAG, "reservation id = " + driverDataRespList.get(0).getReservationId());
+        String KrnNo = R.string.your_krn_no_is + "<b> " + driverDataRespList.get(0).getReservationId() + "</b>" + ".";
         txtKRNno.setText(Html.fromHtml(KrnNo));
 
-        Log.d(TAG, "name = " + reservationRespList.get(0).getDriver().getName().trim());
-        String driver_name = reservationRespList.get(0).getDriver().getName();
-        String driver_mobile = reservationRespList.get(0).getDriver().getMobile();
+        Log.d(TAG, "name = " + driverDataRespList.get(0).getDriver().getName().trim());
+        String driver_name = driverDataRespList.get(0).getDriver().getName();
+        String driver_mobile = driverDataRespList.get(0).getDriver().getMobile();
 
         if(driver_data_updated)
         {
@@ -618,13 +625,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
 
-            if(reservationRespList.get(0).getDriverImageUrl() != null)
+            if(driverDataRespList.get(0).getDriverImageUrl() != null)
             {
                 imgDriverImg.setVisibility(View.VISIBLE);
-                Log.d(TAG, "image = " + reservationRespList.get(0).getDriverImageUrl());
+                Log.d(TAG, "image = " + driverDataRespList.get(0).getDriverImageUrl());
 
                 Glide.with(context)
-                        .load(reservationRespList.get(0).getDriverImageUrl())
+                        .load(driverDataRespList.get(0).getDriverImageUrl())
                         .into(imgDriverImg);
             }
             else
@@ -633,10 +640,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
             //vehicle no
-            if(reservationRespList.get(0).getVehcileNo() != null)
+            if(driverDataRespList.get(0).getVehcileNo() != null)
             {
                 txtVehicleNo.setVisibility(View.VISIBLE);
-                txtVehicleNo.setText("Vehicle No : " + reservationRespList.get(0).getVehcileNo());
+                txtVehicleNo.setText("Vehicle No : " + driverDataRespList.get(0).getVehcileNo());
             }
             else
             {
@@ -645,10 +652,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         //estimated fare
-        if(reservationRespList.get(0).getEstimatedPrice() != null)
+        if(driverDataRespList.get(0).getEstimatedPrice() != null)
         {
             txtEstimatedFare.setVisibility(View.VISIBLE);
-            Float estimatedFare = Float.parseFloat(String.valueOf(reservationRespList.get(0).getEstimatedPrice()));
+            Float estimatedFare = Float.parseFloat(String.valueOf(driverDataRespList.get(0).getEstimatedPrice()));
             txtEstimatedFare.setText("Rs. " + String.format("%.2f",estimatedFare));
         }
         else
@@ -657,26 +664,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         //decode otp
-        ConvertOtp(reservationRespList.get(0).getOtp());
+        ConvertOtp(driverDataRespList.get(0).getOtp());
         txtOtp.setText("OTP : " + new String(valueDecoded));
 
         /* split service type */
-        GetClassTypeFromServiceType(reservationRespList.get(0).getServiceType());
+        GetClassTypeFromServiceType(driverDataRespList.get(0).getServiceType());
 
-        txtServiceType.setText(concatDirection + "-trip" + " To " + reservationRespList.get(0).getEndlocationCity());
+        txtServiceType.setText(concatDirection + "-trip" + " To " + driverDataRespList.get(0).getEndlocationCity());
 
-        //convert date in format
-        ConvertDate(reservationRespList.get(0).getStartTime());
-        txtStartDateTime.setText(convertedDateTime);
+        //convert start date in format
+        ConvertDate(driverDataRespList.get(0).getStartTime());
+        txtStartDateTime.setText(convertedStartDateTime);
+
+        //convert end date in format
+        ConvertDate(driverDataRespList.get(0).getEndTime());
+        if(concatDirection.equals("Two-way"))
+        {
+            txtStartDateTime.setText(txtStartDateTime.getText().toString() + " - " + convertedEndDate);
+        }
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                b.dismiss();
+                data_updated_alert.dismiss();
             }
         });
-        b.show();
+        data_updated_alert.show();
     }
 
     public void DisplaySuccessDialog(List<SocketReservationResp> socketReservationRespList)
@@ -686,7 +700,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View dialogView = inflater.inflate(R.layout.reservation_confirmation_krn_no_dialog, null);
         dialogBuilder.setView(dialogView);
         dialogBuilder.setCancelable(false);
-        b = dialogBuilder.create();
+        success_alert = dialogBuilder.create();
 
         TextView txtKRNno = dialogView.findViewById(R.id.txtKRNno);
         TextView txtOtp = dialogView.findViewById(R.id.txtOtp);
@@ -697,7 +711,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         /* set data to view */
         Log.d(TAG, "reservation id = " + socketReservationRespList.get(0).getReservationId());
-        String KrnNo = "Your KRN number is" + "<b> " + socketReservationRespList.get(0).getReservationId() + "</b>" + ". Your ride is scheduled & will send your driver details within few hours.";
+        String KrnNo = R.string.your_krn_no_is + "<b> " + socketReservationRespList.get(0).getReservationId() + "</b>" + ". Your ride is scheduled & will send your driver details within few hours.";
         txtKRNno.setText(Html.fromHtml(KrnNo));
 
         //estimated fare
@@ -723,16 +737,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //convert date in format
         ConvertDate(socketReservationRespList.get(0).getStartTime());
-        txtStartDateTime.setText(convertedDateTime);
+        txtStartDateTime.setText(convertedStartDateTime);
+
+        //convert end date in format
+        ConvertDate(socketReservationRespList.get(0).getEndTime());
+        if(concatDirection.equals("Two-way"))
+        {
+            txtStartDateTime.setText(txtStartDateTime.getText().toString() + " - " + convertedEndDate);
+        }
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                b.dismiss();
+                success_alert.dismiss();
             }
         });
-        b.show();
+        success_alert.show();
     }
 
     public void GetClassTypeFromServiceType(String str)
@@ -765,34 +786,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void ConvertDate(String actualdate)
+    public void ConvertDate(String start_date)
     {
-        Log.d(TAG, "actualDate = " + actualdate);
+        Log.d(TAG, "actualDate = " + start_date);
 
         Date startDate = null;
-        if (actualdate.length() == 24)
+        if (start_date.length() == 24)
         {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
-                startDate = sdf.parse(actualdate);
+                startDate = sdf.parse(start_date);
 
                 //startTime = sdf.parse(time);
                 SimpleDateFormat sdf2 = new SimpleDateFormat("dd MMM, hh:mm a");
-                convertedDateTime = sdf2.format(startDate);
+                convertedStartDateTime = sdf2.format(startDate);
+
+                SimpleDateFormat sdf3 = new SimpleDateFormat("dd MMM");
+                convertedEndDate = sdf3.format(startDate);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d(TAG, "message = " + e.getMessage());
             }
         }
-        else if (actualdate.length() == 20) {
+        else if (start_date.length() == 20) {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                startDate = sdf.parse(actualdate);
+                startDate = sdf.parse(start_date);
 
                 //startTime = sdf.parse(time);
                 SimpleDateFormat sdf2 = new SimpleDateFormat("dd MMM, hh:mm a");
-                convertedDateTime = sdf2.format(startDate);
-                Log.d(TAG, "convertedDateTime = " + convertedDateTime);
+                convertedStartDateTime = sdf2.format(startDate);
+
+                SimpleDateFormat sdf3 = new SimpleDateFormat("dd MMM");
+                convertedEndDate = sdf3.format(startDate);
             }
             catch (Exception e)
             {
@@ -830,10 +856,69 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /* internet connection broadcast receiver */
+    public void startNetworkBroadcastReceiver(Context currentContext) {
+        connectivityHelper = new ConnectivityHelper();
+        connectivityHelper.addListener(this);
+        registerNetworkBroadcastReceiver(currentContext);
+    }
+
+    /* register receiver */
+    public void registerNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    /* unregister receiver */
+    public void unregisterNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.unregisterReceiver(connectivityHelper);
+    }
+
+    /* internet connection available callback method */
+    @Override
+    public void networkAvailable()
+    {
+
+    }
+
+    @Override
+    public void networkUnavailable()
+    {
+
+    }
+
+    /* refresh */
+    private void doTheAutoRefresh()
+    {
+        handler.postDelayed(new Runnable()
+        {
+            @Override
+            public void run() {
+                /* driver data updated */
+                Log.d(TAG, "driver data resp list size in on resume = " + driverDataRespList.size());
+                if(isRefresh)
+                {
+                    if(driverDataRespList.size() != 0)
+                    {
+                        DisplayDriverDataUpdatedDialog(driverDataRespList);
+                        isRefresh = false;
+                    }
+                    else
+                    {
+                        Log.d(TAG, "driver data resp list size is empty = " + driverDataRespList.size());
+                    }
+                }
+
+                doTheAutoRefresh();
+            }
+        }, 5000);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart");
+
+        isRefresh = true;
     }
 
     @Override
@@ -841,6 +926,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     {
         super.onResume();
         Log.d(TAG, "in onResume method ");
+
+        registerNetworkBroadcastReceiver(this);
 
         /* get list from confirm booking screen and show reservation success dialog */
         if(isValid)
@@ -850,16 +937,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         /* for driver data updated connect socket and show dialog */
         SocketConnect();
-
-        Log.d(TAG, "reservation resp list size in on resume = " + driverDataRespList.size());
-        if(driverDataRespList.size() != 0)
-        {
-            DisplayDriverDataUpdatedDialog(driverDataRespList);
-        }
-        else
-        {
-            Log.d(TAG, "reservation resp list size is empty = " + driverDataRespList.size());
-        }
     }
 
     @Override
@@ -867,6 +944,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onPause();
         Log.d(TAG, "onPause");
         isValid = false;
+        unregisterNetworkBroadcastReceiver(this);
     }
 
     @Override
@@ -874,6 +952,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onRestart();
         Log.d(TAG, "onRestart");
         stringData = null;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        driverDataRespList.clear();
     }
 
     @Override

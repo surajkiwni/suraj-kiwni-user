@@ -105,16 +105,22 @@ public class AirportDropFragment extends Fragment implements
         com.google.android.gms.location.LocationListener,
         ConnectivityHelper.NetworkStateReceiverListener
 {
+    /* google map */
     GoogleMap mMap;
-    String direction = "", serviceType = "", strDate = "";
+    Marker pickupMarker, dropMarker;
+    private Polyline mPolyline;
+
+    String direction = "", strDate = "";
     AppCompatButton btnViewCabAirportDrop, btnCurrentLocation, btnLocationOnMap, btnConfirm;
     ImageView imageMarker;
     String TAG = this.getClass().getSimpleName();
     ConstraintLayout layoutPickupDatePicker, layoutDropDatePicker;
-    Marker pickupMarker, dropMarker;
-    private Polyline mPolyline;
+
+    /*auto complete view*/
     AutoCompleteTextView autoCompleteTextViewPickup, autoCompleteTextViewDrop;
     AutoCompleteAirportAdapter adapter;
+    AutocompletePrediction item;
+
     LinearLayout linearFooterButtons, linearBtnConfirm;
     ArrayList<LatLng> pickupLocationList = new ArrayList<>();
     ArrayList<LatLng> dropLocationList = new ArrayList<>();
@@ -127,7 +133,7 @@ public class AirportDropFragment extends Fragment implements
     boolean isPickup = false, isDrop = false, isCurrent = false, isDDSelected = false,
             isLocated = false, isCameraMove = false, isNetworkAvailable = false;
     Context mContext;
-    AutocompletePrediction item;
+
     String distanceTextFromApi = "", distanceValueFromApi = "",
             durationTextFromApi = "", durationInTrafficFromApi = "",
             curr_converted_date = "", convertedPickupDateFormat = "";
@@ -143,12 +149,13 @@ public class AirportDropFragment extends Fragment implements
     int mYear, mMonth, mDay, mHour, mMinute;
 
     public double currentLatitude = 0.0, currentLongitude = 0.0;
-    private ConnectivityHelper connectivityHelper;      // Receiver that detects network state changes
+
+    /* Receiver that detects network state changes */
+    private ConnectivityHelper connectivityHelper;
 
     public AirportDropFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -201,19 +208,21 @@ public class AirportDropFragment extends Fragment implements
 
         /*initialized place sdk*/
         if (!Places.isInitialized()) {
-            //initialized the sdk
             Log.d(TAG, "key = " + R.string.google_maps_key);
             Places.initialize(getActivity(), ApiInterface.GOOGLE_MAP_API_KEY);
         }
+
         /*create new place client instance*/
         placesClient = Places.createClient(getActivity());
         adapter = new AutoCompleteAirportAdapter(getActivity(), placesClient);
 
-        // in below line we are initializing our array list.
+        /* in below line we are initializing our array list.*/
         pickupLocationList = new ArrayList<>();
         dropLocationList = new ArrayList<>();
+
         autoCompleteTextViewPickup = (AutoCompleteTextView) view.findViewById(R.id.auto_pickup);
         autoCompleteTextViewPickup.setOnItemClickListener(autocompleteClickListener);
+
         //set adapter
         autoCompleteTextViewPickup.setAdapter(adapter);
 
@@ -251,8 +260,8 @@ public class AirportDropFragment extends Fragment implements
             e.printStackTrace();
         }
 
-        //1 hr time prior
-        //Time Picker
+        /* 1 hr time prior
+        Time Picker */
         String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
         String[] hour_min = currentTime.split(":");
         String hour = hour_min[0];
@@ -350,7 +359,7 @@ public class AirportDropFragment extends Fragment implements
             }
         });
 
-        //click events of autocomplete
+        /*click events of autocomplete pickup */
         autoCompleteTextViewPickup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -402,6 +411,7 @@ public class AirportDropFragment extends Fragment implements
             }
         });
 
+        /*click events of autocomplete drop */
         autoCompleteTextViewDrop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -418,7 +428,6 @@ public class AirportDropFragment extends Fragment implements
                 isLocated = false;
 
                 autoCompleteTextViewDrop.setSelectAllOnFocus(true);
-                //autoCompleteTextViewDrop.requestFocus();
                 autoCompleteTextViewDrop.selectAll();
 
                 linearFooterButtons.setVisibility(View.VISIBLE);
@@ -450,6 +459,7 @@ public class AirportDropFragment extends Fragment implements
             }
         });
 
+        /* locate on map click handle using boolean value */
         btnLocationOnMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -475,6 +485,7 @@ public class AirportDropFragment extends Fragment implements
             }
         });
 
+        /* current location click at footer */
         btnCurrentLocation.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -521,6 +532,7 @@ public class AirportDropFragment extends Fragment implements
             }
         });
 
+        /* confirm location manage on this click and hide footer buttons too*/
         btnConfirm.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -623,6 +635,7 @@ public class AirportDropFragment extends Fragment implements
             }
         });
 
+        /* view cab button click with validations and navigate to next screen */
         btnViewCabAirportDrop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -634,29 +647,23 @@ public class AirportDropFragment extends Fragment implements
                 if(ConnectivityHelper.isConnected)
                 {
                     if (autoCompleteTextViewPickup.getText().toString().equals("")) {
-                        //txtPickupLocation.setError("Pickup location field cannot be empty.!");
-                        //Toast.makeText(getActivity(), "Pickup location field cannot be empty.!", Toast.LENGTH_SHORT).show();
                         ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup location field cannot be empty.!");
                         errorDialog.show();
                     } else if (autoCompleteTextViewDrop.getText().toString().equals("")) {
-                        //txtDropLocation.setError("Drop location field cannot be empty.!");
-                        //Toast.makeText(getActivity(), "Drop location field cannot be empty.!", Toast.LENGTH_SHORT).show();
                         ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Drop location field cannot be empty.!");
                         errorDialog.show();
                     } else if (txtPickupDatePicker.getText().toString().equals("")) {
-                        //txtDropLocation.setError("Drop location field cannot be empty.!");
-                        //Toast.makeText(getActivity(), "Pickup Date field cannot be empty.!", Toast.LENGTH_SHORT).show();
                         ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup Date field cannot be empty.!");
                         errorDialog.show();
                     }
                     else if(pickup_spinner_time.getSelectedItem().toString().isEmpty() || pickup_spinner_time.getSelectedItem().toString() == "")
                     {
-                        //Toast.makeText(getActivity(), "Pickup Time field cannot be empty.!", Toast.LENGTH_SHORT).show();
                         ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Pickup Time field cannot be empty.!");
                         errorDialog.show();
                     }
                     else
                     {
+                        /* check distance should not be null or empty */
                         if (distanceValueFromApi.equals("") || distanceValueFromApi.equals(null))
                         {
                             ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Please Wait..!");
@@ -671,16 +678,15 @@ public class AirportDropFragment extends Fragment implements
 
                                 if (currentDate.compareTo(pickerDate) == 0 && pickup_spinner_time.getSelectedItem().toString() == "select time")
                                 {
-                                    //Toast.makeText(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.", Toast.LENGTH_SHORT).show();
                                     ErrorDialog errorDialog = new ErrorDialog(getActivity(), "For Outstation, We are catering Advance booking. Kindly Select the date accordingly.");
                                     errorDialog.show();
                                 }
                                 else
                                 {
-                                    //concatDateTime = txtPickupDatePicker.getText().toString() + " " + pickup_spinner_time.getSelectedItem().toString();
                                     concatDateTime = strDate + " " + pickup_spinner_time.getSelectedItem().toString();
                                     Log.d(TAG,"concatDateTime = " + concatDateTime);
 
+                                    /* convert selected pickup date from picker to format to send api */
                                     getCurrentDateToSendApiInFormat(concatDateTime);
 
                                     distanceValueFromApi = String.valueOf(Integer.parseInt(distanceValueFromApi) / 1000);
@@ -688,16 +694,11 @@ public class AirportDropFragment extends Fragment implements
                                     convertedDistance = Double.valueOf(distanceValueFromApi.trim());
                                     Log.d(TAG, "convertedDistance = " + convertedDistance);
 
-                                    //change date format and send to next screen
+                                    /*convert date format and send to next screen for display */
                                     getStartDateInFormat(concatDateTime);
 
-                                    //Calculate drop_time from start_date and duration
-                                    Log.d(TAG, "date with duration = " + concatDateTime + "\n " + durationInTrafficFromApi);
+                                    /* Calculate drop_time from start_date and duration */
                                     CalculateDropTime(concatDateTime, durationInTrafficFromApi);
-
-                                    Log.d(TAG, "dropDateTime = " + sendToApiDropTime);
-                                    Log.d(TAG, "mOrigin = " + mOrigin);
-                                    Log.d(TAG, "mDestination = " + mDestination);
 
                                     Intent i = new Intent(getActivity(), FindCarActivity.class);
 
@@ -721,7 +722,6 @@ public class AirportDropFragment extends Fragment implements
                                     PreferencesUtils.putPreferences(getActivity(), SharedPref.DISTANCE_IN_KM, distanceTextFromApi);
 
                                     startActivity(i);
-                                    //getActivity().finish();
                                 }
                             }
                             catch (Exception e)
@@ -743,7 +743,7 @@ public class AirportDropFragment extends Fragment implements
         });
     }
 
-    //autocompletetextview listener
+    /* autocompletetextview listener for drop down places list display */
     public AdapterView.OnItemClickListener autocompleteClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -755,9 +755,9 @@ public class AirportDropFragment extends Fragment implements
                     placeID = item.getPlaceId();
                 }
 
-//                To specify which data types to return, pass an array of Place.Fields in your FetchPlaceRequest
-//                Use only those fields which are required.
-
+                /* To specify which data types to return, pass an array of Place.
+                Fields in your FetchPlaceRequest
+                Use only those fields which are required.*/
                 List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS
                         , Place.Field.LAT_LNG);
 
@@ -779,6 +779,7 @@ public class AirportDropFragment extends Fragment implements
                             final Place place = places.getPlace();
                             Log.d("TAG", "places = " + place.getAddress());
 
+                            /* if pickup flag is true (selected from drop down location) */
                             if(isPickup)
                             {
                                 pickup_lat = places.getPlace().getLatLng().latitude;
@@ -803,6 +804,7 @@ public class AirportDropFragment extends Fragment implements
                                 getAddressFromCurrentLocation(drop_lat, drop_lng);
                             }
 
+                            /* enable view cab btn and disable other buttons */
                             if(!autoCompleteTextViewPickup.getText().toString().equals("")
                                     && !autoCompleteTextViewDrop.getText().toString().equals(""))
                             {
@@ -831,6 +833,7 @@ public class AirportDropFragment extends Fragment implements
         }
     };
 
+    /* get current location */
     @Override
     public void onConnected(@Nullable Bundle bundle)
     {
@@ -846,14 +849,14 @@ public class AirportDropFragment extends Fragment implements
         }
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
-        if (mLastLocation != null) {
-            // changeMap(mLastLocation);
-            //Log.d(TAG, "ON connected");
+        if (mLastLocation != null)
+        {
 
+            /* current location */
             currentLatitude = mLastLocation.getLatitude();
             currentLongitude = mLastLocation.getLongitude();
 
-            //true
+            /* internet connected true*/
             if(ConnectivityHelper.isConnected)
             {
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
@@ -861,7 +864,7 @@ public class AirportDropFragment extends Fragment implements
 
                 Log.d(TAG, "current location = " + currentLatitude + " " + currentLongitude);
 
-                //get current location and draw marker on map
+                /*get current location and draw marker on map*/
                 if (currentLatitude != 0.0 && currentLongitude != 0.0)
                 {
                     pickupMarker = mMap.addMarker(new MarkerOptions()
@@ -874,6 +877,7 @@ public class AirportDropFragment extends Fragment implements
                     getAddressFromCurrentLocation(currentLatitude, currentLongitude);
                     autoCompleteTextViewDrop.setText("");
 
+                    /* check list size and add or update value in list */
                     if(pickupLocationList.size() == 0)
                     {
                         pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
@@ -888,9 +892,8 @@ public class AirportDropFragment extends Fragment implements
                     Log.d(TAG, "Not getting co-ordinates");
                 }
             }
-            else            //false
+            else            /* internet connected false*/
             {
-                //Toast.makeText(getActivity(), "BroadCast", Toast.LENGTH_SHORT).show();
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
                         (new LatLng(currentLatitude, currentLongitude), 10.0f));
             }
@@ -952,12 +955,6 @@ public class AirportDropFragment extends Fragment implements
         }
         mMap = googleMap;
 
-        /*pickupMarker = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(currentLatitude, currentLongitude))
-                .title(city)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                (new LatLng(currentLatitude, currentLongitude), 10.0f));*/
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -973,6 +970,7 @@ public class AirportDropFragment extends Fragment implements
         mMap.setMyLocationEnabled(true);
     }
 
+    /* after moving marker on map location changes and then display that location on textview */
     public void CameraChange()
     {
         mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener()
@@ -998,7 +996,6 @@ public class AirportDropFragment extends Fragment implements
                             pickup_lat = mCenterLatLong.latitude;
                             pickup_lng = mCenterLatLong.longitude;
 
-                            //txtMarkerText.setText("Lat1 : " + pickup_lat + "," + "Long1 : " + pickup_lng);
                             if(pickup_lat != 0.0 && pickup_lng != 0.0)
                             {
                                 getAddressFromCurrentLocation(pickup_lat, pickup_lng);
@@ -1009,7 +1006,6 @@ public class AirportDropFragment extends Fragment implements
                             drop_lat = mCenterLatLong.latitude;
                             drop_lng = mCenterLatLong.longitude;
 
-                            //txtMarkerText.setText("Lat1 : " + drop_lat + "," + "Long1 : " + drop_lng);
                             if(drop_lat != 0.0 && drop_lng != 0.0)
                             {
                                 getAddressFromCurrentLocation(drop_lat, drop_lng);
@@ -1028,15 +1024,7 @@ public class AirportDropFragment extends Fragment implements
         });
     }
 
-    protected synchronized void buildGoogleApiClient()
-    {
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-    }
-
+    /* get address from co-ordinates according to flag */
     public void getAddressFromCurrentLocation(Double latitude, Double longitude)
     {
         Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
@@ -1092,7 +1080,7 @@ public class AirportDropFragment extends Fragment implements
             }
             else if(isDrop)
             {
-                //drop
+                //drop + drop-down selected
                 drop_city = city;
 
                 if(isDDSelected)
@@ -1103,7 +1091,8 @@ public class AirportDropFragment extends Fragment implements
                     autoCompleteTextViewDrop.setSelection(autoCompleteTextViewDrop.getText().length());
                     hideKeyboardFrom(getActivity(), autoCompleteTextViewDrop);
 
-                    //drop
+                    /* drop-down selected
+                     check same city throws error else display location */
                     if(pickup_city.equals(drop_city))
                     {
                         autoCompleteTextViewDrop.setText("");
@@ -1142,7 +1131,7 @@ public class AirportDropFragment extends Fragment implements
                         }
                     }
                 }
-                else
+                else            //drop + locate on map selected
                 {
                     autoCompleteTextViewDrop.setText(address);
 
@@ -1152,16 +1141,9 @@ public class AirportDropFragment extends Fragment implements
             }
             else
             {
-                //current
+                //current location
                 autoCompleteTextViewPickup.setText(address);
                 pickup_city = city;
-
-                /*//pickupMarker.remove();
-                DrawMarker(currentLatitude, currentLongitude, pickup_city);
-                //add marker
-                pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
-                AddMarker(pickup_city);
-                Log.d("TAG", "size 0 = " + pickupLocationList.size());*/
             }
 
         } catch (IOException e) {
@@ -1169,6 +1151,7 @@ public class AirportDropFragment extends Fragment implements
         }
     }
 
+    /* draw marker depends on flag */
     public void DrawMarker(Double latitude, Double longitude, String city)
     {
         if(isPickup)
@@ -1191,15 +1174,11 @@ public class AirportDropFragment extends Fragment implements
         }
         else
         {
-            /*mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(latitude, longitude))
-                    .title(city)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                    (new LatLng(latitude, longitude), 8.0f));*/
+            Log.d(TAG, "current location");
         }
     }
 
+    /* add marker in list */
     public void AddMarker(String title)
     {
         if(pickupLocationList.size() == 1)
@@ -1227,11 +1206,12 @@ public class AirportDropFragment extends Fragment implements
             Log.d("TAG", "size of add marker 1 = " + pickupLocationList.size());
             Log.d("TAG", "size of add marker 2 = " + dropLocationList.size());
 
-            drawRoute(title);
+            drawRoute();
         }
     }
 
-    private void drawRoute(String title)
+    /* draw route between two points if pickup-list size is one and drop-list size is one */
+    private void drawRoute()
     {
         Log.d("TAG", "mOrigin = " + mOrigin);
         Log.d("TAG", "mDestination = " + mDestination);
@@ -1245,6 +1225,9 @@ public class AirportDropFragment extends Fragment implements
         downloadTask.execute(directionUrl);
     }
 
+    /**
+     * Getting URL to the Google Directions API
+     */
     private String getDirectionsUrl(LatLng origin, LatLng dest) {
         // Origin of route
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
@@ -1307,90 +1290,6 @@ public class AirportDropFragment extends Fragment implements
             urlConnection.disconnect();
         }
         return data;
-    }
-
-    @SuppressLint("ResourceAsColor")
-    @Override
-    public void networkAvailable()
-    {
-        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
-        if(isNetworkAvailable){
-            Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
-                    .setTextColor(Color.WHITE)
-                    .setBackgroundTint(Color.GREEN)
-                    .setDuration(5000)
-                    .show();
-        }
-
-
-
-        Log.d(TAG, "current location = " + currentLatitude + " " + currentLongitude);
-
-        //get current location and draw marker on map
-        if (currentLatitude != 0.0 && currentLongitude != 0.0)
-        {
-            getAddressFromCurrentLocation(currentLatitude, currentLongitude);
-
-            if(pickupMarker != null)
-            {
-                pickupMarker.remove();
-            }
-            pickupMarker = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(currentLatitude, currentLongitude))
-                    .title(city)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                    (new LatLng(currentLatitude, currentLongitude), 10.0f));
-            autoCompleteTextViewDrop.setText("");
-
-            if(pickupLocationList.size() > 0)
-            {
-                pickupLocationList.set(0, new LatLng(currentLatitude, currentLongitude));
-                Log.d("TAG", "size update pickup = " + pickupLocationList.size());
-            }
-            else
-            {
-                pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
-                Log.d("TAG", "pickup size = " + pickupLocationList.size());
-            }
-
-            //pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
-            AddMarker(pickup_city);
-            Log.d(TAG, "size 0 for current loc = " + pickupLocationList.size());
-        } else {
-            Log.d(TAG, "Not getting co-ordinates");
-        }
-    }
-
-    @Override
-    public void networkUnavailable() {
-        // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
-        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
-                .setTextColor(Color.WHITE)
-                .setBackgroundTint(Color.RED)
-                .setDuration(5000)
-                .show();
-
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                (new LatLng(currentLatitude, currentLongitude), 10.0f));
-
-        isNetworkAvailable = true;
-
-    }
-
-    public void startNetworkBroadcastReceiver(Context currentContext) {
-        connectivityHelper = new ConnectivityHelper();
-        connectivityHelper.addListener(this);
-        registerNetworkBroadcastReceiver(currentContext);
-    }
-
-    public void registerNetworkBroadcastReceiver(Context currentContext) {
-        currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-
-    }
-
-    public void unregisterNetworkBroadcastReceiver(Context currentContext) {
-        currentContext.unregisterReceiver(connectivityHelper);
     }
 
     /**
@@ -1598,6 +1497,92 @@ public class AirportDropFragment extends Fragment implements
                 ex.printStackTrace();
             }
         }
+    }
+
+    @SuppressLint("ResourceAsColor")
+    @Override
+    public void networkAvailable()
+    {
+        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
+        if(isNetworkAvailable){
+            Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
+                    .setTextColor(Color.WHITE)
+                    .setBackgroundTint(Color.GREEN)
+                    .setDuration(5000)
+                    .show();
+        }
+
+
+
+        Log.d(TAG, "current location = " + currentLatitude + " " + currentLongitude);
+
+        //get current location and draw marker on map
+        if (currentLatitude != 0.0 && currentLongitude != 0.0)
+        {
+            getAddressFromCurrentLocation(currentLatitude, currentLongitude);
+
+            if(pickupMarker != null)
+            {
+                pickupMarker.remove();
+            }
+            pickupMarker = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(currentLatitude, currentLongitude))
+                    .title(city)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                    (new LatLng(currentLatitude, currentLongitude), 10.0f));
+            autoCompleteTextViewDrop.setText("");
+
+            if(pickupLocationList.size() > 0)
+            {
+                pickupLocationList.set(0, new LatLng(currentLatitude, currentLongitude));
+                Log.d("TAG", "size update pickup = " + pickupLocationList.size());
+            }
+            else
+            {
+                pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
+                Log.d("TAG", "pickup size = " + pickupLocationList.size());
+            }
+
+            //pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
+            AddMarker(pickup_city);
+            Log.d(TAG, "size 0 for current loc = " + pickupLocationList.size());
+        } else {
+            Log.d(TAG, "Not getting co-ordinates");
+        }
+    }
+
+    /* no internet connection */
+    @Override
+    public void networkUnavailable() {
+        // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.WHITE)
+                .setBackgroundTint(Color.RED)
+                .setDuration(5000)
+                .show();
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                (new LatLng(currentLatitude, currentLongitude), 10.0f));
+
+        isNetworkAvailable = true;
+
+    }
+
+    /* register broadcast receiver*/
+    public void startNetworkBroadcastReceiver(Context currentContext) {
+        connectivityHelper = new ConnectivityHelper();
+        connectivityHelper.addListener(this);
+        registerNetworkBroadcastReceiver(currentContext);
+    }
+
+    public void registerNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+
+    public void unregisterNetworkBroadcastReceiver(Context currentContext) {
+        currentContext.unregisterReceiver(connectivityHelper);
     }
 
     //set current date in format

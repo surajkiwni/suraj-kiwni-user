@@ -100,7 +100,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     ImageView imageBack,imgCallFindCarAct;
     TextView txtTitle,viewDetailsText, txtFromTo, txtStartEndDate, txtStartTime, txtEstimatedKm;
     BottomSheetDialog bottomSheetDialog;
-    List<FindCar> findCarModelList;
 
     ConstraintLayout constraintLayoutPack;
     String direction = "",serviceType = "",
@@ -112,7 +111,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
             convertedDistance = 0.0;
 
     Polyline mPolyline;
-    BroadcastReceiver broadcastReceiver = null;
 
     FindCarItemClickListener listener;
     ApiInterface apiInterface;
@@ -131,7 +129,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     List<ScheduleMapResp> remainingList = new ArrayList<>();
 
     boolean isEqual = false, isNetworkAvailable = false;
-
     private ConnectivityHelper connectivityHelper;
 
     @Override
@@ -178,13 +175,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         convertedDistance = Double.parseDouble(PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DISTANCE, ""));
         durationInTraffic = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DURATION_IN_TRAFFIC, "");
         idToken = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_TOKEN, "");
-
-        Log.d(TAG,"pickupLocation = " + pickupLocation
-                + " dropLocation = " + dropLocation);
-        Log.d(TAG,"fromLocation = " + pickup_city
-                + " endLocation = " + drop_city);
-        Log.d(TAG,"endDate = " + endDate
-                + " convertedDistance = " + convertedDistance);
 
         /* set data to ui */
         txtFromTo.setText(pickup_city + " To " + drop_city);
@@ -275,9 +265,9 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                             new String[]{Manifest.permission.CALL_PHONE},
                             PermissionRequestConstant.MY_PERMISSIONS_REQUEST_CALL_PHONE);
 
-                    // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
-                    // app-defined int constant. The callback method gets the
-                    // result of the request.
+                    /* MY_PERMISSIONS_REQUEST_CALL_PHONE is an
+                       app-defined int constant. The callback method gets the
+                       result of the request.*/
                 } else {
                     //You already have permission
                     try {
@@ -297,8 +287,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
                 bottomSheetDialog = new BottomSheetDialog(FindCarActivity.this);
                 View view1 = getLayoutInflater().inflate(R.layout.view_details_bottom_sheet,null,false);
-
-               // TextView textPara1,textPara2, textPara3, textPara4, textPara5;
 
                 TextView textPara1 = view1.findViewById(R.id.textPara1);
                 TextView textPara2 = view1.findViewById(R.id.textPara2);
@@ -346,7 +334,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         listener = this::onFindCarItemClick;
 
-        /* api call */
+        /* api call to get all vehicle list*/
         getProjectionScheduleMap(pickup_time,drop_time,
                 pickup_city, direction,serviceType,
                 "","",convertedDistance , idToken,true);
@@ -384,14 +372,11 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                     {
                         ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "No Data Found");
                         errorDialog.show();
-                        //Toast.makeText(FindCarActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
                         finalScheduleList = new ArrayList<ScheduleMapResp>();
 
-                        //Map<String, Map<String, Map<String, List<ScheduleMapResp>>>> listMap
-                        // = new HashMap<String, Map<String, Map<String, List<ScheduleMapResp>>>>();
                         for(String outerKey : listMap.keySet())
                         {
                             Log.d(TAG,"outerKey = " + outerKey);
@@ -413,16 +398,15 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                                     for (int i = 0; i < tempScheduleList.size(); i++)
                                     {
                                         scheduleMapResp = tempScheduleList.get(i);
-                                        //scheduleMapResp.setTotalAvailable(tempScheduleList.size());
                                         finalScheduleList.add(scheduleMapResp);
                                     }
-                                    Log.d(TAG, "tempScheduleList size in inner model = " + tempScheduleList.size());
-                                    Log.d(TAG, "finalScheduleList size in inner model = " + finalScheduleList.size());
+                                    /*Log.d(TAG, "tempScheduleList size in inner model = " + tempScheduleList.size());
+                                    Log.d(TAG, "finalScheduleList size in inner model = " + finalScheduleList.size());*/
                                 }
                             }
                         }
 
-                        Log.d(TAG, "finalScheduleList data outer model = " + listOfVehicleType.toString());
+                        //Log.d(TAG, "finalScheduleList data outer model = " + listOfVehicleType.toString());
                         findsCarRecyclerAdapter = new FindsCarRecyclerAdapter(getApplicationContext(), listOfVehicleType, finalScheduleList, listener);
                         recyclerView.setAdapter(findsCarRecyclerAdapter);
                         findsCarRecyclerAdapter.notifyDataSetChanged();
@@ -438,16 +422,13 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                         {
                             ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), mError.getError());
                             errorDialog.show();
-                            //Toast.makeText(getApplicationContext(), mError.getError(), Toast.LENGTH_LONG).show();
                         }
                         else
                         {
                             ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "Something Went Wrong.");
                             errorDialog.show();
-                            //Toast.makeText(getApplicationContext(), "Something Went Wrong.", Toast.LENGTH_LONG).show();
                         }
                     } catch (IOException e) {
-                        // handle failure to read error
                         e.printStackTrace();
                     }
                 }
@@ -461,13 +442,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         });
     }
 
-    private boolean isNetworkConnected()
-    {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -478,18 +452,15 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 {
-
                     // permission was granted, yay! Do the phone call
                 }
                 else
                 {
-
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
                 return;
             }
-
             // other 'case' lines to check for other
             // permissions this app might request
         }
@@ -497,7 +468,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-
         Log.d(TAG, "OnMapReady");
         if (mMap != null) {
             mMap.clear();
@@ -509,9 +479,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
             latlong = pickupLocation.split(" ");
             pickup_latitude = Double.parseDouble(latlong[0]);
             pickup_longitude = Double.parseDouble(latlong[1]);
-
-            /*TextIconGenerator tc = new TextIconGenerator(this);
-            Bitmap bmp = tc.makeIcon(pickup_city);*/
 
             mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(pickup_latitude, pickup_longitude))
@@ -531,16 +498,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
             /* draw route */
             DrawRoute(new LatLng(pickup_latitude, pickup_longitude), new LatLng(drop_latitude, drop_longitude));
-            /*if(!isNetworkConnected())
-            {
-                ErrorDialog1 errorDialog1 = new ErrorDialog1();
-                errorDialog1.showError(FindCarActivity.this,
-                        "No internet. Connect to wifi or cellular network.", this);
-            }
-            else
-            {
-                DrawRoute(new LatLng(pickup_latitude, pickup_longitude), new LatLng(drop_latitude, drop_longitude));
-            }*/
         }
         else
         {
@@ -633,7 +590,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     public void networkAvailable()
     {
-        //Toast.makeText(getActivity(), "internet back", Toast.LENGTH_SHORT).show();
         if(isNetworkAvailable){
             Snackbar.make(findViewById(android.R.id.content), R.string.internet_msg, Snackbar.LENGTH_LONG)
                     .setTextColor(Color.WHITE)
@@ -645,7 +601,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void networkUnavailable() {
-        // Toast.makeText(getActivity(), "please check your Internet", Toast.LENGTH_SHORT).show();
         Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
                 .setTextColor(Color.WHITE)
                 .setBackgroundTint(Color.RED)
@@ -689,14 +644,14 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
             return data;
         }
 
-        // Executes in UI thread, after the execution of
-        // doInBackground()
+        /* Executes in UI thread, after the execution of
+         doInBackground()*/
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
+            /* Invokes the thread for parsing the JSON data*/
             DirectionParseTask parserTask = new DirectionParseTask();
-            // Invokes the thread for parsing the JSON data
             parserTask.execute(result);
         }
     }
@@ -724,7 +679,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
             return routes;
         }
 
-        // Executes in UI thread, after the parsing process
+        /* Executes in UI thread, after the parsing process*/
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
             ArrayList<LatLng> points = null;
@@ -746,8 +701,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                     lat = Double.parseDouble(point.get("lat"));
                     lng = Double.parseDouble(point.get("lng"));
                     LatLng position = new LatLng(lat, lng);
-
-                    //getAddressFromLocation(lat, lng);
 
                     points.add(position);
                 }
@@ -787,11 +740,9 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         /* get selected vehicle_type and add into another list */
         for (int i = 0; i < finalScheduleList.size();i++)
         {
-            // Log.d(TAG,"finalschedulelist i "+i);
             if (finalScheduleList.get(i).getVehicleType().equals(labelName))
             {
                 selectedByVehicleTypeList.add(finalScheduleList.get(i));
-                //Log.d(TAG, "selectedByVehicleTypeList " + selectedByVehicleTypeList.toString());
             }
         }
 
@@ -800,7 +751,6 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
 
         /*sorting by model and classType same and different */
         sortByModelAndClassType();
-        //Log.d(TAG,"selected by vehicle type = " + tempList.toString());
 
         Gson gson = new Gson();
         Type type = new TypeToken<List<ScheduleMapResp>>() {}.getType();
