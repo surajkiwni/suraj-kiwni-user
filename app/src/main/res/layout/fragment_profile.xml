@@ -282,15 +282,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtEmgContactHeader" />
 
-                <ImageView
-                    android:id="@+id/imgEdit3"
-                    android:layout_width="60dp"
-                    android:layout_height="0dp"
-                    android:src="@drawable/edit"
-                    app:layout_constraintBottom_toBottomOf="@+id/txtEmgContact"
-                    app:layout_constraintDimensionRatio="2"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txtEmgContactHeader" />
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -343,11 +335,30 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
+       <!-- <ImageView
             android:id="@+id/imgProfile"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_100"
             android:src="@drawable/change_profile"
+            app:layout_constraintBottom_toTopOf="@id/mainConstraintLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/mainConstraintLayout" />-->
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgProfile"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:clickable="true"
+            app:civ_border_width="3dp"
+            android:src="@drawable/change_profile"
+            app:civ_border_color="#FFFFFFFF"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-130dp"
+            android:elevation="5dp"
+            android:padding="20dp"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@id/mainConstraintLayout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

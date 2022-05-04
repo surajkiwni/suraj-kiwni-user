@@ -69,6 +69,7 @@
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/update_alert_details.xml" value="0.1875" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/menu/activity_main_drawer.xml" value="0.128" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/grey_border.xml" value="0.1635" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/linear_corner_radius.xml" value="0.1635" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/rounded_button.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/top_rounded_corner.xml" value="0.1635" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/activity_booking_details.xml" value="0.11979166666666667" />
@@ -80,6 +81,7 @@
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/activity_past.xml" value="0.11979166666666667" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/activity_register.xml" value="0.13333333333333333" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/app_bar_main.xml" value="0.1" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/camera_profile_dialog.xml" value="0.134765625" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/feedback_bottom_sheet.xml" value="0.134765625" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/filter_screen.xml" value="0.11979166666666667" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/fragment_about.xml" value="0.11979166666666667" />
@@ -106,6 +108,7 @@
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/reservation_confirmation_krn_no_dialog.xml" value="0.134765625" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/safety_fragment.xml" value="0.11979166666666667" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/support_recycler_item.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/thank_you_screen.xml" value="0.11736111111111111" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/title_each_item.xml" value="0.22" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/upcoming_recycle.xml" value="0.12" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/menu/activity_main_drawer.xml" value="0.11979166666666667" />
