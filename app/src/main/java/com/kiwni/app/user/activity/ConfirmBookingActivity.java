@@ -3,7 +3,6 @@ package com.kiwni.app.user.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -13,12 +12,9 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -27,15 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,19 +37,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
-import com.kiwni.app.user.datamodels.ErrorDialog;
-import com.kiwni.app.user.datamodels.ErrorDialog1;
 import com.kiwni.app.user.global.PermissionRequestConstant;
-import com.kiwni.app.user.helpers.ApiHelper;
-import com.kiwni.app.user.helpers.IServiceError;
-import com.kiwni.app.user.helpers.IServiceReceiver;
-import com.kiwni.app.user.helpers.ServiceConnector;
 import com.kiwni.app.user.interfaces.ErrorDialogInterface;
 import com.kiwni.app.user.models.bookride.BookRideErrorResp;
 import com.kiwni.app.user.models.bookride.ChannelReq;
@@ -71,7 +54,6 @@ import com.kiwni.app.user.models.bookride.ServiceTypeReq;
 import com.kiwni.app.user.models.bookride.StatusReq;
 import com.kiwni.app.user.models.bookride.ToLocationCoordinates;
 import com.kiwni.app.user.models.socket.SocketReservationResp;
-import com.kiwni.app.user.models.vehicle_details.ScheduleDatesRates;
 import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 import com.kiwni.app.user.network.ApiClient;
 import com.kiwni.app.user.network.ApiInterface;
@@ -92,7 +74,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -732,7 +713,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
                         /*payment dialog */
                         dialogPayment = new Dialog(ConfirmBookingActivity.this, android.R.style.Theme_Light);
                         dialogPayment.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialogPayment.setContentView(R.layout.payment_screen);
+                        dialogPayment.setContentView(R.layout.dialog_payment_screen);
 
                         final AppCompatButton btnPay = dialogPayment.findViewById(R.id.btnPay);
 
@@ -928,14 +909,16 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
 
         dialogThankYou = new Dialog(ConfirmBookingActivity.this, android.R.style.Theme_Light);
         dialogThankYou.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialogThankYou.setContentView(R.layout.thank_you_screen);
+        dialogThankYou.setContentView(R.layout.dialog_thank_you_screen);
 
         AppCompatButton btnOk = dialogThankYou.findViewById(R.id.btnOk);
         TextView txtKrnNo = dialogThankYou.findViewById(R.id.txtKrnNo);
+        TextView txtBookingNo = dialogThankYou.findViewById(R.id.txtBookingNo);
 
         if(reservationRespList.size() == 0)
         {
-            txtKrnNo.setText("1234");
+            txtKrnNo.setText("-");
+            txtBookingNo.setText("-");
         }
         else
         {
@@ -956,7 +939,6 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
                 Intent intent = new Intent(ConfirmBookingActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra(SharedPref.SOCKET_RESP_OBJECT, jsonForData);
-                //PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.SOCKET_RESP_OBJECT, jsonForData);
 
                 dialogPayment.dismiss();
                 dialogThankYou.dismiss();

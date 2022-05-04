@@ -3,7 +3,6 @@ package com.kiwni.app.user.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -25,7 +24,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -38,7 +36,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.DialogReviewAdapter;
 import com.kiwni.app.user.adapter.FilterAdapter;
@@ -60,7 +57,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class CarListTypeActivity extends AppCompatActivity implements BookBtnClickListener,
+public class VehicleListByTypeActivity extends AppCompatActivity implements BookBtnClickListener,
         ReviewBtnClickListener, ConnectivityHelper.NetworkStateReceiverListener {
     RecyclerView recyclerView;
     TitleItemAdapter adapter;
@@ -87,7 +84,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_car_list_type);
+        setContentView(R.layout.activity_vehicle_list_by_type);
 
         constraintLayoutForRentalPackage = findViewById(R.id.constraintLayoutForRentalPackage);
         txtTitle = findViewById(R.id.txtTitle);
@@ -190,7 +187,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(CarListTypeActivity.this, FindCarActivity.class);
+                Intent intent = new Intent(VehicleListByTypeActivity.this, VehicleTypeListActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
@@ -204,11 +201,11 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
                 Uri call = Uri.parse("tel:" + mobile);
                 Intent intent = new Intent(Intent.ACTION_CALL, call);
 
-                if (ContextCompat.checkSelfPermission(CarListTypeActivity.this,
+                if (ContextCompat.checkSelfPermission(VehicleListByTypeActivity.this,
                         Manifest.permission.CALL_PHONE)
                         != PackageManager.PERMISSION_GRANTED) {
 
-                    ActivityCompat.requestPermissions(CarListTypeActivity.this,
+                    ActivityCompat.requestPermissions(VehicleListByTypeActivity.this,
                             new String[]{Manifest.permission.CALL_PHONE},
                             PermissionRequestConstant.MY_PERMISSIONS_REQUEST_CALL_PHONE);
                 } else {
@@ -226,7 +223,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
         mapLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CarListTypeActivity.this, MapActivity.class);
+                Intent intent = new Intent(VehicleListByTypeActivity.this, MapActivity.class);
                 startActivity(intent);
             }
         });
@@ -236,7 +233,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
             @Override
             public void onClick(View view) {
 
-                Dialog dialog = new Dialog(CarListTypeActivity.this, android.R.style.Theme_Light);
+                Dialog dialog = new Dialog(VehicleListByTypeActivity.this, android.R.style.Theme_Light);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.sort_layout);
 
@@ -290,7 +287,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
             @Override
             public void onClick(View view) {
 
-                Dialog dialog = new Dialog(CarListTypeActivity.this, android.R.style.Theme_Light);
+                Dialog dialog = new Dialog(VehicleListByTypeActivity.this, android.R.style.Theme_Light);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.filter_screen);
 
@@ -606,7 +603,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(CarListTypeActivity.this, FindCarActivity.class);
+        Intent intent = new Intent(VehicleListByTypeActivity.this, VehicleTypeListActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
@@ -626,7 +623,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
         Type type = new TypeToken<List<ScheduleMapResp>>() {}.getType();
         String jsonForData = gson.toJson(selectedVehicleData, type);
 
-        Intent intent = new Intent(CarListTypeActivity.this, ConfirmBookingActivity.class);
+        Intent intent = new Intent(VehicleListByTypeActivity.this, ConfirmBookingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, jsonForData);
         startActivity(intent);
@@ -636,7 +633,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
     @Override
     public void onReviewBtnClick(View v, int position)
     {
-        Dialog dialog = new Dialog(CarListTypeActivity.this, android.R.style.Theme_Light);
+        Dialog dialog = new Dialog(VehicleListByTypeActivity.this, android.R.style.Theme_Light);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_review);
         dialog.getWindow().setGravity(Gravity.BOTTOM);
@@ -656,7 +653,7 @@ public class CarListTypeActivity extends AppCompatActivity implements BookBtnCli
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerDigReview.setLayoutManager(linearLayoutManager);
 
-        DialogReviewAdapter dialogReviewAdapter = new DialogReviewAdapter(CarListTypeActivity.this, reviewResponseList);
+        DialogReviewAdapter dialogReviewAdapter = new DialogReviewAdapter(VehicleListByTypeActivity.this, reviewResponseList);
         recyclerDigReview.setAdapter(dialogReviewAdapter);
         dialogReviewAdapter.notifyDataSetChanged();
 

@@ -1,33 +1,24 @@
 package com.kiwni.app.user;
 
-import static java.security.AccessController.getContext;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.util.Base64;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,32 +26,19 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kiwni.app.user.R;
-import com.kiwni.app.user.activity.FindCarActivity;
-import com.kiwni.app.user.activity.LoginActivity;
-import com.kiwni.app.user.activity.SplashActivity;
-import com.kiwni.app.user.adapter.GridLayoutWrapper;
-import com.kiwni.app.user.databinding.ActivityMainBinding;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
-import com.kiwni.app.user.fragments.RoundTripFragment;
+import com.kiwni.app.user.databinding.ActivityMainBinding;
 import com.kiwni.app.user.global.PermissionRequestConstant;
 import com.kiwni.app.user.models.socket.SocketReservationResp;
-import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
-import com.kiwni.app.user.socket.SocketSingletonClass;
 import com.kiwni.app.user.ui.FAQs.FaqFragment;
 import com.kiwni.app.user.ui.about.AboutFragment;
 import com.kiwni.app.user.ui.my_rides.MyRidesFragment;
@@ -73,14 +51,12 @@ import com.kiwni.app.user.utils.PreferencesUtils;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -99,7 +75,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -558,7 +533,7 @@ public class MainActivity extends AppCompatActivity implements
         //create custom dialog here
         dialogBuilder = new AlertDialog.Builder(MainActivity.this);
         LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.reservation_confirmation_krn_no_dialog, null);
+        View dialogView = inflater.inflate(R.layout.dialog_socket_response, null);
         dialogBuilder.setView(dialogView);
         dialogBuilder.setCancelable(false);
         data_updated_alert = dialogBuilder.create();
@@ -697,7 +672,7 @@ public class MainActivity extends AppCompatActivity implements
     {
         dialogBuilder = new AlertDialog.Builder(MainActivity.this);
         LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.reservation_confirmation_krn_no_dialog, null);
+        View dialogView = inflater.inflate(R.layout.dialog_socket_response, null);
         dialogBuilder.setView(dialogView);
         dialogBuilder.setCancelable(false);
         success_alert = dialogBuilder.create();

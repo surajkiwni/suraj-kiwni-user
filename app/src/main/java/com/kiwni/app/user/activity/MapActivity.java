@@ -35,7 +35,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MapActivity.this,CarListTypeActivity.class);
+                Intent intent = new Intent(MapActivity.this, VehicleListByTypeActivity.class);
                 startActivity(intent);
                 finish();
             }

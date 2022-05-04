@@ -3,7 +3,6 @@ package com.kiwni.app.user.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -44,18 +43,15 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.FindsCarRecyclerAdapter;
 import com.kiwni.app.user.adapter.GridLayoutWrapper;
 import com.kiwni.app.user.adapter.HourPackageAdapter;
 import com.kiwni.app.user.datamodels.ErrorDialog;
-import com.kiwni.app.user.datamodels.ErrorDialog1;
 import com.kiwni.app.user.global.PermissionRequestConstant;
 import com.kiwni.app.user.interfaces.ErrorDialogInterface;
 import com.kiwni.app.user.interfaces.FindCarItemClickListener;
 import com.kiwni.app.user.models.DirectionsJSONParser;
-import com.kiwni.app.user.models.FindCar;
 import com.kiwni.app.user.models.HourPackage;
 import com.kiwni.app.user.models.vehicle_details.ProjectionScheduleErrorResp;
 import com.kiwni.app.user.models.vehicle_details.ScheduleDates;
@@ -88,7 +84,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FindCarActivity extends AppCompatActivity implements OnMapReadyCallback,
+public class VehicleTypeListActivity extends AppCompatActivity implements OnMapReadyCallback,
         FindCarItemClickListener, ErrorDialogInterface,ConnectivityHelper.NetworkStateReceiverListener
 {
     GoogleMap mMap;
@@ -135,7 +131,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_finds_cars);
+        setContentView(R.layout.activity_vehicle_type_list);
 
         Log.d(TAG, "onCreate");
 
@@ -257,11 +253,11 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
                 Intent intent = new Intent(Intent.ACTION_CALL, call);
 
                 // Here, thisActivity is the current activity
-                if (ContextCompat.checkSelfPermission(FindCarActivity.this,
+                if (ContextCompat.checkSelfPermission(VehicleTypeListActivity.this,
                         Manifest.permission.CALL_PHONE)
                         != PackageManager.PERMISSION_GRANTED) {
 
-                    ActivityCompat.requestPermissions(FindCarActivity.this,
+                    ActivityCompat.requestPermissions(VehicleTypeListActivity.this,
                             new String[]{Manifest.permission.CALL_PHONE},
                             PermissionRequestConstant.MY_PERMISSIONS_REQUEST_CALL_PHONE);
 
@@ -285,7 +281,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
             @Override
             public void onClick(View view) {
 
-                bottomSheetDialog = new BottomSheetDialog(FindCarActivity.this);
+                bottomSheetDialog = new BottomSheetDialog(VehicleTypeListActivity.this);
                 View view1 = getLayoutInflater().inflate(R.layout.view_details_bottom_sheet,null,false);
 
                 TextView textPara1 = view1.findViewById(R.id.textPara1);
@@ -351,7 +347,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         Call<Map<String, Map<String, Map<String, List<ScheduleMapResp>>>>> listCall = apiInterface.getProjectionScheduleDates(scheduleDates,idToken);
 
         // Set up progress before call
-        Dialog lovelyProgressDialog = new LovelyProgressDialog(FindCarActivity.this)
+        Dialog lovelyProgressDialog = new LovelyProgressDialog(VehicleTypeListActivity.this)
                 .setIcon(R.drawable.ic_cast_connected_white_36dp)
                 .setTitle(R.string.connecting_to_server)
                 .setMessage(R.string.your_request_is_processing)
@@ -757,7 +753,7 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         String jsonForData = gson.toJson(tempList, type);
         String jsonForDuplicateData = gson.toJson(remainingList, type);
 
-        Intent intent = new Intent(FindCarActivity.this, CarListTypeActivity.class);
+        Intent intent = new Intent(VehicleTypeListActivity.this, VehicleListByTypeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_TYPE_OBJECT, jsonForData);
         PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.DUPLICATE_VEHICLE_OBJECT, jsonForDuplicateData);
@@ -833,10 +829,8 @@ public class FindCarActivity extends AppCompatActivity implements OnMapReadyCall
         for (LatLng latLngPoint : lstLatLngRoute)
             boundsBuilder.include(latLngPoint);
 
-        int routePadding = 200;
+        int routePadding = 100;
         LatLngBounds latLngBounds = boundsBuilder.build();
-        int left, right,bottom, top;
-        //googleMap.setPadding(left = 10, top = 30, right = 10, bottom = 10);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, routePadding));
     }
 

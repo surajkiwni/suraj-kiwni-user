@@ -59,6 +59,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
         holder.txtPickupAddress.setText(tripListResp.getStartLocationCity());
         holder.txtDropAddress.setText(tripListResp.getEndlocationCity());
         holder.txtKRNNo.setText("KRN. No. KIWNI " + tripListResp.getReservationId());
+        holder.txtBookingNo.setText("Booking No. -");
 
         /* split string and set data to ui */
         GetClassTypeFromServiceType(tripListResp.getServiceType());
@@ -77,10 +78,9 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
         }
         else
         {
-            //Log.d("UpcomingAdapter", "getting driver details");
-            if(!tripListResp.getDriver().getName().equals(""))
+            if(!tripListResp.getDriver().getName().equals("") || !tripListResp.getDriver().getName().equals(null))
             {
-                if(!tripListResp.getDriver().getMobile().equals(""))
+                if(!tripListResp.getDriver().getMobile().equals("") || !tripListResp.getDriver().getMobile().equals(null))
                 {
                     holder.driverConstraintLayout.setVisibility(View.VISIBLE);
                     holder.bookingLinearLayout.setVisibility(View.GONE);

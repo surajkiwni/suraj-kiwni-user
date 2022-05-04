@@ -3,9 +3,7 @@ package com.kiwni.app.user.fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.DatePickerDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -42,7 +40,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -69,11 +66,10 @@ import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.snackbar.Snackbar;
 import com.kiwni.app.user.R;
-import com.kiwni.app.user.activity.FindCarActivity;
+import com.kiwni.app.user.activity.VehicleTypeListActivity;
 import com.kiwni.app.user.adapter.AutoCompleteAdapter;
 import com.kiwni.app.user.adapter.TimeAdapter;
 import com.kiwni.app.user.datamodels.ErrorDialog;
-import com.kiwni.app.user.global.PermissionRequestConstant;
 import com.kiwni.app.user.models.DirectionsJSONParser;
 import com.kiwni.app.user.models.KeyValue;
 import com.kiwni.app.user.network.ApiInterface;
@@ -696,7 +692,7 @@ public class RoundTripFragment extends Fragment implements
                                     if (isDateAfter(sendToApiPickupTime, sendToApiDropTime))
                                     {
                                         //true condition
-                                        Intent i = new Intent(getActivity(), FindCarActivity.class);
+                                        Intent i = new Intent(getActivity(), VehicleTypeListActivity.class);
                                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         //send data to next screen
                                         PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_CITY, pickup_city);
@@ -1920,7 +1916,6 @@ public class RoundTripFragment extends Fragment implements
 
         try {
             mGoogleApiClient.connect();
-            //autoCompleteTextViewDrop.setText("");
         } catch (Exception e) {
             e.printStackTrace();
         }

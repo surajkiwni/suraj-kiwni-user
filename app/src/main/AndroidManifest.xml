@@ -56,11 +56,11 @@
             android:exported="false"
             android:theme="@style/Theme.User.NoActionBar" />
         <activity
-            android:name=".activity.CarListTypeActivity"
+            android:name=".activity.VehicleListByTypeActivity"
             android:exported="false"
             android:theme="@style/Theme.User.NoActionBar" />
         <activity
-            android:name=".activity.FindCarActivity"
+            android:name=".activity.VehicleTypeListActivity"
             android:exported="false"
             android:theme="@style/Theme.User.NoActionBar" />
         <activity

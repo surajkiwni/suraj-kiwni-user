@@ -40,7 +40,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -67,19 +66,17 @@ import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.snackbar.Snackbar;
 import com.kiwni.app.user.R;
-import com.kiwni.app.user.activity.FindCarActivity;
+import com.kiwni.app.user.activity.VehicleTypeListActivity;
 import com.kiwni.app.user.adapter.AutoCompleteAdapter;
 import com.kiwni.app.user.adapter.TimeAdapter;
 import com.kiwni.app.user.datamodels.ErrorDialog;
 import com.kiwni.app.user.models.DirectionsJSONParser;
 import com.kiwni.app.user.models.KeyValue;
 import com.kiwni.app.user.network.ApiInterface;
-import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -696,7 +693,7 @@ public class OneWayFragment extends Fragment implements
                                     /* Calculate drop_time from start_date and duration */
                                     CalculateDropTime(concatDateTime, durationInTrafficFromApi);
 
-                                    Intent i = new Intent(getActivity(), FindCarActivity.class);
+                                    Intent i = new Intent(getActivity(), VehicleTypeListActivity.class);
                                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                                     PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_CITY, pickup_city);
