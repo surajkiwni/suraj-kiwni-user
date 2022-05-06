@@ -1,5 +1,6 @@
 package com.kiwni.app.user.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
@@ -36,8 +37,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
     String startDateFromString = "", startTimeFromString = "", endDateFromString = "";
     byte[] valueDecoded= new byte[0];
     String TAG = this.getClass().getSimpleName();
-    String splittedStr1 = "", splittedStr2 = "", splittedStr3 = "", splittedStr4 = "",
-            splittedStr5 ="";
+    String splittedStr1 = "", splittedStr2 = "", splittedStr3 = "", splittedStr4 = "";
 
     public UpcomingAdapter(Context context, List<TripsHistoryResp> tripHistoryList) {
         this.tripHistoryList = tripHistoryList;
@@ -51,6 +51,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
         return new UpcomeViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull UpcomeViewHolder holder, int position)
     {
@@ -74,47 +75,51 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
 
         if(tripListResp.getDriver() == null)
         {
-            Log.d("UpcomingAdapter", "not getting driver details");
+            Log.d(TAG, "not getting driver details");
         }
         else
         {
-            if(!tripListResp.getDriver().getName().equals("") || !tripListResp.getDriver().getName().equals(null))
+            if(!tripListResp.getDriver().getName().equals("") &&
+                    !tripListResp.getDriver().getName().equals("null"))
             {
-                if(!tripListResp.getDriver().getMobile().equals("") || !tripListResp.getDriver().getMobile().equals(null))
+                holder.driverConstraintLayout.setVisibility(View.VISIBLE);
+                holder.bookingLinearLayout.setVisibility(View.GONE);
+                holder.txtMessage.setVisibility(View.GONE);
+                holder.v.setVisibility(View.GONE);
+
+                /* set data to view(ui) */
+                holder.txtDriverName.setText(tripListResp.getDriver().getName());
+                holder.txtDriverMobile.setText(tripListResp.getDriver().getMobile());
+                holder.txtVehicleNo.setText(tripListResp.getVehcileNo());
+                holder.txtVehicleModel.setText("Vehicle Model : ");
+
+                if(splittedStr4.equals("ultra"))
                 {
-                    holder.driverConstraintLayout.setVisibility(View.VISIBLE);
-                    holder.bookingLinearLayout.setVisibility(View.GONE);
-                    holder.txtMessage.setVisibility(View.GONE);
-                    holder.v.setVisibility(View.GONE);
-
-                    /* set data to view(ui) */
-                    holder.txtDriverName.setText(tripListResp.getDriver().getName());
-                    holder.txtDriverMobile.setText(tripListResp.getDriver().getMobile());
-                    holder.txtVehicleNo.setText(tripListResp.getVehcileNo());
-                    holder.txtVehicleModel.setText("Vehicle Model : ");
-
-                    if(splittedStr4.equals("ultra"))
-                    {
-                        holder.txtVehicleClassType.setText(splittedStr4 + "-luxury");
-                    }
-                    else
-                    {
-                        holder.txtVehicleClassType.setText(splittedStr4);
-                    }
-                    //holder.txtVehicleClassType.setText(splittedStr4);
-
-                    /* decode otp and then set to ui */
-                    DecodeOtp(tripListResp.getOtp());
-                    holder.txtOTP.setText("OTP : " + new String(valueDecoded));
-
-                    /* set image to ui */
-                    if(tripListResp.getDriverImageUrl() != null)
-                    {
-                        Glide.with(context)
-                                .load(AppConstants.IMAGE_PATH + tripListResp.getDriverImageUrl())
-                                .into(holder.imgDriverImg);
-                    }
+                    holder.txtVehicleClassType.setText(splittedStr4 + "-luxury");
                 }
+                else
+                {
+                    holder.txtVehicleClassType.setText(splittedStr4);
+                }
+
+                /* decode otp and then set to ui */
+                DecodeOtp(tripListResp.getOtp());
+                holder.txtOTP.setText("OTP : " + new String(valueDecoded));
+
+                /* set image to ui */
+                if(tripListResp.getDriverImageUrl() != null)
+                {
+                    Glide.with(context)
+                            .load(AppConstants.IMAGE_PATH + tripListResp.getDriverImageUrl())
+                            .into(holder.imgDriverImg);
+                }
+            }
+            else
+            {
+                holder.driverConstraintLayout.setVisibility(View.GONE);
+                holder.bookingLinearLayout.setVisibility(View.VISIBLE);
+                holder.txtMessage.setVisibility(View.VISIBLE);
+                holder.v.setVisibility(View.VISIBLE);
             }
         }
     }
