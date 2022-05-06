@@ -124,6 +124,8 @@ public class OneWayFragment extends Fragment implements
     ArrayList<LatLng> dropLocationList = new ArrayList<>();
     PlacesClient placesClient;
 
+    ErrorDialog errorDialog;
+
     String address = "", city = "", pickup_city = "", drop_city = "",
             pickup_address = "", drop_address = "", strDate = "";
     private GoogleApiClient mGoogleApiClient;
@@ -665,8 +667,10 @@ public class OneWayFragment extends Fragment implements
                         /* check distance should not be null or empty */
                         if (distanceValueFromApi.equals("") || distanceValueFromApi.equals(null))
                         {
-                            ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Please Wait..!");
+                            errorDialog = new ErrorDialog(getActivity(), "Please Wait..!");
                             errorDialog.show();
+                            autoCompleteTextViewDrop.setText("");
+                            dropMarker.remove();
                         }
                         else
                         {

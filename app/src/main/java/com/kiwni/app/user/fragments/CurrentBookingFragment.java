@@ -681,6 +681,8 @@ public class CurrentBookingFragment extends Fragment implements
                             {
                                 ErrorDialog errorDialog = new ErrorDialog(getActivity(), "Please Wait..!");
                                 errorDialog.show();
+                                autoCompleteTextViewDrop.setText("");
+                                dropMarker.remove();
                             }
                             else
                             {

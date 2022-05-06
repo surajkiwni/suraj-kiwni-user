@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,17 +35,17 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
     private SafetyViewModel safetyViewModel;
     private SafetyFragmentBinding binding;
     String TAG = this.getClass().getSimpleName();
+    Dialog updateAlertDialog, emergencyDialog;
 
     public static BackKeyPressedListener backKeyPressedListener;
     ImageView imageBack;
-    AppCompatButton tryLaterBtn,alertBtn;
+    AppCompatButton btnTryLater,alertBtn;
     TextView textPara2,textPara4,textPara5;
     View view;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        safetyViewModel =
-                new ViewModelProvider(this).get(SafetyViewModel.class);
+        safetyViewModel = new ViewModelProvider(this).get(SafetyViewModel.class);
 
         binding = SafetyFragmentBinding.inflate(inflater, container, false);
         view = binding.getRoot();
@@ -68,7 +69,7 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
         textPara4 = view.findViewById(R.id.textPara4);
         textPara5 = view .findViewById(R.id.textPara5);
 
-        tryLaterBtn = view.findViewById(R.id.tryLaterBtn);
+        btnTryLater = view.findViewById(R.id.btnTryLater);
         alertBtn = view.findViewById(R.id.alertBtn);
 
         alertBtn.setBackgroundColor(Color.BLACK);
@@ -94,7 +95,7 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
             }
         });
 
-        tryLaterBtn.setOnClickListener(new View.OnClickListener() {
+        btnTryLater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
@@ -102,66 +103,64 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
                 alertBtn.setTextColor(Color.BLACK);
 
                 //tryLaterBtn.setBackgroundResource(R.drawable.square_border);
-                tryLaterBtn.setBackgroundColor(Color.BLACK);
-                tryLaterBtn.setTextColor(Color.WHITE);
+                btnTryLater.setBackgroundColor(Color.BLACK);
+                btnTryLater.setTextColor(Color.WHITE);
+
+                Navigation.findNavController(view).navigate(R.id.action_nav_safety_to_mainActivity);
             }
         });
 
         alertBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                //alertBtn.setBackgroundResource(R.drawable.square_border);
                 alertBtn.setBackgroundColor(Color.BLACK);
                 alertBtn.setTextColor(Color.WHITE);
 
-                tryLaterBtn.setBackgroundResource(R.drawable.square_border);
-                //tryLaterBtn.setBackgroundColor(Color.BLACK);
-                tryLaterBtn.setTextColor(Color.BLACK);
+                btnTryLater.setBackgroundResource(R.drawable.square_border);
+                btnTryLater.setTextColor(Color.BLACK);
 
-                Dialog dialog = new Dialog(getContext(), android.R.style.Theme_Light);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.update_alert_details);
+                updateAlertDialog = new Dialog(getActivity(), android.R.style.Theme_Light);
+                updateAlertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                updateAlertDialog.setContentView(R.layout.update_alert_details);
 
-                final ImageView imageBack = dialog.findViewById(R.id.imageBack);
-                AppCompatButton btnSaveAlert = dialog.findViewById(R.id.btnSaveAlert);
-                AppCompatButton btnCancelUpdateAlert = dialog.findViewById(R.id.btnCancelUpdateAlert);
+                final ImageView imageBack = updateAlertDialog.findViewById(R.id.imageBack);
+                AppCompatButton btnSaveAlert = updateAlertDialog.findViewById(R.id.btnSaveAlert);
+                AppCompatButton btnCancelUpdateAlert = updateAlertDialog.findViewById(R.id.btnCancelUpdateAlert);
 
                 btnSaveAlert.setBackgroundColor(Color.BLACK);
                 btnSaveAlert.setTextColor(Color.WHITE);
                 imageBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.dismiss();
+                        updateAlertDialog.dismiss();
                     }
                 });
 
                 btnCancelUpdateAlert.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.dismiss();
+                        updateAlertDialog.dismiss();
                     }
                 });
 
                 btnSaveAlert.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        Dialog dialog = new Dialog(getContext(), android.R.style.Theme_Light);
-                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.setContentView(R.layout.in_case_emergency);
+                    public void onClick(View view)
+                    {
+                        Log.d(TAG, "Clicked");
+                        emergencyDialog = new Dialog(getActivity(), android.R.style.Theme_Light);
+                        emergencyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        emergencyDialog.setContentView(R.layout.in_case_emergency);
 
-                        //dialog.show();
-
-                        ImageView imageBack = dialog.findViewById(R.id.imageBack);
-                        ImageView imgPoliceCall = dialog.findViewById(R.id.imgPoliceCall);
-                        ImageView imgKiwniHelpLineCall = dialog.findViewById(R.id.imgKiwniHelpLineCall);
-                        ImageView imgCall = dialog.findViewById(R.id.imgCall);
+                        ImageView imageBack = emergencyDialog.findViewById(R.id.imageBack);
+                        ImageView imgPoliceCall = emergencyDialog.findViewById(R.id.imgPoliceCall);
+                        ImageView imgKiwniHelpLineCall = emergencyDialog.findViewById(R.id.imgKiwniHelpLineCall);
+                        ImageView imgCall = emergencyDialog.findViewById(R.id.imgCall);
 
                         imageBack.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                dialog.dismiss();
+                                emergencyDialog.dismiss();
                             }
                         });
 
@@ -194,9 +193,10 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
                                 startActivity(intent);
                             }
                         });
+                        emergencyDialog.show();
                     }
                 });
-                dialog.show();
+                updateAlertDialog.show();
             }
         });
     }

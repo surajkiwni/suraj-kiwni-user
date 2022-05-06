@@ -20,7 +20,7 @@
     <ImageView
         android:id="@+id/imageBack"
         android:layout_width="30dp"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:foregroundGravity="center"
         android:src="@drawable/back_arrow"
@@ -34,18 +34,17 @@
     <TextView
         android:id="@+id/toolbarText"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal"
         android:text=" Safety "
         android:textColor="@color/black"
-        android:textSize="18dp"
+        android:textSize="17sp"
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
-
 
     <TextView
         android:id="@+id/paraText1"
@@ -209,8 +208,7 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-
-        android:id="@+id/tryLaterBtn"
+        android:id="@+id/btnTryLater"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginEnd="10dp"
@@ -234,7 +232,7 @@
         android:layout_marginStart="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintStart_toEndOf="@+id/tryLaterBtn"
+        app:layout_constraintStart_toEndOf="@+id/btnTryLater"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.94" />
 

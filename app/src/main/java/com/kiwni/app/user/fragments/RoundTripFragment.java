@@ -666,6 +666,8 @@ public class RoundTripFragment extends Fragment implements
                         if (distanceValueFromApi.equals("") || distanceValueFromApi.equals(null)) {
                             errorDialog = new ErrorDialog(getActivity(), "Please Wait..!");
                             errorDialog.show();
+                            autoCompleteTextViewDrop.setText("");
+                            dropMarker.remove();
                         } else {
                             try {
                                 Date currentDate = inputFormat.parse(curr_converted_date);

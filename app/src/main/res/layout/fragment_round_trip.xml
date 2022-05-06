@@ -313,6 +313,7 @@
                 android:layout_height="@dimen/dp_25"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:gravity="center_vertical|center_horizontal"
                 android:background="@drawable/viewcabs_roundedbutton"
                 android:text="View Cabs "
                 android:textColor="@color/white"

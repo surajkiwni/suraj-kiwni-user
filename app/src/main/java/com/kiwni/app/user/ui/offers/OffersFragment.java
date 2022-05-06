@@ -81,7 +81,7 @@ public class OffersFragment extends Fragment implements BackKeyPressedListener {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         offersRecyclerView.setLayoutManager(linearLayoutManager);
 
-        GridLayoutManager gridLayoutManager1 = new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false);
+        GridLayoutManager gridLayoutManager1 = new GridLayoutManager(getContext(),1, GridLayoutManager.VERTICAL,false);
         offersRecyclerView.setLayoutManager(gridLayoutManager1);
 
         OffersAdapter offersAdapter = new OffersAdapter(getContext(),offersModelList);
