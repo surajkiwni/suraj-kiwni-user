@@ -9,36 +9,32 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
         android:id="@+id/imageBack"
-        android:layout_width="30dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_15"
         android:foregroundGravity="center"
         android:src="@drawable/back_arrow"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="@+id/toolbar"
-        app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.533" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
 
     <TextView
         android:id="@+id/toolbarText"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text=" About  "
         android:textColor="@color/black"
-        android:textSize="18dp"
+        android:textSize="@dimen/sp_16"
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
@@ -50,24 +46,24 @@
         android:id="@+id/text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="@dimen/dp_15"
         android:gravity="start"
         android:text=""
         android:padding="5dp"
         android:textColor="@color/black"
-        android:textSize="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
         android:id="@+id/text2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:gravity="start"
         android:padding="5dp"
         android:text=""

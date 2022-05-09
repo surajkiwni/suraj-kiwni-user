@@ -11,6 +11,8 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.kiwni.app.user.R;
@@ -18,11 +20,12 @@ import com.kiwni.app.user.R;
 public class RegisterActivity extends AppCompatActivity {
 
     AppCompatButton btnRegister;
-    ImageView imageBack;
+
     TextInputEditText txtInputPassword;
     boolean isEmailValid = false,isPhoneNoValid = false,isPasswordValid = false,isLastNameValid = false,isFirstNameValid = false;
     EditText edtEmailId ,edtPhoneNo,edtLastName, edtFirstName, edtPassword;
-    ImageView imgEyeOpen, imgEyeClose;
+    ImageView imgEyeOpen, imgEyeClose,imgBack1;
+    TextView txtTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +33,8 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         btnRegister = findViewById(R.id.btnRegister);
-        imageBack = findViewById(R.id.imageBack);
+        imgBack1 = (ImageView) findViewById(R.id.imgBack1);
+        txtTitle = (TextView) findViewById(R.id.txtTitle);
 
         edtEmailId = findViewById(R.id.edtEmail);
         edtPhoneNo = findViewById(R.id.edtMobile);
@@ -40,6 +44,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         imgEyeClose = findViewById(R.id.imgEyeClose);
         imgEyeOpen = findViewById(R.id.imgEyeOpen);
+
+        txtTitle.setText("SIGN UP");
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,15 +63,24 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        imageBack.setOnClickListener(new View.OnClickListener() {
+        imgBack1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                Toast.makeText(RegisterActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                   /* Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                    finish();
+                    finish();*/
+
+            }
+        });
+
+        txtTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(RegisterActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
 
             }
         });

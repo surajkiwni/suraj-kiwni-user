@@ -6,24 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".activity.OtpActivity">
 
-    <LinearLayout
-        android:id="@+id/linear2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imgBack"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/back_arrow"/>
-    </LinearLayout>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/back_arrow"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -31,26 +24,27 @@
         android:layout_marginTop="@dimen/dp_50"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linear2">
+        app:layout_constraintTop_toBottomOf="@+id/imgBack">
 
         <TextView
             android:id="@+id/otpTextView"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="wrap_content"
             android:text="Enter the 6-digit code sent you at"
             android:textColor="#707070"
             android:paddingStart="@dimen/dp_10"
-            android:textSize="14dp"
+            android:textSize="@dimen/sp_12"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"/>
 
         <TextView
             android:id="@+id/txtPhoneNo"
             android:layout_width="match_parent"
-            android:layout_height="27dp"
+            android:layout_height="wrap_content"
             android:text="+91 0867676785"
             android:paddingStart="@dimen/dp_10"
             android:textColor="@color/black"
+            android:textSize="@dimen/sp_10"
             app:layout_constraintTop_toBottomOf="@+id/otpTextView"
             app:layout_constraintLeft_toLeftOf="parent"
             />
@@ -61,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="@dimen/dp_30"
             android:cursorVisible="true"
             android:inputType="number"
             android:itemBackground="#65EAEAEA"
@@ -84,7 +78,7 @@
             android:id="@+id/resendTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="@dimen/dp_15"
             android:text="Resend Code in 00.03"
             android:textColor="#2176E3"
             app:layout_constraintStart_toStartOf="@+id/pinView"
@@ -96,7 +90,7 @@
             android:layout_width="200dp"
             android:layout_height="35dp"
             tools:ignore="SpeakableTextPresentCheck"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="@dimen/dp_15"
             android:text="Login"
             android:textColor="@color/white"
             android:background="@drawable/black_rounded_button"
