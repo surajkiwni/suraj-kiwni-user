@@ -12,19 +12,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.kiwni.app.user.R;
 
 public class RegisterActivity extends AppCompatActivity {
-
     AppCompatButton btnRegister;
-
     TextInputEditText txtInputPassword;
-    boolean isEmailValid = false,isPhoneNoValid = false,isPasswordValid = false,isLastNameValid = false,isFirstNameValid = false;
-    EditText edtEmailId ,edtPhoneNo,edtLastName, edtFirstName, edtPassword;
-    ImageView imgEyeOpen, imgEyeClose,imgBack1;
+    boolean isEmailValid = false, isPhoneNoValid = false, isPasswordValid = false, isLastNameValid = false, isFirstNameValid = false;
+    EditText edtEmailId, edtPhoneNo, edtLastName, edtFirstName, edtPassword;
+    ImageView imgEyeOpen, imgEyeClose, imgBack;
     TextView txtTitle;
 
     @Override
@@ -33,15 +30,13 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         btnRegister = findViewById(R.id.btnRegister);
-        imgBack1 = (ImageView) findViewById(R.id.imgBack1);
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
-
+        imgBack = findViewById(R.id.imgBack);
+        txtTitle = findViewById(R.id.txtTitle);
         edtEmailId = findViewById(R.id.edtEmail);
         edtPhoneNo = findViewById(R.id.edtMobile);
         edtLastName = findViewById(R.id.edtLastName);
         edtFirstName = findViewById(R.id.edtFirstName);
         edtPassword = findViewById(R.id.edtPassword);
-
         imgEyeClose = findViewById(R.id.imgEyeClose);
         imgEyeOpen = findViewById(R.id.imgEyeOpen);
 
@@ -53,35 +48,21 @@ public class RegisterActivity extends AppCompatActivity {
 
                 setValidation();
 
-                if(isFirstNameValid && isLastNameValid && isPhoneNoValid && isEmailValid && isPasswordValid ) {
-
+                if (isFirstNameValid && isLastNameValid && isPhoneNoValid && isEmailValid && isPasswordValid) {
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
-
                 }
             }
         });
 
-        imgBack1.setOnClickListener(new View.OnClickListener() {
+        imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Toast.makeText(RegisterActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-
-                   /* Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();*/
-
-            }
-        });
-
-        txtTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(RegisterActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-
+                Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -106,8 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    public void setValidation()
-    {
+    public void setValidation() {
         //Email validation
         if (edtEmailId.getText().toString().isEmpty()) {
             edtEmailId.setError(getResources().getString(R.string.email_error));
@@ -158,8 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
             edtLastName.setError(getResources().getString(R.string.last_name_error));
             //edtLastName.requestFocus();
             isLastNameValid = false;
-        }
-        else {
+        } else {
             edtLastName.setError(null);
             //edtEmailId.setErrorEnabled(false);
             isLastNameValid = true;
@@ -170,8 +149,7 @@ public class RegisterActivity extends AppCompatActivity {
             edtFirstName.setError(getResources().getString(R.string.first_name_error));
             //edtLastName.requestFocus();
             isFirstNameValid = false;
-        }
-        else {
+        } else {
             edtFirstName.setError(null);
             //edtEmailId.setErrorEnabled(false);
             isFirstNameValid = true;
