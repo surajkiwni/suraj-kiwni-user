@@ -211,13 +211,13 @@ public class RoundTripFragment extends Fragment implements
         dropLocationList = new ArrayList<>();
 
         /* autocomplete fields with adpater */
-        autoCompleteTextViewPickup = (AutoCompleteTextView) view.findViewById(R.id.auto_pickup);
+        autoCompleteTextViewPickup = view.findViewById(R.id.auto_pickup);
         autoCompleteTextViewPickup.setOnItemClickListener(autocompleteClickListener);
 
         //set adapter
         autoCompleteTextViewPickup.setAdapter(adapter);
 
-        autoCompleteTextViewDrop = (AutoCompleteTextView) view.findViewById(R.id.auto_destination);
+        autoCompleteTextViewDrop = view.findViewById(R.id.auto_destination);
         autoCompleteTextViewDrop.setOnItemClickListener(autocompleteClickListener);
 
         //set adapter
@@ -300,7 +300,7 @@ public class RoundTripFragment extends Fragment implements
                                 //converted format
                                 Date date = null;
                                 try {
-                                    date = (Date) simpleDateFormat.parse(strPickupDate);
+                                    date = simpleDateFormat.parse(strPickupDate);
                                     SimpleDateFormat sdfOutputDateFormat = new SimpleDateFormat("EEE, dd MMM");
                                     convertedDateFormat = sdfOutputDateFormat.format(date);
                                     Log.d(TAG, "convertedDateFormat - " + convertedDateFormat);
@@ -364,7 +364,7 @@ public class RoundTripFragment extends Fragment implements
                                 /*converted format*/
                                 Date date = null;
                                 try {
-                                    date = (Date) simpleDateFormat.parse(strDropDate);
+                                    date = simpleDateFormat.parse(strDropDate);
                                     SimpleDateFormat sdfOutputDateFormat = new SimpleDateFormat("EEE, dd MMM");
                                     convertedDropDateFormat = sdfOutputDateFormat.format(date);
                                     Log.d(TAG, "convertedDropDateFormat - " + convertedDropDateFormat);
@@ -380,11 +380,7 @@ public class RoundTripFragment extends Fragment implements
                                     Date currentDate = inputFormat.parse(curr_converted_date);
                                     Date pickerDate = inputFormat.parse(convertedDropDateFormat);
 
-                                    if (currentDate.compareTo(pickerDate) == 0) {
-                                        isCurrentDateBooking = true;
-                                    } else {
-                                        isCurrentDateBooking = false;
-                                    }
+                                    isCurrentDateBooking = currentDate.compareTo(pickerDate) == 0;
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -1580,10 +1576,7 @@ public class RoundTripFragment extends Fragment implements
             Date end_date = df.parse(endDate);
             Date start_date = df.parse(startDate);
 
-            if (end_date.after(start_date))
-                return true;
-            else
-                return false;
+            return end_date.after(start_date);
         }
         catch (Exception e)
         {
@@ -1603,7 +1596,7 @@ public class RoundTripFragment extends Fragment implements
         //converted format
         Date date = null;
         try {
-            date = (Date) simpleDateFormat.parse(strPickupDate);
+            date = simpleDateFormat.parse(strPickupDate);
             SimpleDateFormat sdfOutputDateFormat = new SimpleDateFormat("EEE, dd MMM");
             curr_converted_date = sdfOutputDateFormat.format(date);
             Log.d(TAG, "curr_converted_date - " + curr_converted_date);
@@ -1626,7 +1619,7 @@ public class RoundTripFragment extends Fragment implements
         //converted format
         Date date = null;
         try {
-            date = (Date) simpleDateFormat.parse(strDropDate);
+            date = simpleDateFormat.parse(strDropDate);
             SimpleDateFormat sdfOutputDateFormat = new SimpleDateFormat("EEE, dd MMM");
             curr_converted_date = sdfOutputDateFormat.format(date);
             Log.d(TAG, "curr_converted_date - " + curr_converted_date);
@@ -1840,7 +1833,7 @@ public class RoundTripFragment extends Fragment implements
         //converted format
         Date date = null;
         try {
-            date = (Date) inputDateFormat.parse(pickupDateFromTextbox);
+            date = inputDateFormat.parse(pickupDateFromTextbox);
             SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             sendToApiPickupTime = sdf2.format(date);
             Log.d(TAG, "sendToApiPickupTime - " + sendToApiPickupTime);
@@ -1856,7 +1849,7 @@ public class RoundTripFragment extends Fragment implements
         SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
         Date date = null;
         try {
-            date = (Date) inputDateFormat.parse(current_date);
+            date = inputDateFormat.parse(current_date);
             SimpleDateFormat sdf2 = new SimpleDateFormat("EEE, dd MMM");
             changeStartDateFormat = sdf2.format(date);
             Log.d(TAG, "changeStartDateFormat - " + changeStartDateFormat);

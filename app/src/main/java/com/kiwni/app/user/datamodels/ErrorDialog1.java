@@ -26,8 +26,8 @@ public class ErrorDialog1
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         dialog.setCancelable(false);
 
-        AppCompatButton btnClose = (AppCompatButton) dialog.findViewById(R.id.btnClose);
-        TextView txtErrorMessage = (TextView) dialog.findViewById(R.id.txtErrorMessage);
+        AppCompatButton btnClose = dialog.findViewById(R.id.btnClose);
+        TextView txtErrorMessage = dialog.findViewById(R.id.txtErrorMessage);
 
         txtErrorMessage.setText(msg);
 

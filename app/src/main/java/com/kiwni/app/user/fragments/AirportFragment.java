@@ -52,7 +52,7 @@ public class AirportFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
 
         instance = this;
-        tabLayout = (TabLayout) view.findViewById(R.id.airportTabLayout);
+        tabLayout = view.findViewById(R.id.airportTabLayout);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

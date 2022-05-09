@@ -18,8 +18,8 @@ import java.util.List;
 
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersViewHolder> {
 
-    private Context context;
-    private List<Offers> offersModels;
+    private final Context context;
+    private final List<Offers> offersModels;
 
     public OffersAdapter(Context context, List<Offers> offersModels) {
         this.context = context;

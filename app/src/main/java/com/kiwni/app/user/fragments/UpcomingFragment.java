@@ -94,7 +94,7 @@ public class UpcomingFragment extends Fragment implements ErrorDialogInterface
             {
                 int statusCode = response.code();
                 Log.d(TAG, "code = " + statusCode);
-                Log.d(TAG, "response = " + response.toString());
+                Log.d(TAG, "response = " + response);
 
                 lovelyProgressDialog.dismiss();
 
@@ -123,7 +123,7 @@ public class UpcomingFragment extends Fragment implements ErrorDialogInterface
             @Override
             public void onFailure(Call<List<TripsHistoryResp>> call, Throwable t)
             {
-                Log.d(TAG, "error = " + t.toString());
+                Log.d(TAG, "error = " + t);
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 lovelyProgressDialog.dismiss();
             }

@@ -219,13 +219,13 @@ public class AirportDropFragment extends Fragment implements
         pickupLocationList = new ArrayList<>();
         dropLocationList = new ArrayList<>();
 
-        autoCompleteTextViewPickup = (AutoCompleteTextView) view.findViewById(R.id.auto_pickup);
+        autoCompleteTextViewPickup = view.findViewById(R.id.auto_pickup);
         autoCompleteTextViewPickup.setOnItemClickListener(autocompleteClickListener);
 
         //set adapter
         autoCompleteTextViewPickup.setAdapter(adapter);
 
-        autoCompleteTextViewDrop = (AutoCompleteTextView) view.findViewById(R.id.auto_destination);
+        autoCompleteTextViewDrop = view.findViewById(R.id.auto_destination);
         autoCompleteTextViewDrop.setOnItemClickListener(autocompleteClickListener);
         //set adapter
         autoCompleteTextViewDrop.setAdapter(adapter);
@@ -316,7 +316,7 @@ public class AirportDropFragment extends Fragment implements
                                 //converted format
                                 Date date = null;
                                 try {
-                                    date = (Date) simpleDateFormat.parse(strDate);
+                                    date = simpleDateFormat.parse(strDate);
                                     SimpleDateFormat sdfOutputDateFormat = new SimpleDateFormat("EEE, dd MMM");
                                     convertedPickupDateFormat = sdfOutputDateFormat.format(date);
                                     Log.d(TAG, "convertedPickupDateFormat - " + convertedPickupDateFormat);
@@ -762,7 +762,7 @@ public class AirportDropFragment extends Fragment implements
                 List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS
                         , Place.Field.LAT_LNG);
 
-                Log.d("TAG", "places id with list = " + placeID + ", " + placeFields.toString());
+                Log.d("TAG", "places id with list = " + placeID + ", " + placeFields);
 
                 FetchPlaceRequest request = null;
                 if (placeID != null) {
@@ -1598,7 +1598,7 @@ public class AirportDropFragment extends Fragment implements
         //converted format
         Date date = null;
         try {
-            date = (Date) simpleDateFormat.parse(strDate);
+            date = simpleDateFormat.parse(strDate);
             SimpleDateFormat sdfOutputDateFormat = new SimpleDateFormat("EEE, dd MMM");
             curr_converted_date = sdfOutputDateFormat.format(date);
             Log.d(TAG, "curr_converted_date - " + curr_converted_date);
@@ -1805,7 +1805,7 @@ public class AirportDropFragment extends Fragment implements
         //converted format
         Date date = null;
         try {
-            date = (Date) inputDateFormat.parse(pickupDateFromTextbox);
+            date = inputDateFormat.parse(pickupDateFromTextbox);
             SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             sendToApiPickupTime = sdf2.format(date);
             Log.d(TAG, "sendToApiPickupTime - " + sendToApiPickupTime);
@@ -1821,7 +1821,7 @@ public class AirportDropFragment extends Fragment implements
         SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
         Date date = null;
         try {
-            date = (Date) inputDateFormat.parse(current_date);
+            date = inputDateFormat.parse(current_date);
             SimpleDateFormat sdf2 = new SimpleDateFormat("EEE, dd MMM");
             changeStartDateFormat = sdf2.format(date);
             Log.d(TAG, "changeStartDateFormat - " + changeStartDateFormat);

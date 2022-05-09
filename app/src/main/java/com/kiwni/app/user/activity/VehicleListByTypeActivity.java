@@ -306,12 +306,12 @@ public class VehicleListByTypeActivity extends AppCompatActivity implements Book
                 luxuryText = dialog.findViewById(R.id.luxuryText);
                 ultraLuxuryText = dialog.findViewById(R.id.ultraLuxuryText);
 
-                checkBox1 = (CheckBox) dialog.findViewById(R.id.checkBox1);
-                checkBox2 = (CheckBox) dialog.findViewById(R.id.checkBox2);
-                checkBox3 = (CheckBox) dialog.findViewById(R.id.checkBox3);
-                checkBox4 = (CheckBox) dialog.findViewById(R.id.checkBox4);
-                checkBox5 = (CheckBox) dialog.findViewById(R.id.checkBox5);
-                checkBox6 = (CheckBox) dialog.findViewById(R.id.checkBox6);
+                checkBox1 = dialog.findViewById(R.id.checkBox1);
+                checkBox2 = dialog.findViewById(R.id.checkBox2);
+                checkBox3 = dialog.findViewById(R.id.checkBox3);
+                checkBox4 = dialog.findViewById(R.id.checkBox4);
+                checkBox5 = dialog.findViewById(R.id.checkBox5);
+                checkBox6 = dialog.findViewById(R.id.checkBox6);
 
                 checkBox1.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -535,7 +535,7 @@ public class VehicleListByTypeActivity extends AppCompatActivity implements Book
                 filterModelList.add(new Filter(R.drawable.audilogo, "Audi"));
 
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(dialog.getContext());
-                linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
+                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 filterRecyclerView.setLayoutManager(linearLayoutManager);
 
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(dialog.getContext(), 2, GridLayoutManager.HORIZONTAL, false);
@@ -564,7 +564,7 @@ public class VehicleListByTypeActivity extends AppCompatActivity implements Book
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
     {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode)

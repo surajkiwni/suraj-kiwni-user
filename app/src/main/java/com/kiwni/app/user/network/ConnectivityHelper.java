@@ -19,7 +19,7 @@ public class ConnectivityHelper extends BroadcastReceiver
     protected List<NetworkStateReceiverListener> listeners;
     public static boolean isConnected = false;
     public static String status = "";
-    private String TAG = "ConnectivityHelper";
+    private final String TAG = "ConnectivityHelper";
     protected Boolean connected;
 
     public ConnectivityHelper() {

@@ -57,7 +57,7 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
         super.onViewCreated(view, savedInstanceState);
 
         instance = this;
-        tabLayout = (TabLayout) view.findViewById(R.id.myRidesTabLayout);
+        tabLayout = view.findViewById(R.id.myRidesTabLayout);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

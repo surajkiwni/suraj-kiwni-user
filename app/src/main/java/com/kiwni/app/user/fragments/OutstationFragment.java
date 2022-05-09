@@ -42,7 +42,7 @@ public class OutstationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         instance = this;
-        tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+        tabLayout = view.findViewById(R.id.tabLayout);
 
         /* get bundle value here */
         bundle = this.getArguments();

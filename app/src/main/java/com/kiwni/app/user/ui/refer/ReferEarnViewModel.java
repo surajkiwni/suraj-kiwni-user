@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 public class ReferEarnViewModel extends ViewModel {
     // TODO: Implement the ViewModel
-    private MutableLiveData<String> mText;
+    private final MutableLiveData<String> mText;
 
     public ReferEarnViewModel() {
         mText = new MutableLiveData<>();

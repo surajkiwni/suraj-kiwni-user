@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 public class FaqViewModel extends ViewModel {
     // TODO: Implement the ViewModel
 
-    private MutableLiveData<String> mText;
+    private final MutableLiveData<String> mText;
 
     public FaqViewModel() {
         mText = new MutableLiveData<>();

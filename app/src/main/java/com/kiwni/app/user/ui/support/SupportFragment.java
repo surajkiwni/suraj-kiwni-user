@@ -74,7 +74,7 @@ public class SupportFragment extends Fragment implements BackKeyPressedListener 
         supportModelList.add(new Support("Kiwni emergency Number"));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         supportRecyclerView.setLayoutManager(linearLayoutManager);
 
         SupportAdapter supportAdapter = new SupportAdapter(getContext(),supportModelList);

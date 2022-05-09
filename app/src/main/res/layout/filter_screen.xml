@@ -103,14 +103,8 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_18"
                     android:textStyle="bold"
-                    android:tooltipText="2dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <!--
-                        android:background="#F3F3F3F7"
-                -->
-
 
                 <View
                     android:id="@+id/view1"

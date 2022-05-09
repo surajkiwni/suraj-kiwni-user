@@ -389,7 +389,7 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
 
                                     List<ScheduleMapResp> tempScheduleList = innerMap.get(model1);
                                     Log.d(TAG,"list size = " + tempScheduleList.size());
-                                    Log.d(TAG,"list data = " + tempScheduleList.toString());
+                                    Log.d(TAG,"list data = " + tempScheduleList);
 
                                     for (int i = 0; i < tempScheduleList.size(); i++)
                                     {
@@ -433,14 +433,14 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
             @Override
             public void onFailure(Call<Map<String, Map<String, Map<String, List<ScheduleMapResp>>>>> call, Throwable t) {
                 lovelyProgressDialog.dismiss();
-                Log.d(TAG, "error: " + t.toString());
+                Log.d(TAG, "error: " + t);
             }
         });
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PermissionRequestConstant.MY_PERMISSIONS_REQUEST_CALL_PHONE: {
