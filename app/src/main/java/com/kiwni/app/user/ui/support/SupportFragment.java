@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +38,8 @@ public class SupportFragment extends Fragment implements BackKeyPressedListener 
 
     public  static BackKeyPressedListener backKeyPressedListener;
     View view;
-    ImageView imageBack;
+    ImageView imgBack;
+    TextView txtTitle;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -63,6 +65,10 @@ public class SupportFragment extends Fragment implements BackKeyPressedListener 
         super.onViewCreated(view, savedInstanceState);
 
         supportRecyclerView = view.findViewById(R.id.supportRecyclerView);
+        txtTitle = view.findViewById(R.id.txtTitle);
+        imgBack = view.findViewById(R.id.imgBack);
+
+        txtTitle.setText("Support");
 
         supportModelList= new ArrayList<>();
 
@@ -83,8 +89,8 @@ public class SupportFragment extends Fragment implements BackKeyPressedListener 
 
         ((MainActivity) requireActivity()).getSupportActionBar().hide();
 
-        imageBack = view.findViewById(R.id.imageBack);
-        imageBack.setOnClickListener(new View.OnClickListener() {
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

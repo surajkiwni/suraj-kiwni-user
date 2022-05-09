@@ -93,7 +93,7 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
     FindCarItemClickListener findCarItemClickListener;
     String TAG = this.getClass().getSimpleName();
 
-    ImageView imageBack,imgCallFindCarAct;
+    ImageView imgBack,imgCall;
     TextView txtTitle,viewDetailsText, txtFromTo, txtStartEndDate, txtStartTime, txtEstimatedKm;
     BottomSheetDialog bottomSheetDialog;
 
@@ -142,8 +142,8 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
         /* start receiver for network state */
         startNetworkBroadcastReceiver(this);
 
-        imageBack = findViewById(R.id.imageBack);
-        imgCallFindCarAct = findViewById(R.id.imgCallFindAct);
+        imgBack = findViewById(R.id.imgBack);
+        imgCall = findViewById(R.id.imgCall);
         txtTitle= findViewById(R.id.txtTitle);
         txtFromTo = findViewById(R.id.txtFromTo);
         txtStartEndDate = findViewById(R.id.txtStartEndDate);
@@ -177,6 +177,8 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
         txtStartTime.setText(startTime);
         txtStartEndDate.setText(startDate);
         txtEstimatedKm.setText("Est km " + distanceInKm);
+
+        imgCall.setVisibility(View.VISIBLE);
 
         switch (serviceType)
         {
@@ -235,7 +237,7 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
         HourPackageAdapter hourPackageAdapter = new HourPackageAdapter(this,hourPackageModelList);
         findsCarsRecyclerView.setAdapter(hourPackageAdapter);
 
-        imageBack.setOnClickListener(new View.OnClickListener() {
+        imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
@@ -243,7 +245,7 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
             }
         });
 
-        imgCallFindCarAct.setOnClickListener(new View.OnClickListener()
+        imgCall.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view) {

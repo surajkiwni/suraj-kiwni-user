@@ -38,9 +38,9 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
     Dialog updateAlertDialog, emergencyDialog;
 
     public static BackKeyPressedListener backKeyPressedListener;
-    ImageView imageBack;
+    ImageView imgBack;
     AppCompatButton btnTryLater,alertBtn;
-    TextView textPara2,textPara4,textPara5;
+    TextView textPara2,textPara4,textPara5,txtTitle;
     View view;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -68,9 +68,13 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
         textPara2 =view.findViewById(R.id.textPara2);
         textPara4 = view.findViewById(R.id.textPara4);
         textPara5 = view .findViewById(R.id.textPara5);
-
+        imgBack = view.findViewById(R.id.imgBack);
+        txtTitle = view.findViewById(R.id.txtTitle);
         btnTryLater = view.findViewById(R.id.btnTryLater);
         alertBtn = view.findViewById(R.id.alertBtn);
+
+
+        txtTitle.setText("Safety");
 
         alertBtn.setBackgroundColor(Color.BLACK);
         alertBtn.setTextColor(Color.WHITE);
@@ -86,8 +90,8 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
 
         ((MainActivity) requireActivity()).getSupportActionBar().hide();
 
-        imageBack = view.findViewById(R.id.imageBack);
-        imageBack.setOnClickListener(new View.OnClickListener() {
+        imgBack = view.findViewById(R.id.imageBack);
+        imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

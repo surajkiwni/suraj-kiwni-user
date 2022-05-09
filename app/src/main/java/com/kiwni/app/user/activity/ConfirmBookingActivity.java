@@ -95,7 +95,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     List<ScheduleMapResp> selectedVehicleDataList = new ArrayList<>();
 
     ConstraintLayout constraintBusinessInput;
-    ImageView imageBack,imgCallConfirmAct, imgVehicleImg;
+    ImageView imgBack,imgCall, imgVehicleImg;
     TextView txtTitle, txtStartTime, txtStartEndDate, txtEstimatedKm, txtTitleType, txtDropAddress,
             txtPickupAddress, txtProviderName, txtVehicleName, txtVehicleClassType, txtRideFare,
             txtExtraFareKm, txtExtraFarePerKm, txtTotalFareBase, txtApplyCoupon, txtGst,
@@ -150,8 +150,8 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
         radioPersonal = findViewById(R.id.radioPersonal);
         btnConfirmBooking = findViewById(R.id.btnConfirmBooking);
         constraintBusinessInput = findViewById(R.id.constraintBusinessInput);
-        imageBack = findViewById(R.id.imageBack);
-        imgCallConfirmAct = findViewById(R.id.imgCallConfirmAct);
+        imgBack = findViewById(R.id.imgBack);
+        imgCall = findViewById(R.id.imgCall);
         txtTitle = findViewById(R.id.txtTitle);
         txtStartEndDate = findViewById(R.id.txtStartEndDate);
         txtStartTime = findViewById(R.id.txtStartTime);
@@ -181,6 +181,8 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
         txtHundredPercDiscount = findViewById(R.id.txtHundredPercDiscount);
 
         errorDialogInterface = this::onClick;
+
+        imgCall.setVisibility(View.VISIBLE);
 
 
 
@@ -337,14 +339,14 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
             }
         });
 
-        imageBack.setOnClickListener(new View.OnClickListener() {
+        imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
 
-        imgCallConfirmAct.setOnClickListener(new View.OnClickListener() {
+        imgCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mobile = "7057052508";

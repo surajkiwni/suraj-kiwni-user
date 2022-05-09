@@ -6,42 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.safety.SafetyFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_5"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <ImageView
-        android:id="@+id/imageBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_15"
-        android:foregroundGravity="center"
-        android:src="@drawable/back_arrow"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintStart_toStartOf="@+id/toolbar"
-        app:layout_constraintTop_toTopOf="@+id/toolbar" />
-
-
-    <TextView
-        android:id="@+id/toolbarText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Safety"
-        android:textColor="@color/black"
-        android:textSize="@dimen/sp_16"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar" />
+    <include layout="@layout/header_title"
+        android:id="@+id/toolbar"/>
 
     <TextView
         android:id="@+id/paraText1"

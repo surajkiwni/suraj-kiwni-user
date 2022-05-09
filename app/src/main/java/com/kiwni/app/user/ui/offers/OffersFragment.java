@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,8 +37,8 @@ public class OffersFragment extends Fragment implements BackKeyPressedListener {
     RecyclerView offersRecyclerView;
     List<Offers> offersModelList;
     public static BackKeyPressedListener backKeyPressedListener;
-
-    ImageView imageBack;
+    ImageView imgBack;
+    TextView txtTitle;
 
    // List<BookingModel> bookingModelList;
 
@@ -69,6 +70,10 @@ public class OffersFragment extends Fragment implements BackKeyPressedListener {
 
 
         offersRecyclerView = view.findViewById(R.id.offersRecyclerView);
+        imgBack = view.findViewById(R.id.imgBack);
+        txtTitle = view.findViewById(R.id.txtTitle);
+
+        txtTitle.setText("Offers");
 
         offersModelList = new ArrayList<>();
         //bookingModelList = new ArrayList<>();
@@ -92,8 +97,8 @@ public class OffersFragment extends Fragment implements BackKeyPressedListener {
         ((MainActivity) requireActivity()).getSupportActionBar().hide();
 
 
-        imageBack = view.findViewById(R.id.imageBack);
-        imageBack.setOnClickListener(new View.OnClickListener() {
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

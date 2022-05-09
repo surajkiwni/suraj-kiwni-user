@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +38,8 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
     public static BackKeyPressedListener backKeyPressedListener;
     TabLayout tabLayout;
     View view;
-    ImageView imageBack;
+    ImageView imgBack;
+    TextView txtTitle;
     Fragment upcomingFragment, pastFragment;
 
     public MyRidesFragment() {
@@ -57,7 +59,13 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
         super.onViewCreated(view, savedInstanceState);
 
         instance = this;
-        tabLayout = view.findViewById(R.id.myRidesTabLayout);
+        tabLayout = (TabLayout) view.findViewById(R.id.myRidesTabLayout);
+        imgBack = view.findViewById(R.id.imgBack);
+        txtTitle = view.findViewById(R.id.txtTitle);
+
+        txtTitle.setText("My Ride");
+
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -89,9 +97,9 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
         tabLayout.addTab(tabLayout.newTab().setText("Upcoming"), true);
         tabLayout.addTab(tabLayout.newTab().setText("Past"));
 
-        imageBack = view.findViewById(R.id.imageBack);
 
-        imageBack.setOnClickListener(new View.OnClickListener() {
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Navigation.findNavController(view).navigate(R.id.action_nav_myrides_to_mainActivity);

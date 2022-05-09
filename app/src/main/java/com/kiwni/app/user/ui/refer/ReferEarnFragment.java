@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +27,8 @@ public class ReferEarnFragment extends Fragment implements BackKeyPressedListene
     String TAG = this.getClass().getSimpleName();
 
     public  static BackKeyPressedListener backKeyPressedListener;
-    ImageView imageBack;
+    ImageView imgBack;
+    TextView txtTitle;
     View root;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,8 +48,14 @@ public class ReferEarnFragment extends Fragment implements BackKeyPressedListene
 
         ((MainActivity) requireActivity()).getSupportActionBar().hide();
 
-        imageBack = root.findViewById(R.id.imageBack);
-        imageBack.setOnClickListener(new View.OnClickListener() {
+        imgBack = root.findViewById(R.id.imgBack);
+        txtTitle = root.findViewById(R.id.txtTitle);
+
+        txtTitle.setText("Refer &amp; Earn");
+
+
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
