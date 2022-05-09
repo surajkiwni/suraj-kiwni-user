@@ -492,6 +492,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     }
 
     /* radio button functionality*/
+    @SuppressLint("NonConstantResourceId")
     public void onRadioClick(View view)
     {
         boolean checked = ((RadioButton) view).isChecked();
@@ -510,10 +511,10 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.business_view);
 
-                edtCompanyName = (EditText) dialog.findViewById(R.id.edtCompanyName);
-                edtCompanyEmail = (EditText) dialog.findViewById(R.id.edtCompanyEmail);
-                edtCompanyPhoneNo = (EditText) dialog.findViewById(R.id.edtCompanyPhoneNo);
-                doneButton = (AppCompatButton) dialog.findViewById(R.id.doneButton);
+                edtCompanyName = dialog.findViewById(R.id.edtCompanyName);
+                edtCompanyEmail = dialog.findViewById(R.id.edtCompanyEmail);
+                edtCompanyPhoneNo = dialog.findViewById(R.id.edtCompanyPhoneNo);
+                doneButton = dialog.findViewById(R.id.doneButton);
 
                 doneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -701,7 +702,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
                 lovelyProgressDialog.dismiss();
                 int statusCode = response.code();
                 Log.d(TAG, "statusCode: " + statusCode);
-                Log.d(TAG, "Response = " + response.toString());
+                Log.d(TAG, "Response = " + response);
 
                 if(statusCode == 201)
                 {
@@ -794,7 +795,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
             @Override
             public void onFailure(Call<RideReservationResp> call, Throwable t) {
                 lovelyProgressDialog.dismiss();
-                Log.d(TAG, "error: " + t.toString());
+                Log.d(TAG, "error: " + t);
             }
         });
     }
@@ -837,7 +838,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
         }
     }
 
-    private Emitter.Listener onConnect = new Emitter.Listener() {
+    private final Emitter.Listener onConnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             Log.e("IsConnected", String.valueOf(mSocket.connected()));
@@ -845,14 +846,14 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
         }
     };
 
-    private Emitter.Listener onConnectError = new Emitter.Listener() {
+    private final Emitter.Listener onConnectError = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             Log.d(TAG, "connection error");
         }
     };
 
-    private Emitter.Listener onDisconnect = new Emitter.Listener() {
+    private final Emitter.Listener onDisconnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             Log.d(TAG, "disconnected from the server");
@@ -955,7 +956,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PermissionRequestConstant

@@ -33,7 +33,7 @@ public class TimeAdapter extends ArrayAdapter<KeyValue> {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(resourceId, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.txtView = (TextView) convertView.findViewById(R.id.title);
+            viewHolder.txtView = convertView.findViewById(R.id.title);
             convertView.setTag(viewHolder);
         }
         else{
@@ -51,7 +51,7 @@ public class TimeAdapter extends ArrayAdapter<KeyValue> {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(resourceId, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.txtView = (TextView) convertView.findViewById(R.id.title);
+            viewHolder.txtView = convertView.findViewById(R.id.title);
             convertView.setTag(viewHolder);
         }
         else{

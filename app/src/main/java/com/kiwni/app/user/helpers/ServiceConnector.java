@@ -32,7 +32,7 @@ public class ServiceConnector {
     static ServiceConnector ourInstance;
     final String TAG = this.getClass().getSimpleName();
     private String authorization = null;
-    private Retrofit retrofit;
+    private final Retrofit retrofit;
 
     public synchronized static ServiceConnector getInstance() {
         if (ourInstance == null) {
@@ -121,7 +121,7 @@ public class ServiceConnector {
                 } else if (t instanceof SocketTimeoutException) {
                     errorCallback.onError(-99, "Failed to connect to server, please try again late!");
                 } else {
-                    System.out.println(t.getMessage().toString());
+                    System.out.println(t.getMessage());
                     errorCallback.onError(-101, "Something went wrong, please retry!");
                 }
             }

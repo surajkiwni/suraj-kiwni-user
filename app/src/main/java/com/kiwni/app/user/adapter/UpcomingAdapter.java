@@ -24,6 +24,7 @@ import com.kiwni.app.user.models.triphistory.TripsHistoryResp;
 import com.kiwni.app.user.network.AppConstants;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -151,18 +152,18 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
             txtServiceType = itemView.findViewById(R.id.txtServiceType);
             txtBookingNo = itemView.findViewById(R.id.txtBookingNo);
             txtKRNNo = itemView.findViewById(R.id.txtKRNNo);
-            btnCancelRide = (AppCompatButton) itemView.findViewById(R.id.btnCancelRide);
-            txtMessage = (TextView) itemView.findViewById(R.id.txtMessage);
-            txtVehicleClassType = (TextView) itemView.findViewById(R.id.txtVehicleClassType);
-            txtVehicleModel = (TextView) itemView.findViewById(R.id.txtVehicleModel);
-            txtDriverMobile = (TextView) itemView.findViewById(R.id.txtDriverMobile);
-            txtVehicleNo = (TextView) itemView.findViewById(R.id.txtVehicleNo);
-            txtOTP = (TextView) itemView.findViewById(R.id.txtOTP);
-            txtDriverName = (TextView) itemView.findViewById(R.id.txtDriverName);
-            bookingLinearLayout = (LinearLayout) itemView.findViewById(R.id.bookingLinearLayout);
-            driverConstraintLayout = (ConstraintLayout) itemView.findViewById(R.id.driverConstraintLayout);
-            v = (View) itemView.findViewById(R.id.view);
-            imgDriverImg = (ImageView) itemView.findViewById(R.id.imgDriverImg);
+            btnCancelRide = itemView.findViewById(R.id.btnCancelRide);
+            txtMessage = itemView.findViewById(R.id.txtMessage);
+            txtVehicleClassType = itemView.findViewById(R.id.txtVehicleClassType);
+            txtVehicleModel = itemView.findViewById(R.id.txtVehicleModel);
+            txtDriverMobile = itemView.findViewById(R.id.txtDriverMobile);
+            txtVehicleNo = itemView.findViewById(R.id.txtVehicleNo);
+            txtOTP = itemView.findViewById(R.id.txtOTP);
+            txtDriverName = itemView.findViewById(R.id.txtDriverName);
+            bookingLinearLayout = itemView.findViewById(R.id.bookingLinearLayout);
+            driverConstraintLayout = itemView.findViewById(R.id.driverConstraintLayout);
+            v = itemView.findViewById(R.id.view);
+            imgDriverImg = itemView.findViewById(R.id.imgDriverImg);
 
             btnCancelRide.setOnClickListener(new View.OnClickListener()
             {
@@ -180,8 +181,8 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
 
                     b.show();
 
-                    AppCompatButton btnDoNotCancel = (AppCompatButton) dialogView.findViewById(R.id.btnDoNotCancel);
-                    AppCompatButton btnCancelRide = (AppCompatButton) dialogView.findViewById(R.id.btnCancelRide);
+                    AppCompatButton btnDoNotCancel = dialogView.findViewById(R.id.btnDoNotCancel);
+                    AppCompatButton btnCancelRide = dialogView.findViewById(R.id.btnCancelRide);
 
                     btnDoNotCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -201,7 +202,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
                             AlertDialog b1 = dialogBuilder.create();
 
                             b1.show();
-                            AppCompatButton btnOk = (AppCompatButton) dialogView1.findViewById(R.id.btnOk);
+                            AppCompatButton btnOk = dialogView1.findViewById(R.id.btnOk);
 
                             btnOk.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -329,13 +330,8 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
     public void DecodeOtp(String otp)
     {
         //convert using Base64 decoder
-        try {
-            valueDecoded = Base64.decode(otp.getBytes("UTF-8"), Base64.DEFAULT);
-            Log.d(TAG, "valueDecoded = " + new String(valueDecoded));
-        } catch (UnsupportedEncodingException e)
-        {
-            e.printStackTrace();
-        }
+        valueDecoded = Base64.decode(otp.getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
+        Log.d(TAG, "valueDecoded = " + new String(valueDecoded));
     }
 
     /* separate class type from service type and set to ui */

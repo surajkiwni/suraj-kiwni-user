@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 public class SafetyViewModel extends ViewModel {
     // TODO: Implement the ViewModel
 
-    private MutableLiveData<String> mText;
+    private final MutableLiveData<String> mText;
 
     public SafetyViewModel() {
         mText = new MutableLiveData<>();

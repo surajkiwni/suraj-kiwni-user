@@ -16,8 +16,8 @@ import java.util.List;
 
 public class SupportAdapter extends RecyclerView.Adapter<SupportAdapter.SupportViewHolder> {
 
-    private Context context;
-    private List<Support> supportModels;
+    private final Context context;
+    private final List<Support> supportModels;
 
     public SupportAdapter(Context context, List<Support> supportModels) {
         this.context = context;

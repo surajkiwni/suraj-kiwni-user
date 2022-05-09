@@ -1,6 +1,7 @@
 package com.kiwni.app.user.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -26,6 +27,7 @@ import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
 
+@SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity
 {
     boolean hasLoggedIn = false;
@@ -119,23 +121,28 @@ public class SplashActivity extends AppCompatActivity
 
         if (requestCode == AppConstants.GPS_REQUEST)
         {
-            if(hasLoggedIn)
-            {
-                /* already login */
-                mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run()
+                {
+                    if(hasLoggedIn)
+                    {
+                        /* already login */
+                        mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
 
-                Intent i = new Intent(SplashActivity.this, MainActivity.class);
-                PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, mobile);
-                startActivity(i);
-                finish();
-            }
-            else
-            {
-                /* call home activity */
-                Intent i = new Intent(SplashActivity.this, HomeActivity.class);
-                startActivity(i);
-                finish();
-            }
+                        Intent i = new Intent(SplashActivity.this, MainActivity.class);
+                        PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, mobile);
+                        startActivity(i);
+                    }
+                    else
+                    {
+                        /* call home activity */
+                        Intent i = new Intent(SplashActivity.this, HomeActivity.class);
+                        startActivity(i);
+                    }
+                    finish();
+                }
+            }, AppConstants.SPLASH_SCREEN_TIME_OUT);
         }
         else
         {

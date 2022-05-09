@@ -44,7 +44,7 @@ public class RentalFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         instance = this;
-        rentalTabLayout = (TabLayout) view.findViewById(R.id.rentalTabLayout);
+        rentalTabLayout = view.findViewById(R.id.rentalTabLayout);
 
         rentalTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

@@ -15,8 +15,8 @@ public class SocketManager
 {
     private static SocketManager mInstance;
     private Socket mSocket;
-    private int RECONNECTION_ATTEMPT = 10;
-    private long CONNECTION_TIMEOUT = 30000;
+    private final int RECONNECTION_ATTEMPT = 10;
+    private final long CONNECTION_TIMEOUT = 30000;
    // private static NetworkInterface mNetworkInterface;
     Context context;
 
@@ -106,7 +106,7 @@ public class SocketManager
     /**
      * The purpose of this method to get the call back for connection getting timed out
      */
-    private Emitter.Listener onConnect = new Emitter.Listener() {
+    private final Emitter.Listener onConnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             Log.d("Response", "onConnect");
@@ -117,7 +117,7 @@ public class SocketManager
     /**
      * The purpose of this method is to get the call back for any type of connection error
      */
-    private Emitter.Listener onConnectionError = new Emitter.Listener() {
+    private final Emitter.Listener onConnectionError = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             Log.d("Response", "onConnectionError");
@@ -128,7 +128,7 @@ public class SocketManager
     /**
      * The purpose of this method to get the call back for connection getting timed out
      */
-    private Emitter.Listener onConnectionTimeOut = new Emitter.Listener() {
+    private final Emitter.Listener onConnectionTimeOut = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             Log.d("Response", "onConnectionTimeOut");
@@ -138,7 +138,7 @@ public class SocketManager
     /**
      * The purpose of this method is to receive the call back when the server get disconnected
      */
-    private Emitter.Listener onServerDisconnect = new Emitter.Listener() {
+    private final Emitter.Listener onServerDisconnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             Log.d("Response", "onServerDisconnection");

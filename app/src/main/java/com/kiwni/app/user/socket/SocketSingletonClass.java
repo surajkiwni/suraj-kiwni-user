@@ -88,7 +88,7 @@ public class SocketSingletonClass
         mSocket.on(AppConstants.WEBSOCKET_DRIVER_DATA_EVENT, onUpdatedMessage);
     }
 
-    private Emitter.Listener onConnect = new Emitter.Listener() {
+    private final Emitter.Listener onConnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             //Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
@@ -97,7 +97,7 @@ public class SocketSingletonClass
         }
     };
 
-    private Emitter.Listener onConnectError = new Emitter.Listener() {
+    private final Emitter.Listener onConnectError = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             //Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
@@ -105,7 +105,7 @@ public class SocketSingletonClass
         }
     };
 
-    private Emitter.Listener onDisconnect = new Emitter.Listener() {
+    private final Emitter.Listener onDisconnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             Log.d(TAG, "disconnected from the server");

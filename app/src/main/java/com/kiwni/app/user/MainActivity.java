@@ -65,10 +65,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,8 +82,6 @@ import io.socket.emitter.Emitter;
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener, ConnectivityHelper.NetworkStateReceiverListener
 {
-    private AppBarConfiguration mAppBarConfiguration;
-    private ActivityMainBinding binding;
     String TAG = this.getClass().getSimpleName();
     public DrawerLayout drawerLayout;
     NavController navController;
@@ -119,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements
         /* auto refresh */
         doTheAutoRefresh();
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
@@ -132,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         // R.id.nav_home R.id.nav_myrides
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
+        AppBarConfiguration mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home)
 
                 .setOpenableLayout(drawer)
@@ -187,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -264,8 +262,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-            /* return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();*/
 
         return NavigationUI.navigateUp(navController, drawerLayout);
     }
@@ -274,9 +270,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            //super.onBackPressed();
-        }
+        }  //super.onBackPressed();
 
 
         if (MyRidesFragment.backKeyPressedListener!= null){
@@ -315,6 +309,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         item.setChecked(true);
@@ -381,7 +376,7 @@ public class MainActivity extends AppCompatActivity implements
                     public void onShow(DialogInterface dialog) {
                         BottomSheetDialog d = (BottomSheetDialog) dialog;
 
-                        FrameLayout bottomSheet = (FrameLayout) d.findViewById(R.id.design_bottom_sheet);
+                        FrameLayout bottomSheet = d.findViewById(R.id.design_bottom_sheet);
                         BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
                     }
                 });
@@ -458,7 +453,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private Emitter.Listener onConnect = new Emitter.Listener() {
+    private final Emitter.Listener onConnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             //Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
@@ -467,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     };
 
-    private Emitter.Listener onConnectError = new Emitter.Listener() {
+    private final Emitter.Listener onConnectError = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             //Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
@@ -475,7 +470,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     };
 
-    private Emitter.Listener onDisconnect = new Emitter.Listener() {
+    private final Emitter.Listener onDisconnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             Log.d(TAG, "disconnected from the server");
@@ -527,7 +522,7 @@ public class MainActivity extends AppCompatActivity implements
         mSocket.on(AppConstants.WEBSOCKET_DRIVER_DATA_EVENT, onUpdatedMessage);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     public void DisplayDriverDataUpdatedDialog(List<SocketReservationResp> driverDataRespList)
     {
         //create custom dialog here
@@ -668,6 +663,7 @@ public class MainActivity extends AppCompatActivity implements
         data_updated_alert.show();
     }
 
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     public void DisplaySuccessDialog(List<SocketReservationResp> socketReservationRespList)
     {
         dialogBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -752,20 +748,16 @@ public class MainActivity extends AppCompatActivity implements
     public void ConvertOtp(String otp)
     {
         //convert using Base64 decoder
-        try {
-            valueDecoded = Base64.decode(otp.getBytes("UTF-8"), Base64.DEFAULT);
-            Log.d(TAG, "valueDecoded = " + new String(valueDecoded));
-        } catch (UnsupportedEncodingException e)
-        {
-            e.printStackTrace();
-        }
+        valueDecoded = Base64.decode(otp.getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
+        Log.d(TAG, "valueDecoded = " + new String(valueDecoded));
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void ConvertDate(String start_date)
     {
         Log.d(TAG, "actualDate = " + start_date);
 
-        Date startDate = null;
+        Date startDate;
         if (start_date.length() == 24)
         {
             try {

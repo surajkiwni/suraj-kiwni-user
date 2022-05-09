@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment
 
         instance=this;
 
-        tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+        tabLayout = view.findViewById(R.id.tabLayout);
 
 
 

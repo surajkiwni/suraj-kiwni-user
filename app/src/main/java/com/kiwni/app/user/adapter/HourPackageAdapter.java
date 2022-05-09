@@ -17,7 +17,7 @@ import java.util.List;
 public class HourPackageAdapter extends RecyclerView.Adapter<HourPackageAdapter.HpViewHolder> {
 
     Context context;
-    private List<HourPackage> hourPackageModelList;
+    private final List<HourPackage> hourPackageModelList;
 
     public HourPackageAdapter(Context context, List<HourPackage> hourPackageModelList) {
         this.context = context;

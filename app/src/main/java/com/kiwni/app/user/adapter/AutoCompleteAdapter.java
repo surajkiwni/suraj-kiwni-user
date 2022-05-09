@@ -29,7 +29,7 @@ import java.util.concurrent.TimeoutException;
 public class AutoCompleteAdapter extends ArrayAdapter<AutocompletePrediction> implements Filterable {
 
     private List<AutocompletePrediction> mResultList;
-    private PlacesClient placesClient;
+    private final PlacesClient placesClient;
 
     public AutoCompleteAdapter(Context context, PlacesClient placesClient) {
         super(context, android.R.layout.simple_expandable_list_item_2, android.R.id.text1);

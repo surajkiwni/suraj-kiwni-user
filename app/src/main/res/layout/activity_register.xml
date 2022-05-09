@@ -52,6 +52,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
+                android:inputType="textPersonName"
                 app:layout_constraintLeft_toRightOf="@+id/guideline1"
                 app:layout_constraintRight_toLeftOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/txtFirstName" />
@@ -73,6 +74,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
+                android:inputType="textPersonName"
                 app:layout_constraintLeft_toRightOf="@+id/guideline1"
                 app:layout_constraintRight_toLeftOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/txtLastName" />
@@ -93,6 +95,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
+                android:inputType="textEmailAddress"
                 app:layout_constraintLeft_toRightOf="@+id/guideline1"
                 app:layout_constraintRight_toLeftOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
@@ -113,6 +116,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
+                android:inputType="number"
                 app:layout_constraintLeft_toRightOf="@+id/guideline1"
                 app:layout_constraintRight_toLeftOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/txtMobile" />
