@@ -10,8 +10,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -21,24 +21,23 @@
     <ImageView
         android:id="@+id/imageBack"
         android:layout_width="30dp"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:foregroundGravity="center"
         android:src="@drawable/back_arrow"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="@+id/toolbar"
-        app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.533" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
 
     <TextView
         android:id="@+id/toolbarText"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:text=" Payment  "
-        android:textSize="18dp"
+        android:text="Payment"
+        android:textSize="@dimen/sp_18"
         android:textStyle="bold"
         android:textColor="@color/black"
         android:visibility="visible"
@@ -63,10 +62,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Default Payment"
-        android:textSize="18sp"
-        android:layout_marginTop="10dp"
+        android:textSize="@dimen/sp_16"
+        android:layout_marginTop="@dimen/dp_10"
         android:textColor="@color/black"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="@dimen/dp_15"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -79,26 +78,22 @@
         android:layout_height="wrap_content"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_margin="@dimen/dp_10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/defaultText"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/defaultText">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:padding="10dp"
+            android:padding="@dimen/dp_10"
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageView6"
+                android:id="@+id/cashImage"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_5"
                 android:src="@drawable/cash"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -106,12 +101,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="@dimen/dp_50"
                 android:text="Cash"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView6"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/cashImage"
+                app:layout_constraintTop_toTopOf="@+id/cashImage" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -122,10 +117,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Credit/Debit Card"
-        android:textSize="18sp"
-        android:layout_marginTop="10dp"
+        android:textSize="@dimen/sp_16"
+        android:layout_marginTop="@dimen/dp_10"
         android:textColor="@color/black"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="@dimen/dp_15"
         app:layout_constraintTop_toBottomOf="@+id/cardView1"
         app:layout_constraintLeft_toLeftOf="parent"
         />
@@ -136,26 +131,22 @@
         android:layout_height="wrap_content"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_margin="@dimen/dp_10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/creditText"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/creditText">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:padding="10dp"
+            android:padding="@dimen/dp_10"
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imgAdd"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_5"
                 android:src="@drawable/add_new_contact"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -164,31 +155,30 @@
                 android:id="@+id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="@dimen/dp_50"
                 android:text="Add New Card"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imgAdd"
+                app:layout_constraintTop_toTopOf="@+id/imgAdd"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:paddingTop="5dp"
+                android:layout_marginStart="@dimen/dp_50"
+                android:paddingTop="@dimen/dp_5"
                 android:text="Save and Pay via Cards"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toEndOf="@+id/imgAdd"
                 app:layout_constraintTop_toBottomOf="@+id/text" />
 
             <ImageView
                 android:id="@+id/imageView1"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginRight="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_5"
                 android:src="@drawable/credit_card_icon"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -202,10 +192,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Wallets"
-        android:textSize="18sp"
-        android:layout_marginTop="10dp"
+        android:textSize="@dimen/sp_16"
+        android:layout_marginTop="@dimen/dp_10"
         android:textColor="@color/black"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="@dimen/dp_15"
         app:layout_constraintTop_toBottomOf="@+id/cardView2"
         app:layout_constraintLeft_toLeftOf="parent"
         />
@@ -217,26 +207,23 @@
         android:layout_height="wrap_content"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_margin="@dimen/dp_10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/walletText"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:padding="10dp"
+            android:padding="@dimen/dp_10"
             android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_5"
                 android:src="@drawable/add_new_contact"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -245,7 +232,7 @@
                 android:id="@+id/text1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="@dimen/dp_50"
                 android:text="Add Wallets"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -257,8 +244,8 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:paddingTop="5dp"
+                android:layout_marginStart="@dimen/dp_50"
+                android:paddingTop="@dimen/dp_5"
                 android:text="Save and Pay via Wallets"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
@@ -268,8 +255,8 @@
                 android:id="@+id/imageView4"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginRight="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_5"
                 android:src="@drawable/wallet_icon"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
