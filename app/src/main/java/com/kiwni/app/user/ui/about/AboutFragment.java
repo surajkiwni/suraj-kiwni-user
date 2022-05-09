@@ -29,8 +29,8 @@ public class AboutFragment extends Fragment implements BackKeyPressedListener {
     private FragmentAboutBinding binding;
 
     public static  BackKeyPressedListener backKeyPressedListener;
-    ImageView imageBack;
-    TextView text1,text2;
+    ImageView imgBack;
+    TextView text1,text2, txtTitle;
     View view;
     String TAG = this.getClass().getSimpleName();
 
@@ -57,6 +57,10 @@ public class AboutFragment extends Fragment implements BackKeyPressedListener {
 
         text1= view.findViewById(R.id.text1);
         text2 = view.findViewById(R.id.text2);
+        txtTitle = view.findViewById(R.id.txtTitle);
+
+        txtTitle.setText("About");
+
 
         text1.setText(Html.fromHtml("<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We Are Kiwni............KIWINI CLUB, is powered \n" +
                 "by Komfrey Technologies Pvt Ltd which is an Indian \n" +
@@ -74,8 +78,8 @@ public class AboutFragment extends Fragment implements BackKeyPressedListener {
                 "cars with a choice to choose as per your \n" +
                 "convenient.</p>", Html.FROM_HTML_MODE_COMPACT));
 
-        imageBack = view.findViewById(R.id.imageBack);
-        imageBack.setOnClickListener(new View.OnClickListener() {
+        imgBack = view.findViewById(R.id.imgBack);
+        imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

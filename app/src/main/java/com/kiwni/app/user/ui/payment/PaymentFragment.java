@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,8 +28,8 @@ public class PaymentFragment extends Fragment implements BackKeyPressedListener 
     String TAG = this.getClass().getSimpleName();
 
     View view;
-
-    ImageView imageBack;
+    TextView txtTitle;
+    ImageView imgBack;
     public static BackKeyPressedListener backKeyPressedListener;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -49,8 +50,13 @@ public class PaymentFragment extends Fragment implements BackKeyPressedListener 
 
         ((MainActivity) requireActivity()).getSupportActionBar().hide();
 
-        imageBack = view.findViewById(R.id.imageBack);
-        imageBack.setOnClickListener(new View.OnClickListener() {
+        imgBack = view.findViewById(R.id.imgBack);
+        txtTitle = view.findViewById(R.id.txtTitle);
+
+        txtTitle.setText("Payment");
+
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

@@ -66,7 +66,7 @@ public class VehicleListByTypeActivity extends AppCompatActivity implements Book
             startDate = "", endDate = "", startTime = "", distanceInKm = "", mobile = "",
             vehicleTypeForDisplay = "", vehicleSeatCapacityForDisplay = "";
 
-    ImageView imageBack,imgCallCarLTAct;
+    ImageView imgBack,imgCall;
     TextView txtTitle, txtFromTo, txtStartEndDate, txtEstimatedKm, txtStartTime, txtVehicleType,
             txtSeatCapacity;
 
@@ -90,8 +90,8 @@ public class VehicleListByTypeActivity extends AppCompatActivity implements Book
         txtTitle = findViewById(R.id.txtTitle);
         txtFromTo = findViewById(R.id.txtFromTo);
         recyclerView = findViewById(R.id.main_recyclerview);
-        imageBack = findViewById(R.id.imageBack);
-        imgCallCarLTAct = findViewById(R.id.imgCallCarLTAct);
+        imgBack = findViewById(R.id.imgBack);
+        imgCall = findViewById(R.id.imgCall);
         mapLayout = findViewById(R.id.mapLayout);
         sortLayout = findViewById(R.id.sortLayout);
         filterLayout = findViewById(R.id.filterLayout);
@@ -121,6 +121,10 @@ public class VehicleListByTypeActivity extends AppCompatActivity implements Book
         txtEstimatedKm.setText("Est km " + distanceInKm);
         txtVehicleType.setText(vehicleTypeForDisplay);
         txtSeatCapacity.setText(vehicleSeatCapacityForDisplay);
+
+        //visibility
+
+        imgCall.setVisibility(View.VISIBLE);
 
         /* start receiver for network state */
         startNetworkBroadcastReceiver(this);
@@ -183,7 +187,7 @@ public class VehicleListByTypeActivity extends AppCompatActivity implements Book
             setParentLayoutData(mList, remainingList);
         }
 
-        imageBack.setOnClickListener(new View.OnClickListener() {
+        imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
@@ -194,7 +198,7 @@ public class VehicleListByTypeActivity extends AppCompatActivity implements Book
             }
         });
 
-        imgCallCarLTAct.setOnClickListener(new View.OnClickListener() {
+        imgCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mobile = "7057052508";
