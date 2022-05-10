@@ -189,7 +189,7 @@ public class ScheduleBookingFragment extends Fragment implements
         return view;
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"SimpleDateFormat", "ClickableViewAccessibility"})
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
@@ -1640,6 +1640,7 @@ public class ScheduleBookingFragment extends Fragment implements
     }
 
     //set current date in format
+    @SuppressLint("SimpleDateFormat")
     public void GetCurrentDate()
     {
         Date c = Calendar.getInstance().getTime();
@@ -1796,6 +1797,7 @@ public class ScheduleBookingFragment extends Fragment implements
         return s_hour;
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void GetPriorTime()
     {
         //Time Picker
@@ -1850,6 +1852,7 @@ public class ScheduleBookingFragment extends Fragment implements
         googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, routePadding));
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void getCurrentDateToSendApiInFormat(String pickupDateFromTextbox)
     {
         //current format
@@ -1868,6 +1871,7 @@ public class ScheduleBookingFragment extends Fragment implements
     }
 
     //06 Dec
+    @SuppressLint("SimpleDateFormat")
     public void getStartDateInFormat(String current_date)
     {
         //Convert to date format
@@ -1884,6 +1888,7 @@ public class ScheduleBookingFragment extends Fragment implements
     }
 
     //Calculate Drop Time from start time and duration
+    @SuppressLint("SimpleDateFormat")
     private void CalculateDropTime(String startDateFromLabel, String totalDuration)
     {
         Log.d(TAG, "start = " + startDateFromLabel);

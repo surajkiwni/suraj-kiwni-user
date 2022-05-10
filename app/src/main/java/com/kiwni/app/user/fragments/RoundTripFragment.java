@@ -177,7 +177,7 @@ public class RoundTripFragment extends Fragment implements
         return view;
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"SimpleDateFormat", "ClickableViewAccessibility"})
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -1567,6 +1567,7 @@ public class RoundTripFragment extends Fragment implements
     }
 
     /* compare two dates end date is not less than start date */
+    @SuppressLint("SimpleDateFormat")
     public static boolean isDateAfter(String startDate,String endDate)
     {
         try
@@ -1585,6 +1586,7 @@ public class RoundTripFragment extends Fragment implements
     }
 
     /* set current pickup date in format for display on ui */
+    @SuppressLint("SimpleDateFormat")
     public void GetCurrentPickupDate()
     {
         Date c = Calendar.getInstance().getTime();
@@ -1608,6 +1610,7 @@ public class RoundTripFragment extends Fragment implements
     }
 
     /* set current drop date in format for display on ui */
+    @SuppressLint("SimpleDateFormat")
     public void GetCurrentDropDate()
     {
         Date c = Calendar.getInstance().getTime();
@@ -1768,6 +1771,7 @@ public class RoundTripFragment extends Fragment implements
     }
 
     /* get prior time */
+    @SuppressLint("SimpleDateFormat")
     public void GetPriorTime()
     {
         //Time Picker
@@ -1802,6 +1806,7 @@ public class RoundTripFragment extends Fragment implements
     }
 
     /*Calculate drop time for round trip. get date and add 23:59:59 time*/
+    @SuppressLint("SimpleDateFormat")
     public void CalculateDropTimeForRoundTrip(String drop_date)
     {
         SimpleDateFormat sdf;
@@ -1825,6 +1830,7 @@ public class RoundTripFragment extends Fragment implements
     }
 
     /* current date convert in different format to send api */
+    @SuppressLint("SimpleDateFormat")
     public void getCurrentDateToSendApiInFormat(String pickupDateFromTextbox)
     {
         //current format
@@ -1843,6 +1849,7 @@ public class RoundTripFragment extends Fragment implements
     }
 
     //Sun, 01 May
+    @SuppressLint("SimpleDateFormat")
     public void getStartDateInFormat(String current_date)
     {
         //Convert to date format

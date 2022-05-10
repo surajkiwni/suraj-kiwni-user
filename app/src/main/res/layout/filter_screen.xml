@@ -275,7 +275,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_gravity="center"
                     android:layout_marginRight="5dp"
-                    android:src="@drawable/spinner_drop_arrow"
+                    android:src="@drawable/down_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

@@ -152,9 +152,10 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
 
     private void sendVerificationCode(String mobile)
     {
+        Log.d(TAG, "mobile = " + mobile);
         /*Set up progress before call*/
         lovelyProgressDialog = new LovelyProgressDialog(LoginActivity.this)
-                .setIcon(R.drawable.ic_cast_connected_white_36dp)
+                .setIcon(R.drawable.cast_connected)
                 .setTitle("Loading..")
                 .setMessage("Please wait...")
                 .setTopColorRes(R.color.teal_200)

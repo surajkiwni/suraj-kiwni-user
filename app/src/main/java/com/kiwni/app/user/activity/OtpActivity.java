@@ -142,7 +142,7 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
 
         lovelyProgressDialog = new LovelyProgressDialog(OtpActivity.this)
-                .setIcon(R.drawable.ic_cast_connected_white_36dp)
+                .setIcon(R.drawable.cast_connected)
                 .setTitle("Loading..")
                 .setMessage("Please wait...")
                 .setTopColorRes(R.color.teal_200)

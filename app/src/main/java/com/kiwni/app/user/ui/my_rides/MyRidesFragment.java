@@ -59,7 +59,7 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
         super.onViewCreated(view, savedInstanceState);
 
         instance = this;
-        tabLayout = (TabLayout) view.findViewById(R.id.myRidesTabLayout);
+        tabLayout = view.findViewById(R.id.myRidesTabLayout);
         imgBack = view.findViewById(R.id.imgBack);
         txtTitle = view.findViewById(R.id.txtTitle);
 

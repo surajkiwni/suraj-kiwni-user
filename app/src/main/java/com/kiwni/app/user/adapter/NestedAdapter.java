@@ -19,14 +19,12 @@ import com.kiwni.app.user.interfaces.ReviewBtnClickListener;
 import com.kiwni.app.user.models.vehicle_details.ScheduleMapResp;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
 public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutViewHolder> {
-
-    List<ScheduleMapResp> mList = new ArrayList<>();
+    List<ScheduleMapResp> mList;
     Context context;
     BookBtnClickListener listener;
     ReviewBtnClickListener reviewBtnClickListener;
@@ -99,11 +97,12 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutView
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void getTimeFromDate(String actual_date)
     {
         Log.d("TAG", "str length = " + actual_date.length());
 
-        Date startDate = null;
+        Date startDate;
         if (actual_date.length() == 28)
         {
             try {

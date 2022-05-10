@@ -93,9 +93,9 @@
                     android:hint="Login With Mobile Number"
                     android:padding="@dimen/dp_10"
                     android:inputType="number"
-                    android:paddingStart="20dp"
                     android:textColorHint="@color/black"
-                    tools:ignore="TextFields" />
+                    tools:ignore="TextFields"
+                    android:autofillHints="phone"/>
 
             </LinearLayout>
 

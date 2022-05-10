@@ -96,6 +96,7 @@ public class PastAdapter extends RecyclerView.Adapter<PastAdapter.PastViewHolder
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void getDateAndTimeFromString(String time)
     {
         Log.d("TAG", "str length = " + time.length());

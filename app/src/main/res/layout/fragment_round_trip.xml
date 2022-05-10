@@ -284,8 +284,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:src="@drawable/down_arrow"
-                                android:layout_marginStart="@dimen/dp_80"
-                                app:layout_constraintStart_toEndOf="@+id/clockImage"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <!--<TextView

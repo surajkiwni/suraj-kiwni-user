@@ -189,7 +189,7 @@ public class AirportPickupFragment extends Fragment implements
         return view;
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"SimpleDateFormat", "ClickableViewAccessibility"})
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -1587,6 +1587,7 @@ public class AirportPickupFragment extends Fragment implements
     }
 
     //set current date in format
+    @SuppressLint("SimpleDateFormat")
     public void GetCurrentDate()
     {
         Date c = Calendar.getInstance().getTime();
@@ -1743,6 +1744,7 @@ public class AirportPickupFragment extends Fragment implements
         return s_hour;
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void GetPriorTime()
     {
         //Time Picker
@@ -1776,6 +1778,7 @@ public class AirportPickupFragment extends Fragment implements
         pickup_spinner_time.setAdapter(timeAdapter);
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void getCurrentDateToSendApiInFormat(String pickupDateFromTextbox)
     {
         //current format
@@ -1794,6 +1797,7 @@ public class AirportPickupFragment extends Fragment implements
     }
 
     //06 Dec
+    @SuppressLint("SimpleDateFormat")
     public void getStartDateInFormat(String current_date)
     {
         //Convert to date format
@@ -1810,6 +1814,7 @@ public class AirportPickupFragment extends Fragment implements
     }
 
     //Calculate Drop Time from start time and duration
+    @SuppressLint("SimpleDateFormat")
     private void CalculateDropTime(String startDateFromLabel, String totalDuration)
     {
         Log.d(TAG, "start = " + startDateFromLabel);

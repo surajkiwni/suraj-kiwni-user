@@ -229,6 +229,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void getTimeFromString(String time)
     {
         Log.d("TAG", "str length = " + time.length());
@@ -260,6 +261,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void getDateFromString(String time)
     {
         Log.d("TAG", "str length = " + time.length());
@@ -293,6 +295,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void getEndDateFromString(String time)
     {
         Log.d("TAG", "str length = " + time.length());

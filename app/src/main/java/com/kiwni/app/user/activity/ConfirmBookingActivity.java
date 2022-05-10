@@ -603,6 +603,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     }
 
     /* get current date time */
+    @SuppressLint("SimpleDateFormat")
     public void getCurrentTimeToSendApi()
     {
         SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -690,7 +691,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
 
         // Set up progress before call
         Dialog lovelyProgressDialog = new LovelyProgressDialog(ConfirmBookingActivity.this)
-                .setIcon(R.drawable.ic_cast_connected_white_36dp)
+                .setIcon(R.drawable.cast_connected)
                 .setTitle(R.string.connecting_to_server)
                 .setMessage(R.string.your_request_is_processing)
                 .setTopColorRes(R.color.teal_200)

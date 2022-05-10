@@ -189,7 +189,7 @@ public class OneWayFragment extends Fragment implements
         return view;
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"SimpleDateFormat", "ClickableViewAccessibility"})
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
@@ -1692,6 +1692,7 @@ public class OneWayFragment extends Fragment implements
         return s_hour;
     }
 
+    @SuppressLint("SimpleDateFormat")
     private void CalculateDropTime(String startDateFromLabel, String totalDuration)
     {
         Log.d(TAG, "start = " + startDateFromLabel);
@@ -1768,6 +1769,7 @@ public class OneWayFragment extends Fragment implements
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void getStartDateInFormat(String current_date)
     {
         //Convert to date format
@@ -1783,6 +1785,7 @@ public class OneWayFragment extends Fragment implements
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void getCurrentDateToSendApiInFormat(String pickupDateFromTextbox)
     {
         //current format
@@ -1800,6 +1803,7 @@ public class OneWayFragment extends Fragment implements
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void GetCurrentDate()
     {
         Date c = Calendar.getInstance().getTime();

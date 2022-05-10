@@ -41,7 +41,6 @@ import com.kiwni.app.user.utils.PreferencesUtils;
 
 public class HomeFragment extends Fragment
 {
-
     HomeViewModel homeViewModel;
 
     private TabLayout tabLayout;
@@ -51,8 +50,6 @@ public class HomeFragment extends Fragment
     View root;
     Fragment outstationFragment, airportFragment, rentalFragment;
     public static HomeFragment instance;
-
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,8 +63,6 @@ public class HomeFragment extends Fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         root = binding.getRoot();
 
-
-
         return root;
     }
 
@@ -79,31 +74,12 @@ public class HomeFragment extends Fragment
 
         tabLayout = view.findViewById(R.id.tabLayout);
 
-
-
-
-
-
-
-       /* if(currentLatitude == 0 && currentLongitude == 0){
-            GetCurrentLocation();
-        }*/
-
-
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition())
                 {
                     case 0 :
-
-                        //bundle.putString(SharedPref.USER_CURRENT_LAT, String.valueOf(currentLatitude));
-                        //bundle.putString(SharedPref.USER_CURRENT_LNG, String.valueOf(currentLongitude));
-
-                        /*Log.d(TAG, "Location on home frag on outstation click = " + currentLatitude + " " + currentLongitude);
-
-                        outstationFragment.setArguments(bundle);*/
                         replaceFragment(outstationFragment);
                         break;
                     case 1 :
