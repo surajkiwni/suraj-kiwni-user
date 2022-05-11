@@ -32,7 +32,6 @@ import com.kiwni.app.user.interfaces.BackKeyPressedListener;
 
 
 public class SafetyFragment extends Fragment implements BackKeyPressedListener {
-
     private SafetyViewModel safetyViewModel;
     private SafetyFragmentBinding binding;
     String TAG = this.getClass().getSimpleName();
@@ -67,7 +66,7 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        textPara2 =view.findViewById(R.id.textPara2);
+        textPara2 = view.findViewById(R.id.textPara2);
         textPara4 = view.findViewById(R.id.textPara4);
         textPara5 = view .findViewById(R.id.textPara5);
         imgBack = view.findViewById(R.id.imgBack);

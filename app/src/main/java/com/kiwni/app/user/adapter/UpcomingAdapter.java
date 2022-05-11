@@ -65,7 +65,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
 
         /* split string and set data to ui */
         GetClassTypeFromServiceType(tripListResp.getServiceType());
-        holder.txtServiceType.setText(splittedStr3);
+        holder.txtServiceType.setText(" " + splittedStr3);
 
         getDateFromString(tripListResp.getStartTime());
         getTimeFromString(tripListResp.getStartTime());

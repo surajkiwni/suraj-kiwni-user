@@ -185,7 +185,8 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                                         @Override
                                         public void onComplete(@NonNull @NotNull Task<GetTokenResult> task) {
-                                            if (task.isSuccessful()) {
+                                            if (task.isSuccessful())
+                                            {
                                                 loadingDialog.hideDialog();
 
                                                 System.out.println("task = " + task.getResult().toString());

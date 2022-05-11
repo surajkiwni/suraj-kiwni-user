@@ -59,6 +59,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -131,12 +132,17 @@ public class MainActivity extends AppCompatActivity implements
         // R.id.nav_home R.id.nav_myrides
         AppBarConfiguration mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home)
-
                 .setOpenableLayout(drawer)
                 .build();
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+        if (navHostFragment != null) {
+            navController = navHostFragment.getNavController();
+            // Setup NavigationUI here
+            NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+            NavigationUI.setupWithNavController(navigationView, navController);
+        }
+        //navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
@@ -219,13 +225,12 @@ public class MainActivity extends AppCompatActivity implements
 
             case R.id.action_like:
 
-                Toast.makeText(getApplicationContext(), "Item 2 Selected", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Save Address", Toast.LENGTH_LONG).show();
                 bottomSheetDialog = new BottomSheetDialog(this);
                 View view = getLayoutInflater().inflate(R.layout.favorite_bottom_sheet, null, false);
 
                 bottomSheetDialog.show();
                 bottomSheetDialog.setCancelable(false);
-
 
                 AppCompatButton cancelButton = view.findViewById(R.id.cancelButton);
                 AppCompatButton saveButton = view.findViewById(R.id.saveButton);
@@ -235,11 +240,13 @@ public class MainActivity extends AppCompatActivity implements
 
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View view)
+                    {
                         saveButton.setBackgroundColor(Color.TRANSPARENT);
                         saveButton.setTextColor(Color.BLACK);
                         cancelButton.setBackgroundColor(Color.BLACK);
                         cancelButton.setTextColor(Color.WHITE);
+                        bottomSheetDialog.dismiss();
                     }
                 });
 

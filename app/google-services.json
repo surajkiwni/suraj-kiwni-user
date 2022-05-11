@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "512721841920-ab1olh1g8a1fmd77l86in8n271ndov02.apps.googleusercontent.com",
+          "client_id": "512721841920-arn1pm7nt1gvsd2u45odfj8vvab6e9jn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.kiwni.app.driver",
-            "certificate_hash": "f353d84c3f7d9220844d5cb6264bf0ff64788e29"
+            "certificate_hash": "6576691816792a3ea8997c9ff34159b039cf8baf"
           }
         },
         {
@@ -58,11 +58,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "512721841920-uh5hc5ucrfdbij7r47r6kifp1bcnt6id.apps.googleusercontent.com",
+          "client_id": "512721841920-vf5le1qamrq0bcfhpev230nk8egvrcpk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.kiwni.app.user",
-            "certificate_hash": "f353d84c3f7d9220844d5cb6264bf0ff64788e29"
+            "certificate_hash": "5091dc3b733770de8389f51547021871bf04fd6c"
           }
         },
         {

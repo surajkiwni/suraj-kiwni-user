@@ -181,7 +181,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
                     public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                         super.onCodeSent(s, forceResendingToken);
 
-                       loadingDialog.hideDialog();
+                        loadingDialog.hideDialog();
 
                         verificationId = s;
                         Toast.makeText(LoginActivity.this,"Code sent",Toast.LENGTH_SHORT).show();
