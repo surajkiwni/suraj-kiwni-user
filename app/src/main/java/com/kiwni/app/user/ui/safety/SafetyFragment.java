@@ -91,7 +91,7 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
 
         ((MainActivity) requireActivity()).getSupportActionBar().hide();
 
-        imgBack = view.findViewById(R.id.imageBack);
+
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

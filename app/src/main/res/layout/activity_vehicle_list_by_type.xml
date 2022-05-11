@@ -107,7 +107,6 @@
                     android:id="@+id/calenderImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
                     android:src="@drawable/calender"
                     app:layout_constraintBottom_toBottomOf="@+id/txtStartEndDate"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -127,7 +126,7 @@
 
                 <TextView
                     android:id="@+id/txtStartTime"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingStart="3dp"
@@ -157,13 +156,12 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/timeLayout"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/txtEstimatedKm"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingStart="3dp"
