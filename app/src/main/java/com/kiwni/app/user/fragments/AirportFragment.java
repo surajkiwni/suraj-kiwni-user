@@ -1,5 +1,6 @@
 package com.kiwni.app.user.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.ui.home.HomeFragment;
 
-
+@SuppressLint("StaticFieldLeak")
 public class AirportFragment extends Fragment
 {
     TabLayout tabLayout;
@@ -23,7 +24,8 @@ public class AirportFragment extends Fragment
     String serviceType = "", direction = "";
 
     View view;
-    static AirportFragment instance;
+
+    public static AirportFragment instance;
     Fragment airportPickupFragment, airportDropFragment;
     String TAG = this.getClass().getSimpleName();
 

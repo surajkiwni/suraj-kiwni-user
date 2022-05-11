@@ -1,5 +1,6 @@
 package com.kiwni.app.user.ui.refer;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ public class ReferEarnFragment extends Fragment implements BackKeyPressedListene
     ImageView imgBack;
     TextView txtTitle;
     View root;
+    @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         referEarnViewModel =

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.LoginActivity">
+    tools:context=".activity.LoginActivity"
+    tools:ignore="ContentDescription">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -90,7 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:hint="Login With Mobile Number"
+                    android:hint="@string/login_with_mobile_number"
                     android:padding="@dimen/dp_10"
                     android:inputType="number"
                     android:textColorHint="@color/black"
@@ -104,15 +105,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="By Continuing. I Confirm that I have read and agreed to the"
+                android:text="@string/by_continuing_i_confirm_that_i_have_read_and_agreed_to_the"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="@dimen/dp_10" />
+                android:textSize="@dimen/sp_10" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Terms &amp; Conditions"
+                android:text="@string/terms_amp_conditions"
                 android:textAlignment="center"
                 android:textColor="#2176E3"
                 android:textSize="@dimen/sp_10" />
@@ -128,7 +129,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:background="@drawable/viewcabs_roundedbutton"
             android:shadowColor="#00000029"
-            android:text="CONFIRM"
+            android:text="@string/confirm"
             android:textColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             app:layout_constraintLeft_toLeftOf="parent"

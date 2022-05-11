@@ -1,5 +1,6 @@
 package com.kiwni.app.user.ui.safety;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -60,6 +61,7 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
         return view;
     }
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

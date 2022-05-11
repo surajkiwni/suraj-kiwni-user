@@ -1,5 +1,6 @@
 package com.kiwni.app.user.ui.support;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +61,7 @@ public class SupportFragment extends Fragment implements BackKeyPressedListener 
         return view;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/frameLayout1"
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/frameLayout1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintTop_toTopOf="parent"
     android:layout_marginTop="@dimen/dp_10"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ContentDescription"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/imgBack"
@@ -23,7 +24,7 @@
         android:id="@+id/txtTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Title"
+        android:text="@string/title"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_16"
         android:textStyle="bold"

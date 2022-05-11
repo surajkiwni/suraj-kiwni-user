@@ -1,5 +1,6 @@
 package com.kiwni.app.user.ui.offers;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +65,7 @@ public class OffersFragment extends Fragment implements BackKeyPressedListener {
         return view;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -91,7 +93,7 @@ public class OffersFragment extends Fragment implements BackKeyPressedListener {
 
         OffersAdapter offersAdapter = new OffersAdapter(getContext(),offersModelList);
         offersRecyclerView.setAdapter(offersAdapter);
-        offersAdapter.notifyDataSetChanged();
+        //offersAdapter.notifyDataSetChanged();
 
 
         ((MainActivity) requireActivity()).getSupportActionBar().hide();

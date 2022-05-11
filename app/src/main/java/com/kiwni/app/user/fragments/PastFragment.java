@@ -19,6 +19,7 @@ import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.GridLayoutWrapper;
 import com.kiwni.app.user.adapter.PastAdapter;
+import com.kiwni.app.user.classes.LoadingDialog;
 import com.kiwni.app.user.datamodels.ErrorDialog;
 import com.kiwni.app.user.datamodels.ErrorDialog1;
 import com.kiwni.app.user.interfaces.ErrorDialogInterface;
@@ -28,7 +29,6 @@ import com.kiwni.app.user.network.ApiInterface;
 import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
-import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +44,8 @@ public class PastFragment extends Fragment implements ErrorDialogInterface
     List<TripsHistoryResp> tripHistoryList = new ArrayList<>();
     String TAG = this.getClass().getSimpleName();
     int partyId = 0;
+
+    LoadingDialog loadingDialog;
 
     public PastFragment() {
         // Required empty public constructor
@@ -62,6 +64,8 @@ public class PastFragment extends Fragment implements ErrorDialogInterface
 
         pastRecyclerView = view.findViewById(R.id.pastRecyclerView);
 
+        loadingDialog = new LoadingDialog(getActivity());
+
         partyId = PreferencesUtils.getPreferences(getActivity(), SharedPref.partyId, 0);
         Log.d(TAG,"partyId = " + partyId);
 
@@ -79,12 +83,7 @@ public class PastFragment extends Fragment implements ErrorDialogInterface
         Call<List<TripsHistoryResp>> listCall = apiInterface.getPastTripHistory(id);
 
         // Set up progress before call
-        Dialog lovelyProgressDialog = new LovelyProgressDialog(getActivity())
-                .setIcon(R.drawable.cast_connected)
-                .setTitle(R.string.connecting_to_server)
-                .setMessage(R.string.your_request_is_processing)
-                .setTopColorRes(R.color.teal_200)
-                .show();
+        loadingDialog.showLoadingDialog("Your request is processing");
 
         listCall.enqueue(new Callback<List<TripsHistoryResp>>() {
             @Override
@@ -94,7 +93,7 @@ public class PastFragment extends Fragment implements ErrorDialogInterface
                 Log.d(TAG, "code = " + statusCode);
                 Log.d(TAG, "response = " + response);
 
-                lovelyProgressDialog.dismiss();
+                loadingDialog.hideDialog();
 
                 if(statusCode == 200)
                 {
@@ -134,7 +133,7 @@ public class PastFragment extends Fragment implements ErrorDialogInterface
             {
                 Log.d(TAG, "error = " + t);
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                lovelyProgressDialog.dismiss();
+                loadingDialog.hideDialog();
             }
         });
     }

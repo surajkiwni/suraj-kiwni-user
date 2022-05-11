@@ -30,10 +30,12 @@ import com.kiwni.app.user.interfaces.BackKeyPressedListener;
 import com.google.android.material.tabs.TabLayout;
 import com.kiwni.app.user.network.ConnectivityHelper;
 
-
+@SuppressLint("StaticFieldLeak")
 public class MyRidesFragment extends Fragment implements BackKeyPressedListener
 {
     String TAG = this.getClass().getSimpleName();
+    /*public static MyRidesFragment instance;*/
+
     public static MyRidesFragment instance;
     public static BackKeyPressedListener backKeyPressedListener;
     TabLayout tabLayout;
@@ -54,6 +56,7 @@ public class MyRidesFragment extends Fragment implements BackKeyPressedListener
         return view ;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

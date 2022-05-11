@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/border_grey2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/dp_5">
+    android:layout_marginBottom="@dimen/dp_5"
+    tools:ignore="RtlSymmetry,ContentDescription">
 
 
 <androidx.cardview.widget.CardView
@@ -55,7 +56,7 @@
                         android:id="@+id/txtClassTypeTitleAdt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="premium"
+                        android:text="@string/premium"
                         android:textSize="@dimen/sp_12"
                         android:textAlignment="center"
                         android:textColor="@color/black"
@@ -84,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
                         android:layout_weight="1"
-                        android:text="Mercedes A Class"
+                        android:text="@string/mercedes_a_class"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp_14" />
@@ -103,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:text="Available 5"
+                        android:text="@string/available_5"
                         android:textSize="@dimen/sp_14"
                         android:textColor="@color/black" />
 
@@ -126,7 +127,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="5dp"
-                        android:text="Rs"
+                        android:text="@string/rs"
                         android:textColor="@color/black"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -137,8 +138,8 @@
                         android:id="@+id/txtPriceRangeTitleAdt"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:paddingLeft="@dimen/dp_3"
-                        android:text="3500-5000"
+                        android:paddingStart="@dimen/dp_3"
+                        android:text="@string/_3500_5000"
                         android:textColor="@color/black"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"

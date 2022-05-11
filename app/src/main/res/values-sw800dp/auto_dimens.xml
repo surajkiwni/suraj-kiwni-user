@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="dp_130">288.93dp</dimen>
     <dimen name="dp_120">266.67dp</dimen>
     <dimen name="dp_15">33.33dp</dimen>
-    <dimen name="dp_16">35.56dp</dimen>
+    <dimen name="dp_16" tools:keep="@dimen/dp_16">35.56dp</dimen>
     <dimen name="dp_22">48.89dp</dimen>
     <dimen name="dp_25">55.56dp</dimen>
     <dimen name="dp_27">60.00dp</dimen>
@@ -16,7 +16,7 @@
     <dimen name="dp_8">17.78dp</dimen>
     <dimen name="dp_5">11.11dp</dimen>
     <dimen name="dp_10">22.23dp</dimen>
-    <dimen name="dp_12">26.67dp</dimen>
+    <dimen name="dp_12" tools:keep="@dimen/dp_12">26.67dp</dimen>
     <dimen name="dp_30">66.68dp</dimen>
     <dimen name="dp_32">71.12dp</dimen>
     <dimen name="dp_35">77.79dp</dimen>

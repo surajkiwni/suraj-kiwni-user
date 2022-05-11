@@ -3,16 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:ignore="ContentDescription">
 
     <TextView
         android:id="@+id/text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_5"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:padding="5dp"
-        android:text="Trips Issues and Refunds"
+        android:text="@string/trips_issues_and_refunds"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_14"
         app:layout_constraintEnd_toEndOf="parent"

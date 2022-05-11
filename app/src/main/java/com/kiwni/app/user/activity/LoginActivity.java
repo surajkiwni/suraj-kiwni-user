@@ -27,10 +27,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.kiwni.app.user.R;
+import com.kiwni.app.user.classes.LoadingDialog;
 import com.kiwni.app.user.datamodels.ErrorDialog;
 import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
-import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
 import java.util.concurrent.TimeUnit;
 
@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
     String verificationId;
 
     String TAG = this.getClass().getSimpleName();
-    Dialog lovelyProgressDialog;
+    LoadingDialog loadingDialog;
 
     private ConnectivityHelper connectivityHelper;
 
@@ -70,6 +70,9 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
         edtPhoneNumber = findViewById(R.id.edtPhoneNumber);
         btnConfirm = findViewById(R.id.btnConfirm);
         imageBack = findViewById(R.id.imageBack);
+
+        // loading dialog
+        loadingDialog = new LoadingDialog(this);
 
         /* broadcast internet connection msg */
         startNetworkBroadcastReceiver(this);
@@ -154,12 +157,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
     {
         Log.d(TAG, "mobile = " + mobile);
         /*Set up progress before call*/
-        lovelyProgressDialog = new LovelyProgressDialog(LoginActivity.this)
-                .setIcon(R.drawable.cast_connected)
-                .setTitle("Loading..")
-                .setMessage("Please wait...")
-                .setTopColorRes(R.color.teal_200)
-                .show();
+        loadingDialog.showLoadingDialog("Your request is processing");
 
         /*OnVerificationStateChangedCallbacks*/
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -170,12 +168,12 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
                     public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                        lovelyProgressDialog.dismiss();
+                        loadingDialog.hideDialog();
                     }
 
                     @Override
                     public void onVerificationFailed(@NonNull FirebaseException e) {
-                        lovelyProgressDialog.dismiss();
+                        loadingDialog.hideDialog();
                         Toast.makeText(LoginActivity.this,"verification failed.!",Toast.LENGTH_SHORT).show();
                     }
 
@@ -183,7 +181,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
                     public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                         super.onCodeSent(s, forceResendingToken);
 
-                        lovelyProgressDialog.dismiss();
+                       loadingDialog.hideDialog();
 
                         verificationId = s;
                         Toast.makeText(LoginActivity.this,"Code sent",Toast.LENGTH_SHORT).show();

@@ -57,6 +57,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@SuppressLint("SetTextI18n")
 public class VehicleListByTypeActivity extends AppCompatActivity implements BookBtnClickListener,
         ReviewBtnClickListener, ConnectivityHelper.NetworkStateReceiverListener {
     RecyclerView recyclerView;

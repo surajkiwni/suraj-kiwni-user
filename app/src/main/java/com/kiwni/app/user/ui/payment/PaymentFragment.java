@@ -1,6 +1,7 @@
 package com.kiwni.app.user.ui.payment;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class PaymentFragment extends Fragment implements BackKeyPressedListener 
     ImageView imgBack;
     public static BackKeyPressedListener backKeyPressedListener;
 
+    @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         paymentViewModel =

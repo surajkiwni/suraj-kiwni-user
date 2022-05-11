@@ -1,5 +1,6 @@
 package com.kiwni.app.user.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,10 +18,13 @@ import com.kiwni.app.user.R;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.ui.home.HomeFragment;
 
+@SuppressLint("StaticFieldLeak")
 public class OutstationFragment extends Fragment {
     private TabLayout tabLayout;
     String serviceType = "";
     Fragment roundTripFragment, oneWayFragment;
+    /*public static OutstationFragment instance;*/
+
     public static OutstationFragment instance;
     String TAG = this.getClass().getSimpleName();
     View view;

@@ -18,7 +18,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="logo" />
+        android:contentDescription="@string/logo" />
 
     <LinearLayout
         android:id="@+id/welcomeLayout"
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/group_5792"
-            android:contentDescription="part of logo" />
+            android:contentDescription="@string/part_of_logo" />
 
     </LinearLayout>
 
@@ -60,7 +60,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_30"
         android:layout_marginTop="@dimen/dp_20"
-        android:text="Sign Up"
+        android:text="@string/sign_up"
         android:background="@drawable/viewcabs_roundedbutton"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/welcomeLayout"
@@ -73,7 +73,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_30"
         android:layout_marginTop="@dimen/dp_20"
-        android:text="Sign In"
+        android:text="@string/sign_in"
         android:background="@drawable/viewcabs_roundedbutton"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/btnSignUp"

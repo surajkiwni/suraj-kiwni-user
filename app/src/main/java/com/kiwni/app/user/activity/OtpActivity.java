@@ -31,11 +31,11 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
+import com.kiwni.app.user.classes.LoadingDialog;
 import com.kiwni.app.user.datamodels.ErrorDialog;
 import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
-import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -60,7 +60,7 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
     String partyId = "", refreshToken = "", idToken = "", roles = "";
 
     String TAG = this.getClass().getSimpleName();
-    Dialog lovelyProgressDialog;
+    LoadingDialog loadingDialog;
     boolean isNetworkAvailable = false;
 
     private ConnectivityHelper connectivityHelper;
@@ -80,6 +80,9 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
         btnLogin = findViewById(R.id.btnLogin);
 
         startNetworkBroadcastReceiver(this);
+
+        //loading dialog
+        loadingDialog = new LoadingDialog(this);
 
         mobileno = getIntent().getStringExtra("mobile");
         if (mobileno != null) {
@@ -141,12 +144,7 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
         // credentials from our verification id and code.
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
 
-        lovelyProgressDialog = new LovelyProgressDialog(OtpActivity.this)
-                .setIcon(R.drawable.cast_connected)
-                .setTitle("Loading..")
-                .setMessage("Please wait...")
-                .setTopColorRes(R.color.teal_200)
-                .show();
+        loadingDialog.showLoadingDialog("Your request is processing");
 
         // after getting credential we are
         signInWithPhoneAuthCredential(credential);
@@ -160,7 +158,7 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task)
                     {
-                        lovelyProgressDialog.dismiss();
+                        loadingDialog.hideDialog();
 
                         if (task.isSuccessful())
                         {
@@ -188,7 +186,7 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                                         @Override
                                         public void onComplete(@NonNull @NotNull Task<GetTokenResult> task) {
                                             if (task.isSuccessful()) {
-                                                lovelyProgressDialog.dismiss();
+                                                loadingDialog.hideDialog();
 
                                                 System.out.println("task = " + task.getResult().toString());
 
@@ -243,7 +241,7 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                                                         startActivity(i);
                                                         finish();
                                                     } else {
-                                                        lovelyProgressDialog.dismiss();
+                                                        loadingDialog.hideDialog();
                                                         Toast.makeText(getApplicationContext(), "You are not register as user..!", Toast.LENGTH_SHORT).show();
 
                                                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -251,7 +249,7 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                                                         finish();
                                                     }
                                                 } else {
-                                                    lovelyProgressDialog.dismiss();
+                                                    loadingDialog.hideDialog();
                                                     Toast.makeText(getApplicationContext(), "Not Register user", Toast.LENGTH_SHORT).show();
 
                                                     /*Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -259,7 +257,7 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                                                     finish();*/
                                                 }
                                             } else {
-                                                lovelyProgressDialog.dismiss();
+                                                loadingDialog.hideDialog();
                                                 // Handle error -> task.getException();
                                                 String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
                                                 switch (errorCode) {
@@ -332,7 +330,7 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                         } else {
                             // if the code is not correct then we are
                             // displaying an error message to the user.
-                            lovelyProgressDialog.dismiss();
+                            loadingDialog.hideDialog();
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             pinView.setText("");
                             Toast.makeText(OtpActivity.this, "The verification code entered was invalid.", Toast.LENGTH_LONG).show();

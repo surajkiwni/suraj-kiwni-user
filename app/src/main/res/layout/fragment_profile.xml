@@ -5,7 +5,8 @@
     android:id="@+id/profileFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ProfileFragment">
+    tools:context=".fragments.ProfileFragment"
+    tools:ignore="ContentDescription">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -34,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text=" Profile  "
+        android:text="@string/profile"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_16"
         android:textStyle="bold"
@@ -95,8 +96,8 @@
                     android:id="@+id/txtNameHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Name"
-                    android:textSize="@dimen/dp_12"
+                    android:text="@string/name"
+                    android:textSize="@dimen/sp_12"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -105,9 +106,9 @@
                     android:id="@+id/txtName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Kiran Patil"
+                    android:text="@string/kiran_patil"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dp_16"
+                    android:textSize="@dimen/sp_16"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -152,8 +153,8 @@
                     android:id="@+id/txtMobNumberHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Mobile Number"
-                    android:textSize="@dimen/dp_12"
+                    android:text="@string/mobile_number"
+                    android:textSize="@dimen/sp_12"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -162,9 +163,9 @@
                     android:id="@+id/txtMobileNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="0867676785"
+                    android:text="@string/_0867676785"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dp_16"
+                    android:textSize="@dimen/sp_16"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -208,8 +209,8 @@
                     android:id="@+id/txtEmailHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Email"
-                    android:textSize="@dimen/dp_12"
+                    android:text="@string/email"
+                    android:textSize="@dimen/sp_12"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -218,9 +219,9 @@
                     android:id="@+id/txtEmailAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="kiranpatil10@gmail.com"
+                    android:text="@string/kiranpatil10_gmail_com"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dp_16"
+                    android:textSize="@dimen/sp_16"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -263,8 +264,8 @@
                     android:id="@+id/txtEmgContactHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Emergency Contacts"
-                    android:textSize="@dimen/dp_12"
+                    android:text="@string/emergency_contacts"
+                    android:textSize="@dimen/sp_12"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -273,9 +274,9 @@
                     android:id="@+id/txtEmgContact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="8888437590"
+                    android:text="@string/_8888437590"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dp_16"
+                    android:textSize="@dimen/sp_16"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -322,7 +323,7 @@
                     android:id="@+id/txtLogOut"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Log Out"
+                    android:text="@string/log_out"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_16"
                     android:textStyle="bold"
@@ -346,7 +347,6 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgProfile"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:clickable="true"
             app:civ_border_width="3dp"
             android:src="@drawable/change_profile"
@@ -361,7 +361,8 @@
             app:layout_constraintBottom_toTopOf="@id/mainConstraintLayout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/mainConstraintLayout" />
+            app:layout_constraintTop_toTopOf="@+id/mainConstraintLayout"
+            android:focusable="true" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.VehicleTypeListActivity">
+    tools:context=".activity.VehicleTypeListActivity"
+    tools:ignore="RtlSymmetry,ContentDescription">
 
     <!--<androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
@@ -59,7 +60,7 @@
     <include layout="@layout/header_title"
         android:id="@+id/toolbar2"/>
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map1"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
@@ -73,7 +74,7 @@
         android:id="@+id/txtFromTo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="PUNE TO MUMBAI"
+        android:text="@string/pune_to_mumbai"
         android:textAlignment="center"
         android:textSize="@dimen/sp_14"
         android:textColor="@color/black"
@@ -122,13 +123,14 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingStart="3dp"
-                android:text="Fri, 24 Dec-Mon, 27 Dec "
+                android:text="@string/fri_24_dec_mon_27_dec"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_11"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/calenderImage"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteY="1dp" />
+                tools:layout_editor_absoluteY="1dp"
+                 />
 
             <ImageView
                 android:id="@+id/calenderImage"
@@ -158,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingStart="3dp"
-                android:text="07:00 PM"
+                android:text="@string/_07_00_pm"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -193,7 +195,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingStart="3dp"
-                android:text="Est km 211km"
+                android:text="@string/est_km_211km"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -249,7 +251,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:foregroundGravity="center"
-            android:text="4hrs 40 km package "
+            android:text="@string/_4hrs_40_km_package"
             android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="15sp"
@@ -270,7 +272,7 @@
             android:id="@+id/viewDetailsText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" View Details"
+            android:text="@string/view_details"
             android:textColor="#3968C6"
             android:textSize="13sp"
             app:layout_constraintStart_toEndOf="@+id/rulesText"

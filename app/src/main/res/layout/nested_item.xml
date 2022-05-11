@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="4dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginHorizontal="4dp"
+    tools:ignore="ContentDescription">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +35,7 @@
                 android:id="@+id/txtProviderNameNestedAdt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Trimurti Travel"
+                android:text="@string/trimurti_travel"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_10" />
 
@@ -41,7 +43,7 @@
                 android:id="@+id/txtProviderNoNestedAdt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="TRI5068"
+                android:text="@string/tri5068"
                 android:textAlignment="center"
                 android:textColor="#2176E3"
                 android:textSize="@dimen/sp_12"
@@ -64,7 +66,7 @@
                 android:id="@+id/txtModelRegNestedAdt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Model Register"
+                android:text="@string/model_register"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_10" />
@@ -74,8 +76,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/rating1"
-                android:text="2017"
-                android:textSize="@dimen/dp_12"
+                android:text="@string/_2017"
+                android:textSize="@dimen/sp_12"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtModelRegNestedAdt" />
@@ -97,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
 
-                android:text="Service Rating"
+                android:text="@string/service_rating"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_10" />
@@ -117,8 +119,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
-                android:text="Review"
-                android:textSize="@dimen/dp_12"
+                android:text="@string/review"
+                android:textSize="@dimen/sp_12"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imgRating" />
@@ -141,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="3100"
+                android:text="@string/_3100"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -154,7 +156,7 @@
                 android:layout_height="@dimen/dp_25"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/rounded_button"
-                android:text="Book"
+                android:text="@string/book"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -168,7 +170,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Avl in 1hr"
+                android:text="@string/avl_in_1hr"
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"

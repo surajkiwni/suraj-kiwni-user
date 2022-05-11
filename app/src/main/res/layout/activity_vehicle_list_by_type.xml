@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.VehicleListByTypeActivity"
-    android:launchMode = "singleTop">
+    android:launchMode = "singleTop"
+    tools:ignore="ContentDescription">
 
     <include layout="@layout/header_title"
         android:id="@+id/toolbar2"/>
@@ -43,7 +44,7 @@
             android:id="@+id/txtFromTo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="PUNE TO MUMBAI"
+            android:text="@string/pune_to_mumbai"
             android:textAlignment="center"
             android:textSize="@dimen/sp_12"
             android:textColor="@color/black"
@@ -93,13 +94,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingStart="3dp"
-                    android:text="Fri, 24 Dec-Mon, 27 Dec "
+                    android:text="@string/fri_24_dec_mon_27_dec"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_11"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/calenderImage"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:layout_editor_absoluteY="1dp" />
+                    tools:layout_editor_absoluteY="1dp"
+                    tools:ignore="RtlSymmetry" />
 
                 <ImageView
                     android:id="@+id/calenderImage"
@@ -129,12 +131,13 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingStart="3dp"
-                    android:text="07:00 PM"
+                    android:text="@string/_07_00_pm"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_11"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/callImage"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="RtlSymmetry" />
 
                 <ImageView
                     android:id="@+id/callImage"
@@ -164,12 +167,13 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingStart="3dp"
-                    android:text="Est km 211km"
+                    android:text="@string/est_km_211km"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_11"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/estImage"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="RtlSymmetry" />
 
                 <ImageView
                     android:id="@+id/estImage"
@@ -234,14 +238,15 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/sortText" />
+                app:layout_constraintTop_toTopOf="@+id/sortText"
+                tools:ignore="RtlSymmetry" />
 
             <TextView
                 android:id="@+id/sortText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="sort"
+                android:text="@string/sort"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -273,14 +278,15 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/filterText" />
+                app:layout_constraintTop_toTopOf="@+id/filterText"
+                tools:ignore="RtlSymmetry" />
 
             <TextView
                 android:id="@+id/filterText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Filter"
+                android:text="@string/filter"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -312,14 +318,15 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/mapText" />
+                app:layout_constraintTop_toTopOf="@+id/mapText"
+                tools:ignore="RtlSymmetry" />
 
             <TextView
                 android:id="@+id/mapText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Map"
+                android:text="@string/map"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -372,7 +379,7 @@
             android:layout_width="0dp"
             android:layout_height="25dp"
             android:layout_marginTop="5dp"
-            android:text="4hrs 40 km package "
+            android:text="@string/_4hrs_40_km_package"
             android:textColor="@color/black"
             android:layout_marginStart="5dp"
             android:textAlignment="textStart"
@@ -396,7 +403,7 @@
             android:id="@+id/viewDetailsText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" View Details"
+            android:text="@string/view_details"
             android:textSize="@dimen/sp_12"
             android:textColor="#3968C6"
             android:padding="@dimen/dp_5"
@@ -452,10 +459,11 @@
                 android:ems="5"
                 android:gravity="center"
                 android:paddingStart="10dp"
-                android:text="SEDAN"
+                android:text="@string/sedan"
                 android:textColor="@color/black"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="RtlSymmetry" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -499,7 +507,7 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="2dp"
                     android:paddingEnd="2dp"
-                    android:text="Ac"
+                    android:text="@string/ac"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView2"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -532,7 +540,7 @@
                     android:id="@+id/txtSeatCapacity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4+1 Seater"
+                    android:text="@string/_4_1_seater"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageSeat"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -565,7 +573,7 @@
                     android:id="@+id/bagTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3 bags"
+                    android:text="@string/_3_bags"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/imageBag"
                     app:layout_constraintTop_toTopOf="parent" />

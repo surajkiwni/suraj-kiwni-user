@@ -40,6 +40,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
+import com.kiwni.app.user.classes.LoadingDialog;
 import com.kiwni.app.user.global.PermissionRequestConstant;
 import com.kiwni.app.user.interfaces.ErrorDialogInterface;
 import com.kiwni.app.user.models.bookride.BookRideErrorResp;
@@ -61,7 +62,7 @@ import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
-import com.yarolegovich.lovelydialog.LovelyProgressDialog;
+
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -135,8 +136,9 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     Dialog dialogPayment, dialogThankYou;
 
     private ConnectivityHelper connectivityHelper;
+    LoadingDialog loadingDialog;
 
-    @SuppressLint("NewApi")
+    @SuppressLint({"NewApi", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -184,7 +186,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
 
         imgCall.setVisibility(View.VISIBLE);
 
-
+        loadingDialog = new LoadingDialog(this);
 
         Gson gson = new Gson();
         String stringData = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SELECTED_VEHICLE_OBJECT, "");
@@ -690,17 +692,12 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
         Call<RideReservationResp> call = apiInterface.createRide(reservationReq, idToken);
 
         // Set up progress before call
-        Dialog lovelyProgressDialog = new LovelyProgressDialog(ConfirmBookingActivity.this)
-                .setIcon(R.drawable.cast_connected)
-                .setTitle(R.string.connecting_to_server)
-                .setMessage(R.string.your_request_is_processing)
-                .setTopColorRes(R.color.teal_200)
-                .show();
+        loadingDialog.showLoadingDialog("Your request is processing");
 
         call.enqueue(new Callback<RideReservationResp>() {
             @Override
             public void onResponse(Call<RideReservationResp> call, Response<RideReservationResp> response) {
-                lovelyProgressDialog.dismiss();
+                loadingDialog.hideDialog();
                 int statusCode = response.code();
                 Log.d(TAG, "statusCode: " + statusCode);
                 Log.d(TAG, "Response = " + response);
@@ -795,7 +792,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
 
             @Override
             public void onFailure(Call<RideReservationResp> call, Throwable t) {
-                lovelyProgressDialog.dismiss();
+                loadingDialog.hideDialog();
                 Log.d(TAG, "error: " + t);
             }
         });
@@ -907,6 +904,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
         }
     };
 
+    @SuppressLint("SetTextI18n")
     public void DisplayReservationRespDialog(List<SocketReservationResp> reservationRespList)
     {
         Log.d(TAG, "list size in dialog = " + reservationRespList.size());

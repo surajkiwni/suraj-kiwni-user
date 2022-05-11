@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"InflateParams", "NonConstantResourceId"})
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -309,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"InflateParams", "NonConstantResourceId"})
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         item.setChecked(true);

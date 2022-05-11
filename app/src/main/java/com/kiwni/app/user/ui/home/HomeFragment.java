@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment
     String TAG = this.getClass().getSimpleName();
     View root;
     Fragment outstationFragment, airportFragment, rentalFragment;
-    public static HomeFragment instance;
+    public HomeFragment instance;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

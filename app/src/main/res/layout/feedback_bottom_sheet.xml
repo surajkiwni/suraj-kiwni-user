@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black_transparent"
-    app:layout_behavior="@string/bottom_sheet_behavior">
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    tools:ignore="Overdraw,ContentDescription">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -43,7 +45,7 @@
             android:id="@+id/imageBack"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:foregroundGravity="center"
             android:src="@drawable/send_mail"
             android:textAlignment="center"
@@ -56,9 +58,9 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text=" Feedback  "
+            android:text="@string/feedback"
             android:textColor="@color/black"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar"
@@ -80,8 +82,8 @@
                 android:id="@+id/toText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="To : "
+                android:layout_marginStart="5dp"
+                android:text="@string/to"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -92,10 +94,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
+                android:labelFor="@id/emailText"
                 android:autofillHints="emailAddress"
                 android:background="@null"
                 android:inputType="textEmailAddress"
-                android:text=" feedback@kiwni.in"
+                android:text="@string/feedback_kiwni_in"
                 android:textColor="#2176E3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -131,8 +134,8 @@
                 android:id="@+id/ccText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="Cc/Bcc, From: "
+                android:layout_marginStart="5dp"
+                android:text="@string/cc_bcc_from"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -183,8 +186,8 @@
                 android:id="@+id/subjectText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="Subject : "
+                android:layout_marginStart="5dp"
+                android:text="@string/subject"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -194,11 +197,11 @@
                 android:id="@+id/feedbacktext"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:autofillHints="name"
                 android:background="@null"
                 android:inputType="text"
-                android:text=" Feedback "
+                android:text="@string/feedback"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -226,10 +229,7 @@
             android:layout_height="@dimen/dp_400"
             app:layout_constraintTop_toBottomOf="@id/constraintLayout3" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_100"
-            app:layout_constraintTop_toBottomOf="@id/frameLayout1" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

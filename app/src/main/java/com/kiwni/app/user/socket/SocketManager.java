@@ -1,5 +1,6 @@
 package com.kiwni.app.user.socket;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -11,8 +12,10 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
+@SuppressLint("StaticFieldLeak")
 public class SocketManager
 {
+    //private static SocketManager mInstance;
     private static SocketManager mInstance;
     private Socket mSocket;
     private final int RECONNECTION_ATTEMPT = 10;

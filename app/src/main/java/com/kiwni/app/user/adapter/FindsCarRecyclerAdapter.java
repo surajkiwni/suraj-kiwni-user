@@ -1,5 +1,6 @@
 package com.kiwni.app.user.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+@SuppressLint("SetTextI18n")
 public class FindsCarRecyclerAdapter extends RecyclerView.Adapter<FindsCarRecyclerAdapter.ViewHolder>
 {
     Context context;

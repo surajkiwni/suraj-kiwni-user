@@ -47,6 +47,7 @@ import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.FindsCarRecyclerAdapter;
 import com.kiwni.app.user.adapter.GridLayoutWrapper;
 import com.kiwni.app.user.adapter.HourPackageAdapter;
+import com.kiwni.app.user.classes.LoadingDialog;
 import com.kiwni.app.user.datamodels.ErrorDialog;
 import com.kiwni.app.user.global.PermissionRequestConstant;
 import com.kiwni.app.user.interfaces.ErrorDialogInterface;
@@ -62,7 +63,6 @@ import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.utils.PreferencesUtils;
-import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
 import org.json.JSONObject;
 
@@ -84,6 +84,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@SuppressLint("SetTextI18n")
 public class VehicleTypeListActivity extends AppCompatActivity implements OnMapReadyCallback,
         FindCarItemClickListener, ErrorDialogInterface,ConnectivityHelper.NetworkStateReceiverListener
 {
@@ -127,6 +128,8 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
     boolean isEqual = false, isNetworkAvailable = false;
     private ConnectivityHelper connectivityHelper;
 
+    LoadingDialog loadingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -153,6 +156,8 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
         recyclerView = findViewById(R.id.recyclerView);
         viewDetailsText = findViewById(R.id.viewDetailsText);
         findsCarsRecyclerView = findViewById(R.id.findsCarsRecyclerView);
+
+        loadingDialog = new LoadingDialog(this);
 
         /* shared pref values */
         direction = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DIRECTION,"");
@@ -279,7 +284,7 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
         });
 
         viewDetailsText.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("NewApi")
+            @SuppressLint({"NewApi", "InflateParams"})
             @Override
             public void onClick(View view) {
 
@@ -349,18 +354,13 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
         Call<Map<String, Map<String, Map<String, List<ScheduleMapResp>>>>> listCall = apiInterface.getProjectionScheduleDates(scheduleDates,idToken);
 
         // Set up progress before call
-        Dialog lovelyProgressDialog = new LovelyProgressDialog(VehicleTypeListActivity.this)
-                .setIcon(R.drawable.cast_connected)
-                .setTitle(R.string.connecting_to_server)
-                .setMessage(R.string.your_request_is_processing)
-                .setTopColorRes(R.color.teal_200)
-                .show();
+        loadingDialog.showLoadingDialog("Your request is processing");
 
         listCall.enqueue(new Callback<Map<String, Map<String, Map<String, List<ScheduleMapResp>>>>>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(Call<Map<String, Map<String, Map<String, List<ScheduleMapResp>>>>> call, Response<Map<String, Map<String, Map<String, List<ScheduleMapResp>>>>> response) {
-                lovelyProgressDialog.dismiss();
+                loadingDialog.hideDialog();
                 int statusCode = response.code();
                 if(statusCode == 200)
                 {
@@ -434,7 +434,7 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
 
             @Override
             public void onFailure(Call<Map<String, Map<String, Map<String, List<ScheduleMapResp>>>>> call, Throwable t) {
-                lovelyProgressDialog.dismiss();
+                loadingDialog.hideDialog();
                 Log.d(TAG, "error: " + t);
             }
         });

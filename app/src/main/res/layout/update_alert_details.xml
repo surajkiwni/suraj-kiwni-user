@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -36,9 +36,9 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:gravity="center_horizontal|center_vertical"
-        android:text=" Update Alert Details "
+        android:text="@string/update_alert_details"
         android:textColor="@color/black"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
@@ -92,7 +92,7 @@
             android:layout_marginStart="5dp"
             android:padding="5dp"
             android:textColor="@color/black"
-            android:text="Other Contact Person"
+            android:text="@string/other_contact_person"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -104,7 +104,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="5dp"
             android:textColor="@color/black"
-            android:text="Name"
+            android:text="@string/name"
             android:padding="7dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text1" />
@@ -115,6 +115,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dp_10"
             android:padding="5dp"
+            android:labelFor="@+id/editText1"
             android:inputType="textPersonName"
             android:background="@drawable/square_border"
             app:layout_constraintEnd_toEndOf="@+id/nameText"
@@ -127,7 +128,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="Phone"
+            android:text="@string/phone"
             android:textColor="@color/black"
             android:padding="7dp"
             android:layout_marginStart="5dp"
@@ -135,10 +136,12 @@
             app:layout_constraintTop_toBottomOf="@+id/editText1" />
 
         <EditText
+            android:id="@+id/edtPhone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dp_10"
             android:layout_marginBottom="10dp"
+            android:labelFor="@+id/edtPhone"
             android:background="@drawable/square_border"
             android:padding="5dp"
             android:inputType="phone"
@@ -195,7 +198,7 @@
         android:layout_height="35dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/square_border"
-        android:text="CANCEL"
+        android:text="@string/cancel"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnSaveAlert"
@@ -210,7 +213,7 @@
         android:layout_height="35dp"
         android:layout_marginStart="10dp"
         android:background="@drawable/square_border"
-        android:text="SAVE"
+        android:text="@string/save"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"

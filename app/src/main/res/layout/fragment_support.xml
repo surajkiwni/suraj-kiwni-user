@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
         android:padding="@dimen/dp_5"
-        android:text="Help topics"
+        android:text="@string/help_topics"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_18"
         app:layout_constraintEnd_toEndOf="parent"

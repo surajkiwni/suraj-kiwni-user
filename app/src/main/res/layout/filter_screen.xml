@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="ContentDescription">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -35,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text=" Filter  "
+        android:text="@string/filter"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_18"
         android:textStyle="bold"
@@ -99,7 +100,7 @@
                     android:layout_margin="2dp"
                     android:background="#F3F3F3F7"
                     android:gravity="center"
-                    android:text="BRAND"
+                    android:text="@string/brand"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_18"
                     android:textStyle="bold"
@@ -149,7 +150,7 @@
                     android:layout_margin="2dp"
                     android:background="#F3F3F3F7"
                     android:gravity="center"
-                    android:text="Segment"
+                    android:text="@string/segment"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -176,7 +177,7 @@
                     android:focusableInTouchMode="false"
                     android:gravity="center"
                     android:padding="7dp"
-                    android:text="LUXURY"
+                    android:text="@string/luxury"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_12"
@@ -185,7 +186,8 @@
                     app:layout_constraintEnd_toStartOf="@+id/ultraLuxuryText"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/premiumText"
-                    app:layout_constraintTop_toBottomOf="@id/view2" />
+                    app:layout_constraintTop_toBottomOf="@id/view2"
+                    android:focusable="true" />
 
                 <TextView
                     android:id="@+id/premiumText"
@@ -197,7 +199,7 @@
                     android:focusableInTouchMode="true"
                     android:gravity="center"
                     android:padding="7dp"
-                    android:text="PREMIUM"
+                    android:text="@string/premium"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_12"
@@ -219,7 +221,7 @@
                     android:focusableInTouchMode="false"
                     android:gravity="center"
                     android:padding="7dp"
-                    android:text="ULTRALUXURY"
+                    android:text="@string/ultraluxury"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_12"
@@ -228,7 +230,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/luxuryText"
-                    app:layout_constraintTop_toBottomOf="@+id/view2" />
+                    app:layout_constraintTop_toBottomOf="@+id/view2"
+                    android:focusable="true" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -239,10 +242,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:padding="@dimen/dp_5"
-                android:text="Model Registered Year"
+                android:text="@string/model_registered_year"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="@+id/guideline1"
                 app:layout_constraintRight_toRightOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
@@ -274,7 +277,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_gravity="center"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
                     android:src="@drawable/down_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -302,7 +305,7 @@
                     android:layout_margin="2dp"
                     android:background="#F3F3F3F7"
                     android:gravity="center"
-                    android:text="Special Request"
+                    android:text="@string/special_request"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -338,7 +341,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Wheel Chair Assistance"
+                    android:text="@string/wheel_chair_assistance"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
                     app:layout_constraintTop_toBottomOf="@+id/view3" />
 
@@ -346,7 +349,7 @@
                     android:id="@+id/checkBox2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Baby Car Chair"
+                    android:text="@string/baby_car_chair"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
                     app:layout_constraintTop_toBottomOf="@+id/checkBox1" />
 
@@ -354,7 +357,7 @@
                     android:id="@+id/checkBox3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Safety body Guard"
+                    android:text="@string/safety_body_guard"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
                     app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
 
@@ -362,7 +365,7 @@
                     android:id="@+id/checkBox4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vehicle With Carrier"
+                    android:text="@string/vehicle_with_carrier"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
                     app:layout_constraintTop_toBottomOf="@+id/checkBox3" />
 
@@ -370,7 +373,7 @@
                     android:id="@+id/checkBox5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pet Comfortable Cab"
+                    android:text="@string/pet_comfortable_cab"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
                     app:layout_constraintTop_toBottomOf="@+id/checkBox4" />
 
@@ -378,7 +381,7 @@
                     android:id="@+id/checkBox6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Travel Sleeping Bed"
+                    android:text="@string/travel_sleeping_bed"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
                     app:layout_constraintTop_toBottomOf="@+id/checkBox5" />
 
@@ -403,7 +406,7 @@
             android:layout_height="30dp"
             android:layout_marginHorizontal="@dimen/dp_20"
             android:background="@drawable/rounded_button"
-            android:text="Apply"
+            android:text="@string/apply"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_16"
             app:layout_constraintBottom_toBottomOf="parent"

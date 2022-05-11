@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.utils.widget.ImageFilterButton;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -18,12 +19,12 @@ import com.kiwni.app.user.R;
 
 public class RegisterActivity extends AppCompatActivity {
     AppCompatButton btnRegister;
-    TextInputEditText txtInputPassword;
     boolean isEmailValid = false, isPhoneNoValid = false, isPasswordValid = false, isLastNameValid = false, isFirstNameValid = false;
     EditText edtEmailId, edtPhoneNo, edtLastName, edtFirstName, edtPassword;
     ImageView imgEyeOpen, imgEyeClose, imgBack;
     TextView txtTitle;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,16 +120,16 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         //password validation
-        if (txtInputPassword.getText().toString().isEmpty()) {
-            txtInputPassword.setError(getResources().getString(R.string.password_error));
+        if (edtPassword.getText().toString().isEmpty()) {
+            edtPassword.setError(getResources().getString(R.string.password_error));
             //edtPassword.requestFocus();
             isPasswordValid = false;
-        } else if (txtInputPassword.getText().toString().length() < 8) {
-            txtInputPassword.setError("Enter valid password.");
+        } else if (edtPassword.getText().toString().length() < 8) {
+            edtPassword.setError("Enter valid password.");
             //edtPassword.requestFocus();
             isPasswordValid = false;
         } else {
-            txtInputPassword.setError(null);
+            edtPassword.setError(null);
             //edtEmailId.setErrorEnabled(false);
             isPasswordValid = true;
         }

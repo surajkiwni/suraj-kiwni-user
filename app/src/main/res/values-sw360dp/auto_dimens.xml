@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="dp_120">120.00dp</dimen>
     <dimen name="dp_15">15.00dp</dimen>
-    <dimen name="dp_16">16.00dp</dimen>
-    <dimen name="dp_22">22.00dp</dimen>
+    <dimen name="dp_16" tools:keep="@dimen/dp_16">16.00dp</dimen>
+    <dimen name="dp_22" tools:ignore="UnusedResources">22.00dp</dimen>
     <dimen name="dp_25">25.00dp</dimen>
-    <dimen name="dp_27">27.00dp</dimen>
+    <dimen name="dp_27" tools:ignore="UnusedResources">27.00dp</dimen>
     <dimen name="dp_40">40.00dp</dimen>
-    <dimen name="dp_43">43.00dp</dimen>
+    <dimen name="dp_43" tools:ignore="UnusedResources">43.00dp</dimen>
     <dimen name="dp_50">50.00dp</dimen>
     <dimen name="dp_60">60.00dp</dimen>
-    <dimen name="dp_70">70.00dp</dimen>
-    <dimen name="dp_90">90dp</dimen>
+    <dimen name="dp_70" tools:ignore="UnusedResources">70.00dp</dimen>
+    <dimen name="dp_90" tools:ignore="UnusedResources">90dp</dimen>
     <dimen name="dp_8">8.00dp</dimen>
     <dimen name="dp_5">5.00dp</dimen>
     <dimen name="dp_10">10.00dp</dimen>
-    <dimen name="dp_12">12.00dp</dimen>
+    <dimen name="dp_12" tools:keep="@dimen/dp_12">12.00dp</dimen>
     <dimen name="dp_30">30.00dp</dimen>
-    <dimen name="dp_32">32.00dp</dimen>
+    <dimen name="dp_32" tools:ignore="UnusedResources">32.00dp</dimen>
     <dimen name="dp_35">35.00dp</dimen>
     <dimen name="dp_2">2.00dp</dimen>
     <dimen name="dp_3">3.00dp</dimen>
-    <dimen name="dp_176">176.00dp</dimen>
+    <dimen name="dp_176" tools:ignore="UnusedResources">176.00dp</dimen>
     <dimen name="dp_200">200.00dp</dimen>
-    <dimen name="dp_250">250.00dp</dimen>
-    <dimen name="dp_280">280.00dp</dimen>
+    <dimen name="dp_250" tools:ignore="UnusedResources">250.00dp</dimen>
+    <dimen name="dp_280" tools:ignore="UnusedResources">280.00dp</dimen>
     <dimen name="dp_300">300.00dp</dimen>
-    <dimen name="dp_minus10">-10.00dp</dimen>
-    <dimen name="dp_minus15">-15.00dp</dimen>
+    <dimen name="dp_minus10" tools:ignore="UnusedResources">-10.00dp</dimen>
+    <dimen name="dp_minus15" tools:ignore="UnusedResources">-15.00dp</dimen>
     <dimen name="dp_100">100.00dp</dimen>
     <dimen name="dp_150">150.00dp</dimen>
-    <dimen name="nav_header_height">170.00dp</dimen>
-    <dimen name="dp_155">155dp</dimen>
-    <dimen name="dp_160">160.00dp</dimen>
+    <dimen name="nav_header_height" tools:ignore="UnusedResources">170.00dp</dimen>
+    <dimen name="dp_155" tools:ignore="UnusedResources">155dp</dimen>
+    <dimen name="dp_160" tools:ignore="UnusedResources">160.00dp</dimen>
     <dimen name="dp_400">400.00dp</dimen>
     <dimen name="dp_80">80dp</dimen>
 
-    <dimen name="sp_1">1.00sp</dimen>
-    <dimen name="sp_2">2.00sp</dimen>
-    <dimen name="sp_3">3.00sp</dimen>
-    <dimen name="sp_4">4.00sp</dimen>
-    <dimen name="sp_6">6.00sp</dimen>
-    <dimen name="sp_7">7.00sp</dimen>
-    <dimen name="sp_8">8.00sp</dimen>
-    <dimen name="sp_9">9.00sp</dimen>
+    <dimen name="sp_1" tools:ignore="UnusedResources">1.00sp</dimen>
+    <dimen name="sp_2" tools:ignore="UnusedResources">2.00sp</dimen>
+    <dimen name="sp_3" tools:ignore="UnusedResources">3.00sp</dimen>
+    <dimen name="sp_4" tools:ignore="UnusedResources">4.00sp</dimen>
+    <dimen name="sp_6" tools:ignore="UnusedResources">6.00sp</dimen>
+    <dimen name="sp_7" tools:ignore="UnusedResources">7.00sp</dimen>
+    <dimen name="sp_8" tools:ignore="UnusedResources">8.00sp</dimen>
+    <dimen name="sp_9" tools:ignore="UnusedResources">9.00sp</dimen>
     <dimen name="sp_10">10.00sp</dimen>
     <dimen name="sp_11">11.00sp</dimen>
     <dimen name="sp_12">12.00sp</dimen>
     <dimen name="sp_14">14.00sp</dimen>
     <dimen name="sp_16">16.00sp</dimen>
     <dimen name="sp_18">18.00sp</dimen>
-    <dimen name="sp_20">20.00sp</dimen>
-    <dimen name="sp_22">22.00sp</dimen>
-    <dimen name="sp_24">24.00sp</dimen>
-    <dimen name="sp_28">28.00sp</dimen>
-    <dimen name="sp_38">38.00sp</dimen>
-    <dimen name="sp_40">40.00sp</dimen>
-    <dimen name="sp_45">45.00sp</dimen>
+    <dimen name="sp_20" tools:ignore="UnusedResources">20.00sp</dimen>
+    <dimen name="sp_22" tools:ignore="UnusedResources">22.00sp</dimen>
+    <dimen name="sp_24" tools:ignore="UnusedResources">24.00sp</dimen>
+    <dimen name="sp_28" tools:ignore="UnusedResources">28.00sp</dimen>
+    <dimen name="sp_38" tools:ignore="UnusedResources">38.00sp</dimen>
+    <dimen name="sp_40" tools:ignore="UnusedResources">40.00sp</dimen>
+    <dimen name="sp_45" tools:ignore="UnusedResources">45.00sp</dimen>
 </resources>

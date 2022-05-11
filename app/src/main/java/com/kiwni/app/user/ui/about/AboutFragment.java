@@ -1,5 +1,6 @@
 package com.kiwni.app.user.ui.about;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -34,6 +35,7 @@ public class AboutFragment extends Fragment implements BackKeyPressedListener {
     View view;
     String TAG = this.getClass().getSimpleName();
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
