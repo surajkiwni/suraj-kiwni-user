@@ -174,7 +174,8 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
                     @Override
                     public void onVerificationFailed(@NonNull FirebaseException e) {
                         loadingDialog.hideDialog();
-                        Toast.makeText(LoginActivity.this,"verification failed.!",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(LoginActivity.this,"verification failed.!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                     }
 
                     @Override

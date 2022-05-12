@@ -11,7 +11,7 @@
         android:id="@+id/mainConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="1dp"
+        android:layout_margin="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -20,12 +20,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linear1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintEnd_toStartOf="@+id/linear2"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -54,8 +53,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linear2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_3"
             app:layout_constraintEnd_toStartOf="@+id/linear3"
             app:layout_constraintStart_toEndOf="@+id/linear1"
             app:layout_constraintTop_toTopOf="parent">
@@ -75,6 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/rating1"
+                android:gravity="center"
                 android:text="@string/_2017"
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -84,8 +85,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linear3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_3"
             app:layout_constraintEnd_toStartOf="@+id/linear4"
             app:layout_constraintStart_toEndOf="@+id/linear2"
             app:layout_constraintTop_toTopOf="parent"
@@ -117,6 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
+                android:gravity="center"
                 android:text="@string/review"
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -127,11 +130,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linear4"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/linear3"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -139,9 +142,9 @@
                 android:id="@+id/txtPriceNestedAdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/_3100"
+                android:textSize="@dimen/sp_12"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -155,6 +158,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/rounded_button"
                 android:text="@string/book"
+                android:textSize="@dimen/sp_12"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -166,7 +170,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
-                android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/avl_in_1hr"
                 android:textSize="@dimen/sp_12"
@@ -178,7 +181,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     <View
         android:id="@+id/view"

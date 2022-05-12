@@ -664,7 +664,12 @@ public class RoundTripFragment extends Fragment implements
                             errorDialog.show();
                             autoCompleteTextViewDrop.setText("");
                             dropMarker.remove();
-                        } else {
+                        }
+                        else if (pickup_city.equals("") || pickup_city.equals(null) || drop_city.equals("") || drop_city.equals(null)){
+                            errorDialog = new ErrorDialog(getActivity(), "Please select different Address.!");
+                            errorDialog.show();
+                        }
+                        else {
                             try {
                                 Date currentDate = inputFormat.parse(curr_converted_date);
                                 Date pickerDate = inputFormat.parse(txtPickupDatePicker.getText().toString());
