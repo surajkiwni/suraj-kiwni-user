@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -274,7 +275,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
         txtTitle.setText("Confirm Booking");
         txtStartTime.setText(startTime);
         txtStartEndDate.setText(startDate);
-        txtEstimatedKm.setText("Est km " + distanceInKm);
+        txtEstimatedKm.setText("Est km " + distanceInKm + " km");
         txtTitleType.setText(serviceType + " ( " + direction + " ) ");
         txtPickupAddress.setText(pickupAddress);
         txtDropAddress.setText(dropAddress);
@@ -530,9 +531,6 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
                             bCompanyEmail = edtCompanyEmail.getText().toString();
                             bComapnyPhone = edtCompanyPhoneNo.getText().toString();
 
-                            PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.BUSINESS_COMPANY_NAME, bCompanyName);
-                            PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.BUSINESS_COMPANY_EMAIL, bCompanyEmail);
-                            PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.BUSINESS_COMPANY_PHONE, bComapnyPhone);
 
                             dialog.dismiss();
                             constraintBusinessInput.setVisibility(View.VISIBLE);
@@ -558,10 +556,10 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
     {
         //Email validation
         if (edtCompanyEmail.getText().toString().isEmpty()) {
-            edtCompanyEmail.setError(getResources().getString(R.string.email_error));
+            edtCompanyEmail.setError(Html.fromHtml("<font color='black'>Please enter valid email address</font>"));
             isCompanyEmailValid = false;
         } else if (!edtCompanyEmail.getText().toString().matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")) {
-            edtCompanyEmail.setError("Invalid email address");
+            edtCompanyEmail.setError(Html.fromHtml("<font color='black'>Invalid email address</font>"));
             isCompanyEmailValid = false;
         } else {
             edtCompanyEmail.setError(null);
@@ -571,10 +569,10 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
         //Phone no validation
         if (edtCompanyPhoneNo.getText().toString().isEmpty())
         {
-            edtCompanyPhoneNo.setError(getResources().getString(R.string.phoneno_error));
+            edtCompanyPhoneNo.setError(Html.fromHtml("<font color='black'>Please enter valid phone no</font>"));
             isCompanyPhoneNoValid = false;
         } else if (edtCompanyPhoneNo.getText().toString().length() > 10) {
-            edtCompanyPhoneNo.setError("Enter 10 digit mobile no");
+            edtCompanyPhoneNo.setError(Html.fromHtml("<font color='black'>Enter 10 digit mobile no</font>"));
             isCompanyPhoneNoValid = false;
         } else {
             edtCompanyPhoneNo.setError(null);
@@ -583,7 +581,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
 
         //Last name validation
         if (edtCompanyName.getText().toString().isEmpty()) {
-            edtCompanyName.setError(getResources().getString(R.string.first_name_error));
+            edtCompanyName.setError(Html.fromHtml("<font color='black'>Please enter valid Name</font>"));
             isCompanyNameValid = false;
         }
         else {
