@@ -52,7 +52,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.LayoutView
         getTimeFromDate(scheduleDatesResp.getVehicle().getRegYear());
         holder.txtRegYearNestedAdt.setText(convertedTime);
 
-        holder.txtPriceNestedAdt.setText(Math.round(scheduleDatesResp.getPrice()) + " /-");
+        holder.txtPriceNestedAdt.setText(Math.round(scheduleDatesResp.getPrice()) + "/-");
         holder.txtProviderNoNestedAdt.setText(scheduleDatesResp.getVehicle().getProvider().getName());
 
         Log.d("TAG","mList SizeNested = " +mList.size());
