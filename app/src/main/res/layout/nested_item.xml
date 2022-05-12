@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ContentDescription">
 
 
@@ -20,10 +20,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linear1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
+            android:layout_marginEnd="@dimen/dp_5"
             app:layout_constraintEnd_toStartOf="@+id/linear2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -31,11 +32,12 @@
 
             <TextView
                 android:id="@+id/txtProviderNameNestedAdt"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@string/trimurti_travel"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/txtProviderNoNestedAdt"
@@ -53,9 +55,10 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linear2"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/dp_3"
+            android:layout_marginEnd="@dimen/dp_5"
             app:layout_constraintEnd_toStartOf="@+id/linear3"
             app:layout_constraintStart_toEndOf="@+id/linear1"
             app:layout_constraintTop_toTopOf="parent">
@@ -63,19 +66,20 @@
 
             <TextView
                 android:id="@+id/txtModelRegNestedAdt"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@string/model_register"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/txtRegYearNestedAdt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/rating1"
                 android:gravity="center"
+                android:src="@drawable/rating1"
                 android:text="@string/_2017"
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -85,24 +89,23 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linear3"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/dp_3"
+            android:layout_marginEnd="@dimen/dp_5"
             app:layout_constraintEnd_toStartOf="@+id/linear4"
             app:layout_constraintStart_toEndOf="@+id/linear2"
-            app:layout_constraintTop_toTopOf="parent"
-
-            >
-
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/txtServRating"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@string/service_rating"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
                 android:id="@+id/imgRating"
@@ -144,8 +147,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/_3100"
-                android:textSize="@dimen/sp_12"
                 android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -158,9 +161,9 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/rounded_button"
                 android:text="@string/book"
-                android:textSize="@dimen/sp_12"
                 android:textAlignment="center"
                 android:textColor="@color/white"
+                android:textSize="@dimen/sp_10"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtPriceNestedAdt" />
