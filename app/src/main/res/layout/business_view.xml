@@ -39,111 +39,151 @@
             app:layout_constraintTop_toBottomOf="@id/titleText" />
 
 
-        <LinearLayout
-            android:id="@+id/linearLayout3"
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
             android:gravity="center"
             android:orientation="horizontal"
-            android:layout_marginTop="@dimen/dp_5"
             app:layout_constraintTop_toBottomOf="@id/view">
 
-            <TextView
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.40"/>
+
+            <TextView
+                android:id="@+id/txtCompanyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="@string/company_name"
                 android:textAlignment="textEnd"
-                android:textColor="#5D5B5B" />
+                android:textColor="#5D5B5B"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/edtCompanyName"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:labelFor="@+id/edtCompanyName"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:ems="10"
-                android:text=""
-                android:inputType="textPersonName"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
-                android:paddingTop="@dimen/dp_10"
-                android:background="@drawable/border_black_for_layout"
-                android:textColor="#5D5B5B"
-                android:autofillHints="name" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout4"
+                android:layout_marginEnd="5dp"
+                android:autofillHints="name"
+                android:background="@drawable/border_black_for_layout"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:labelFor="@+id/edtCompanyName"
+                android:paddingStart="5dp"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingEnd="5dp"
+                android:text=""
+                android:textColor="#5D5B5B"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline1"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
             android:gravity="center"
             android:orientation="horizontal"
-            android:layout_marginTop="@dimen/dp_5"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout1">
 
-            <TextView
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.40"/>
+
+            <TextView
+                android:id="@+id/txtCompanyEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="@string/company_email"
                 android:textAlignment="textEnd"
-                android:textColor="#5D5B5B" />
+                android:textColor="#5D5B5B"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/edtCompanyEmail"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:labelFor="@+id/edtCompanyEmail"
-                android:layout_marginStart="7dp"
                 android:layout_marginEnd="5dp"
-                android:ems="10"
+                android:autofillHints="emailAddress"
                 android:paddingStart="5dp"
-                android:inputType="textEmailAddress"
-                android:text=""
-                android:paddingTop="@dimen/dp_10"
                 android:background="@drawable/border_black_for_layout"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:labelFor="@+id/edtCompanyEmail"
+                android:paddingTop="@dimen/dp_10"
+                android:text=""
                 android:textColor="#5D5B5B"
-                android:autofillHints="emailAddress" />
-        </LinearLayout>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline2"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
             android:gravity="center"
             android:orientation="horizontal"
-            android:layout_marginTop="@dimen/dp_5"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
-            <TextView
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.40"/>
+
+            <TextView
+                android:id="@+id/txtPhoneNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="@string/phone_number"
-                android:textAlignment="textEnd"
-                android:textColor="#5D5B5B" />
+                android:textColor="#5D5B5B"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/edtCompanyPhoneNo"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:labelFor="@+id/edtCompanyPhoneNo"
                 android:layout_marginEnd="5dp"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
+                android:autofillHints="phone"
+                android:background="@drawable/border_black_for_layout"
                 android:ems="10"
                 android:inputType="number"
+                android:labelFor="@+id/edtCompanyPhoneNo"
                 android:maxLength="10"
-                android:text=""
+                android:paddingStart="5dp"
                 android:paddingTop="@dimen/dp_10"
-                android:background="@drawable/border_black_for_layout"
+                android:text=""
                 android:textColor="#5D5B5B"
-                android:autofillHints="phone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline3"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="TextFields" />
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -156,12 +196,14 @@
             android:text="@string/done"
             android:textColor="@color/white"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout1"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/linearLayout1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

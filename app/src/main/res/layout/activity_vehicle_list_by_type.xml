@@ -35,10 +35,7 @@
         android:padding="5dp"
         app:layout_constraintTop_toBottomOf="@+id/toolbar2"
         app:layout_constraintLeft_toLeftOf="@+id/guideline3"
-        app:layout_constraintRight_toRightOf="@+id/guideline4"
-        >
-
-
+        app:layout_constraintRight_toRightOf="@+id/guideline4">
 
         <TextView
             android:id="@+id/txtFromTo"
@@ -53,28 +50,14 @@
             app:layout_constraintRight_toRightOf="parent"
             />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.01" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.99"/>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
-            app:layout_constraintLeft_toLeftOf="@+id/guideline1"
-            app:layout_constraintRight_toRightOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/txtFromTo">
 
 
@@ -84,7 +67,6 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/timeLayout"
-                app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -93,7 +75,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingStart="3dp"
                     android:text="@string/fri_24_dec_mon_27_dec"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_11"
@@ -120,7 +101,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginStart="@dimen/dp_3"
                 app:layout_constraintEnd_toStartOf="@+id/kmLayout"
                 app:layout_constraintStart_toEndOf="@+id/dateLayout"
                 app:layout_constraintTop_toTopOf="parent">
@@ -130,7 +110,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingStart="3dp"
                     android:text="@string/_07_00_pm"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_11"
@@ -155,7 +134,6 @@
                 android:id="@+id/kmLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/timeLayout"
@@ -166,7 +144,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingStart="3dp"
                     android:text="@string/est_km_211km"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_11"

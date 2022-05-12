@@ -1884,7 +1884,7 @@ public class RoundTripFragment extends Fragment implements
         for (LatLng latLngPoint : lstLatLngRoute)
             boundsBuilder.include(latLngPoint);
 
-        int routePadding = 200;
+        int routePadding = 100;
         LatLngBounds latLngBounds = boundsBuilder.build();
         int left, right,bottom, top;
         //googleMap.setPadding(left = 10, top = 30, right = 10, bottom = 10);

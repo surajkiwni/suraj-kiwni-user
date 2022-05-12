@@ -279,6 +279,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/tata_harrier"
                         android:textColor="@color/black"
+                        android:textAlignment="center"
                         app:layout_constraintEnd_toEndOf="@+id/imgVehicleImg"
                         app:layout_constraintStart_toStartOf="@+id/imgVehicleImg"
                         app:layout_constraintTop_toBottomOf="@id/imgVehicleImg" />
@@ -459,8 +460,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="40dp"
-                            android:text="@string/company_name"
+                            android:layout_marginStart="5dp"
+                            android:text="@string/company_name1"
                             android:textAlignment="textEnd"
                             android:textColor="#5D5B5B" />
 
@@ -486,8 +487,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="40dp"
-                            android:text="@string/company_email"
+                            android:layout_marginStart="5dp"
+                            android:text="@string/company_email1"
                             android:textAlignment="textEnd"
                             android:textColor="#5D5B5B" />
 
@@ -513,8 +514,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="40dp"
-                            android:text="@string/phone_number"
+                            android:layout_marginStart="5dp"
+                            android:text="@string/phone_number1"
                             android:textAlignment="textEnd"
                             android:textColor="#5D5B5B" />
 

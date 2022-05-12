@@ -151,9 +151,12 @@
     <string name="successfully">Successfully</string>
     <string name="ok">OK</string>
     <string name="send_me_booking_confirmation_by">SEND ME BOOKING CONFIRMATION BY</string>
-    <string name="company_name">Company Name :</string>
-    <string name="company_email">Company Email :</string>
-    <string name="phone_number">Phone Number :</string>
+    <string name="company_name">Company Name</string>
+    <string name="company_email">Company Email</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="company_name1">Company Name : </string>
+    <string name="company_email1">Company Email: </string>
+    <string name="phone_number1">Phone Number   : </string>
     <string name="add_photo">Add Photo</string>
     <string name="take_photo">Take Photo</string>
     <string name="choose_from_gallery">Choose from Gallery</string>
