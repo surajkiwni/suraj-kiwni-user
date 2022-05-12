@@ -1,9 +1,7 @@
 package com.kiwni.app.user.fragments;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kiwni.app.user.MainActivity;
@@ -20,8 +17,6 @@ import com.kiwni.app.user.R;
 import com.kiwni.app.user.adapter.GridLayoutWrapper;
 import com.kiwni.app.user.adapter.PastAdapter;
 import com.kiwni.app.user.classes.LoadingDialog;
-import com.kiwni.app.user.datamodels.ErrorDialog;
-import com.kiwni.app.user.datamodels.ErrorDialog1;
 import com.kiwni.app.user.interfaces.ErrorDialogInterface;
 import com.kiwni.app.user.models.triphistory.TripsHistoryResp;
 import com.kiwni.app.user.network.ApiClient;

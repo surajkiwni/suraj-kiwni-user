@@ -177,6 +177,8 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
         durationInTraffic = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.DURATION_IN_TRAFFIC, "");
         idToken = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_TOKEN, "");
 
+        Log.d(TAG, "pickup point " + convertedDistance);
+
         /* set data to ui */
         txtFromTo.setText(pickup_city + " To " + drop_city);
         txtStartTime.setText(startTime);
@@ -368,7 +370,8 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
 
                     if(listMap.size() == 0)
                     {
-                        ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), "No Data Found");
+                        //Toast.makeText(getApplicationContext(), "No Data Found", Toast.LENGTH_SHORT).show();
+                        ErrorDialog errorDialog = new ErrorDialog(VehicleTypeListActivity.this, "No Data Found");
                         errorDialog.show();
                     }
                     else

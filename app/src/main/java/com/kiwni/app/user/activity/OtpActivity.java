@@ -253,9 +253,9 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                                                     loadingDialog.hideDialog();
                                                     Toast.makeText(getApplicationContext(), "Not Register user", Toast.LENGTH_SHORT).show();
 
-                                                    /*Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                                     startActivity(intent);
-                                                    finish();*/
+                                                    finish();
                                                 }
                                             } else {
                                                 loadingDialog.hideDialog();
