@@ -38,7 +38,8 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
     String startDateFromString = "", startTimeFromString = "", endDateFromString = "";
     byte[] valueDecoded= new byte[0];
     String TAG = this.getClass().getSimpleName();
-    String splittedStr1 = "", splittedStr2 = "", splittedStr3 = "", splittedStr4 = "";
+    String splittedStr1 = "", splittedStr2 = "", splittedStr3 = "", splittedStr4 = "",
+            concatDirection = "";
 
     public UpcomingAdapter(Context context, List<TripsHistoryResp> tripHistoryList) {
         this.tripHistoryList = tripHistoryList;
@@ -71,7 +72,18 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
         getTimeFromString(tripListResp.getStartTime());
         getEndDateFromString(tripListResp.getEndTime());
 
-        holder.txtDate.setText(startDateFromString + " - " + endDateFromString);
+        concatDirection = splittedStr1 + "-" + splittedStr2;
+
+        if(concatDirection.equals("one-way"))
+        {
+            holder.txtDate.setText(startDateFromString);
+        }
+        else                                            //if(concatDirection.equals("two-way"))
+        {
+            holder.txtDate.setText(startDateFromString + " - " + endDateFromString);
+        }
+
+        //display start time
         holder.txtTime.setText(startTimeFromString);
 
         if(tripListResp.getDriver() == null)

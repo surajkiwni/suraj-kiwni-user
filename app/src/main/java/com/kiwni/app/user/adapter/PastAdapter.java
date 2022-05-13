@@ -62,7 +62,7 @@ public class PastAdapter extends RecyclerView.Adapter<PastAdapter.PastViewHolder
         }
         else
         {
-            holder.txtPrice.setText(0);
+            holder.txtPrice.setText("0");
         }
 
         getDateAndTimeFromString(tripListResp.getStartTime());
