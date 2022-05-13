@@ -10,11 +10,10 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/left_right_shadow"
         android:layout_marginHorizontal="8dp"
+        android:background="@drawable/left_right_shadow"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline8"
@@ -30,26 +29,25 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.97" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/airportTabLayout"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:background="@drawable/border_black_for_tab"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        app:tabBackground="@drawable/tab_selector_background_outstation"
-        app:tabGravity="fill"
-        app:tabIndicatorAnimationMode="elastic"
-        app:tabIndicatorColor="#FFFFFF"
-        app:tabIndicatorHeight="0dp"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/white"
-        app:tabTextColor="@color/black"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/airportTabLayout"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/border_black_for_tab"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintStart_toStartOf="@+id/guideline8"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabBackground="@drawable/tab_selector_background_outstation"
+            app:tabGravity="fill"
+            app:tabIndicatorAnimationMode="elastic"
+            app:tabIndicatorColor="@color/white"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="@color/button_color_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout

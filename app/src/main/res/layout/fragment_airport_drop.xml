@@ -71,7 +71,7 @@
                             android:imeOptions="actionDone"
                             android:inputType="text"
                             android:selectAllOnFocus="true"
-                            android:textColorHint="#000000"
+                            android:textColorHint="@color/black"
                             android:textSize="@dimen/sp_12"
                             />
 
@@ -113,7 +113,7 @@
                             android:imeOptions="actionDone"
                             android:inputType="text"
                             android:selectAllOnFocus="true"
-                            android:textColorHint="#000000"
+                            android:textColorHint="@color/black"
                             android:textSize="@dimen/sp_12"
                             app:layout_editor_absoluteY="10dp" />
 
@@ -158,6 +158,7 @@
                             android:layout_weight="2"
                             android:text="@string/pickup_on"
                             android:textSize="11sp"
+                            android:textColor="@color/black"
                             app:layout_constraintBottom_toTopOf="@+id/layoutPickupDatePicker"
                             app:layout_constraintStart_toStartOf="@+id/layoutPickupDatePicker"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -290,21 +291,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:context=".MainActivity" />
 
-        <!--<TextView
-            android:id="@+id/txtMarkerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:minWidth="250dp"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:text=""
-            android:textColor="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />-->
-
         <ImageView
             android:id="@+id/imageMarker"
             android:layout_width="wrap_content"
@@ -343,7 +329,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:background="@color/black"
+                android:background="@color/button_color_dark"
                 android:text="@string/confirm_location"
                 android:textColor="@color/white" />
 
@@ -369,7 +355,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
-                android:background="@color/black"
+                android:background="@color/button_color_dark"
                 android:text="@string/current_location"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
@@ -381,7 +367,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
-                android:background="@color/black"
+                android:background="@color/button_color_dark"
                 android:text="@string/locate_on_map"
                 android:textColor="@color/white"
                 android:textSize="15sp" />

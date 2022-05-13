@@ -32,9 +32,6 @@
                 android:background="@drawable/border_grey2"
                 app:layout_constraintTop_toTopOf="@+id/mainConstraintLayout">
 
-
-
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
@@ -95,17 +92,6 @@
                     app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-                    <!--<ImageView
-                        android:id="@+id/greenSpotImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/dp_15"
-                        android:src="@drawable/pickuppoint"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/txtDropAddress"
-                        android:contentDescription="@string/pickuppointimg" />-->
-
                     <ImageView
                         android:id="@+id/greenSpotImage"
                         android:layout_width="wrap_content"
@@ -135,7 +121,6 @@
                         app:layout_constraintStart_toEndOf="@+id/greenSpotImage"
                         app:layout_constraintTop_toTopOf="parent" />
 
-
                     <View
                         android:id="@+id/imageView7"
                         android:layout_width="5dp"
@@ -148,11 +133,7 @@
                         app:layout_constraintRight_toRightOf="@+id/greenSpotImage"
                         />
 
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout2"
@@ -212,7 +193,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/txtProviderName"
                         app:layout_constraintVertical_bias="0.16000003" />
 
-
                     <ImageView
                         android:id="@+id/imageClock"
                         android:layout_width="wrap_content"
@@ -234,8 +214,6 @@
                         app:layout_constraintStart_toEndOf="@+id/imageClock"
                         app:layout_constraintTop_toBottomOf="@+id/imageView2"
                         app:layout_constraintVertical_bias="0.100000024" />
-
-
 
                     <ImageView
                         android:id="@+id/estImage"
@@ -260,7 +238,6 @@
                         app:layout_constraintStart_toEndOf="@+id/estImage"
                         app:layout_constraintTop_toBottomOf="@+id/imageClock"
                         app:layout_constraintVertical_bias="0.100000024" />
-
 
                     <ImageView
                         android:id="@+id/imgVehicleImg"
@@ -296,15 +273,14 @@
                         app:layout_constraintTop_toBottomOf="@id/txtVehicleName"
                         tools:layout_editor_absoluteY="140dp" />
 
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout3"
@@ -330,7 +306,6 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <View
                     android:id="@+id/view"
                     android:layout_width="match_parent"
@@ -338,7 +313,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:background="#707070"
+                    android:background="@color/view_color_grey"
                     app:layout_constraintTop_toBottomOf="@id/titleText" />
 
                 <CheckBox
@@ -351,12 +326,9 @@
                     android:checked="true"
                     android:textColor="@color/black"
                     android:theme="@style/RadioButtonPink"
-                    app:buttonTint="#FF1414"
+                    app:buttonTint="@color/radio_checkbox_color"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/view" />
-
-                <!-- android:background="@drawable/state_check_uncheck"-->
-
 
                 <CheckBox
                     android:id="@+id/chkPhone"
@@ -368,7 +340,7 @@
                     android:checked="true"
                     android:textColor="@color/black"
                     android:theme="@style/RadioButtonPink"
-                    app:buttonTint="#FF1414"
+                    app:buttonTint="@color/radio_checkbox_color"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/chkEmail"
                     app:layout_constraintTop_toBottomOf="@id/view" />
@@ -384,7 +356,7 @@
                     android:checked="true"
                     android:textColor="@color/black"
                     android:theme="@style/RadioButtonPink"
-                    app:buttonTint="#FF1414"
+                    app:buttonTint="@color/radio_checkbox_color"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/chkPhone"
                     app:layout_constraintTop_toBottomOf="@+id/view" />
@@ -419,7 +391,7 @@
                         android:onClick="onRadioClick"
                         android:checked="true"
                         android:textSize="@dimen/sp_12"
-                        app:buttonTint="#FF1414"
+                        app:buttonTint="@color/radio_checkbox_color"
                         tools:ignore="UsingOnClickInXml" />
 
                     <RadioButton
@@ -430,7 +402,7 @@
                         android:text="@string/business"
                         android:onClick="onRadioClick"
                         android:textSize="@dimen/sp_12"
-                        app:buttonTint="#FF1414"
+                        app:buttonTint="@color/radio_checkbox_color"
                         app:layout_constraintLeft_toLeftOf="parent"
                         tools:ignore="UsingOnClickInXml" />
 
@@ -463,7 +435,7 @@
                             android:layout_marginStart="5dp"
                             android:text="@string/company_name1"
                             android:textAlignment="textEnd"
-                            android:textColor="#5D5B5B" />
+                            android:textColor="@color/business_view_text_color" />
 
                         <TextView
                             android:id="@+id/txtCompanyName"
@@ -472,7 +444,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginEnd="5dp"
                             android:text="@string/komfrey_technology_pvt_ltd"
-                            android:textColor="#5D5B5B" />
+                            android:textColor="@color/business_view_text_color" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -490,7 +462,7 @@
                             android:layout_marginStart="5dp"
                             android:text="@string/company_email1"
                             android:textAlignment="textEnd"
-                            android:textColor="#5D5B5B" />
+                            android:textColor="@color/business_view_text_color" />
 
                         <TextView
                             android:id="@+id/txtCompanyEmail"
@@ -499,7 +471,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginEnd="5dp"
                             android:text="@string/komfrey123_gmail_com"
-                            android:textColor="#5D5B5B" />
+                            android:textColor="@color/business_view_text_color" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -517,7 +489,7 @@
                             android:layout_marginStart="5dp"
                             android:text="@string/phone_number1"
                             android:textAlignment="textEnd"
-                            android:textColor="#5D5B5B" />
+                            android:textColor="@color/business_view_text_color" />
 
                         <TextView
                             android:id="@+id/txtCompanyPhone"
@@ -526,7 +498,7 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginEnd="5dp"
                             android:text="@string/_9856784578"
-                            android:textColor="#5D5B5B" />
+                            android:textColor="@color/business_view_text_color" />
                     </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -543,7 +515,7 @@
                 android:hint="@string/kiwni20"
                 android:padding="5dp"
                 android:inputType="text"
-                android:textColor="#858585"
+                android:textColor="@color/coupan_text_color"
                 app:layout_constraintEnd_toStartOf="@+id/appCompatButton"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -593,7 +565,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:background="#707070"
+                    android:background="@color/view_color_grey"
                     app:layout_constraintTop_toBottomOf="@id/titleText1" />
 
                 <LinearLayout
@@ -616,7 +588,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:layout_weight="1"
-                            android:text="@string/ride_fare" />
+                            android:text="@string/ride_fare"
+                            android:textColor="@color/black"/>
 
                         <LinearLayout
                             android:id="@+id/nestedLinearLayout1"
@@ -627,7 +600,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/Rs" />
+                                android:text="@string/Rs"
+                                android:textColor="@color/black"/>
 
                             <TextView
                                 android:id="@+id/txtRideFare"
@@ -636,7 +610,8 @@
                                 android:layout_marginStart="5dp"
                                 android:layout_marginEnd="20dp"
                                 android:text="@string/_5400"
-                                android:textAlignment="textEnd" />
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/black"/>
 
                         </LinearLayout>
 
@@ -655,7 +630,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:layout_weight="1"
-                            android:text="@string/extra_fare_km" />
+                            android:text="@string/extra_fare_km"
+                            android:textColor="@color/black"/>
 
                         <TextView
                             android:id="@+id/txtExtraFareKm"
@@ -665,6 +641,7 @@
                             android:layout_marginEnd="20dp"
                             android:layout_weight="1"
                             android:text="@string/_0_km"
+                            android:textColor="@color/black"
                             android:textAlignment="textEnd" />
 
                     </LinearLayout>
@@ -681,6 +658,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:layout_weight="1"
+                            android:textColor="@color/black"
                             android:text="@string/extra_fare_per_km" />
 
                         <TextView
@@ -691,6 +669,7 @@
                             android:layout_marginEnd="20dp"
                             android:layout_weight="1"
                             android:text="@string/_0_km"
+                            android:textColor="@color/black"
                             android:textAlignment="textEnd" />
 
                     </LinearLayout>
@@ -708,6 +687,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="5dp"
                             android:layout_weight="1"
+                            android:textColor="@color/black"
                             android:text="Total Base Fare"
                             tools:ignore="HardcodedText" />
 
@@ -719,6 +699,7 @@
                             android:layout_marginEnd="20dp"
                             android:layout_weight="1"
                             android:text="@string/_0_km"
+                            android:textColor="@color/black"
                             android:textAlignment="textEnd" />
 
                     </LinearLayout>
@@ -735,6 +716,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:layout_weight="1"
+                            android:textColor="@color/black"
                             android:text="@string/apply_coupon" />
 
                         <LinearLayout
@@ -746,7 +728,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/Rs" />
+                                android:text="@string/Rs"
+                                android:textColor="@color/black"/>
 
 
                             <TextView
@@ -757,6 +740,7 @@
                                 android:layout_marginEnd="20dp"
                                 android:layout_weight="1"
                                 android:text="@string/_1080"
+                                android:textColor="@color/black"
                                 android:textAlignment="textEnd" />
 
                         </LinearLayout>
@@ -774,7 +758,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:layout_weight="1"
-                            android:text="@string/gst_5" />
+                            android:text="@string/gst_5"
+                            android:textColor="@color/black"/>
 
                         <LinearLayout
                             android:id="@+id/nestedLinearLayout2"
@@ -785,7 +770,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/Rs" />
+                                android:text="@string/Rs"
+                                android:textColor="@color/black"/>
 
                             <TextView
                                 android:id="@+id/txtGst"
@@ -795,6 +781,7 @@
                                 android:layout_marginEnd="20dp"
                                 android:layout_weight="1"
                                 android:text="@string/_970"
+                                android:textColor="@color/black"
                                 android:textAlignment="textEnd" />
 
                         </LinearLayout>
@@ -870,7 +857,6 @@
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/border_grey2"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
-
 
                 <LinearLayout
                     android:id="@+id/main1Layout"

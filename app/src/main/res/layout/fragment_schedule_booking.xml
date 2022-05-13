@@ -26,7 +26,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.95">
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/subConstraintLayout"
                 android:layout_width="match_parent"
@@ -62,10 +61,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/dp_10"
                         android:layout_marginBottom="10dp"
-                        android:padding="@dimen/dp_2"
-                        android:gravity="center"
                         android:background="@drawable/button_rounded"
+                        android:gravity="center"
                         android:orientation="horizontal"
+                        android:padding="@dimen/dp_2"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
@@ -86,9 +85,8 @@
                             android:imeOptions="actionDone"
                             android:inputType="text"
                             android:selectAllOnFocus="true"
-                            android:textColorHint="#000000"
-                            android:textSize="@dimen/sp_12"
-                            />
+                            android:textColorHint="@color/black"
+                            android:textSize="@dimen/sp_12" />
 
                         <ImageView
                             android:id="@+id/imgGreenMarker"
@@ -104,11 +102,11 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="@dimen/dp_10"
                         android:layout_marginHorizontal="@dimen/dp_10"
-                        android:padding="@dimen/dp_2"
+                        android:layout_marginVertical="@dimen/dp_10"
                         android:background="@drawable/button_rounded"
                         android:orientation="horizontal"
+                        android:padding="@dimen/dp_2"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linear_auto_pickup">
@@ -128,7 +126,7 @@
                             android:imeOptions="actionDone"
                             android:inputType="text"
                             android:selectAllOnFocus="true"
-                            android:textColorHint="#000000"
+                            android:textColorHint="@color/black"
                             android:textSize="@dimen/sp_12"
                             app:layout_editor_absoluteY="10dp" />
 
@@ -156,8 +154,7 @@
                     android:layout_marginBottom="10dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/autoCompleteConstraintLayout"
-                    >
+                    app:layout_constraintTop_toBottomOf="@+id/autoCompleteConstraintLayout">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/mainConstraintLayout1"
@@ -171,6 +168,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:text="@string/pickup_on"
+                            android:textColor="@color/black"
                             android:textSize="11sp"
                             app:layout_constraintBottom_toTopOf="@+id/layoutPickupDatePicker"
                             app:layout_constraintStart_toStartOf="@+id/layoutPickupDatePicker"
@@ -193,10 +191,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:src="@drawable/calender"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/txtPickupDatePicker"
                                 app:layout_constraintBottom_toBottomOf="@+id/txtPickupDatePicker"
-                                />
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/txtPickupDatePicker" />
 
                             <TextView
                                 android:id="@+id/txtPickupDatePicker"
@@ -205,8 +202,8 @@
                                 android:layout_marginStart="5dp"
                                 android:gravity="center"
                                 android:text="@string/fri_24_dec"
-                                android:textSize="@dimen/sp_12"
                                 android:textColor="@color/black"
+                                android:textSize="@dimen/sp_12"
                                 app:layout_constraintStart_toEndOf="@+id/calenderImage"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -226,35 +223,34 @@
                                 android:id="@+id/clockImage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/clock"
                                 android:layout_marginStart="10dp"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/pickup_spinner_time"
+                                android:src="@drawable/clock"
                                 app:layout_constraintBottom_toBottomOf="@+id/pickup_spinner_time"
-                                />
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/pickup_spinner_time" />
 
                             <Spinner
                                 android:id="@+id/pickup_spinner_time"
                                 android:layout_width="@dimen/dp_120"
                                 android:layout_height="@dimen/dp_30"
-                                android:layout_marginStart="5dp"
                                 android:layout_centerVertical="true"
+                                android:layout_marginStart="5dp"
                                 android:background="@drawable/spinner_background"
                                 android:gravity="center"
+                                android:spinnerMode="dropdown"
                                 android:text="@string/_07_00"
                                 android:textColor="@color/black"
-                                android:spinnerMode="dropdown"
                                 app:layout_constraintStart_toEndOf="@+id/clockImage"
-                                app:layout_constraintTop_toTopOf="parent"/>
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <ImageView
                                 android:id="@+id/dropArrow"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/down_arrow"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"/>
+                                app:layout_constraintTop_toTopOf="parent" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -324,21 +320,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:context=".MainActivity" />
 
-        <!--<TextView
-            android:id="@+id/txtMarkerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:minWidth="250dp"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:text=""
-            android:textColor="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />-->
-
         <ImageView
             android:id="@+id/imageMarker"
             android:layout_width="wrap_content"
@@ -377,7 +358,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:background="@color/black"
+                android:background="@color/button_color_dark"
                 android:text="@string/confirm_location"
                 android:textColor="@color/white" />
 
@@ -403,7 +384,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
-                android:background="@color/black"
+                android:background="@color/button_color_dark"
                 android:text="@string/current_location"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
@@ -415,7 +396,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
-                android:background="@color/black"
+                android:background="@color/button_color_dark"
                 android:text="@string/locate_on_map"
                 android:textColor="@color/white"
                 android:textSize="15sp" />

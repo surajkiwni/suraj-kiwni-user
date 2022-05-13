@@ -77,7 +77,7 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
 
         txtTitle.setText("Safety");
 
-        alertBtn.setBackgroundColor(Color.BLACK);
+        alertBtn.setBackgroundResource(R.color.button_color_dark);
         alertBtn.setTextColor(Color.WHITE);
 
         textPara2.setText(Html.fromHtml("Save the Mobile Number of up to <br/>\n" +
@@ -108,7 +108,7 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
                 alertBtn.setTextColor(Color.BLACK);
 
                 //tryLaterBtn.setBackgroundResource(R.drawable.square_border);
-                btnTryLater.setBackgroundColor(Color.BLACK);
+                btnTryLater.setBackgroundResource(R.color.button_color_dark);
                 btnTryLater.setTextColor(Color.WHITE);
 
                 Navigation.findNavController(view).navigate(R.id.action_nav_safety_to_mainActivity);
@@ -118,7 +118,7 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
         alertBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertBtn.setBackgroundColor(Color.BLACK);
+                alertBtn.setBackgroundResource(R.color.button_color_dark);
                 alertBtn.setTextColor(Color.WHITE);
 
                 btnTryLater.setBackgroundResource(R.drawable.square_border);
@@ -132,7 +132,7 @@ public class SafetyFragment extends Fragment implements BackKeyPressedListener {
                 AppCompatButton btnSaveAlert = updateAlertDialog.findViewById(R.id.btnSaveAlert);
                 AppCompatButton btnCancelUpdateAlert = updateAlertDialog.findViewById(R.id.btnCancelUpdateAlert);
 
-                btnSaveAlert.setBackgroundColor(Color.BLACK);
+                btnSaveAlert.setBackgroundResource(R.color.button_color_dark);
                 btnSaveAlert.setTextColor(Color.WHITE);
                 imageBack.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -5,21 +5,21 @@
         <shape
             android:shape = "rectangle">
             <solid
-                android:color="#7B7E7E" />
+                android:color="@color/button_color_dark" />
 
             <stroke
                 android:width="1px"
-                android:color="#A1A1A1" />
+                android:color="@color/button_color_light" />
             <corners android:radius="20dp" />
         </shape>
     </item>
     <item android:state_pressed="true" >
         <shape>
             <solid
-                android:color="#7B7E7E" />
+                android:color="@color/button_color_dark" />
             <stroke
                 android:width="1px"
-                android:color="#A1A1A1" />
+                android:color="@color/button_color_light" />
             <corners android:radius="20dp" />
         </shape>
     </item>

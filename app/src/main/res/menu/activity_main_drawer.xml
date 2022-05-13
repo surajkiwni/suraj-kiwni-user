@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="navigation_view"
-    tools:keep="@menu/activity_main_drawer">
+    tools:keep="@menu/activity_main_drawer"
+    tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_myrides"
             android:icon="@drawable/my_ride"
-            android:title="@string/menu_myrides"
-            />
+            android:title="@string/menu_myrides" />
         <item
             android:id="@+id/nav_payment"
             android:icon="@drawable/payment"

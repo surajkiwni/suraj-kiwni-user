@@ -4,16 +4,27 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Admin/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_expandable_list_item_2.xml" value="0.1875" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/black_rounded_button.xml" value="0.1215" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/border_black_for_layout.xml" value="0.164" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/border_black_for_tab.xml" value="0.1215" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/border_grey2.xml" value="0.1215" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/border_grey3.xml" value="0.1215" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/button_rounded.xml" value="0.1215" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/chip_selector.xml" value="0.1215" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/constraint_layout_border.xml" value="0.1215" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/dotted_line.xml" value="0.164" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/dottedt_line.xml" value="0.1215" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/horizontal_dotted_line.xml" value="0.1215" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/left_right_shadow.xml" value="0.164" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/radius_less_rounded_button.xml" value="0.164" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/rounded_button.xml" value="0.164" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/rounded_button2.xml" value="0.164" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/spinner_background.xml" value="0.164" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/tab_outstation_color.xml" value="0.1215" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/tab_selected.xml" value="0.164" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/tab_selector_background.xml" value="0.1215" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/tab_selector_background_outstation.xml" value="0.1215" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/drawable/viewcabs_roundedbutton.xml" value="0.1215" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/activity_booking_details.xml" value="0.18532818532818532" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/activity_car_list_type.xml" value="0.18532818532818532" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/activity_confirm_booking.xml" value="0.176" />
@@ -33,7 +44,7 @@
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/fragment_about.xml" value="0.25" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/fragment_airport.xml" value="0.25" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/fragment_airport_drop.xml" value="0.25" />
-        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/fragment_airport_pickup.xml" value="0.25" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/fragment_airport_pickup.xml" value="0.18532818532818532" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/fragment_current_booking.xml" value="0.25" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/fragment_faq.xml" value="0.25" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/fragment_home.xml" value="0.25" />
@@ -50,6 +61,7 @@
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/fragment_slideshow.xml" value="0.1" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/fragment_support.xml" value="0.25" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/fragment_upcoming.xml" value="0.1875" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/header_title.xml" value="0.13680555555555557" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/in_case_emergency.xml" value="0.1875" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/item_review_layout.xml" value="0.1875" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/nav_header_main.xml" value="0.1875" />
@@ -60,7 +72,7 @@
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/payment_screen.xml" value="0.18532818532818532" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/reason_cancel_trip.xml" value="0.1875" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/reservation_confirmation_krn_no_dialog.xml" value="0.1875" />
-        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/safety_fragment.xml" value="0.25" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/safety_fragment.xml" value="0.18532818532818532" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/sort_layout.xml" value="0.25" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/spinner_item.xml" value="0.1875" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/support_recycler_item.xml" value="0.1" />
@@ -68,7 +80,7 @@
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/title_each_item.xml" value="0.25" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/upcoming_recycle.xml" value="0.1875" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/update_alert_details.xml" value="0.1875" />
-        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/menu/activity_main_drawer.xml" value="0.128" />
+        <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/menu/activity_main_drawer.xml" value="0.18532818532818532" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/down_shadow.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/grey_border.xml" value="0.1635" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />

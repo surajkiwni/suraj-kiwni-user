@@ -46,11 +46,11 @@
             app:tabBackground="@drawable/tab_selector_background_outstation"
             app:tabGravity="fill"
             app:tabIndicatorAnimationMode="elastic"
-            app:tabIndicatorColor="#FFFFFF"
+            app:tabIndicatorColor="@color/white"
             app:tabIndicatorHeight="0dp"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="@color/black" />
+            app:tabTextColor="@color/button_color_dark" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
