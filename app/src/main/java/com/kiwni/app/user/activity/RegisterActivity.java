@@ -7,6 +7,7 @@ import androidx.constraintlayout.utils.widget.ImageFilterButton;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -156,6 +157,8 @@ public class RegisterActivity extends AppCompatActivity {
             isFirstNameValid = true;
         }
     }
+
+
 
     @Override
     public void onBackPressed() {

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -136,14 +137,12 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
         /* Phone no validation */
         if (edtPhoneNumber.getText().toString().isEmpty())
         {
-            ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), getResources().getString(R.string.phoneno_error));
-            errorDialog.show();
+            edtPhoneNumber.setError(Html.fromHtml("<font color='white'>Please enter valid phone no</font>"));
             isPhoneNoValid = false;
         }
         else if (edtPhoneNumber.getText().toString().length() > 10)
         {
-            ErrorDialog errorDialog = new ErrorDialog(getApplicationContext(), getResources().getString(R.string.enter_10_digit_mobile_no));
-            errorDialog.show();
+            edtPhoneNumber.setError(Html.fromHtml("<font color='white'>Enter 10 digit mobile no</font>"));
             isPhoneNoValid = false;
         }
         else

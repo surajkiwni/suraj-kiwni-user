@@ -2,7 +2,10 @@ package com.kiwni.app.user.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -16,11 +19,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.kiwni.app.user.MainActivity;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.network.AppConstants;
@@ -34,6 +44,7 @@ public class SplashActivity extends AppCompatActivity
 
     String TAG = this.getClass().getSimpleName();
     String mobile = "";
+    private static final int REQUEST_CHECK_SETTINGS = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,109 +56,114 @@ public class SplashActivity extends AppCompatActivity
         hasLoggedIn = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.hasLoggedIn, false);
         Log.d(TAG, "logged in status = " + hasLoggedIn);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run()
-            {
-                if (ContextCompat.checkSelfPermission(SplashActivity.this,
-                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-                {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(SplashActivity.this,
-                            Manifest.permission.ACCESS_FINE_LOCATION))
-                    {
-                        ActivityCompat.requestPermissions(SplashActivity.this,
-                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                    }
-                    else
-                    {
-                        ActivityCompat.requestPermissions(SplashActivity.this,
-                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                    }
-                }
-                else
-                {
-                    /* location permission */
-                    startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), AppConstants.GPS_REQUEST);
+        //call for location enable check
+        displayLocationSettingsRequest(this);
 
-                    if(hasLoggedIn)
-                    {
-                        /* already login */
-                        mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
-                        Intent i = new Intent(SplashActivity.this, MainActivity.class);
-                        PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, mobile);
-                        startActivity(i);
-                        finish();
-                    }
-                    else
-                    {
-                        /* call home activity */
-                        Intent i = new Intent(SplashActivity.this, HomeActivity.class);
-                        startActivity(i);
-                        finish();
-                    }
-
-                }
-            }
-        }, AppConstants.SPLASH_SCREEN_TIME_OUT);
     }
+    private void displayLocationSettingsRequest(Context context) {
+        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
+                .addApi(LocationServices.API).build();
+        googleApiClient.connect();
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(10000 / 2);
 
-        if (requestCode == 1)
-        {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
-                if (ContextCompat.checkSelfPermission(SplashActivity.this,
-                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                {
-                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+        builder.setAlwaysShow(true);
 
-                    startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), AppConstants.GPS_REQUEST);
+        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(LocationSettingsResult result) {
+                Status status = result.getStatus();
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        Log.i("TAG", "All location settings are satisfied.");
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run()
+                            {
+                                if(hasLoggedIn)
+                                {
+                                    /* already login */
+                                    mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
+                                    Intent i = new Intent(SplashActivity.this, MainActivity.class);
+                                    PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, mobile);
+                                    startActivity(i);
+                                }
+                                else
+                                {
+                                    /* call home activity */
+                                    Intent i = new Intent(SplashActivity.this, HomeActivity.class);
+                                    startActivity(i);
+                                }
+                                finish();
+                            }
+                        }, AppConstants.SPLASH_SCREEN_TIME_OUT);
+
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        Log.i("TAG", "Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
+
+                        try {
+                            // Show the dialog by calling startResolutionForResult(), and check the result
+                            // in onActivityResult().
+                            status.startResolutionForResult(SplashActivity.this, REQUEST_CHECK_SETTINGS);
+                        } catch (IntentSender.SendIntentException e) {
+                            Log.i("TAG", "PendingIntent unable to execute request.");
+
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        Log.i("TAG", "Location settings are inadequate, and cannot be fixed here. Dialog not created.");
+                        break;
                 }
             }
-            else
-            {
-                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == AppConstants.GPS_REQUEST)
-        {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run()
-                {
-                    if(hasLoggedIn)
-                    {
-                        /* already login */
-                        mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
+        if (requestCode == LocationRequest.PRIORITY_HIGH_ACCURACY) {
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    // All required changes were successfully made
+                    Log.i("TAG", "onActivityResult: GPS Enabled by user");
 
-                        Intent i = new Intent(SplashActivity.this, MainActivity.class);
-                        PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, mobile);
-                        startActivity(i);
-                    }
-                    else
-                    {
-                        /* call home activity */
-                        Intent i = new Intent(SplashActivity.this, HomeActivity.class);
-                        startActivity(i);
-                    }
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run()
+                        {
+                            if(hasLoggedIn)
+                            {
+                                /* already login */
+                                mobile = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
+                                Intent i = new Intent(SplashActivity.this, MainActivity.class);
+                                PreferencesUtils.putPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, mobile);
+                                startActivity(i);
+                            }
+                            else
+                            {
+                                /* call home activity */
+                                Intent i = new Intent(SplashActivity.this, HomeActivity.class);
+                                startActivity(i);
+                            }
+                            finish();
+                        }
+                    }, AppConstants.SPLASH_SCREEN_TIME_OUT);
+                    break;
+                case Activity.RESULT_CANCELED:
+                    // The user was asked to change settings, but chose not to
                     finish();
-                }
-            }, AppConstants.SPLASH_SCREEN_TIME_OUT);
-        }
-        else
-        {
-            Log.d(TAG, "failed");
-            finish();
+                    Log.i("TAG", "onActivityResult: User rejected GPS request");
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
