@@ -214,9 +214,9 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcome
                             AlertDialog b1 = dialogBuilder.create();
 
                             b1.show();
-                            AppCompatButton btnOk = dialogView1.findViewById(R.id.btnOk);
+                            TextView txtOk = dialogView1.findViewById(R.id.txtOk);
 
-                            btnOk.setOnClickListener(new View.OnClickListener() {
+                            txtOk.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view)
                                 {
