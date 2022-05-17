@@ -8,14 +8,20 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -45,6 +51,11 @@ public class SplashActivity extends AppCompatActivity
     String TAG = this.getClass().getSimpleName();
     String mobile = "";
     private static final int REQUEST_CHECK_SETTINGS = 100;
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
+    ConstraintLayout constraintLayoutNetwork;
+    ImageView imgSplash;
+    AppCompatButton btnGoToSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,14 +63,88 @@ public class SplashActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        constraintLayoutNetwork = findViewById(R.id.constraintLayoutNetwork);
+        imgSplash = findViewById(R.id.imgSplash);
+        btnGoToSettings = findViewById(R.id.btnGoToSettings);
+
         /* session handling */
         hasLoggedIn = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.hasLoggedIn, false);
         Log.d(TAG, "logged in status = " + hasLoggedIn);
 
         //call for location enable check
-        displayLocationSettingsRequest(this);
+        if (checkLocationPermission()) {
+            displayLocationSettingsRequest(this);
+        }
+
+        btnGoToSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        });
 
     }
+    // app location permission
+
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // sees the explanation, try again to request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        displayLocationSettingsRequest(this);
+                    }
+
+                } else {
+                    imgSplash.setVisibility(View.GONE);
+                    constraintLayoutNetwork.setVisibility(View.VISIBLE);
+
+                }
+
+            }
+
+        }
+    }
+
+    //enable device location mobile
     private void displayLocationSettingsRequest(Context context) {
         GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API).build();
@@ -185,5 +270,15 @@ public class SplashActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (checkLocationPermission()) {
+            displayLocationSettingsRequest(SplashActivity.this);
+            imgSplash.setVisibility(View.VISIBLE);
+            constraintLayoutNetwork.setVisibility(View.GONE);
+        }
     }
 }

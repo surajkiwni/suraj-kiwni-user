@@ -130,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         // R.id.nav_home R.id.nav_myrides
+        navigationView.setItemIconTintList(null);
+        navigationView.setItemBackground(null);
         AppBarConfiguration mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home)
                 .setOpenableLayout(drawer)

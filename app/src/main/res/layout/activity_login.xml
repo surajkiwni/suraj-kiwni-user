@@ -127,7 +127,7 @@
             android:layout_height="@dimen/dp_30"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dp_10"
-            android:background="@drawable/viewcabs_roundedbutton"
+            android:background="@drawable/black_rounded_button"
             android:shadowColor="#00000029"
             android:text="@string/confirm"
             android:textColor="@color/white"

@@ -296,6 +296,9 @@
     <string name="update_alert_details">Update Alert Details</string>
     <string name="other_contact_person">Other Contact Person</string>
     <string name="name">Name</string>
+    <string name="location_permission_required">Location Permission Required</string>
+    <string name="network_message_splash_activity">For providing kiwni services need to enable location services</string>
+    <string name="go_to_settings">Go to Settings</string>
 
 
     <string-array name="select_year">

@@ -1,6 +1,10 @@
 package com.kiwni.app.user.ui.offers;
 
+import static java.lang.System.out;
+
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +69,7 @@ public class OffersFragment extends Fragment implements BackKeyPressedListener {
         return view;
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "WrongThread"})
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -74,6 +78,9 @@ public class OffersFragment extends Fragment implements BackKeyPressedListener {
         offersRecyclerView = view.findViewById(R.id.offersRecyclerView);
         imgBack = view.findViewById(R.id.imgBack);
         txtTitle = view.findViewById(R.id.txtTitle);
+
+        /*Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(R.drawable.offers));
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);*/
 
         txtTitle.setText("Offers");
 

@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityHelp
         edtPhoneNumber.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                btnConfirm.setBackgroundResource(R.drawable.black_rounded_button);
+                btnConfirm.setBackgroundResource(R.drawable.viewcabs_roundedbutton);
                 return false;
             }
         });
