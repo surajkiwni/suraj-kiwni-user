@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements
                 AppCompatButton cancelButton = view.findViewById(R.id.cancelButton);
                 AppCompatButton saveButton = view.findViewById(R.id.saveButton);
 
-                saveButton.setBackgroundColor(Color.BLACK);
+                saveButton.setBackgroundResource(R.color.button_color_dark);
                 saveButton.setTextColor(Color.WHITE);
 
                 cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -246,8 +246,8 @@ public class MainActivity extends AppCompatActivity implements
                     {
                         saveButton.setBackgroundColor(Color.TRANSPARENT);
                         saveButton.setTextColor(Color.BLACK);
-                        cancelButton.setBackgroundColor(Color.BLACK);
-                        cancelButton.setTextColor(Color.WHITE);
+                        /*cancelButton.setBackgroundColor(Color.BLACK);
+                        cancelButton.setTextColor(Color.WHITE);*/
                         bottomSheetDialog.dismiss();
                     }
                 });
