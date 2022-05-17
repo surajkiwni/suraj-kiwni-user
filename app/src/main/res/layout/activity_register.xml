@@ -13,9 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_40"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -52,13 +54,13 @@
                 android:id="@+id/edtFirstName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_14"
-                android:labelFor="@+id/edtFirstName"
+                android:autofillHints="name"
                 android:inputType="textPersonName"
+                android:labelFor="@+id/edtFirstName"
+                android:textSize="@dimen/sp_14"
                 app:layout_constraintLeft_toRightOf="@+id/guideline1"
                 app:layout_constraintRight_toLeftOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/txtFirstName"
-                android:autofillHints="name" />
+                app:layout_constraintTop_toBottomOf="@+id/txtFirstName" />
 
 
             <TextView
@@ -76,13 +78,13 @@
                 android:id="@+id/edtLastName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_14"
-                android:labelFor="@id/edtLastName"
+                android:autofillHints="name"
                 android:inputType="textPersonName"
+                android:labelFor="@id/edtLastName"
+                android:textSize="@dimen/sp_14"
                 app:layout_constraintLeft_toRightOf="@+id/guideline1"
                 app:layout_constraintRight_toLeftOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/txtLastName"
-                android:autofillHints="name" />
+                app:layout_constraintTop_toBottomOf="@+id/txtLastName" />
 
             <TextView
                 android:id="@+id/txtEmail"
@@ -99,13 +101,13 @@
                 android:id="@+id/edtEmail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_14"
-                android:labelFor="@id/edtEmail"
+                android:autofillHints="emailAddress"
                 android:inputType="textEmailAddress"
+                android:labelFor="@id/edtEmail"
+                android:textSize="@dimen/sp_14"
                 app:layout_constraintLeft_toRightOf="@+id/guideline1"
                 app:layout_constraintRight_toLeftOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/txtEmail"
-                android:autofillHints="emailAddress" />
+                app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
 
             <TextView
                 android:id="@+id/txtMobile"
@@ -122,13 +124,13 @@
                 android:id="@+id/edtMobile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_14"
-                android:labelFor="@+id/edtMobile"
+                android:autofillHints="phone"
                 android:inputType="number"
+                android:labelFor="@+id/edtMobile"
+                android:textSize="@dimen/sp_14"
                 app:layout_constraintLeft_toRightOf="@+id/guideline1"
                 app:layout_constraintRight_toLeftOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/txtMobile"
-                android:autofillHints="phone" />
+                app:layout_constraintTop_toBottomOf="@+id/txtMobile" />
 
 
             <TextView
@@ -146,13 +148,13 @@
                 android:id="@+id/edtPassword"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:autofillHints="password"
                 android:inputType="textPassword"
                 android:labelFor="@+id/edtPassword"
                 android:textSize="@dimen/sp_14"
                 app:layout_constraintLeft_toRightOf="@+id/guideline1"
                 app:layout_constraintRight_toLeftOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/txtPassword"
-                android:autofillHints="password" />
+                app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
 
             <ImageView
                 android:id="@+id/imgEyeOpen"
@@ -184,6 +186,7 @@
                 android:background="@drawable/rounded_button"
                 android:text="@string/register"
                 android:textColor="@color/white"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toRightOf="@+id/guideline1"
                 app:layout_constraintRight_toLeftOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/edtPassword" />

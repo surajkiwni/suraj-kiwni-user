@@ -20,5 +20,7 @@
     <color name="radio_checkbox_color">#F80E0E</color>
     <color name="business_view_text_color">#5D5B5B</color>
     <color name="coupan_text_color">#858585</color>
+    
+    <color name="nav_header_background">#F0F0F0</color>
 
 </resources>

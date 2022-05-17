@@ -1380,7 +1380,7 @@ public class CurrentBookingFragment extends Fragment implements
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
                     (new LatLng(currentLatitude, currentLongitude), 10.0f));
-            autoCompleteTextViewDrop.setText("");
+            //autoCompleteTextViewDrop.setText("");
 
             if(pickupLocationList.size() > 0)
             {
