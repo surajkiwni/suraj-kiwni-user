@@ -130,7 +130,7 @@ public class AirportDropFragment extends Fragment implements
     private LatLng mCenterLatLong, mOrigin, mDestination;
     double pickup_lat = 0.0, pickup_lng = 0.0, drop_lat = 0.0, drop_lng = 0.0;
     boolean isPickup = false, isDrop = false, isCurrent = false, isDDSelected = false,
-            isLocated = false, isCameraMove = false, isNetworkAvailable = false;
+            isLocated = false, isCameraMove = false, isNetworkAvailable = false, isDropAllready = false, isAllreadyMarkerDrop = false,isAllreadyMarkerPickup = false;
     Context mContext;
 
     String distanceTextFromApi = "", distanceValueFromApi = "",
@@ -183,6 +183,10 @@ public class AirportDropFragment extends Fragment implements
         /* start receiver for network state */
         startNetworkBroadcastReceiver(getActivity());
 
+
+
+
+
         return view;
     }
 
@@ -204,6 +208,9 @@ public class AirportDropFragment extends Fragment implements
         txtPickupDatePicker = view.findViewById(R.id.txtPickupDatePicker);
         layoutPickupDatePicker = view.findViewById(R.id.layoutPickupDatePicker);
         layoutDropDatePicker = view.findViewById(R.id.layoutDropDatePicker);
+        autoCompleteTextViewPickup = view.findViewById(R.id.auto_pickup);
+        autoCompleteTextViewDrop = view.findViewById(R.id.auto_destination);
+
 
         /*initialized place sdk*/
         if (!Places.isInitialized()) {
@@ -219,13 +226,13 @@ public class AirportDropFragment extends Fragment implements
         pickupLocationList = new ArrayList<>();
         dropLocationList = new ArrayList<>();
 
-        autoCompleteTextViewPickup = view.findViewById(R.id.auto_pickup);
+
         autoCompleteTextViewPickup.setOnItemClickListener(autocompleteClickListener);
 
         //set adapter
         autoCompleteTextViewPickup.setAdapter(adapter);
 
-        autoCompleteTextViewDrop = view.findViewById(R.id.auto_destination);
+
         autoCompleteTextViewDrop.setOnItemClickListener(autocompleteClickListener);
         //set adapter
         autoCompleteTextViewDrop.setAdapter(adapter);
@@ -235,6 +242,8 @@ public class AirportDropFragment extends Fragment implements
 
         //get current date in format and set to UI
         GetCurrentDate();
+
+
 
         //compare two dates are same or not
         SimpleDateFormat inputFormat = new SimpleDateFormat("EEE, dd MMM");
@@ -570,7 +579,7 @@ public class AirportDropFragment extends Fragment implements
                     Log.d(TAG, "city = " + pickup_city + " - " + drop_city);
                     if(pickup_city == null || drop_city == null)
                     {
-                        autoCompleteTextViewDrop.setText("");
+                       autoCompleteTextViewDrop.setText("");
                         imageMarker.setVisibility(View.GONE);
                         linearBtnConfirm.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "Please select proper location.!", Toast.LENGTH_SHORT).show();
@@ -838,86 +847,122 @@ public class AirportDropFragment extends Fragment implements
     @Override
     public void onConnected(@Nullable Bundle bundle)
     {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        if (mLastLocation != null)
+        if(dropLocationList.size() > 0)
         {
+            if(dropLocationList.size() > 0){
+                Log.d("TAG","pickupLocationList"+pickupLocationList.size());
+                Toast.makeText(mContext, "called", Toast.LENGTH_SHORT).show();
+                Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+                List<Address> addresses = null;
+                try {
+                    addresses = geocoder.getFromLocation(mDestination.latitude,mDestination.longitude, 1);
+                    address = addresses.get(0).getAddressLine(0);
+                    city = addresses.get(0).getLocality();
 
-            /* current location */
-            currentLatitude = mLastLocation.getLatitude();
-            currentLongitude = mLastLocation.getLongitude();
+                    Log.d("TAG", "address : " + address);
+                    Log.d("TAG", "city : " + city);
+                    autoCompleteTextViewDrop.setText(address);
 
-            /* internet connected true*/
-            if(ConnectivityHelper.isConnected)
+                    addresses = geocoder.getFromLocation(mOrigin.latitude,mOrigin.longitude, 1);
+                    address = addresses.get(0).getAddressLine(0);
+                    city = addresses.get(0).getLocality();
+
+                    Log.d("TAG", "address : " + address);
+                    Log.d("TAG", "city : " + city);
+                    autoCompleteTextViewPickup.setText(address);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }else {
+                autoCompleteTextViewDrop.setText("");
+                autoCompleteTextViewPickup.setText("");
+            }
+        }else{
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                    mGoogleApiClient);
+            if (mLastLocation != null)
             {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                        (new LatLng(currentLatitude, currentLongitude), 10.0f));
 
-                Log.d(TAG, "current location = " + currentLatitude + " " + currentLongitude);
+                /*current location */
+                currentLatitude = mLastLocation.getLatitude();
+                currentLongitude = mLastLocation.getLongitude();
 
-                /*get current location and draw marker on map*/
-                if (currentLatitude != 0.0 && currentLongitude != 0.0)
+                /*internet connected true*/
+                if(ConnectivityHelper.isConnected)
                 {
-                    pickupMarker = mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(currentLatitude, currentLongitude))
-                            .title(city)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
                             (new LatLng(currentLatitude, currentLongitude), 10.0f));
 
-                    getAddressFromCurrentLocation(currentLatitude, currentLongitude);
-                    autoCompleteTextViewDrop.setText("");
+                    Log.d(TAG, "current location = " + currentLatitude + " " + currentLongitude);
 
-                    /* check list size and add or update value in list */
-                    if(pickupLocationList.size() == 0)
+                    /*get current location and draw marker on map*/
+                    if (currentLatitude != 0.0 && currentLongitude != 0.0)
                     {
-                        pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
+                        pickupMarker = mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(currentLatitude, currentLongitude))
+                                .title(city)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                                (new LatLng(currentLatitude, currentLongitude), 10.0f));
+
+                        getAddressFromCurrentLocation(currentLatitude, currentLongitude);
+                        autoCompleteTextViewDrop.setText("");
+
+
+                        /* check list size and add or update value in list */
+                        if(pickupLocationList.size() == 0)
+                        {
+                            pickupLocationList.add(new LatLng(currentLatitude, currentLongitude));
+                        }
+                        else
+                        {
+                            pickupLocationList.set(0, new LatLng(currentLatitude, currentLongitude));
+                        }
+                        AddMarker(pickup_city);
+                        Log.d(TAG, "size 0 for current loc = " + pickupLocationList.size());
+                    } else {
+                        Log.d(TAG, "Not getting co-ordinates");
                     }
-                    else
-                    {
-                        pickupLocationList.set(0, new LatLng(currentLatitude, currentLongitude));
-                    }
-                    AddMarker(pickup_city);
-                    Log.d(TAG, "size 0 for current loc = " + pickupLocationList.size());
-                } else {
-                    Log.d(TAG, "Not getting co-ordinates");
                 }
-            }
-            else            /* internet connected false*/
-            {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
-                        (new LatLng(currentLatitude, currentLongitude), 10.0f));
-            }
+                else            /* internet connected false*/
+                {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
+                            (new LatLng(currentLatitude, currentLongitude), 10.0f));
+                }
 
-        } else
+            } else
+                try {
+                    LocationServices.FusedLocationApi.removeLocationUpdates(
+                            mGoogleApiClient, this);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             try {
-                LocationServices.FusedLocationApi.removeLocationUpdates(
-                        mGoogleApiClient, this);
+                LocationRequest mLocationRequest = new LocationRequest();
+                mLocationRequest.setInterval(10000);
+                mLocationRequest.setFastestInterval(5000);
+                mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                LocationServices.FusedLocationApi.requestLocationUpdates(
+                        mGoogleApiClient, mLocationRequest, this);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        try {
-            LocationRequest mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(10000);
-            mLocationRequest.setFastestInterval(5000);
-            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            LocationServices.FusedLocationApi.requestLocationUpdates(
-                    mGoogleApiClient, mLocationRequest, this);
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
     }
 
     @Override
@@ -952,7 +997,10 @@ public class AirportDropFragment extends Fragment implements
         if(mMap != null)
         {
             mMap.clear();
-            autoCompleteTextViewDrop.setText("");
+            if(PreferencesUtils.getPreferences(getActivity(),SharedPref.DROP_VALUE,"") == null){
+                autoCompleteTextViewDrop.setText("");
+                autoCompleteTextViewPickup.setText("");
+            }
         }
         mMap = googleMap;
 
@@ -1037,7 +1085,6 @@ public class AirportDropFragment extends Fragment implements
 
             Log.d("TAG", "address : " + address);
             Log.d("TAG", "city : " + city);
-
             if(isPickup)
             {
                 //pickup
@@ -1067,7 +1114,6 @@ public class AirportDropFragment extends Fragment implements
                     {
                         Log.d("TAG", "pickup size = " + pickupLocationList.size());
                     }
-
                     AddMarker(pickup_city);
                     Log.d("TAG", "size 2 = " + pickupLocationList.size());
                 }
@@ -1086,7 +1132,7 @@ public class AirportDropFragment extends Fragment implements
 
                 if(isDDSelected)
                 {
-                    //autoCompleteTextViewDrop.setText(drop_address);
+                    autoCompleteTextViewDrop.setText(drop_address);
                     isDDSelected = false;
                     isLocated = true;
                     autoCompleteTextViewDrop.setSelection(autoCompleteTextViewDrop.getText().length());
@@ -1935,12 +1981,15 @@ public class AirportDropFragment extends Fragment implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
         isDrop = false;
+        Log.d("TAG","onStop");
         isNetworkAvailable = false;
     }
 
@@ -1948,12 +1997,15 @@ public class AirportDropFragment extends Fragment implements
     public void onPause() {
         super.onPause();
         unregisterNetworkBroadcastReceiver(getActivity());
+
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         registerNetworkBroadcastReceiver(getActivity());
+
     }
 
     @Override

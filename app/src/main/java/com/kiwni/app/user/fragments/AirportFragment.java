@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -77,6 +78,7 @@ public class AirportFragment extends Fragment
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                Toast.makeText(getActivity(), "reselected", Toast.LENGTH_SHORT).show();
             }
         });
 

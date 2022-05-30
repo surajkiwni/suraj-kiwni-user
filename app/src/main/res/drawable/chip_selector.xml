@@ -3,7 +3,7 @@
     <!-- Bottom 2dp Shadow -->
     <item>
         <shape android:shape="rectangle">
-            <gradient android:startColor="#b4909090" android:endColor="#b4f0f0f0" android:angle="90"/>
+            <gradient android:startColor="@color/tab_background" android:endColor="@color/tab_background" android:angle="90"/>
             <corners android:radius="10dp" />
         </shape>
     </item>
@@ -11,7 +11,7 @@
     <!-- White Top color -->
     <item android:bottom="7px" android:right="7px" android:left="7px" android:top="3px">
         <shape  android:shape="rectangle">
-            <solid android:color="#FFFFFF" />
+            <solid android:color="@color/button_color_dark" />
             <corners android:radius="10dp" />
         </shape>
     </item>

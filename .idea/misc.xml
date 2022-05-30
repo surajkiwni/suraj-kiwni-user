@@ -82,6 +82,7 @@
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/update_alert_details.xml" value="0.1875" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/menu/activity_main_drawer.xml" value="0.18532818532818532" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/black_rounded_button.xml" value="0.1" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/chip_selector.xml" value="0.1635" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/down_shadow.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/grey_border.xml" value="0.1635" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
@@ -128,6 +129,7 @@
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/feedback_bottom_sheet.xml" value="0.134765625" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/filter_screen.xml" value="0.11979166666666667" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/fragment_about.xml" value="0.11979166666666667" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/fragment_airport.xml" value="0.134765625" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/fragment_airport_drop.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/fragment_airport_pickup.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/fragment_current_booking.xml" value="0.11979166666666667" />
@@ -312,10 +314,11 @@
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserUi/app/src/main/res/menu/main.xml" value="0.22" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserUi/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserUi/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/DELL/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_expandable_list_item_2.xml" value="0.134765625" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import com.chaos.view.PinView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -41,11 +43,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class OtpActivity extends AppCompatActivity implements ConnectivityHelper.NetworkStateReceiverListener
 {
     Button btnLogin;
-    TextView txtPhoneNo;
+    TextView txtPhoneNo,txtResendView;
     PinView pinView;
     ImageView imgBack;
 
@@ -78,6 +81,8 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
         pinView = findViewById(R.id.pinView);
         imgBack = findViewById(R.id.imgBack);
         btnLogin = findViewById(R.id.btnLogin);
+        txtResendView = findViewById(R.id.txtResendView);
+
 
         startNetworkBroadcastReceiver(this);
 
@@ -94,6 +99,7 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
 
         verificationId = getIntent().getStringExtra("verificationId");
         Log.d(TAG, "verificationId == " + verificationId);
+
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +118,8 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                     {
                         ErrorDialog errorDialog = new ErrorDialog(OtpActivity.this, "Please Enter valid code");
                         errorDialog.show();
+
+
                     }
                     else
                     {
@@ -135,7 +143,56 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                 finish();
             }
         });
+
+        txtResendView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"number"+mobileno);
+
+                resendVerificationCode(mobileno);
+
+
+            }
+        });
     }
+
+    private void resendVerificationCode(String mobile)
+    {
+        Log.d(TAG, "mobile = " + mobile);
+        /*Set up progress before call*/
+        loadingDialog.showLoadingDialog("Your request is processing");
+
+        /*OnVerificationStateChangedCallbacks*/
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                mobile,            // Phone number to verify
+                10,         // Timeout duration
+                TimeUnit.SECONDS,  // Unit of timeout
+                this,        // Activity (for callback binding)
+                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                        loadingDialog.hideDialog();
+                    }
+
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e) {
+                        loadingDialog.hideDialog();
+                        //Toast.makeText(LoginActivity.this,"verification failed.!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OtpActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                        super.onCodeSent(s, forceResendingToken);
+
+                        loadingDialog.hideDialog();
+
+                        verificationId = s;
+                        Toast.makeText(OtpActivity.this,"Code sent",Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
 
     // below method is use to verify code from Firebase.
     private void verifyCode(String code)
@@ -334,6 +391,7 @@ public class OtpActivity extends AppCompatActivity implements ConnectivityHelper
                             loadingDialog.hideDialog();
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             pinView.setText("");
+                            txtResendView.setVisibility(View.VISIBLE);
                             Toast.makeText(OtpActivity.this, "The verification code entered was invalid.", Toast.LENGTH_LONG).show();
                         }
                     }

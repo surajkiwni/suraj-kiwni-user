@@ -82,5 +82,11 @@ public class SharedPref
     public static final String BUSINESS_COMPANY_EMAIL = "businessCompanyEmail";
     public static final String BUSINESS_COMPANY_PHONE = "businessCompanyPhone";
 
+    public static final String PUCKUP_VALUE = "pickupValue";
+    public static final String DROP_VALUE = "dropValue";
+
+
+
+
 
 }

@@ -146,6 +146,8 @@ public class AirportPickupFragment extends Fragment implements
     TextView txtPickupDatePicker, txtDropDatePicker;
     Double convertedDistance;
 
+
+
     String concatDateTime = "", sendToApiPickupTime = "",
             sendToApiDropTime = "", changeStartDateFormat ="";
     int mYear, mMonth, mDay, mHour, mMinute;
@@ -185,6 +187,7 @@ public class AirportPickupFragment extends Fragment implements
 
         /* start receiver for network state */
         startNetworkBroadcastReceiver(getActivity());
+
 
         return view;
     }
@@ -1932,6 +1935,7 @@ public class AirportPickupFragment extends Fragment implements
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG,"onStart");
         try {
             if (mGoogleApiClient != null)
             {
@@ -1943,28 +1947,35 @@ public class AirportPickupFragment extends Fragment implements
         }
     }
 
+
     @Override
     public void onStop() {
         super.onStop();
         isDrop = false;
         isNetworkAvailable = false;
+        //isPause = false;
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(TAG,"onPause");
+
         unregisterNetworkBroadcastReceiver(getActivity());
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG,"onResume");
         registerNetworkBroadcastReceiver(getActivity());
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d(TAG,"onStart");
         isDrop = false;
         isNetworkAvailable = false;
     }
