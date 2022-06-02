@@ -82,6 +82,9 @@
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/layout/update_alert_details.xml" value="0.1875" />
         <entry key="..\:/Users/Admin/KiwniNewDesignProjects/suraj-kiwni-user/app/src/main/res/menu/activity_main_drawer.xml" value="0.18532818532818532" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/black_rounded_button.xml" value="0.1" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/border_black_for_layout.xml" value="0.155" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/border_black_for_tab.xml" value="0.155" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/button_rounded.xml" value="0.155" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/chip_selector.xml" value="0.1635" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/down_shadow.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/grey_border.xml" value="0.1635" />
@@ -92,8 +95,13 @@
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/rounded_button.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/rounded_top_corners.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/side_nav_bar.xml" value="0.1" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/spinner_background.xml" value="0.155" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/tab_color.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/tab_indicator.xml" value="0.1" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/tab_outstation_color.xml" value="0.1" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/tab_selected.xml" value="0.1" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/tab_selector_background.xml" value="0.1" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/tab_selector_background_outstation.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/top_rounded_corner.xml" value="0.1635" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/viewcabs_roundedbutton.xml" value="0.1175" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/drawable/white_reactangle.xml" value="0.102" />

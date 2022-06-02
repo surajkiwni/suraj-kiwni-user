@@ -67,18 +67,14 @@
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/radioButton1"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                app:buttonTint="#000000" />
-
-            <TextView
-                android:id="@+id/personalText"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
+                android:text="@string/home"
                 android:gravity="center"
                 android:padding="3dp"
-                android:text="@string/home"
-                android:textColor="#424242" />
+                android:textColor="#424242"
+                app:buttonTint="#000000" />
+
 
 
         </LinearLayout>
@@ -97,18 +93,14 @@
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/radioButton2"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                app:buttonTint="#000000" />
-
-            <TextView
-                android:id="@+id/personalTex1"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:padding="3dp"
                 android:text="@string/work"
-                android:textColor="#424242" />
+                android:textColor="#424242"
+                app:buttonTint="#000000" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -125,18 +117,13 @@
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/radioButton3"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                app:buttonTint="#000000" />
-
-            <TextView
-                android:id="@+id/personalTex2"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:padding="3dp"
                 android:text="@string/other"
-                android:textColor="#424242" />
+                android:textColor="#424242"
+                app:buttonTint="#000000" />
 
         </LinearLayout>
 

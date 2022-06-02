@@ -368,6 +368,8 @@ public class VehicleTypeListActivity extends AppCompatActivity implements OnMapR
                 {
                     listMap = response.body();
 
+                    Log.d("TAG","Response"+listMap.toString());
+
                     if(listMap.size() == 0)
                     {
                         //Toast.makeText(getApplicationContext(), "No Data Found", Toast.LENGTH_SHORT).show();
