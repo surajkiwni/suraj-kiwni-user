@@ -144,7 +144,7 @@ public class SplashActivity extends AppCompatActivity
         }
     }
 
-    //enable device location mobile
+    //enable device location
     private void displayLocationSettingsRequest(Context context) {
         GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API).build();
