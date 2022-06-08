@@ -730,7 +730,9 @@ public class ConfirmBookingActivity extends AppCompatActivity implements ErrorDi
                 }
                 else if(statusCode == 401)
                 {
-                    Toast.makeText(getApplicationContext(), "Due to poor network, your session has expired. Please wait... ", Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(), "Due to poor network, your session has expired. Please wait... ", Toast.LENGTH_LONG).show();
+
+                    Toast.makeText(getApplicationContext(), "Please wait your request is processing...", Toast.LENGTH_LONG).show();
 
                     FirebaseAuth.getInstance().getCurrentUser()
                             .getIdToken(true)
