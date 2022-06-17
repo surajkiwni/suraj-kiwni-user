@@ -12,15 +12,19 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,14 +37,20 @@ import com.google.gson.reflect.TypeToken;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
+import com.kiwni.app.user.database.SqliteDatabaseHelper;
 import com.kiwni.app.user.databinding.ActivityMainBinding;
+import com.kiwni.app.user.fragments.AirportFragment;
+import com.kiwni.app.user.fragments.OutstationFragment;
+import com.kiwni.app.user.fragments.RentalFragment;
 import com.kiwni.app.user.global.PermissionRequestConstant;
+import com.kiwni.app.user.models.SqliteModelClass;
 import com.kiwni.app.user.models.socket.SocketReservationResp;
 import com.kiwni.app.user.network.AppConstants;
 import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
 import com.kiwni.app.user.ui.FAQs.FaqFragment;
 import com.kiwni.app.user.ui.about.AboutFragment;
+import com.kiwni.app.user.ui.home.HomeFragment;
 import com.kiwni.app.user.ui.my_rides.MyRidesFragment;
 import com.kiwni.app.user.ui.offers.OffersFragment;
 import com.kiwni.app.user.ui.payment.PaymentFragment;
@@ -53,6 +63,7 @@ import com.kiwni.app.user.utils.PreferencesUtils;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -66,6 +77,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONObject;
+
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -81,8 +93,7 @@ import io.socket.emitter.Emitter;
 
 
 public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener, ConnectivityHelper.NetworkStateReceiverListener
-{
+        NavigationView.OnNavigationItemSelectedListener, ConnectivityHelper.NetworkStateReceiverListener {
     String TAG = this.getClass().getSimpleName();
     public DrawerLayout drawerLayout;
     NavController navController;
@@ -98,8 +109,8 @@ public class MainActivity extends AppCompatActivity implements
     SocketReservationResp reservationResp = new SocketReservationResp();
     Context context;
     boolean driver_data_updated = false, isValid = true, isRefresh = false;
-    byte[] valueDecoded= new byte[0];
-    String convertedStartDateTime = "", stringData = "", splittedStr1 ="", splittedStr2 = "",
+    byte[] valueDecoded = new byte[0];
+    String convertedStartDateTime = "", stringData = "", splittedStr1 = "", splittedStr2 = "",
             splittedStr3 = "", splittedStr4 = "", concatDirection = "", convertedEndDate = "";
     AlertDialog success_alert, data_updated_alert;
     AlertDialog.Builder dialogBuilder;
@@ -107,9 +118,15 @@ public class MainActivity extends AppCompatActivity implements
     List<SocketReservationResp> socketSuccessRespList = new ArrayList<>();
     private ConnectivityHelper connectivityHelper;
 
+
+    List<SqliteModelClass> arrayListDb = new ArrayList<>();
+    SqliteDatabaseHelper sqliteDatabaseHelper;
+    SqliteModelClass sqliteModelClassResp;
+    String address = "", favoriteLat = "", favoriteLng = "", addressType = "", dBAddress = "", dBAddressType = "", dBFavoriteLat = "", dBFavoriteLng = "";
+    Boolean isCheck = false, updateCheck = false, isUpdate = false, isWorkUpdate = false, isHomeUpdate = false;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         startNetworkBroadcastReceiver(this);
@@ -150,6 +167,8 @@ public class MainActivity extends AppCompatActivity implements
 
         navigationView.setNavigationItemSelectedListener(this);
 
+        sqliteDatabaseHelper = new SqliteDatabaseHelper(this);
+
         View headerView = navigationView.getHeaderView(0);
         txtHeaderName = headerView.findViewById(R.id.txtHeaderName);
         txtHeaderUserMobile = headerView.findViewById(R.id.txtHeaderUserMobile);
@@ -157,8 +176,7 @@ public class MainActivity extends AppCompatActivity implements
 
         constraintProfile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 navController.navigate(R.id.action_nav_home_to_profileFragment);
                 drawerLayout.close();
             }
@@ -172,9 +190,8 @@ public class MainActivity extends AppCompatActivity implements
         mobileNumber = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.FIREBASE_MOBILE_NO, "");
 
         txtHeaderName.setText(userName);
-        if(mobileNumber.contains("+91"))
-        {
-            mobileNumber = mobileNumber.replaceAll("\\+","").replaceFirst("91","");
+        if (mobileNumber.contains("+91")) {
+            mobileNumber = mobileNumber.replaceAll("\\+", "").replaceFirst("91", "");
             txtHeaderUserMobile.setText(mobileNumber);
         }
 
@@ -227,7 +244,6 @@ public class MainActivity extends AppCompatActivity implements
 
             case R.id.action_like:
 
-                Toast.makeText(getApplicationContext(), "Save Address", Toast.LENGTH_LONG).show();
                 bottomSheetDialog = new BottomSheetDialog(this);
                 View view = getLayoutInflater().inflate(R.layout.favorite_bottom_sheet, null, false);
 
@@ -236,36 +252,229 @@ public class MainActivity extends AppCompatActivity implements
 
                 AppCompatButton cancelButton = view.findViewById(R.id.cancelButton);
                 AppCompatButton saveButton = view.findViewById(R.id.saveButton);
+                TextView addressText = view.findViewById(R.id.addressText);
+                RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
+                AppCompatRadioButton radioHome = view.findViewById(R.id.radioButton1);
+                AppCompatRadioButton radioWork = view.findViewById(R.id.radioButton2);
+                AppCompatRadioButton radioOther = view.findViewById(R.id.radioButton3);
+                EditText edtOtherAddress = view.findViewById(R.id.edtOtherAddress);
 
                 saveButton.setBackgroundResource(R.color.button_color_dark);
                 saveButton.setTextColor(Color.WHITE);
 
+                //AirportFragment.isConnectedCurrentLocation =true;
+
+                if(HomeFragment.isAirport){
+                    address = String.valueOf(AirportFragment.autoCompleteTextViewPickup.getText());
+                }else if(HomeFragment.isRental){
+                    address = String.valueOf(RentalFragment.autoCompleteTextViewPickup.getText());
+                }else if(HomeFragment.isOutStation){
+                    address = String.valueOf(OutstationFragment.autoCompleteTextViewPickup.getText());
+                }
+
+
+                favoriteLat = String.valueOf(AirportFragment.pickup_lat);
+                favoriteLng = String.valueOf(AirportFragment.pickup_lng);
+
+                Log.d("TAG","favoriteLat"+favoriteLat);
+
+
+                radioHome.setChecked(true);
+                addressText.setText(address);
+
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view)
-                    {
+                    public void onClick(View view) {
                         saveButton.setBackgroundColor(Color.TRANSPARENT);
                         saveButton.setTextColor(Color.BLACK);
                         /*cancelButton.setBackgroundColor(Color.BLACK);
                         cancelButton.setTextColor(Color.WHITE);*/
                         bottomSheetDialog.dismiss();
+
                     }
                 });
 
                 saveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if (radioHome.isChecked()) {
+                            addressType = "Home";
+                            isWorkUpdate = true;
+                            isHomeUpdate = false;
+                        }
+
+                        if (!edtOtherAddress.getText().toString().isEmpty()) {
+                            addressType = edtOtherAddress.getText().toString();
+                        }
+
+                        if(HomeFragment.isAirport){
+                            favoriteLat = String.valueOf(AirportFragment.pickup_lat);
+                            favoriteLng = String.valueOf(AirportFragment.pickup_lng);
+
+                            if(favoriteLat.equals("0.0") && favoriteLng.equals("0.0")){
+                                if(AirportFragment.isConnectedCurrentLocation){
+                                    //Toast.makeText(MainActivity.this, "current location", Toast.LENGTH_SHORT).show();
+                                    favoriteLat = String.valueOf(AirportFragment.currentLatitude);
+                                    favoriteLng = String.valueOf(AirportFragment.currentLongitude);
+
+                                    AirportFragment.isConnectedCurrentLocation = false;
+                                }
+                            }
+
+                        }else if(HomeFragment.isRental){
+
+                            favoriteLat = String.valueOf(RentalFragment.pickup_lat);
+                            favoriteLng = String.valueOf(RentalFragment.pickup_lng);
+
+                            Log.d("TAG","favorite"+favoriteLat);
+
+                            if(favoriteLat.equals("0.0") && favoriteLng.equals("0.0")){
+                                if(RentalFragment.isConnectedCurrentLocation){
+                                    Toast.makeText(MainActivity.this, "Rental Current", Toast.LENGTH_SHORT).show();
+
+                                    favoriteLat = String.valueOf(RentalFragment.currentLatitude);
+                                    favoriteLng = String.valueOf(RentalFragment.currentLongitude);
+
+                                    RentalFragment.isConnectedCurrentLocation = false;
+                                }
+                            }
+
+                        }else if(HomeFragment.isOutStation){
+                            favoriteLat = String.valueOf(OutstationFragment.pickup_lat);
+                            favoriteLng = String.valueOf(OutstationFragment.pickup_lng);
+
+                            if(favoriteLat.equals("0.0") && favoriteLng.equals("0.0")){
+                                if(OutstationFragment.isConnectedCurrentLocation){
+                                    Toast.makeText(MainActivity.this, "OutStation Current", Toast.LENGTH_SHORT).show();
+
+                                    favoriteLat = String.valueOf(OutstationFragment.currentLatitude);
+                                    favoriteLng = String.valueOf(OutstationFragment.currentLongitude);
+
+                                    OutstationFragment.isConnectedCurrentLocation = false;
+                                }
+                            }
+
+                        }
+
+
+
+                        arrayListDb = sqliteDatabaseHelper.getAllData();
+
+
+                        if (arrayListDb != null) {
+
+                            for (int i = 0; i < arrayListDb.size(); i++) {
+                                sqliteModelClassResp = arrayListDb.get(i);
+
+                                dBAddressType = sqliteModelClassResp.getAddressType();
+                                dBAddress = sqliteModelClassResp.getAddress();
+
+                                Log.d("TAG", "updatedAddressType : " + dBAddressType);
+
+                                if (dBAddressType.equals(addressType)) {
+
+                                    isUpdate = true;
+                                    isWorkUpdate = true;
+                                    isHomeUpdate = true;
+
+                                    Toast.makeText(MainActivity.this, "In", Toast.LENGTH_SHORT).show();
+
+                                    Log.d("TAG", "Home Work");
+
+                                    updateCheck = sqliteDatabaseHelper.updateData(address, addressType, favoriteLat, favoriteLng);
+
+
+                                }
+
+                            }
+
+                        }
+
+                        if (!isUpdate) {
+                            isWorkUpdate = true;
+                            isHomeUpdate = true;
+                            isCheck = sqliteDatabaseHelper.insertData(address, addressType, favoriteLat, favoriteLng);
+                        }
+
+                        if (!isWorkUpdate) {
+                            isCheck = sqliteDatabaseHelper.insertData(address, addressType, favoriteLat, favoriteLng);
+                        }
+                        if (!isHomeUpdate) {
+                            isCheck = sqliteDatabaseHelper.insertData(address, addressType, favoriteLat, favoriteLng);
+
+                        }
+
                         bottomSheetDialog.dismiss();
                     }
                 });
 
                 bottomSheetDialog.setContentView(view);
+                bottomSheetDialog.show();
+
+                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                        View radioButton = radioGroup.findViewById(checkedId);
+                        int index = radioGroup.indexOfChild(radioButton);
+
+                        // Add logic here
+
+                        switch (index) {
+                            case 0: // first button
+                                addressType = "Home";
+                                isWorkUpdate = true;
+                                isHomeUpdate = false;
+                                Toast.makeText(MainActivity.this, "1", Toast.LENGTH_SHORT).show();
+
+                                break;
+                            case 1: // secondbutton
+                                addressType = "Work";
+                                isWorkUpdate = false;
+                                isHomeUpdate = true;
+                                isUpdate = true;
+                                Toast.makeText(MainActivity.this, "2", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 2:
+                                // addressType = "Other";
+                                isUpdate = false;
+                                isWorkUpdate = true;
+                                isHomeUpdate = true;
+                                edtOtherAddress.setVisibility(View.VISIBLE);
+                                saveButton.setEnabled(false);
+                                saveButton.setBackgroundColor(Color.GRAY);
+                                edtOtherAddress.addTextChangedListener(new TextWatcher() {
+                                    @Override
+                                    public void beforeTextChanged(CharSequence s, int start, int before, int count) {
+                                        saveButton.setEnabled(true);
+                                        saveButton.setBackgroundResource(R.drawable.tab_outstation_color);
+
+                                    }
+
+                                    @Override
+                                    public void onTextChanged(CharSequence s,  int start, int count,
+                                                              int after) {
+
+                                    }
+
+                                    @Override
+                                    public void afterTextChanged(Editable editable) {
+
+                                    }
+                                });
+                                Toast.makeText(MainActivity.this, "3", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+
+                    }
+                });
+
 
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     @Override
@@ -282,37 +491,37 @@ public class MainActivity extends AppCompatActivity implements
         }  //super.onBackPressed();
 
 
-        if (MyRidesFragment.backKeyPressedListener!= null){
+        if (MyRidesFragment.backKeyPressedListener != null) {
 
             MyRidesFragment.backKeyPressedListener.onBackPressed();
         }
 
-        if (PaymentFragment.backKeyPressedListener!= null){
+        if (PaymentFragment.backKeyPressedListener != null) {
 
             PaymentFragment.backKeyPressedListener.onBackPressed();
         }
 
-        if (OffersFragment.backKeyPressedListener!= null){
+        if (OffersFragment.backKeyPressedListener != null) {
 
             OffersFragment.backKeyPressedListener.onBackPressed();
         }
-        if (SafetyFragment.backKeyPressedListener!= null){
+        if (SafetyFragment.backKeyPressedListener != null) {
 
             SafetyFragment.backKeyPressedListener.onBackPressed();
         }
-        if (FaqFragment.backKeyPressedListener!= null){
+        if (FaqFragment.backKeyPressedListener != null) {
 
             FaqFragment.backKeyPressedListener.onBackPressed();
         }
-        if (ReferEarnFragment.backKeyPressedListener!= null){
+        if (ReferEarnFragment.backKeyPressedListener != null) {
 
             ReferEarnFragment.backKeyPressedListener.onBackPressed();
         }
-        if (SupportFragment.backKeyPressedListener!= null){
+        if (SupportFragment.backKeyPressedListener != null) {
 
             SupportFragment.backKeyPressedListener.onBackPressed();
         }
-        if (AboutFragment.backKeyPressedListener!= null){
+        if (AboutFragment.backKeyPressedListener != null) {
 
             AboutFragment.backKeyPressedListener.onBackPressed();
         }
@@ -340,10 +549,9 @@ public class MainActivity extends AppCompatActivity implements
 
             case R.id.nav_myrides:
 
-                if(ConnectivityHelper.isConnected){
+                if (ConnectivityHelper.isConnected) {
                     navController.navigate(R.id.action_nav_home_to_nav_myrides);
-                }
-                else{
+                } else {
                     Snackbar.make(findViewById(android.R.id.content), R.string.no_internet_msg, Snackbar.LENGTH_LONG)
                             .setTextColor(Color.WHITE)
                             .setBackgroundTint(Color.RED)
@@ -376,7 +584,7 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.nav_feedback:
 
                 BottomSheetDialog dialog = new BottomSheetDialog(this);
-                View view = getLayoutInflater().inflate(R.layout.feedback_bottom_sheet,null,false);
+                View view = getLayoutInflater().inflate(R.layout.feedback_bottom_sheet, null, false);
 
                 dialog.setCancelable(false);
 
@@ -426,16 +634,15 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /* socket */
-    public void SocketConnect()
-    {
+    public void SocketConnect() {
         //Socket Listen
         try {
             mSocket = IO.socket(AppConstants.SOCKET_BASE_URL);
             mSocket.connect();
 
-            mSocket.on(Socket.EVENT_CONNECT,onConnect);
-            mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
-            mSocket.on(Socket.EVENT_CONNECT_ERROR,onConnectError);
+            mSocket.on(Socket.EVENT_CONNECT, onConnect);
+            mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
+            mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
 
             EmitData();
 
@@ -444,20 +651,16 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    public void EmitData()
-    {
+    public void EmitData() {
         //{"partyId": 274}
         JSONObject obj = new JSONObject();
-        try
-        {
+        try {
             obj.put("partyId", partyId);
             mSocket.emit("join", obj);
             Log.d("join", obj.toString());
 
             ListenDriverDataMessage();
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -498,12 +701,9 @@ public class MainActivity extends AppCompatActivity implements
 
                     driver_data_updated = true;
 
-                    if (args.length == 0)
-                    {
+                    if (args.length == 0) {
                         //Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
+                    } else {
                         try {
                             JSONObject jsonObject = (JSONObject) args[0];
 
@@ -526,14 +726,12 @@ public class MainActivity extends AppCompatActivity implements
         }
     };
 
-    public void ListenDriverDataMessage()
-    {
+    public void ListenDriverDataMessage() {
         mSocket.on(AppConstants.WEBSOCKET_DRIVER_DATA_EVENT, onUpdatedMessage);
     }
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
-    public void DisplayDriverDataUpdatedDialog(List<SocketReservationResp> driverDataRespList)
-    {
+    public void DisplayDriverDataUpdatedDialog(List<SocketReservationResp> driverDataRespList) {
         //create custom dialog here
         dialogBuilder = new AlertDialog.Builder(MainActivity.this);
         LayoutInflater inflater = getLayoutInflater();
@@ -563,8 +761,7 @@ public class MainActivity extends AppCompatActivity implements
         String driver_name = driverDataRespList.get(0).getDriver().getName();
         String driver_mobile = driverDataRespList.get(0).getDriver().getMobile();
 
-        if(driver_data_updated)
-        {
+        if (driver_data_updated) {
             txtDriverName.setVisibility(View.VISIBLE);
             txtDriverName.setText(driver_name);
 
@@ -573,11 +770,9 @@ public class MainActivity extends AppCompatActivity implements
 
             imgCallToDriver.setVisibility(View.VISIBLE);
 
-            imgCallToDriver.setOnClickListener(new View.OnClickListener()
-            {
+            imgCallToDriver.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view)
-                {
+                public void onClick(View view) {
                     Uri call = Uri.parse("tel:" + txtMobile.getText().toString());
                     Intent intent = new Intent(Intent.ACTION_CALL, call);
 
@@ -597,48 +792,39 @@ public class MainActivity extends AppCompatActivity implements
                         //You already have permission
                         try {
                             startActivity(intent);
-                        } catch(SecurityException e) {
+                        } catch (SecurityException e) {
                             e.printStackTrace();
                         }
                     }
                 }
             });
 
-            if(driverDataRespList.get(0).getDriverImageUrl() != null)
-            {
+            if (driverDataRespList.get(0).getDriverImageUrl() != null) {
                 imgDriverImg.setVisibility(View.VISIBLE);
                 Log.d(TAG, "image = " + driverDataRespList.get(0).getDriverImageUrl());
 
                 Glide.with(context)
                         .load(driverDataRespList.get(0).getDriverImageUrl())
                         .into(imgDriverImg);
-            }
-            else
-            {
+            } else {
                 imgDriverImg.setVisibility(View.GONE);
             }
 
             //vehicle no
-            if(driverDataRespList.get(0).getVehcileNo() != null)
-            {
+            if (driverDataRespList.get(0).getVehcileNo() != null) {
                 txtVehicleNo.setVisibility(View.VISIBLE);
                 txtVehicleNo.setText("Vehicle No : " + driverDataRespList.get(0).getVehcileNo());
-            }
-            else
-            {
+            } else {
                 txtVehicleNo.setVisibility(View.GONE);
             }
         }
 
         //estimated fare
-        if(driverDataRespList.get(0).getEstimatedPrice() != null)
-        {
+        if (driverDataRespList.get(0).getEstimatedPrice() != null) {
             txtEstimatedFare.setVisibility(View.VISIBLE);
             Float estimatedFare = Float.parseFloat(String.valueOf(driverDataRespList.get(0).getEstimatedPrice()));
-            txtEstimatedFare.setText("Rs. " + String.format("%.2f",estimatedFare));
-        }
-        else
-        {
+            txtEstimatedFare.setText("Rs. " + String.format("%.2f", estimatedFare));
+        } else {
             txtEstimatedFare.setVisibility(View.GONE);
         }
 
@@ -657,15 +843,13 @@ public class MainActivity extends AppCompatActivity implements
 
         //convert end date in format
         ConvertDate(driverDataRespList.get(0).getEndTime());
-        if(concatDirection.equals("Two-way"))
-        {
+        if (concatDirection.equals("Two-way")) {
             txtStartDateTime.setText(txtStartDateTime.getText().toString() + " - " + convertedEndDate);
         }
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 data_updated_alert.dismiss();
             }
         });
@@ -673,8 +857,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
-    public void DisplaySuccessDialog(List<SocketReservationResp> socketReservationRespList)
-    {
+    public void DisplaySuccessDialog(List<SocketReservationResp> socketReservationRespList) {
         dialogBuilder = new AlertDialog.Builder(MainActivity.this);
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_socket_response, null);
@@ -695,14 +878,11 @@ public class MainActivity extends AppCompatActivity implements
         txtKRNno.setText(Html.fromHtml(KrnNo));
 
         //estimated fare
-        if(socketReservationRespList.get(0).getEstimatedPrice() != null)
-        {
+        if (socketReservationRespList.get(0).getEstimatedPrice() != null) {
             txtEstimatedFare.setVisibility(View.VISIBLE);
             Float estimatedFare = Float.parseFloat(String.valueOf(socketReservationRespList.get(0).getEstimatedPrice()));
-            txtEstimatedFare.setText("Rs. " + String.format("%.2f",estimatedFare));
-        }
-        else
-        {
+            txtEstimatedFare.setText("Rs. " + String.format("%.2f", estimatedFare));
+        } else {
             txtEstimatedFare.setVisibility(View.GONE);
         }
 
@@ -721,26 +901,22 @@ public class MainActivity extends AppCompatActivity implements
 
         //convert end date in format
         ConvertDate(socketReservationRespList.get(0).getEndTime());
-        if(concatDirection.equals("Two-way"))
-        {
+        if (concatDirection.equals("Two-way")) {
             txtStartDateTime.setText(txtStartDateTime.getText().toString() + " - " + convertedEndDate);
         }
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 success_alert.dismiss();
             }
         });
         success_alert.show();
     }
 
-    public void GetClassTypeFromServiceType(String str)
-    {
+    public void GetClassTypeFromServiceType(String str) {
         String[] split = str.split("-");
-        for (String s : split)
-        {
+        for (String s : split) {
             System.out.println(s);
             splittedStr1 = split[0];
             splittedStr2 = split[1];
@@ -754,21 +930,18 @@ public class MainActivity extends AppCompatActivity implements
         Log.d(TAG, "concatDirection = " + concatDirection);
     }
 
-    public void ConvertOtp(String otp)
-    {
+    public void ConvertOtp(String otp) {
         //convert using Base64 decoder
         valueDecoded = Base64.decode(otp.getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
         Log.d(TAG, "valueDecoded = " + new String(valueDecoded));
     }
 
     @SuppressLint("SimpleDateFormat")
-    public void ConvertDate(String start_date)
-    {
+    public void ConvertDate(String start_date) {
         Log.d(TAG, "actualDate = " + start_date);
 
         Date startDate;
-        if (start_date.length() == 24)
-        {
+        if (start_date.length() == 24) {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
                 startDate = sdf.parse(start_date);
@@ -783,8 +956,7 @@ public class MainActivity extends AppCompatActivity implements
                 e.printStackTrace();
                 Log.d(TAG, "message = " + e.getMessage());
             }
-        }
-        else if (start_date.length() == 20) {
+        } else if (start_date.length() == 20) {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 startDate = sdf.parse(start_date);
@@ -795,9 +967,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 SimpleDateFormat sdf3 = new SimpleDateFormat("dd MMM");
                 convertedEndDate = sdf3.format(startDate);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
                 Log.d(TAG, "message = " + e.getMessage());
             }
@@ -806,25 +976,21 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    public void GetReservationSuccessData()
-    {
+    public void GetReservationSuccessData() {
         Gson gson = new Gson();
         //String stringData = PreferencesUtils.getPreferences(getApplicationContext(), SharedPref.SOCKET_RESP_OBJECT, "");
         Intent intent = getIntent();
-        if(intent != null)
-        {
+        if (intent != null) {
             stringData = getIntent().getStringExtra(SharedPref.SOCKET_RESP_OBJECT);
             Log.d(TAG, "stringData Data = " + stringData);
 
-            if(stringData != null)
-            {
+            if (stringData != null) {
                 Type type = new TypeToken<List<SocketReservationResp>>() {
                 }.getType();
                 socketSuccessRespList = new ArrayList<>();
                 socketSuccessRespList = gson.fromJson(stringData, type);
 
-                if(socketSuccessRespList.size() != 0)
-                {
+                if (socketSuccessRespList.size() != 0) {
                     DisplaySuccessDialog(socketSuccessRespList);
                 }
             }
@@ -841,7 +1007,7 @@ public class MainActivity extends AppCompatActivity implements
 
     /* register receiver */
     public void registerNetworkBroadcastReceiver(Context currentContext) {
-        currentContext.registerReceiver(connectivityHelper,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        currentContext.registerReceiver(connectivityHelper, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     /* unregister receiver */
@@ -851,35 +1017,27 @@ public class MainActivity extends AppCompatActivity implements
 
     /* internet connection available callback method */
     @Override
-    public void networkAvailable()
-    {
+    public void networkAvailable() {
 
     }
 
     @Override
-    public void networkUnavailable()
-    {
+    public void networkUnavailable() {
 
     }
 
     /* refresh */
-    private void doTheAutoRefresh()
-    {
-        handler.postDelayed(new Runnable()
-        {
+    private void doTheAutoRefresh() {
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 /* driver data updated */
                 Log.d(TAG, "driver data resp list size in on resume = " + driverDataRespList.size());
-                if(isRefresh)
-                {
-                    if(driverDataRespList.size() != 0)
-                    {
+                if (isRefresh) {
+                    if (driverDataRespList.size() != 0) {
                         DisplayDriverDataUpdatedDialog(driverDataRespList);
                         isRefresh = false;
-                    }
-                    else
-                    {
+                    } else {
                         Log.d(TAG, "driver data resp list size is empty = " + driverDataRespList.size());
                     }
                 }
@@ -898,16 +1056,14 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
         Log.d(TAG, "in onResume method ");
 
         registerNetworkBroadcastReceiver(this);
 
         /* get list from confirm booking screen and show reservation success dialog */
-        if(isValid)
-        {
+        if (isValid) {
             GetReservationSuccessData();
         }
 

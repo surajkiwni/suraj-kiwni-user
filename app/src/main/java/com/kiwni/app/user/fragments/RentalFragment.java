@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -22,6 +23,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -40,6 +43,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -73,12 +77,16 @@ import com.google.android.material.tabs.TabLayout;
 import com.kiwni.app.user.R;
 import com.kiwni.app.user.activity.VehicleTypeListActivity;
 import com.kiwni.app.user.adapter.AutoCompleteAirportAdapter;
+import com.kiwni.app.user.adapter.FavoriteAdapter;
 import com.kiwni.app.user.adapter.HourPackageAdapter;
 import com.kiwni.app.user.adapter.TimeAdapter;
+import com.kiwni.app.user.database.SqliteDatabaseHelper;
 import com.kiwni.app.user.datamodels.ErrorDialog;
+import com.kiwni.app.user.interfaces.FavoriteOnClickListener;
 import com.kiwni.app.user.models.DirectionsJSONParser;
 import com.kiwni.app.user.models.HourPackage;
 import com.kiwni.app.user.models.KeyValue;
+import com.kiwni.app.user.models.SqliteModelClass;
 import com.kiwni.app.user.network.ApiInterface;
 import com.kiwni.app.user.network.ConnectivityHelper;
 import com.kiwni.app.user.sharedpref.SharedPref;
@@ -118,15 +126,15 @@ public class RentalFragment extends Fragment implements
 
     GoogleMap mMap;
     String direction = "", serviceType = "", strDate = "";
-    AppCompatButton btnRentalCurrentViewCab, btnCurrentLocation, btnLocationOnMap, btnConfirm, btnCurrentBooking, btnSchedukeBooking;
+    AppCompatButton btnRentalCurrentViewCab, btnConfirm, btnCurrentBooking, btnSchedukeBooking;//btnCurrentLocation, btnLocationOnMap,
     ImageView imageMarker;
     String TAG = this.getClass().getSimpleName();
     ConstraintLayout layoutPickupDatePicker, layoutDropDatePicker;
     Marker pickupMarker, dropMarker;
     private Polyline mPolyline;
-    AutoCompleteTextView autoCompleteTextViewPickup, autoCompleteTextViewDrop;
+    public static AutoCompleteTextView autoCompleteTextViewPickup, autoCompleteTextViewDrop;
     AutoCompleteAirportAdapter adapter;
-    LinearLayout linearFooterButtons, linearBtnConfirm;
+    LinearLayout  linearBtnConfirm; //linearFooterButtons,
     ArrayList<LatLng> pickupLocationList = new ArrayList<>();
     ArrayList<LatLng> dropLocationList = new ArrayList<>();
     PlacesClient placesClient;
@@ -134,7 +142,7 @@ public class RentalFragment extends Fragment implements
             pickup_address = "", drop_address = "";
     private GoogleApiClient mGoogleApiClient;
     private LatLng mCenterLatLong, mOrigin, mDestination;
-    double pickup_lat = 0.0, pickup_lng = 0.0, drop_lat = 0.0, drop_lng = 0.0;
+    double  drop_lat = 0.0, drop_lng = 0.0; //pickup_lat = 0.0, pickup_lng = 0.0,
     boolean isPickup = false, isDrop = false, isCurrent = false, isDDSelected = false,
             isLocated = false, isCameraMove = false, isNetworkAvailable = false;
     Context mContext;
@@ -155,8 +163,21 @@ public class RentalFragment extends Fragment implements
             sendToApiDropTime = "", changeStartDateFormat ="";
     int mYear, mMonth, mDay, mHour, mMinute;
 
-    public double currentLatitude = 0.0, currentLongitude = 0.0;
+    public static double currentLatitude = 0.0, currentLongitude = 0.0;
     private ConnectivityHelper connectivityHelper;      // Receiver that detects network state changes
+
+
+    //decalaration
+
+    SqliteDatabaseHelper sqliteDatabaseHelper;
+    String dBAddress = "", dBFavoriteLat = "", dBFavoriteLng = "";
+    Dialog dialogAddress;
+    public static String Address = "" , favoriteLat = "", favoriteLng = "";
+    public static Boolean isConnectedCurrentLocation = false;
+    public static double pickup_lat = 0.0, pickup_lng = 0.0;
+    SqliteModelClass sqliteModelClassResp;
+    FavoriteOnClickListener favoriteOnClickListener;
+    List<SqliteModelClass> arrayListDb = new ArrayList<SqliteModelClass>();
 
 
     public RentalFragment() {
@@ -185,6 +206,8 @@ public class RentalFragment extends Fragment implements
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
 
+        favoriteOnClickListener = this:: onFavoriteOnClickListener;
+        sqliteDatabaseHelper = new SqliteDatabaseHelper(getActivity());
 
         /* start receiver for network state */
         startNetworkBroadcastReceiver(getActivity());
@@ -199,9 +222,9 @@ public class RentalFragment extends Fragment implements
 
         currentBookingRecyclerView = view.findViewById(R.id.currentBookingRecyclerView);
         btnRentalCurrentViewCab = view.findViewById(R.id.btnRentalCurrentViewCab);
-        linearFooterButtons = view.findViewById(R.id.linearFooterButtons);
+        /*linearFooterButtons = view.findViewById(R.id.linearFooterButtons);
         btnCurrentLocation = view.findViewById(R.id.btnCurrentLocation);
-        btnLocationOnMap = view.findViewById(R.id.btnLocationOnMap);
+        btnLocationOnMap = view.findViewById(R.id.btnLocationOnMap);*/
         //txtMarkerText = view.findViewById(R.id.txtMarkerText);
         imageMarker = view.findViewById(R.id.imageMarker);
         linearBtnConfirm = view.findViewById(R.id.linearBtnConfirm);
@@ -399,32 +422,150 @@ public class RentalFragment extends Fragment implements
             @Override
             public void onClick(View v)
             {
-                isLocated = false;
-                autoCompleteTextViewPickup.setSelectAllOnFocus(true);
-            }
-        });
-
-        autoCompleteTextViewPickup.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
                 isPickup = true;
                 isDrop = false;
                 isLocated = false;
 
+                Toast.makeText(mContext, "pickup", Toast.LENGTH_SHORT).show();
+
                 Log.d("TAG", isPickup + " " + isDrop);
 
-                autoCompleteTextViewPickup.setSelectAllOnFocus(true);
-                autoCompleteTextViewPickup.selectAll();
+                String pickupText = String.valueOf(autoCompleteTextViewPickup.getText());
 
-                linearFooterButtons.setVisibility(View.VISIBLE);
+                Log.d("TAG", isPickup + " " + isDrop);
+
+                dialogAddress = new Dialog(getActivity(), android.R.style.Theme_Light);
+                dialogAddress.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogAddress.setContentView(R.layout.dialog_address);
+
+                AutoCompleteTextView autoPickup = dialogAddress.findViewById(R.id.auto_pickup);
+                ImageView imageBack = dialogAddress.findViewById(R.id.imgBack);
+                AppCompatButton btnCurrentLocation = dialogAddress.findViewById(R.id.btnCurrentLocation);
+                AppCompatButton btnLocationOnMap = dialogAddress.findViewById(R.id.btnLocationOnMap);
+                RecyclerView recyclerView = dialogAddress.findViewById(R.id.recyclerView);
+
+                autoPickup.setText(pickupText);
+
+                autoPickup.setOnItemClickListener(autocompleteClickListener);
+                autoPickup.setAdapter(adapter);
+
+                dialogAddress.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+
+                arrayListDb = sqliteDatabaseHelper.getAllData();
+
+
+
+
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),1));
+                FavoriteAdapter favoriteAdapter = new FavoriteAdapter(getActivity(),arrayListDb,favoriteOnClickListener);
+                recyclerView.setAdapter(favoriteAdapter);
+
+
+
+                //Buttons Clicks
+
+                imageBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialogAddress.dismiss();
+                        Toast.makeText(getActivity(), "imageBack", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                autoPickup.setSelectAllOnFocus(true);
+                autoPickup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        autoPickup.selectAll();
+                    }
+                });
+
+                btnCurrentLocation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        isCurrent = true;
+                        isLocated = true;
+                        dialogAddress.dismiss();
+                        // linearFooterButtons.setVisibility(View.GONE);
+                        //linearBtnDone.setVisibility(View.VISIBLE);
+
+                        //get current location
+                        if(currentLatitude != 0.0 && currentLongitude != 0.0)
+                        {
+                            getAddressFromCurrentLocation(currentLatitude, currentLongitude);
+
+                            pickupMarker.remove();
+                            DrawMarker(currentLatitude, currentLongitude, pickup_city);
+
+                            if(pickupLocationList.size() > 0)
+                            {
+                                pickupLocationList.set(0, new LatLng(currentLatitude, currentLongitude));
+                                Log.d("TAG", "size update pickup = " + pickupLocationList.size());
+                            }
+                            else
+                            {
+                                Log.d("TAG", "pickup size = " + pickupLocationList.size());
+                            }
+
+                            AddMarker(pickup_city);
+                            Log.d("TAG", "size 2 = " + pickupLocationList.size());
+                        }
+
+                        if(!autoCompleteTextViewPickup.getText().toString().equals("")
+                                && !autoCompleteTextViewDrop.getText().toString().equals(""))
+                        {
+                            Log.d("TAG","enable find car button");
+                            linearBtnConfirm.setVisibility(View.GONE);
+                            btnRentalCurrentViewCab.setVisibility(View.VISIBLE);
+                        }
+                        else
+                        {
+                            linearBtnConfirm.setVisibility(View.GONE);
+                        }
+                    }
+                });
+
+                btnLocationOnMap.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        imageMarker.setVisibility(View.VISIBLE);
+                        //linearFooterButtons.setVisibility(View.GONE);
+                        linearBtnConfirm.setVisibility(View.VISIBLE);
+                        dialogAddress.dismiss();
+
+                        if (isPickup)
+                        {
+                            isCameraMove = true;
+                            hideKeyboardFrom(getActivity(), autoCompleteTextViewPickup);
+                        }
+                        else
+                        {
+                            hideKeyboardFrom(getActivity(), autoCompleteTextViewDrop);
+                        }
+
+                        if(!isLocated)
+                        {
+                            CameraChange();
+                        }
+                    }
+                });
+
+                autoCompleteTextViewPickup.selectAll();
+                dialogAddress.show();
+
+                //autoCompleteTextViewPickup.setSelectAllOnFocus(true);
+                // autoCompleteTextViewPickup.selectAll();
+
+                // linearFooterButtons.setVisibility(View.VISIBLE);
                 btnCurrentLocation.setVisibility(View.VISIBLE);
                 linearBtnConfirm.setVisibility(View.GONE);
                 btnRentalCurrentViewCab.setVisibility(View.GONE);
 
-                return false;
             }
         });
+
+
 
         autoCompleteTextViewPickup.addTextChangedListener(new TextWatcher() {
             @Override
@@ -449,30 +590,95 @@ public class RentalFragment extends Fragment implements
         autoCompleteTextViewDrop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                autoCompleteTextViewDrop.setSelectAllOnFocus(true);
-            }
-        });
-
-        autoCompleteTextViewDrop.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
                 isDrop = true;
                 isPickup = false;
                 isLocated = false;
 
-                autoCompleteTextViewDrop.setSelectAllOnFocus(true);
-                //autoCompleteTextViewDrop.requestFocus();
-                autoCompleteTextViewDrop.selectAll();
+                //autoCompleteTextViewDrop.setSelectAllOnFocus(true);
+                // autoCompleteTextViewDrop.selectAll();
 
-                linearFooterButtons.setVisibility(View.VISIBLE);
+                dialogAddress = new Dialog(getActivity(), android.R.style.Theme_Light);
+                dialogAddress.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogAddress.setContentView(R.layout.dialog_address);
+
+                String dropText = String.valueOf(autoCompleteTextViewDrop.getText());
+
+
+                AutoCompleteTextView autoPickup = dialogAddress.findViewById(R.id.auto_pickup);
+                ImageView imageBack = dialogAddress.findViewById(R.id.imgBack);
+                AppCompatButton btnCurrentLocation = dialogAddress.findViewById(R.id.btnCurrentLocation);
+                AppCompatButton btnLocationOnMap = dialogAddress.findViewById(R.id.btnLocationOnMap);
+                RecyclerView recyclerView = dialogAddress.findViewById(R.id.recyclerView);
+                TextView txtTitle = dialogAddress.findViewById(R.id.txtTitle);
+                autoPickup.setText(dropText);
+
+                dialogAddress.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+                arrayListDb = sqliteDatabaseHelper.getAllData();
+                txtTitle.setText("Drop");
+
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),1));
+                FavoriteAdapter favoriteAdapter = new FavoriteAdapter(getActivity(),arrayListDb,favoriteOnClickListener);
+                recyclerView.setAdapter(favoriteAdapter);
+
+
+                autoPickup.setOnItemClickListener(autocompleteClickListener);
+                autoPickup.setAdapter(adapter);
+
+                imageBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialogAddress.dismiss();
+                        Toast.makeText(getActivity(), "imageBack", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                autoPickup.setSelectAllOnFocus(true);
+                autoPickup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        autoPickup.selectAll();
+                    }
+                });
+
+                btnLocationOnMap.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        imageMarker.setVisibility(View.VISIBLE);
+                        // linearFooterButtons.setVisibility(View.GONE);
+                        linearBtnConfirm.setVisibility(View.VISIBLE);
+
+                        dialogAddress.dismiss();
+
+                        if (isPickup)
+                        {
+                            isCameraMove = true;
+                            hideKeyboardFrom(getActivity(), autoCompleteTextViewPickup);
+                        }
+                        else
+                        {
+                            hideKeyboardFrom(getActivity(), autoCompleteTextViewDrop);
+                        }
+
+                        if(!isLocated)
+                        {
+                            CameraChange();
+                        }
+                    }
+                });
+
+                dialogAddress.show();
+
+                //linearFooterButtons.setVisibility(View.VISIBLE);
                 btnCurrentLocation.setVisibility(View.GONE);
                 linearBtnConfirm.setVisibility(View.GONE);
                 btnRentalCurrentViewCab.setVisibility(View.GONE);
 
-                return false;
             }
         });
+
+
 
         autoCompleteTextViewDrop.addTextChangedListener(new TextWatcher() {
             @Override
@@ -490,77 +696,6 @@ public class RentalFragment extends Fragment implements
                 if(s.length() > 15)
                 {
                     autoCompleteTextViewDrop.dismissDropDown();
-                }
-            }
-        });
-
-        btnLocationOnMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                imageMarker.setVisibility(View.VISIBLE);
-                linearFooterButtons.setVisibility(View.GONE);
-                linearBtnConfirm.setVisibility(View.VISIBLE);
-
-                if (isPickup)
-                {
-                    isCameraMove = true;
-                    hideKeyboardFrom(getActivity(), autoCompleteTextViewPickup);
-                }
-                else
-                {
-                    hideKeyboardFrom(getActivity(), autoCompleteTextViewDrop);
-                }
-
-                if(!isLocated)
-                {
-                    CameraChange();
-                }
-            }
-        });
-
-        btnCurrentLocation.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                isCurrent = true;
-                isLocated = true;
-                linearFooterButtons.setVisibility(View.GONE);
-                //linearBtnDone.setVisibility(View.VISIBLE);
-
-                //get current location
-                if(currentLatitude != 0.0 && currentLongitude != 0.0)
-                {
-                    getAddressFromCurrentLocation(currentLatitude, currentLongitude);
-
-                    pickupMarker.remove();
-                    DrawMarker(currentLatitude, currentLongitude, pickup_city);
-
-                    if(pickupLocationList.size() > 0)
-                    {
-                        pickupLocationList.set(0, new LatLng(currentLatitude, currentLongitude));
-                        Log.d("TAG", "size update pickup = " + pickupLocationList.size());
-                    }
-                    else
-                    {
-                        Log.d("TAG", "pickup size = " + pickupLocationList.size());
-                    }
-
-                    AddMarker(pickup_city);
-                    Log.d("TAG", "size 2 = " + pickupLocationList.size());
-                }
-
-                if(!autoCompleteTextViewPickup.getText().toString().equals("")
-                        && !autoCompleteTextViewDrop.getText().toString().equals(""))
-                {
-                    Log.d("TAG","enable find car button");
-                    linearBtnConfirm.setVisibility(View.GONE);
-                    btnRentalCurrentViewCab.setVisibility(View.VISIBLE);
-                }
-                else
-                {
-                    linearBtnConfirm.setVisibility(View.GONE);
                 }
             }
         });
@@ -657,12 +792,12 @@ public class RentalFragment extends Fragment implements
                 {
                     Log.d("TAG","enable find car button");
                     linearBtnConfirm.setVisibility(View.GONE);
-                    linearFooterButtons.setVisibility(View.GONE);
+                    //linearFooterButtons.setVisibility(View.GONE);
                     btnRentalCurrentViewCab.setVisibility(View.VISIBLE);
                 }
                 else
                 {
-                    linearFooterButtons.setVisibility(View.GONE);
+                    //linearFooterButtons.setVisibility(View.GONE);
                 }
             }
         });
@@ -863,6 +998,92 @@ public class RentalFragment extends Fragment implements
         currentBookingRecyclerView .setAdapter(hourPackageAdapter);
     }
 
+    private void onFavoriteOnClickListener(View v, int position, String addressType, String address) {
+
+        Log.d("TAG","adapterAddressType :" +addressType);
+
+        favoriteAddressSelect(address);
+
+    }
+
+    public void favoriteAddressSelect(String address) {
+
+
+        if (isPickup) {
+
+            for(int i = 0; i< arrayListDb.size(); i++){
+                sqliteModelClassResp =arrayListDb.get(i);
+
+                //dBFavoriteLat = modelsClassResp.getFavoriteLat();
+                dBAddress = sqliteModelClassResp.getAddress();
+
+
+                if(dBAddress.equals(address)){
+                    dBFavoriteLat = sqliteModelClassResp.getFavoriteLat();
+                    dBFavoriteLng = sqliteModelClassResp.getFavoriteLng();
+
+                    Log.d("TAG","Values Lat Lng "+dBFavoriteLat +","+ dBFavoriteLng);
+                }
+
+
+            }
+
+
+
+            Log.d("Tag", "BOTTOM_SHEET_LAT" + favoriteLat);
+            Log.d("Tag", "BOTTOM_SHEET_LNG" + favoriteLng);
+            Log.d("Tag", "FAVORITE_HOME_ADDRESS" + pickup_address);
+
+            pickup_lat = Double.parseDouble(dBFavoriteLat);
+            pickup_lng = Double.parseDouble(dBFavoriteLng);
+
+            dialogAddress.dismiss();
+            autoCompleteTextViewPickup.setText(address);
+
+           /* if (!isDDSelected) {
+                item = adapter.getItem(i);
+            }*/
+
+            isDDSelected = true;
+            getAddressFromCurrentLocation(pickup_lat, pickup_lng);
+        } else {
+
+            for(int i = 0; i< arrayListDb.size(); i++) {
+                sqliteModelClassResp = arrayListDb.get(i);
+
+                //dBFavoriteLat = modelsClassResp.getFavoriteLat();
+                dBAddress = sqliteModelClassResp.getAddress();
+
+
+                if (dBAddress.equals(address)) {
+                    dBFavoriteLat = sqliteModelClassResp.getFavoriteLat();
+                    dBFavoriteLng = sqliteModelClassResp.getFavoriteLng();
+
+                    Log.d("TAG", "Values Lat Lng " + dBFavoriteLat + "," + dBFavoriteLng);
+                }
+            }
+
+
+            drop_lat = Double.parseDouble(dBFavoriteLat);
+            drop_lng = Double.parseDouble(dBFavoriteLng);
+
+
+            isDDSelected = true;
+            getAddressFromCurrentLocation(drop_lat, drop_lng);
+
+            dialogAddress.dismiss();
+            autoCompleteTextViewDrop.setText(address);
+        }
+
+        if (!autoCompleteTextViewPickup.getText().toString().equals("")
+                && !autoCompleteTextViewDrop.getText().toString().equals("")) {
+            linearBtnConfirm.setVisibility(View.GONE);
+            //linearFooterButtons.setVisibility(View.GONE);
+            btnRentalCurrentViewCab.setVisibility(View.VISIBLE);
+        }
+
+    }
+
 
     //autocompletetextview listener
     public AdapterView.OnItemClickListener autocompleteClickListener = new AdapterView.OnItemClickListener() {
@@ -906,6 +1127,9 @@ public class RentalFragment extends Fragment implements
                                 pickup_lng = places.getPlace().getLatLng().longitude;
                                 pickup_address = places.getPlace().getAddress();
 
+                                dialogAddress.dismiss();
+                                autoCompleteTextViewPickup.setText(pickup_address);
+
                                 if(!isDDSelected)
                                 {
                                     item = adapter.getItem(i);
@@ -922,6 +1146,9 @@ public class RentalFragment extends Fragment implements
 
                                 isDDSelected = true;
                                 getAddressFromCurrentLocation(drop_lat, drop_lng);
+
+                                dialogAddress.dismiss();
+                                autoCompleteTextViewDrop.setText(drop_address);
                             }
 
                             if(!autoCompleteTextViewPickup.getText().toString().equals("")
@@ -929,12 +1156,12 @@ public class RentalFragment extends Fragment implements
                             {
                                 Log.d("TAG","enable find car button");
                                 linearBtnConfirm.setVisibility(View.GONE);
-                                linearFooterButtons.setVisibility(View.GONE);
+                                //linearFooterButtons.setVisibility(View.GONE);
                                 btnRentalCurrentViewCab.setVisibility(View.VISIBLE);
                             }
                             else
                             {
-                                linearFooterButtons.setVisibility(View.GONE);
+                                //linearFooterButtons.setVisibility(View.GONE);
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -973,6 +1200,11 @@ public class RentalFragment extends Fragment implements
 
             currentLatitude = mLastLocation.getLatitude();
             currentLongitude = mLastLocation.getLongitude();
+
+            isConnectedCurrentLocation = true;
+
+            /*pickup_lat = currentLatitude;
+            pickup_lng = currentLongitude;*/
 
             //true
             if(ConnectivityHelper.isConnected)

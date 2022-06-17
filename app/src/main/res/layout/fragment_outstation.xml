@@ -113,12 +113,12 @@
                                     android:layout_weight="0.5"
                                     android:background="@null"
                                     android:completionThreshold="1"
-                                    android:focusableInTouchMode="true"
+                                    android:focusableInTouchMode="false"
                                     android:gravity="start"
                                     android:hint="@string/enter_your_drop_point"
                                     android:imeOptions="actionDone"
                                     android:inputType="text"
-                                    android:selectAllOnFocus="true"
+                                    android:selectAllOnFocus="false"
                                     android:textColorHint="@color/black"
                                     android:textSize="@dimen/sp_12" />
 
@@ -155,12 +155,12 @@
                                     android:layout_weight="0.5"
                                     android:background="@null"
                                     android:completionThreshold="1"
-                                    android:focusableInTouchMode="true"
+                                    android:focusableInTouchMode="false"
                                     android:gravity="start"
                                     android:hint="@string/enter_your_drop_point"
                                     android:imeOptions="actionDone"
                                     android:inputType="text"
-                                    android:selectAllOnFocus="true"
+                                    android:selectAllOnFocus="false"
                                     android:textColorHint="@color/black"
                                     android:textSize="@dimen/sp_12"
                                     app:layout_editor_absoluteY="10dp"
@@ -424,7 +424,7 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <!--<LinearLayout
                     android:id="@+id/linearFooterButtons"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -462,7 +462,7 @@
                         android:textColor="@color/white"
                         android:textSize="15sp" />
 
-                </LinearLayout>
+                </LinearLayout>-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

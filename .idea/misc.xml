@@ -130,6 +130,7 @@
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/content_main.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/current_booking_recycler.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/current_booking_recycler_item.xml" value="0.1" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/dialog_address.xml" value="0.134765625" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/dialog_error.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/dialog_payment_screen.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/dialog_socket_response.xml" value="0.1" />
@@ -171,6 +172,7 @@
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/payment_screen.xml" value="0.11979166666666667" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/reason_cancel_trip.xml" value="0.1" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/recycler_filter_item.xml" value="0.1" />
+        <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/recycler_item_favorite.xml" value="0.134765625" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/reservation_confirmation_krn_no_dialog.xml" value="0.134765625" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/safety_fragment.xml" value="0.11979166666666667" />
         <entry key="..\:/Users/DELL/AndroidStudioProjects/KiwniUserApp/app/src/main/res/layout/sort_layout.xml" value="0.1" />

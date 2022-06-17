@@ -18,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:text="@string/save_as_favourite"
+            android:text="Save as Favourite"
             android:textColor="@color/black"
             android:textSize="25sp"
             android:textStyle="bold"
@@ -45,87 +45,72 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:text="@string/dighi_pune_maharashtra_india"
+            android:text="Delhi pune maharashtra india"
             android:textColor="#424242"
-            android:textSize="13sp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline13"
             app:layout_constraintStart_toStartOf="@+id/guideline12"
             app:layout_constraintTop_toBottomOf="@+id/HeaderText" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout7"
+        <RadioGroup
+            android:id="@+id/radioGroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout6"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
+            android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="@+id/guideline12"
-            app:layout_constraintTop_toBottomOf="@+id/addressText"
-            app:layout_constraintVertical_bias="0.06999999">
+            app:layout_constraintEnd_toEndOf="@+id/guideline13"
+            app:layout_constraintTop_toBottomOf="@+id/addressText">
+
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/radioButton1"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:text="@string/home"
+                android:text="Home"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:padding="3dp"
                 android:textColor="#424242"
                 app:buttonTint="#000000" />
 
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout8"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout7"
-            app:layout_constraintTop_toBottomOf="@+id/addressText"
-            app:layout_constraintVertical_bias="0.06999999">
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/radioButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:gravity="center"
+                android:layout_weight="1"
                 android:padding="3dp"
-                android:text="@string/work"
+                android:text="Work"
                 android:textColor="#424242"
                 app:buttonTint="#000000" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout8"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/guideline13"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout6"
-            app:layout_constraintTop_toBottomOf="@+id/addressText"
-            app:layout_constraintVertical_bias="0.06999999">
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/radioButton3"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:gravity="center"
+                android:layout_weight="1"
                 android:padding="3dp"
-                android:text="@string/other"
+                android:text="Other"
                 android:textColor="#424242"
                 app:buttonTint="#000000" />
 
-        </LinearLayout>
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/edtOtherAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"
+            android:hint="Name your Favorite(e.g. Gym)"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+            app:layout_constraintStart_toStartOf="@+id/guideline12"
+            app:layout_constraintEnd_toEndOf="@+id/guideline13"
+            />
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -135,7 +120,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginBottom="25dp"
             android:background="#E7E7E7"
-            android:text="@string/cancle"
+            android:text="Cancel"
             android:layout_marginEnd="5dp"
             android:textColor="@color/black"
             android:textStyle="bold"
@@ -143,7 +128,7 @@
             app:layout_constraintEnd_toStartOf="@+id/saveButton"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="@+id/guideline12"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
+            app:layout_constraintTop_toBottomOf="@+id/edtOtherAddress" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/saveButton"
@@ -152,7 +137,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginBottom="25dp"
             android:background="@color/button_color_light"
-            android:text="@string/save"
+            android:text="Save"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_marginStart="5dp"
@@ -161,7 +146,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline13"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/cancelButton"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
+            app:layout_constraintTop_toBottomOf="@+id/edtOtherAddress" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -51,6 +51,8 @@ public class HomeFragment extends Fragment
     Fragment outstationFragment, airportFragment, rentalFragment;
     public HomeFragment instance;
 
+    public static Boolean isOutStation = false, isAirport = false, isRental = false;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,12 +82,21 @@ public class HomeFragment extends Fragment
                 switch (tab.getPosition())
                 {
                     case 0 :
+                        isOutStation = true;
+                        isAirport = false;
+                        isRental = false;
                         replaceFragment(outstationFragment);
                         break;
                     case 1 :
+                        isOutStation = false;
+                        isAirport = true;
+                        isRental = false;
                         replaceFragment(airportFragment);
                         break;
                     case 2:
+                        isRental = true;
+                        isOutStation = false;
+                        isAirport = false;
                         replaceFragment(rentalFragment);
                         break;
                 }

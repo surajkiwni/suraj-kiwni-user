@@ -113,12 +113,12 @@
                             android:layout_weight="0.5"
                             android:background="@null"
                             android:completionThreshold="1"
-                            android:focusableInTouchMode="true"
+                            android:focusableInTouchMode="false"
                             android:gravity="start"
                             android:hint="@string/enter_your_pickup_point"
                             android:imeOptions="actionDone"
                             android:inputType="text"
-                            android:selectAllOnFocus="true"
+                            android:selectAllOnFocus="false"
                             android:textColorHint="@color/black"
                             android:textSize="@dimen/sp_12" />
 
@@ -154,12 +154,12 @@
                             android:layout_weight="0.5"
                             android:background="@null"
                             android:completionThreshold="1"
-                            android:focusableInTouchMode="true"
+                            android:focusableInTouchMode="false"
                             android:gravity="start"
                             android:hint="@string/enter_your_drop_point"
                             android:imeOptions="actionDone"
                             android:inputType="text"
-                            android:selectAllOnFocus="true"
+                            android:selectAllOnFocus="false"
                             android:textColorHint="@color/black"
                             android:textSize="@dimen/sp_12"
                             app:layout_editor_absoluteY="10dp" />
@@ -398,44 +398,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linearFooterButtons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:orientation="horizontal"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnCurrentLocation"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:background="@color/button_color_dark"
-                android:text="@string/current_location"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnLocationOnMap"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:background="@color/button_color_dark"
-                android:text="@string/locate_on_map"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-
-        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
