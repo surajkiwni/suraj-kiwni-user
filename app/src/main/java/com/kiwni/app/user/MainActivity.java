@@ -525,6 +525,10 @@ public class MainActivity extends AppCompatActivity implements
 
             AboutFragment.backKeyPressedListener.onBackPressed();
         }
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
     }
 
     @SuppressLint({"InflateParams", "NonConstantResourceId"})
@@ -1098,4 +1102,5 @@ public class MainActivity extends AppCompatActivity implements
         Log.d(TAG, "onDestroy");
         mSocket.disconnect();
     }
+
 }

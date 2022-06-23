@@ -288,10 +288,10 @@ public class OutstationFragment extends Fragment implements
 
         /* autocomplete fields with adpater */
         autoCompleteTextViewPickup = view.findViewById(R.id.auto_pickup);
-       // autoCompleteTextViewPickup.setOnItemClickListener(autocompleteClickListener);
+       autoCompleteTextViewPickup.setOnItemClickListener(autocompleteClickListener);
 
         //set adapter
-        //autoCompleteTextViewPickup.setAdapter(adapter);
+        autoCompleteTextViewPickup.setAdapter(adapter);
 
         autoCompleteTextViewDrop = view.findViewById(R.id.auto_destination);
        // autoCompleteTextViewDrop.setOnItemClickListener(autocompleteClickListener);
@@ -476,10 +476,6 @@ public class OutstationFragment extends Fragment implements
                 isDrop = false;
                 isLocated = false;
 
-                Toast.makeText(mContext, "pickup", Toast.LENGTH_SHORT).show();
-
-                Log.d("TAG", isPickup + " " + isDrop);
-
                 String pickupText = String.valueOf(autoCompleteTextViewPickup.getText());
 
                 Log.d("TAG", isPickup + " " + isDrop);
@@ -488,7 +484,7 @@ public class OutstationFragment extends Fragment implements
                 dialogAddress.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogAddress.setContentView(R.layout.dialog_address);
 
-                AutoCompleteTextView autoPickup = dialogAddress.findViewById(R.id.auto_pickup);
+                AutoCompleteTextView autoPickup = dialogAddress.findViewById(R.id.dialogAutoPickup);
                 ImageView imageBack = dialogAddress.findViewById(R.id.imgBack);
                 AppCompatButton btnCurrentLocation = dialogAddress.findViewById(R.id.btnCurrentLocation);
                 AppCompatButton btnLocationOnMap = dialogAddress.findViewById(R.id.btnLocationOnMap);
@@ -503,16 +499,10 @@ public class OutstationFragment extends Fragment implements
 
 
                 arrayListDb = sqliteDatabaseHelper.getAllData();
-
-
-
-
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),1));
                 FavoriteAdapter favoriteAdapter = new FavoriteAdapter(getActivity(),arrayListDb,favoriteOnClickListener);
                 recyclerView.setAdapter(favoriteAdapter);
-
-
 
                 //Buttons Clicks
 
@@ -520,10 +510,8 @@ public class OutstationFragment extends Fragment implements
                     @Override
                     public void onClick(View view) {
                         dialogAddress.dismiss();
-                        Toast.makeText(getActivity(), "imageBack", Toast.LENGTH_SHORT).show();
                     }
                 });
-                autoPickup.setSelectAllOnFocus(true);
                 autoPickup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -647,7 +635,7 @@ public class OutstationFragment extends Fragment implements
                 String dropText = String.valueOf(autoCompleteTextViewDrop.getText());
 
 
-                AutoCompleteTextView autoPickup = dialogAddress.findViewById(R.id.auto_pickup);
+                AutoCompleteTextView autoPickup = dialogAddress.findViewById(R.id.dialogAutoPickup);
                 ImageView imageBack = dialogAddress.findViewById(R.id.imgBack);
                 AppCompatButton btnCurrentLocation = dialogAddress.findViewById(R.id.btnCurrentLocation);
                 AppCompatButton btnLocationOnMap = dialogAddress.findViewById(R.id.btnLocationOnMap);
@@ -737,68 +725,6 @@ public class OutstationFragment extends Fragment implements
                 }
             }
         });
-
-       /* *//* locate on map click handle using boolean value *//*
-        btnLocationOnMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageMarker.setVisibility(View.VISIBLE);
-                linearFooterButtons.setVisibility(View.GONE);
-                linearBtnConfirm.setVisibility(View.VISIBLE);
-
-                if (isPickup)
-                {
-                    isCameraMove = true;
-                    hideKeyboardFrom(getActivity(), autoCompleteTextViewPickup);
-                } else {
-                    hideKeyboardFrom(getActivity(), autoCompleteTextViewDrop);
-                }
-
-                if (!isLocated) {
-                    CameraChange();
-                }
-            }
-        });
-
-        *//* current location click at footer *//*
-        btnCurrentLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isCurrent = true;
-                isLocated = true;
-                linearFooterButtons.setVisibility(View.GONE);
-
-                //get current location
-                if (currentLatitude != 0.0 && currentLongitude != 0.0)
-                {
-                    getAddressFromCurrentLocation(currentLatitude, currentLongitude);
-
-                    pickupMarker.remove();
-                    DrawMarker(currentLatitude, currentLongitude, pickup_city);
-
-                    if (pickupLocationList.size() > 0)
-                    {
-                        pickupLocationList.set(0, new LatLng(currentLatitude, currentLongitude));
-                        Log.d("TAG", "size update pickup = " + pickupLocationList.size());
-                    }
-                    else {
-                        Log.d("TAG", "pickup size = " + pickupLocationList.size());
-                    }
-
-                    AddMarker(pickup_city);
-                    Log.d("TAG", "size 2 = " + pickupLocationList.size());
-                }
-
-                if (!autoCompleteTextViewPickup.getText().toString().equals("")
-                        && !autoCompleteTextViewDrop.getText().toString().equals("")) {
-                    Log.d("TAG", "enable find car button");
-                    linearBtnConfirm.setVisibility(View.GONE);
-                    btnViewCabRoundTrip.setVisibility(View.VISIBLE);
-                } else {
-                    linearBtnConfirm.setVisibility(View.GONE);
-                }
-            }
-        });*/
 
         /* confirm location manage on this click and hide footer buttons too*/
         btnConfirm.setOnClickListener(new View.OnClickListener() {
@@ -948,6 +874,7 @@ public class OutstationFragment extends Fragment implements
                                         if (isDateAfter(sendToApiPickupTime, sendToApiDropTime))
                                         {
                                             //true condition
+
                                             Intent i = new Intent(getActivity(), VehicleTypeListActivity.class);
                                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             //send data to next screen
@@ -956,6 +883,7 @@ public class OutstationFragment extends Fragment implements
                                             PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_ADDRESS, autoCompleteTextViewPickup.getText().toString());
                                             PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_ADDRESS, autoCompleteTextViewDrop.getText().toString());
                                             PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_LOCATION, mOrigin.latitude + " " + mOrigin.longitude);
+                                            Log.d("TAG","Pass value to next"+mOrigin.longitude+","+mOrigin.longitude);
                                             PreferencesUtils.putPreferences(getActivity(), SharedPref.DROP_LOCATION, mDestination.latitude + " " + mDestination.longitude);
                                             PreferencesUtils.putPreferences(getActivity(), SharedPref.PICKUP_DATE, concatDateTime);
                                             PreferencesUtils.putPreferences(getActivity(), SharedPref.START_DATE_WITH_MONTH_DAY, changeStartDateFormat);
@@ -973,6 +901,7 @@ public class OutstationFragment extends Fragment implements
 
                                             startActivity(i);
                                             //getActivity().finish();
+
                                         } else {
                                             //false condition
                                             errorDialog = new ErrorDialog(getActivity(), "Kindly select proper return date..!");
@@ -1279,6 +1208,7 @@ public class OutstationFragment extends Fragment implements
                     getAddressFromCurrentLocation(currentLatitude, currentLongitude);
                     autoCompleteTextViewDrop.setText("");
 
+
                     /* check list size and add or update value in list */
                     if(pickupLocationList.size() == 0)
                     {
@@ -1352,6 +1282,7 @@ public class OutstationFragment extends Fragment implements
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         Log.d(TAG, "OnMapReady");
+        this. mMap = googleMap;
         if (mMap != null) {
             mMap.clear();
             autoCompleteTextViewDrop.setText("");
@@ -1438,6 +1369,8 @@ public class OutstationFragment extends Fragment implements
 
             Log.d("TAG", "address : " + address);
             Log.d("TAG", "city : " + city);
+
+
 
             //pickup
             if(isPickup)
@@ -1582,8 +1515,10 @@ public class OutstationFragment extends Fragment implements
     /* add marker in list */
     public void AddMarker(String title)
     {
+        Log.d("TAG","pickupLocationList"+pickupLocationList.toString());
         if(pickupLocationList.size() == 1)
         {
+            Log.d("TAG","pickupLocationList"+pickupLocationList.toString());
             mOrigin = pickupLocationList.get(0);
             Log.d(TAG, "mOrigin = " + mOrigin);
         }
@@ -1917,7 +1852,7 @@ public class OutstationFragment extends Fragment implements
         }
 
         //draw current location and draw marker on map
-        if (currentLatitude != 0.0 && currentLongitude != 0.0)
+        /*if (currentLatitude != 0.0 && currentLongitude != 0.0)
         {
             getAddressFromCurrentLocation(currentLatitude, currentLongitude);
 
@@ -1926,7 +1861,7 @@ public class OutstationFragment extends Fragment implements
                 pickupMarker.remove();
             }
 
-            /* current location marker */
+            *//* current location marker *//*
             pickupMarker = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(currentLatitude, currentLongitude))
                     .title(city)
@@ -1934,7 +1869,7 @@ public class OutstationFragment extends Fragment implements
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom
                     (new LatLng(currentLatitude, currentLongitude), 10.0f));
 
-            /* check pickup-list size and add or update data in list*/
+            *//* check pickup-list size and add or update data in list*//*
             if(pickupLocationList.size() > 0)
             {
                 pickupLocationList.set(0, new LatLng(currentLatitude, currentLongitude));
@@ -1950,7 +1885,7 @@ public class OutstationFragment extends Fragment implements
             Log.d(TAG, "size 0 for current loc = " + pickupLocationList.size());
         } else {
             Log.d(TAG, "Not getting co-ordinates");
-        }
+        }*/
     }
 
     /* no internet connection */
@@ -2399,14 +2334,18 @@ public class OutstationFragment extends Fragment implements
     @Override
     public void onStart() {
         super.onStart();
-
         Log.d(TAG,"onStart");
-
         try {
-            mGoogleApiClient.connect();
+            if (mGoogleApiClient != null)
+            {
+                mGoogleApiClient.connect();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
     @Override
